@@ -1,22 +1,15 @@
-import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import com.arkivanov.decompose.DefaultComponentContext
+import com.arkivanov.essenty.lifecycle.Lifecycle
+import decompose.RootComponent
+import view.RootUi
 
 @Composable
-fun App() {
+fun App(lifecycle: Lifecycle) {
     MaterialTheme {
-        var text by remember { mutableStateOf("Hello, World!") }
-
-        Button(onClick = {
-            text = "Hello, ${getPlatformName()}"
-        }) {
-            Text(text)
-        }
+        val root = RootComponent(DefaultComponentContext(lifecycle))
+        RootUi(root)
     }
 }
 
