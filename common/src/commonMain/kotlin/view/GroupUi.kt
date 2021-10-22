@@ -1,6 +1,5 @@
 package view
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
@@ -14,12 +13,12 @@ import decompose.Group
 fun GroupUi(component: Group, modifier: Modifier = Modifier) {
     val group by component.group.subscribeAsState()
 
-    Column(modifier = modifier) {
-        Text(text = group.caption)
-        LazyColumn {
-            items(group.items) { item ->
-                ItemUi(item, modifier)
-            }
+    LazyColumn {
+        item {
+            Text(text = group.caption)
+        }
+        items(group.items) { item ->
+            ItemUi(item, modifier)
         }
     }
 }

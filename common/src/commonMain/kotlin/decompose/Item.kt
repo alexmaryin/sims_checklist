@@ -7,8 +7,8 @@ interface Item {
     fun onClick()
 
     data class Model(
-        val caption: String = "",
-        val details: String = "",
+        val caption: String = "Test item",
+        val details: String = "details for test item",
         var checked: Boolean = false
     )
 }

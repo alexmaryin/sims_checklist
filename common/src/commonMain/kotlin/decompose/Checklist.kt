@@ -6,7 +6,7 @@ interface Checklist {
     val checklist: Value<Model>
 
     data class Model(
-        val groups: List<GroupComponent> = emptyList(),
-        val caption: String = ""
+        val groups: List<GroupComponent> = listOf(GroupComponent()),
+        val caption: String = "Test checklist"
     )
 }

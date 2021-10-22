@@ -7,6 +7,7 @@ import com.arkivanov.decompose.router.push
 import com.arkivanov.decompose.router.router
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
+import com.arkivanov.essenty.parcelable.Parcelize
 import decompose.Root.Child
 
 class RootComponent(
@@ -34,6 +35,7 @@ class RootComponent(
     }
 
     private sealed class Config : Parcelable {
+        @Parcelize
         data class Page(val index: Int) : Config()
     }
 }

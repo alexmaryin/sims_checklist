@@ -15,6 +15,9 @@ kotlin {
             dependencies {
                 implementation(compose.desktop.currentOs)
                 implementation(project(":common"))
+                // Decompose navigation library
+                implementation("com.arkivanov.decompose:decompose:0.4.0")
+                implementation("com.arkivanov.decompose:extensions-compose-jetbrains:0.4.0")
             }
         }
     }

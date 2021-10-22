@@ -7,6 +7,6 @@ interface Group {
 
     data class Model(
         val items: List<ItemComponent> = emptyList(),
-        val caption: String = ""
+        val caption: String = "Test group"
     )
 }
