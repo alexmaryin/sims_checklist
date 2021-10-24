@@ -1,4 +1,4 @@
-package com.myapplication
+package ru.alexmaryin.simschecklist
 
 import App
 import android.os.Bundle

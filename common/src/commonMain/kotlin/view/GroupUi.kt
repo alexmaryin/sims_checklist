@@ -13,12 +13,8 @@ import decompose.Group
 fun GroupUi(component: Group, modifier: Modifier = Modifier) {
     val group by component.group.subscribeAsState()
 
-    LazyColumn {
-        item {
-            Text(text = group.caption)
-        }
-        items(group.items) { item ->
-            ItemUi(item, modifier)
-        }
+    Text(text = group.caption)
+    group.items.forEach { item ->
+        ItemUi(item, modifier)
     }
 }

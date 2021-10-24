@@ -16,7 +16,7 @@ import decompose.Root
 
 @Composable
 fun RootUi(component: Root) {
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column {
         Row(modifier = Modifier.fillMaxWidth()) {
             IconButton(
                 onClick = component::onPrevious
