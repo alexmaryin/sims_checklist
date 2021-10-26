@@ -3,14 +3,15 @@ import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.essenty.lifecycle.Lifecycle
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
-import decompose.RootComponent
-import view.RootUi
+import decompose.Root
+import decompose.RootUi
+import model.DatabaseImpl
 
 @Composable
 fun App(lifecycle: Lifecycle = LifecycleRegistry()) {
+
     MaterialTheme {
-        val root = RootComponent(DefaultComponentContext(lifecycle))
-        RootUi(root)
+        RootUi(Root(DefaultComponentContext(LifecycleRegistry()), DatabaseImpl()))
     }
 }
 

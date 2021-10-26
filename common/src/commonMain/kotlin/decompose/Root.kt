@@ -1,16 +1,45 @@
 package decompose
 
-import com.arkivanov.decompose.router.RouterState
-import com.arkivanov.decompose.value.Value
+import androidx.compose.runtime.Composable
+import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.extensions.compose.jetbrains.Children
+import com.arkivanov.decompose.router.pop
+import com.arkivanov.decompose.router.push
+import com.arkivanov.decompose.router.router
+import model.Database
 
-interface Root {
+typealias Content = @Composable () -> Unit
 
-    val routerState: Value<RouterState<*, Child>>
+fun <T : Any> T.asContent(content: @Composable (T) -> Unit) : Content = { content(this) }
 
-    fun onNext()
-    fun onPrevious()
+class Root(
+    componentContext: ComponentContext,
+    private val database: Database
+) : ComponentContext by componentContext {
 
-    sealed class Child {
-        class Page(val component: decompose.Page) : Child()
+    private val router = router<Configuration, Content>(
+        initialConfiguration = ItemsList,
+        childFactory = ::createChild
+    )
+
+    val routerState = router.state
+
+    private fun createChild(configuration: Configuration, context: ComponentContext): Content =
+        when(configuration) {
+
+            is ItemsList -> ItemList(database) { id ->
+                router.push(Details(id))
+            }.asContent { ItemListUi(it) }
+
+            is Details -> ItemDetails(configuration.id, database, router::pop).asContent {
+                ItemDetailsUi(it)
+            }
+        }
+}
+
+@Composable
+fun RootUi(root: Root) {
+    Children(root.routerState) { child ->
+        child.instance()
     }
 }
