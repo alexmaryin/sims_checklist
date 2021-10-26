@@ -2,7 +2,7 @@ package model
 
 class DatabaseImpl : Database {
 
-    private val _fakeData = List(10) {
+    private val _fakeData = List(100) {
         Item(it.toLong() + 1, "item number ${it + 1}")
     }
 

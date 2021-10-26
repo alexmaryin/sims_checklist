@@ -4,15 +4,21 @@ import App
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import com.arkivanov.essenty.lifecycle.Lifecycle
+import androidx.compose.runtime.CompositionLocalProvider
+import com.arkivanov.essenty.backpressed.BackPressedHandler
+import decompose.localBackPressedDispatcher
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val backPressedDispatcher = BackPressedHandler(onBackPressedDispatcher)
+
         setContent {
-            App()
+            CompositionLocalProvider(localBackPressedDispatcher provides backPressedDispatcher ) {
+                App()
+            }
         }
     }
 }

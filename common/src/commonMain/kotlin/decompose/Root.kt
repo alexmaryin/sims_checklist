@@ -3,6 +3,8 @@ package decompose
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.extensions.compose.jetbrains.Children
+import com.arkivanov.decompose.extensions.compose.jetbrains.animation.child.crossfadeScale
+import com.arkivanov.decompose.extensions.compose.jetbrains.animation.child.slide
 import com.arkivanov.decompose.router.pop
 import com.arkivanov.decompose.router.push
 import com.arkivanov.decompose.router.router
@@ -19,7 +21,8 @@ class Root(
 
     private val router = router<Configuration, Content>(
         initialConfiguration = ItemsList,
-        childFactory = ::createChild
+        childFactory = ::createChild,
+        handleBackButton = true
     )
 
     val routerState = router.state
@@ -39,7 +42,10 @@ class Root(
 
 @Composable
 fun RootUi(root: Root) {
-    Children(root.routerState) { child ->
+    Children(
+        root.routerState,
+        animation = slide()
+    ) { child ->
         child.instance()
     }
 }
