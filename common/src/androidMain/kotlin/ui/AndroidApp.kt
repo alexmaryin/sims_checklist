@@ -1,3 +1,5 @@
+package ui
+
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
