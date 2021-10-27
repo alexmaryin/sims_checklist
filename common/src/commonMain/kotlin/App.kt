@@ -10,7 +10,7 @@ import model.AircraftBaseTestImpl
 
 @Composable
 fun App() {
-    MaterialTheme(colors = darkColors()) {
+    MaterialTheme() {
         Surface {
             RootUi(Root(rememberComponentContext(), AircraftBaseTestImpl()))
         }

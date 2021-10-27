@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,7 +51,7 @@ fun ChecklistScreen(checklist: Checklist, onBackClick: () -> Unit) {
             ) {
                 items(checklist.items) { item ->
                     val isChecked = remember { mutableStateOf(item.checked && item.caption != "LINE") }
-                    Column(
+                    Row(
                         modifier = Modifier
                             .clickable { item.toggle(); isChecked.value = item.checked && item.caption != "LINE" }
                             .fillMaxWidth()
@@ -60,17 +61,23 @@ fun ChecklistScreen(checklist: Checklist, onBackClick: () -> Unit) {
                         if (item.caption == "LINE") {
                             Divider()
                         } else {
-                            Text(
-                                item.caption,
-                                color = if (isChecked.value) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface,
-                                fontWeight = FontWeight.Normal,
-                                fontSize = 18.sp
-                            )
-                            if (item.details.isNotEmpty()) Text(
-                                item.details,
-                                color = if (isChecked.value) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface,
-                                fontWeight = FontWeight.Light,
-                                fontSize = 12.sp
+                            Column(modifier = Modifier.weight(1f).fillMaxWidth()) {
+                                Text(
+                                    item.caption,
+                                    color = if (isChecked.value) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface,
+                                    fontWeight = FontWeight.Normal,
+                                    fontSize = 18.sp,
+                                )
+                                if (item.details.isNotEmpty()) Text(
+                                    item.details,
+                                    color = if (isChecked.value) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface,
+                                    fontWeight = FontWeight.Light,
+                                    fontSize = 12.sp
+                                )
+                            }
+                            if (isChecked.value) Icon(
+                                imageVector = Icons.Default.Done,
+                                contentDescription = "item checked"
                             )
                         }
                     }
