@@ -3,24 +3,23 @@ package decompose
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.extensions.compose.jetbrains.Children
-import com.arkivanov.decompose.extensions.compose.jetbrains.animation.child.crossfadeScale
 import com.arkivanov.decompose.extensions.compose.jetbrains.animation.child.slide
 import com.arkivanov.decompose.router.pop
 import com.arkivanov.decompose.router.push
 import com.arkivanov.decompose.router.router
-import model.Database
+import model.AircraftBase
 
 typealias Content = @Composable () -> Unit
 
-fun <T : Any> T.asContent(content: @Composable (T) -> Unit) : Content = { content(this) }
+fun <T : Any> T.asContent(content: @Composable (T) -> Unit): Content = { content(this) }
 
 class Root(
     componentContext: ComponentContext,
-    private val database: Database
+    private val aircraftBase: AircraftBase
 ) : ComponentContext by componentContext {
 
     private val router = router<Configuration, Content>(
-        initialConfiguration = ItemsList,
+        initialConfiguration = Configuration.Checklists(0),
         childFactory = ::createChild,
         handleBackButton = true
     )
@@ -28,15 +27,20 @@ class Root(
     val routerState = router.state
 
     private fun createChild(configuration: Configuration, context: ComponentContext): Content =
-        when(configuration) {
+        when (configuration) {
 
-            is ItemsList -> ItemList(database) { id ->
-                router.push(Details(id))
-            }.asContent { ItemListUi(it) }
+            is Configuration.Checklists -> Checklists(aircraftBase.getById(configuration.aircraftId)) { checklist ->
+                router.push(Configuration.Checklist(configuration.aircraftId, checklist.id))
+            }.asContent { ChecklistsUi(it) }
 
-            is Details -> ItemDetails(configuration.id, database, router::pop).asContent {
-                ItemDetailsUi(it)
+            is Configuration.Checklist -> ChecklistDetails(
+                aircraftBase.getChecklist(configuration.aircraftId, configuration.checklistId),
+                router::pop
+            ).asContent {
+                ChecklistUi(it)
             }
+
+            is Configuration.FuelCalculator -> Unit.asContent {}
         }
 }
 

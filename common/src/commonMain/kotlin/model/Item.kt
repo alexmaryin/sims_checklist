@@ -1,6 +1,9 @@
 package model
 
 data class Item(
-    val id: Long,
-    val text: String
-)
+    val caption: String,
+    val details: String = "",
+    var checked: Boolean = false
+) {
+    fun toggle() { checked = !checked }
+}

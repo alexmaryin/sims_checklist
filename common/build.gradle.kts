@@ -1,4 +1,5 @@
 import org.jetbrains.compose.compose
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("com.android.library")
@@ -54,4 +55,10 @@ android {
             res.srcDirs("src/androidMain/res")
         }
     }
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions.freeCompilerArgs = listOf(
+        "-Xopt-in=kotlin.RequiresOptIn"
+    )
 }

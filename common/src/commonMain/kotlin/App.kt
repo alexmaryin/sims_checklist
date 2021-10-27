@@ -1,13 +1,18 @@
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.darkColors
+import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import decompose.Root
 import decompose.RootUi
 import decompose.rememberComponentContext
-import model.DatabaseImpl
+import model.AircraftBaseTestImpl
 
 @Composable
 fun App() {
-    MaterialTheme {
-        RootUi(Root(rememberComponentContext(), DatabaseImpl()))
+    MaterialTheme(colors = darkColors()) {
+        Surface {
+            RootUi(Root(rememberComponentContext(), AircraftBaseTestImpl()))
+        }
     }
 }
