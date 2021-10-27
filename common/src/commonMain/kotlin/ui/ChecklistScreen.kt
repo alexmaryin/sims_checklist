@@ -15,10 +15,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontSynthesis
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -48,30 +44,36 @@ fun ChecklistScreen(checklist: Checklist, onBackClick: () -> Unit) {
         val state = rememberLazyListState()
 
         Box {
-            LazyColumn(modifier = Modifier.fillMaxSize().padding(end = offsetForScrollBar()), state = state) {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize().padding(end = offsetForScrollBar()),
+                state = state,
+            ) {
                 items(checklist.items) { item ->
-                    val isChecked = remember { mutableStateOf(item.checked) }
+                    val isChecked = remember { mutableStateOf(item.checked && item.caption != "LINE") }
                     Column(
                         modifier = Modifier
-                            .clickable { item.toggle(); isChecked.value = item.checked }
+                            .clickable { item.toggle(); isChecked.value = item.checked && item.caption != "LINE" }
                             .fillMaxWidth()
                             .background(if (isChecked.value) MaterialTheme.colors.secondary else MaterialTheme.colors.surface)
                             .padding(10.dp)
                     ) {
-                        Text(
-                            item.caption,
-                            color = if (isChecked.value) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface,
-                            fontWeight = FontWeight.Normal,
-                            fontSize = 18.sp
-                        )
-                        if (item.details.isNotEmpty()) Text(
-                            item.details,
-                            color = if (isChecked.value) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface,
-                            fontWeight = FontWeight.Light,
-                            fontSize = 12.sp
-                        )
+                        if (item.caption == "LINE") {
+                            Divider()
+                        } else {
+                            Text(
+                                item.caption,
+                                color = if (isChecked.value) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface,
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 18.sp
+                            )
+                            if (item.details.isNotEmpty()) Text(
+                                item.details,
+                                color = if (isChecked.value) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface,
+                                fontWeight = FontWeight.Light,
+                                fontSize = 12.sp
+                            )
+                        }
                     }
-                    Divider()
                 }
             }
             ScrollBarForList(Modifier.align(Alignment.CenterEnd).fillMaxHeight(), state)

@@ -5,5 +5,5 @@ data class Item(
     val details: String = "",
     var checked: Boolean = false
 ) {
-    fun toggle() { checked = !checked }
+    fun toggle() { if(caption != "LINE") checked = !checked }
 }

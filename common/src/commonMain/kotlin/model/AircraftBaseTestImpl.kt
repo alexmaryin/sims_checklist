@@ -17,7 +17,11 @@ class AircraftBaseTestImpl : AircraftBase {
                 items = listOf(
                     Item(caption = "Walk around", details = "Look up for last crash"),
                     Item(caption = "Fuel check", details = "Filling the tanks"),
-                    Item(caption = "Documents ob board", details = "Don't forget this app")
+                    Item(caption = "Documents ob board", details = "Don't forget this app"),
+                    Item(caption = "LINE", checked = true),
+                    Item(caption = "Below the line"),
+                    Item(caption = "Battery ON", details = "Check the alternator"),
+                    Item(caption = "Parking brakes ON"),
                 )
             )
         )
