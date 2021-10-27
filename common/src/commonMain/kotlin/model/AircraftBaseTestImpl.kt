@@ -1,34 +1,19 @@
 package model
 
-import kotlinx.serialization.encodeToString
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+
+const val TEST_DATA = """
+    {"id":0,"name":"Cessna 172 Skyhawk","performance":{"fuelCapacity":28.0,"averageCruiseSpeed":100.0,"averageFuelFlow":8.0},
+    "checklists":[{"id":0,"caption":"Preflight","items":[{"caption":"Walk around","details":"Look up for last crash"},
+    {"caption":"Fuel check","details":"Filling the tanks"},{"caption":"Documents ob board","details":"Don't forget this app"},
+    {"caption":"LINE","checked":true},{"caption":"Below the line"},{"caption":"Battery ON","details":"Check the alternator"},
+    {"caption":"Parking brakes ON"}]}]}
+"""
 
 class AircraftBaseTestImpl : AircraftBase {
 
-    private val testAircraft = Aircraft(
-        id = 0,
-        name = "Cessna 172 Skyhawk",
-        performance = Performance(
-            fuelCapacity = 28f,
-            averageCruiseSpeed = 100f,
-            averageFuelFlow = 8f,
-        ),
-        checklists = listOf(
-            Checklist(
-                id = 0,
-                caption = "Preflight",
-                items = listOf(
-                    Item(caption = "Walk around", details = "Look up for last crash"),
-                    Item(caption = "Fuel check", details = "Filling the tanks"),
-                    Item(caption = "Documents ob board", details = "Don't forget this app"),
-                    Item(caption = "LINE", checked = true),
-                    Item(caption = "Below the line"),
-                    Item(caption = "Battery ON", details = "Check the alternator"),
-                    Item(caption = "Parking brakes ON"),
-                )
-            )
-        )
-    )
+    private val testAircraft = Json.decodeFromString<Aircraft>(TEST_DATA)
 
     override fun getAll(): List<Aircraft> = listOf(testAircraft)
 
@@ -37,13 +22,4 @@ class AircraftBaseTestImpl : AircraftBase {
 
     override fun getChecklist(aircraftId: Int, checklistId: Int): Checklist =
         getById(aircraftId).checklists.first { it.id == checklistId }
-
-    private fun saveToJSON() {
-        val json = Json.encodeToString(testAircraft)
-        println(json)
-    }
-
-    init {
-        saveToJSON()
-    }
 }
