@@ -1,5 +1,8 @@
 package model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Performance(
     val fuelCapacity: Float,
     val averageCruiseSpeed: Float,

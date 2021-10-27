@@ -6,6 +6,7 @@ plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
     id("kotlin-parcelize")
+    kotlin("plugin.serialization") version "1.5.31"
 }
 
 kotlin {
@@ -23,6 +24,8 @@ kotlin {
                 // Decompose navigation library
                 implementation("com.arkivanov.decompose:decompose:0.4.0")
                 implementation("com.arkivanov.decompose:extensions-compose-jetbrains:0.4.0")
+                // Serialization
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
             }
         }
         named("androidMain") {

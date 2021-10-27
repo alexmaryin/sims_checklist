@@ -1,5 +1,8 @@
 package model
 
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+
 class AircraftBaseTestImpl : AircraftBase {
 
     private val testAircraft = Aircraft(
@@ -34,4 +37,13 @@ class AircraftBaseTestImpl : AircraftBase {
 
     override fun getChecklist(aircraftId: Int, checklistId: Int): Checklist =
         getById(aircraftId).checklists.first { it.id == checklistId }
+
+    private fun saveToJSON() {
+        val json = Json.encodeToString(testAircraft)
+        println(json)
+    }
+
+    init {
+        saveToJSON()
+    }
 }
