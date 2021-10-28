@@ -28,6 +28,11 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
             }
         }
+        val commonTest by getting {
+            dependencies {
+                implementation(kotlin("test")) // This brings all the platform dependencies automatically
+            }
+        }
         named("androidMain") {
             dependencies {
                 api("androidx.appcompat:appcompat:1.3.1")
