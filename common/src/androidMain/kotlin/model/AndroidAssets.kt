@@ -1,3 +1,3 @@
 package model
 
-actual fun loadAircraftJSON(filename: String): String = ""
+actual fun loadAircraftFromJSON(filename: String): List<Aircraft>? = null
