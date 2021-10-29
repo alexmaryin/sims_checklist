@@ -26,6 +26,8 @@ kotlin {
                 implementation("com.arkivanov.decompose:extensions-compose-jetbrains:0.4.0")
                 // Serialization
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
+                // Kodein-DI
+                implementation("org.kodein.di:kodein-di:7.9.0")
             }
         }
         val commonTest by getting {
@@ -36,7 +38,7 @@ kotlin {
         named("androidMain") {
             dependencies {
                 api("androidx.appcompat:appcompat:1.3.1")
-                api("androidx.core:core-ktx:1.6.0")
+                api("androidx.core:core-ktx:1.7.0")
             }
         }
     }

@@ -2,6 +2,7 @@ package decompose
 
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.extensions.compose.jetbrains.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.animation.child.slide
 import com.arkivanov.decompose.router.pop
@@ -19,7 +20,7 @@ class Root(
 ) : ComponentContext by componentContext {
 
     private val router = router<Configuration, Content>(
-        initialConfiguration = Configuration.Checklists(0),
+        initialConfiguration = Configuration.AircraftList,
         childFactory = ::createChild,
         handleBackButton = true
     )
@@ -29,7 +30,14 @@ class Root(
     private fun createChild(configuration: Configuration, context: ComponentContext): Content =
         when (configuration) {
 
-            is Configuration.Checklists -> Checklists(aircraftBase.getById(configuration.aircraftId)) { checklist ->
+            Configuration.AircraftList -> AircraftList(aircraftBase.getAll()) { aircraft ->
+                router.push(Configuration.Checklists(aircraft.id))
+            }.asContent { AircraftListUi(it) }
+
+            is Configuration.Checklists -> Checklists(
+                aircraftBase.getById(configuration.aircraftId),
+                onBack = router::pop
+            ) { checklist ->
                 router.push(Configuration.Checklist(configuration.aircraftId, checklist.id))
             }.asContent { ChecklistsUi(it) }
 
@@ -44,6 +52,7 @@ class Root(
         }
 }
 
+@OptIn(ExperimentalDecomposeApi::class)
 @Composable
 fun RootUi(root: Root) {
     Children(

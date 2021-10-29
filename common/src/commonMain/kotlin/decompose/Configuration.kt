@@ -4,6 +4,10 @@ import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 
 sealed class Configuration : Parcelable {
+
+    @Parcelize
+    object AircraftList : Configuration()
+
     @Parcelize
     data class Checklists(val aircraftId: Int) : Configuration()
 

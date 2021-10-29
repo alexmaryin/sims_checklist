@@ -8,47 +8,34 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import model.Checklist
+import model.Aircraft
 
 @Composable
-fun ChecklistsScreen(
-    name: String,
-    items: List<Checklist>,
-    onBackClick: () -> Unit,
-    onChecklistClick: (checklist: Checklist) -> Unit
-) {
+fun AircraftListScreen(
+    items: List<Aircraft>,
+    onAircraftClick: (aircraft: Aircraft) -> Unit) {
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(name) },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back button")
-                    }
-                }
+                title = { Text("Выберите самолет") },
             )
         }
     ) {
         val state = rememberLazyListState()
         LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp), state) {
             items(items) { item ->
-                Card(
-                    elevation = 12.dp,
-                    backgroundColor = if (item.isCompleted) MaterialTheme.colors.secondary else MaterialTheme.colors.surface
-                ) {
+                Card(elevation = 12.dp) {
                     Text(
-                        text = item.caption.uppercase(),
-                        modifier = Modifier.clickable { onChecklistClick(item) }
+                        text = item.name.uppercase(),
+                        modifier = Modifier.clickable { onAircraftClick(item) }
                             .fillMaxWidth()
                             .padding(16.dp),
-                        color = if (item.isCompleted) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface,
+                        color =  MaterialTheme.colors.onSurface,
                         textAlign = TextAlign.Center,
                         style = LargeWithShadow()
                     )
@@ -57,4 +44,3 @@ fun ChecklistsScreen(
         }
     }
 }
-
