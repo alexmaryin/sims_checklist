@@ -25,6 +25,6 @@ internal class AircraftBaseTestImplTest {
 
     @Test
     fun `get checklist should return first of its`() {
-        assertTrue { base.getChecklist(0, 0).caption == "Preflight" }
+        assertTrue { base.getChecklist(0, 0).caption == "Engine start (normal)" }
     }
 }

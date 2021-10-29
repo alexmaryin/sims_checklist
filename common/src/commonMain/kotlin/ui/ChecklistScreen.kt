@@ -70,11 +70,21 @@ fun ChecklistScreen(checklist: Checklist, onBackClick: () -> Unit) {
                                 )
                                 if (item.details.isNotEmpty()) Text(
                                     item.details,
+                                    modifier = Modifier.padding(start = 6.dp),
                                     color = if (isChecked.value) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface,
                                     fontWeight = FontWeight.Light,
                                     fontSize = 12.sp
                                 )
                             }
+
+                            if(item.action.isNotEmpty())
+                                Text(
+                                    item.action,
+                                    color = if (isChecked.value) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface,
+                                    fontWeight = FontWeight.Normal,
+                                    fontSize = 18.sp,
+                                )
+
                             if (isChecked.value) Icon(
                                 imageVector = Icons.Default.Done,
                                 contentDescription = "item checked"

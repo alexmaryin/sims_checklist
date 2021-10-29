@@ -4,11 +4,73 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
 const val TEST_DATA = """
-    {"id":0,"name":"Cessna 172 Skyhawk","performance":{"fuelCapacity":28.0,"averageCruiseSpeed":100.0,"averageFuelFlow":8.0},
-    "checklists":[{"id":0,"caption":"Preflight","items":[{"caption":"Walk around","details":"Look up for last crash"},
-    {"caption":"Fuel check","details":"Filling the tanks"},{"caption":"Documents ob board","details":"Don't forget this app"},
-    {"caption":"LINE","checked":true},{"caption":"Below the line"},{"caption":"Battery ON","details":"Check the alternator"},
-    {"caption":"Parking brakes ON"}]}]}
+    {
+  "id": 0,
+  "name": "Cessna 172 Skyhawk",
+  "performance": {
+    "fuelCapacity": 28,
+    "averageCruiseSpeed": 100,
+    "averageFuelFlow": 8
+  },
+  "checklists": [
+    {
+      "id": 0,
+      "caption": "Engine start (normal)",
+      "items": [
+        {
+          "caption": " Seatbelts/Shoulder Harness",
+          "action": "FASTENED"
+        },
+        {
+          "caption": "Brakes",
+          "action": "TEST & SET"
+        },
+        {
+          "caption": "Fuel selector",
+          "action": "BOTH"
+        },
+        {
+          "caption": "Fuel Shutoff Valve",
+          "action": "ON (IN)"
+        },
+        {
+          "caption": "Circuit Breakers",
+          "action": "CHECK"
+        },
+        {
+          "caption": "Beacon",
+          "action": "ON"
+        },
+        {
+          "caption": "Avionics Switch",
+          "action": "OFF"
+        },
+        {
+          "caption": "Master Switch",
+          "action": "ON"
+        },
+        {
+          "caption": "Throttle",
+          "action": "OPEN",
+          "details": "Open on 1/4 inch"
+        },
+        {
+          "caption": "Mixture",
+          "action": "IDLE CUTOFF",
+          "details": "If engine cold:\na. Aux. pump...ON\nb. Mixture...Rich until 3-5 GPH then CUT OFF\nc. Aux. pump...OFF"
+        },
+        {
+          "caption": "Propeller Area",
+          "action": "CLEAR"
+        },
+        {
+          "caption": "Starter",
+          "action": "ENGAGE"
+        }
+      ]
+    }
+  ]
+}
 """
 
 class AircraftBaseTestImpl : AircraftBase {
