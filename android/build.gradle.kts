@@ -22,7 +22,7 @@ android {
 
 dependencies {
     implementation(project(":common"))
-    implementation("androidx.activity:activity-compose:1.3.1")
+    implementation("androidx.activity:activity-compose:1.4.0")
     // Decompose navigation library
     implementation("com.arkivanov.decompose:decompose:0.4.0")
     implementation("com.arkivanov.decompose:extensions-compose-jetbrains:0.4.0")

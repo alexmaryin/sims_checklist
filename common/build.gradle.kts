@@ -15,6 +15,7 @@ kotlin {
 
     sourceSets {
         named("commonMain") {
+            resources.srcDirs("resources")
             dependencies {
                 api(compose.runtime)
                 api(compose.foundation)
@@ -63,6 +64,7 @@ android {
         named("main") {
             manifest.srcFile("src/androidMain/AndroidManifest.xml")
             res.srcDirs("src/androidMain/res")
+            assets.srcDirs("resources")
         }
     }
 }
