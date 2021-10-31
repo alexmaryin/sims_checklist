@@ -30,11 +30,12 @@ class Root(
         private fun createChild(configuration: Configuration, context: ComponentContext): Content =
             when (configuration) {
 
-                Configuration.AircraftList -> AircraftList(aircraftBase.getAll()) { aircraft ->
+                Configuration.AircraftList -> AircraftList(context, aircraftBase.getAll()) { aircraft ->
                     router.push(Configuration.Checklists(aircraft.id))
                 }.asContent { AircraftListUi(it) }
 
                 is Configuration.Checklists -> Checklists(
+                    context,
                     aircraftBase.getById(configuration.aircraftId),
                     onBack = router::pop
                 ) { checklist ->
@@ -42,6 +43,7 @@ class Root(
                 }.asContent { ChecklistsUi(it) }
 
                 is Configuration.Checklist -> ChecklistDetails(
+                    context,
                     aircraftBase.getChecklist(configuration.aircraftId, configuration.checklistId),
                     router::pop
                 ).asContent { ChecklistUi(it) }

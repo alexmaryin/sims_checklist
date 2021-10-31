@@ -9,5 +9,5 @@ data class Item(
     val details: String = "",
     var checked: Boolean = false
 ) {
-    fun toggle() { if(caption != "LINE") checked = !checked }
+    fun toggle(value: Boolean? = null) { if(caption != "LINE") checked = value ?: !checked }
 }
