@@ -19,46 +19,39 @@ class Root(
     private val aircraftBase: AircraftBase
 ) : ComponentContext by componentContext {
 
-    private val router = router<Configuration, Content>(
-        initialConfiguration = Configuration.AircraftList,
-        childFactory = ::createChild,
-        handleBackButton = true
-    )
+        private val router = router<Configuration, Content>(
+            initialConfiguration = Configuration.AircraftList,
+            childFactory = ::createChild,
+            handleBackButton = true
+        )
 
-    val routerState = router.state
+        val routerState = router.state
 
-    private fun createChild(configuration: Configuration, context: ComponentContext): Content =
-        when (configuration) {
+        private fun createChild(configuration: Configuration, context: ComponentContext): Content =
+            when (configuration) {
 
-            Configuration.AircraftList -> AircraftList(aircraftBase.getAll()) { aircraft ->
-                router.push(Configuration.Checklists(aircraft.id))
-            }.asContent { AircraftListUi(it) }
+                Configuration.AircraftList -> AircraftList(aircraftBase.getAll()) { aircraft ->
+                    router.push(Configuration.Checklists(aircraft.id))
+                }.asContent { AircraftListUi(it) }
 
-            is Configuration.Checklists -> Checklists(
-                aircraftBase.getById(configuration.aircraftId),
-                onBack = router::pop
-            ) { checklist ->
-                router.push(Configuration.Checklist(configuration.aircraftId, checklist.id))
-            }.asContent { ChecklistsUi(it) }
+                is Configuration.Checklists -> Checklists(
+                    aircraftBase.getById(configuration.aircraftId),
+                    onBack = router::pop
+                ) { checklist ->
+                    router.push(Configuration.Checklist(configuration.aircraftId, checklist.id))
+                }.asContent { ChecklistsUi(it) }
 
-            is Configuration.Checklist -> ChecklistDetails(
-                aircraftBase.getChecklist(configuration.aircraftId, configuration.checklistId),
-                router::pop
-            ).asContent {
-                ChecklistUi(it)
+                is Configuration.Checklist -> ChecklistDetails(
+                    aircraftBase.getChecklist(configuration.aircraftId, configuration.checklistId),
+                    router::pop
+                ).asContent { ChecklistUi(it) }
+
+                is Configuration.FuelCalculator -> Unit.asContent {}
             }
-
-            is Configuration.FuelCalculator -> Unit.asContent {}
-        }
-}
+    }
 
 @OptIn(ExperimentalDecomposeApi::class)
 @Composable
 fun RootUi(root: Root) {
-    Children(
-        root.routerState,
-        animation = slide()
-    ) { child ->
-        child.instance()
-    }
+    Children(root.routerState, animation = slide()) { child -> child.instance() }
 }

@@ -1,19 +1,24 @@
 package decompose
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
+import com.arkivanov.decompose.value.MutableValue
+import com.arkivanov.decompose.value.Value
 import model.Aircraft
 import ui.AircraftListScreen
 
 class AircraftList(
-    private val aircraftList: List<Aircraft>,
+    val aircraftList: List<Aircraft>,
     val onSelected: (aircraft: Aircraft) -> Unit
 ) {
-    val state: State<List<Aircraft>> get() = mutableStateOf(aircraftList)
+
+    private val _state = MutableValue(aircraftList)
+    val state: Value<List<Aircraft>> = _state
 }
 
 @Composable
 fun AircraftListUi(list: AircraftList) {
-    AircraftListScreen(items = list.state.value, onAircraftClick = list.onSelected)
+    val state by list.state.subscribeAsState()
+    AircraftListScreen(items = state, onAircraftClick = list.onSelected)
 }

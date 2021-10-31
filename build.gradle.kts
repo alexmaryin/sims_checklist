@@ -1,6 +1,6 @@
 buildscript {
     // __LATEST_COMPOSE_RELEASE_VERSION__
-    val composeVersion = "1.0.0-alpha4-build362"
+    val composeVersion = "1.0.0-beta5"
 
     repositories {
         mavenCentral()

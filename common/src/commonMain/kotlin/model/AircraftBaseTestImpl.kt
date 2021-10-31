@@ -75,7 +75,7 @@ const val TEST_DATA = """
 
 class AircraftBaseTestImpl : AircraftBase {
 
-    private val testAircraft = Json.decodeFromString<Aircraft>(TEST_DATA)
+    private var testAircraft = Json.decodeFromString<Aircraft>(TEST_DATA)
 
     override fun getAll(): List<Aircraft> = listOf(testAircraft)
 
