@@ -30,28 +30,21 @@ class Root(
     private fun createChild(configuration: Configuration, context: ComponentContext): Content =
         when (configuration) {
 
-            Configuration.AircraftList -> AircraftList(context, aircraftBase.getAll()) { aircraft ->
+            Configuration.AircraftList -> AircraftList(aircraftBase.getAll()) { aircraft ->
                 router.push(Configuration.Checklists(aircraft.id))
             }.asContent { AircraftListUi(it) }
 
             is Configuration.Checklists -> Checklists(
-                context,
                 aircraftBase.getById(configuration.aircraftId),
-                onBack = {
-                    if (router.state.value.backStack.isNotEmpty()) router.pop()
-                    else router.push(Configuration.AircraftList)
-                }
+                onBack = router::pop
             ) { checklist ->
                 router.push(Configuration.Checklist(configuration.aircraftId, checklist.id))
             }.asContent { ChecklistsUi(it) }
 
             is Configuration.Checklist -> ChecklistDetails(
-                context,
-                aircraftBase.getChecklist(configuration.aircraftId, configuration.checklistId)
-            ) {
-                if (router.state.value.backStack.isNotEmpty()) router.pop()
-                else router.push(Configuration.Checklists(configuration.aircraftId))
-            }.asContent { ChecklistUi(it) }
+                aircraftBase.getChecklist(configuration.aircraftId, configuration.checklistId),
+                router::pop
+            ).asContent { ChecklistUi(it) }
 
             is Configuration.FuelCalculator -> Unit.asContent {}
         }

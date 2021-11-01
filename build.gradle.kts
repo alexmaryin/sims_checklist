@@ -1,5 +1,6 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+
 buildscript {
-    // __LATEST_COMPOSE_RELEASE_VERSION__
     val composeVersion = "1.0.0-beta5"
 
     repositories {
@@ -36,7 +37,7 @@ allprojects {
 
 subprojects {
     afterEvaluate {
-        project.extensions.findByType<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension>()?.let { ext ->
+        project.extensions.findByType<KotlinMultiplatformExtension>()?.let { ext ->
             ext.sourceSets.removeAll { sourceSet ->
                 setOf(
                     "androidAndroidTestRelease",

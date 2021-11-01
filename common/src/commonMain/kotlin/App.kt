@@ -1,4 +1,3 @@
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
@@ -8,9 +7,7 @@ import model.AircraftBaseImpl
 
 @Composable
 fun App(context: ComponentContext) {
-    MaterialTheme {
-        Surface {
-            RootUi(Root(context, AircraftBaseImpl()))
-        }
+    Surface {
+        RootUi(Root(context, AircraftBaseImpl()))
     }
 }
