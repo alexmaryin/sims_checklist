@@ -8,4 +8,5 @@ data class Aircraft(
     val name: String,
     val performance: Performance,
     val checklists: List<Checklist>,
+    val photo: String = ""
 )

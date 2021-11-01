@@ -15,4 +15,6 @@ class AppAndroid : Application() {
     }
 
     fun loadAircraft(filename: String) = assets.open(filename).bufferedReader().readText()
+
+    fun loadPhoto(filename: String) = assets.open(filename).buffered()
 }

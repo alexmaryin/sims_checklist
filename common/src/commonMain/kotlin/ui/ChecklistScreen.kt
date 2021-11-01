@@ -16,6 +16,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -62,28 +63,17 @@ fun ChecklistScreen(checklist: Checklist, onBackClick: () -> Unit) {
                             Divider()
                         } else {
                             Column(modifier = Modifier.weight(1f).fillMaxWidth()) {
-                                Text(
-                                    item.caption,
-                                    color = if (isChecked.value) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface,
-                                    fontWeight = FontWeight.Normal,
-                                    fontSize = 18.sp,
-                                )
-                                if (item.details.isNotEmpty()) Text(
-                                    item.details,
+                                ToggableText(item.caption, isChecked.value)
+                                if (item.details.isNotEmpty()) ToggableText(
+                                    text = item.details,
+                                    isToggled = isChecked.value,
                                     modifier = Modifier.padding(start = 6.dp),
-                                    color = if (isChecked.value) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface,
-                                    fontWeight = FontWeight.Light,
-                                    fontSize = 12.sp
+                                    textStyle = TextStyle(fontWeight = FontWeight.Light, fontSize = 12.sp)
                                 )
                             }
 
                             if(item.action.isNotEmpty())
-                                Text(
-                                    item.action,
-                                    color = if (isChecked.value) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface,
-                                    fontWeight = FontWeight.Normal,
-                                    fontSize = 18.sp,
-                                )
+                                ToggableText(item.action, isChecked.value)
 
                             if (isChecked.value) Icon(
                                 imageVector = Icons.Default.Done,
