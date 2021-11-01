@@ -40,6 +40,7 @@ fun ChecklistsScreen(
         LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp), state) {
             items(items) { item ->
                 Card(
+                    modifier = Modifier.padding(vertical = 1.dp),
                     elevation = 12.dp,
                     backgroundColor = if (item.isCompleted) MaterialTheme.colors.secondary else MaterialTheme.colors.surface
                 ) {

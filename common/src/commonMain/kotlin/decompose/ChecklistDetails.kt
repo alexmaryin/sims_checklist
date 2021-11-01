@@ -9,6 +9,7 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import model.Checklist
+import model.ChecklistReducer
 import ui.ChecklistScreen
 
 class ChecklistDetails(
@@ -32,7 +33,7 @@ class ChecklistDetails(
 fun ChecklistUi(items: ChecklistDetails) {
     val state by items.state.subscribeAsState()
     ChecklistScreen(
-        checklist = state,
+        checklist = ChecklistReducer(state),
         onBackClick = items.onFinished
     )
 }
