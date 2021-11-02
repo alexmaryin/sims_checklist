@@ -1,6 +1,8 @@
 import org.jetbrains.compose.compose
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+val decomposeVersion = "0.4.0"
+
 plugins {
     id("com.android.library")
     kotlin("multiplatform")
@@ -23,8 +25,8 @@ kotlin {
                 // Needed only for preview.
                 implementation(compose.preview)
                 // Decompose navigation library
-                implementation("com.arkivanov.decompose:decompose:0.4.0")
-                implementation("com.arkivanov.decompose:extensions-compose-jetbrains:0.4.0")
+                implementation("com.arkivanov.decompose:decompose:$decomposeVersion")
+                implementation("com.arkivanov.decompose:extensions-compose-jetbrains:$decomposeVersion")
                 // Serialization
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
                 // Kodein-DI
@@ -49,7 +51,7 @@ android {
     compileSdkVersion(31)
 
     defaultConfig {
-        minSdkVersion(21)
+        minSdkVersion(22)
         targetSdkVersion(31)
         versionCode = 1
         versionName = "1.0"

@@ -1,7 +1,5 @@
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-
 buildscript {
-    val composeVersion = "1.0.0-beta5"
+    val composeVersion = System.getenv("COMPOSE_TEMPLATE_COMPOSE_VERSION") ?: "1.0.0-beta5"
 
     repositories {
         mavenCentral()
@@ -16,16 +14,16 @@ buildscript {
     }
 }
 
-plugins {
-    id("io.gitlab.arturbosch.detekt").version("1.18.1")
-}
-
-detekt {
-    toolVersion = "1.18.1"
-    config = files("config/detekt/detekt.yml")
-    source = files("common/src", "android/src/main/java", "desktop/src/jvmMain")
-    buildUponDefaultConfig = true
-}
+//plugins {
+//    id("io.gitlab.arturbosch.detekt").version("1.18.1")
+//}
+//
+//detekt {
+//    toolVersion = "1.18.1"
+//    config = files("config/detekt/detekt.yml")
+//    source = files("common/src", "android/src/main/java", "desktop/src/jvmMain")
+//    buildUponDefaultConfig = true
+//}
 
 allprojects {
     repositories {
@@ -35,17 +33,17 @@ allprojects {
     }
 }
 
-subprojects {
-    afterEvaluate {
-        project.extensions.findByType<KotlinMultiplatformExtension>()?.let { ext ->
-            ext.sourceSets.removeAll { sourceSet ->
-                setOf(
-                    "androidAndroidTestRelease",
-                    "androidTestFixtures",
-                    "androidTestFixturesDebug",
-                    "androidTestFixturesRelease",
-                ).contains(sourceSet.name)
-            }
-        }
-    }
-}
+//subprojects {
+//    afterEvaluate {
+//        project.extensions.findByType<KotlinMultiplatformExtension>()?.let { ext ->
+//            ext.sourceSets.removeAll { sourceSet ->
+//                setOf(
+//                    "androidAndroidTestRelease",
+//                    "androidTestFixtures",
+//                    "androidTestFixturesDebug",
+//                    "androidTestFixturesRelease",
+//                ).contains(sourceSet.name)
+//            }
+//        }
+//    }
+//}

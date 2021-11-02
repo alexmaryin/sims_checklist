@@ -1,3 +1,4 @@
+@file:Suppress("EXPERIMENTAL_API_USAGE")
 package decompose
 
 import androidx.compose.runtime.Composable
@@ -5,9 +6,11 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.extensions.compose.jetbrains.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.animation.child.slide
+import com.arkivanov.decompose.router.RouterState
 import com.arkivanov.decompose.router.pop
 import com.arkivanov.decompose.router.push
 import com.arkivanov.decompose.router.router
+import com.arkivanov.decompose.value.Value
 import model.AircraftBase
 
 typealias Content = @Composable () -> Unit
@@ -25,7 +28,7 @@ class Root(
         handleBackButton = true
     )
 
-    val routerState = router.state
+    val routerState: Value<RouterState<*, Content>> = router.state
 
     private fun createChild(configuration: Configuration, context: ComponentContext): Content =
         when (configuration) {
@@ -50,7 +53,6 @@ class Root(
         }
 }
 
-@OptIn(ExperimentalDecomposeApi::class)
 @Composable
 fun RootUi(root: Root) {
     Children(root.routerState, animation = slide()) { child -> child.instance() }
