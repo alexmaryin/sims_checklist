@@ -47,13 +47,13 @@ private fun rememberStateKeeper(): StateKeeper {
 
 val localBackPressedDispatcher: ProvidableCompositionLocal<BackPressedHandler?> = staticCompositionLocalOf { null }
 
-@Composable
-fun rememberComponentContext(): ComponentContext {
-    val lifecycle = rememberLifecycle()
-    val stateKeeper = rememberStateKeeper()
-    val backPressedDispatcher = localBackPressedDispatcher.current ?: BackPressedDispatcher()
-
-    return remember {
-        DefaultComponentContext(lifecycle, stateKeeper, backPressedHandler = backPressedDispatcher)
-    }
-}
+//@Composable
+//fun rememberComponentContext(): ComponentContext {
+//    val lifecycle = rememberLifecycle()
+//    val stateKeeper = rememberStateKeeper()
+//    val backPressedDispatcher = localBackPressedDispatcher.current ?: BackPressedDispatcher()
+//
+//    return remember {
+//        DefaultComponentContext(lifecycle, stateKeeper, backPressedHandler = backPressedDispatcher)
+//    }
+//}

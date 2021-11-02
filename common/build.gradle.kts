@@ -30,7 +30,7 @@ kotlin {
                 // Serialization
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
                 // Kodein-DI
-                implementation("org.kodein.di:kodein-di:7.9.0")
+//                implementation("org.kodein.di:kodein-di:7.9.0")
             }
         }
         val commonTest by getting {

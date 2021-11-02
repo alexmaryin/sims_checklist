@@ -1,4 +1,3 @@
-@file:Suppress("EXPERIMENTAL_API_USAGE")
 package decompose
 
 import androidx.compose.runtime.Composable
@@ -53,7 +52,8 @@ class Root(
         }
 }
 
+@OptIn(ExperimentalDecomposeApi::class)
 @Composable
 fun RootUi(root: Root) {
-    Children(root.routerState, animation = slide()) { child -> child.instance() }
+    Children(root.routerState, animation = slide()) { it.instance() }
 }

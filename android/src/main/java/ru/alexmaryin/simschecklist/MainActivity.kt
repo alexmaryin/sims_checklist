@@ -24,7 +24,6 @@ class MainActivity : AppCompatActivity() {
         setContent {
             val isDark = isSystemInDarkTheme()
             MaterialTheme(colors = if(isDark) darkColors() else lightColors()) {
-//            MaterialTheme() {
                 App(rootContext, viewModel)
             }
         }

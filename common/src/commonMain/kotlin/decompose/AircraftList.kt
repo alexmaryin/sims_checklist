@@ -1,6 +1,10 @@
 package decompose
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
+import com.arkivanov.decompose.value.MutableValue
+import com.arkivanov.decompose.value.Value
 import model.Aircraft
 import ui.AircraftListScreen
 
@@ -11,5 +15,5 @@ class AircraftList(
 
 @Composable
 fun AircraftListUi(list: AircraftList) {
-    AircraftListScreen(items = list.aircraftList, onAircraftClick = list.onSelected)
+    AircraftListScreen(list.aircraftList, onAircraftClick = list.onSelected)
 }
