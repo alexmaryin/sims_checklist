@@ -5,10 +5,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.extensions.compose.jetbrains.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.animation.child.slide
-import com.arkivanov.decompose.router.RouterState
-import com.arkivanov.decompose.router.pop
-import com.arkivanov.decompose.router.push
-import com.arkivanov.decompose.router.router
+import com.arkivanov.decompose.router.*
 import com.arkivanov.decompose.value.Value
 import model.AircraftBase
 
@@ -24,7 +21,7 @@ class Root(
     private val router = router<Configuration, Content>(
         initialConfiguration = Configuration.AircraftList,
         childFactory = ::createChild,
-        handleBackButton = true
+        handleBackButton = true,
     )
 
     val routerState: Value<RouterState<*, Content>> = router.state
@@ -44,9 +41,8 @@ class Root(
             }.asContent { ChecklistsUi(it) }
 
             is Configuration.Checklist -> ChecklistDetails(
-                aircraftBase.getChecklist(configuration.aircraftId, configuration.checklistId),
-                router::pop
-            ).asContent { ChecklistUi(it) }
+                aircraftBase.getChecklist(configuration.aircraftId, configuration.checklistId)
+            ) { router.pop() }.asContent { ChecklistUi(it) }
 
             is Configuration.FuelCalculator -> Unit.asContent {}
         }

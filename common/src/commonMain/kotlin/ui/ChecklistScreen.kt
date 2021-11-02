@@ -17,6 +17,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 import model.ChecklistViewState
 import kotlin.time.TimeMark
 import kotlin.time.TimeSource
@@ -30,7 +32,7 @@ fun ChecklistScreen(checklist: ChecklistViewState, onBackClick: () -> Unit) {
 
     println("ChecklistScreen fun invoked")
 
-    val state by checklist.state.collectAsState()
+    val state by checklist.state().collectAsState()
 
     Scaffold(
         topBar = {
@@ -61,32 +63,30 @@ fun ChecklistScreen(checklist: ChecklistViewState, onBackClick: () -> Unit) {
             ) {
                 itemsIndexed(state.items) { index, item ->
 
-                    val isChecked = remember { mutableStateOf(state.items[index].checked) }
-
                     Row(
                         modifier = Modifier
                             .clickable { checklist.toggleItem(index) }
                             .fillMaxWidth()
-                            .background(if (isChecked.value) MaterialTheme.colors.secondary else MaterialTheme.colors.surface)
+                            .background(if (item.checked) MaterialTheme.colors.secondary else MaterialTheme.colors.surface)
                             .padding(10.dp)
                     ) {
                         if (item.caption == "LINE") {
                             Divider()
                         } else {
                             Column(modifier = Modifier.weight(1f).fillMaxWidth()) {
-                                ToggableText(item.caption, isChecked.value)
+                                ToggableText(item.caption, item.checked)
                                 if (item.details.isNotEmpty()) ToggableText(
                                     text = item.details,
-                                    isToggled = isChecked.value,
+                                    isToggled = item.checked,
                                     modifier = Modifier.padding(start = 6.dp),
                                     textStyle = TextStyle(fontWeight = FontWeight.Light, fontSize = 12.sp)
                                 )
                             }
 
                             if(item.action.isNotEmpty())
-                                ToggableText(item.action, isChecked.value)
+                                ToggableText(item.action, item.checked)
 
-                            if (isChecked.value) Icon(
+                            if (item.checked) Icon(
                                 imageVector = Icons.Default.Done,
                                 contentDescription = "item checked"
                             )

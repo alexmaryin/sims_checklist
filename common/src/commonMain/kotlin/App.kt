@@ -1,13 +1,11 @@
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import com.arkivanov.decompose.ComponentContext
 import decompose.Root
 import decompose.RootUi
-import viewState.SimViewState
 
 @Composable
-fun App(context: ComponentContext, simViewState: SimViewState) {
+fun App(root: Root) {
     Surface {
-        RootUi(Root(context, simViewState.aircraftBase))
+        RootUi(root)
     }
 }

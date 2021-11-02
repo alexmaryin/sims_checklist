@@ -1,9 +1,11 @@
 package model
 
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
 interface ChecklistViewState {
-    val state: StateFlow<Checklist>
+    fun state(): StateFlow<Checklist>
     fun toggleItem(index: Int)
     fun clear()
+    val debugLog: Flow<String>
 }

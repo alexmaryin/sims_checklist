@@ -10,6 +10,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import com.arkivanov.decompose.defaultComponentContext
+import decompose.Root
 import viewState.SimViewState
 
 class MainActivity : AppCompatActivity() {
@@ -19,12 +20,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val rootContext = defaultComponentContext()
+        val root = Root(defaultComponentContext(), viewModel.aircraftBase)
 
         setContent {
             val isDark = isSystemInDarkTheme()
             MaterialTheme(colors = if(isDark) darkColors() else lightColors()) {
-                App(rootContext, viewModel)
+                App(root)
             }
         }
     }
