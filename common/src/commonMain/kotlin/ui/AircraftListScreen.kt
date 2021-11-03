@@ -7,6 +7,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,7 +33,7 @@ fun AircraftListScreen(component: AircraftList) {
         val state = rememberLazyListState()
         LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp), state) {
             items(component.aircraftList) { item ->
-                Card(elevation = 12.dp, modifier = Modifier.clickable { component.onSelected(item) }) {
+                Card(elevation = 12.dp, modifier = Modifier.clickable { component.onSelected(item.id) }) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
                         AsyncImage(
@@ -51,6 +53,10 @@ fun AircraftListScreen(component: AircraftList) {
                             textAlign = TextAlign.Center,
                             style = LargeWithShadow()
                         )
+
+                        IconButton(onClick = { component.onCalculatorSelect(item.id) }) {
+                            Icon(imageVector = Icons.Default.Info, contentDescription = "Open fuel calculator")
+                        }
                     }
                 }
             }

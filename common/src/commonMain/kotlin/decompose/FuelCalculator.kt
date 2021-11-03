@@ -1,5 +1,7 @@
 package decompose
 
+import com.arkivanov.decompose.value.MutableValue
+import com.arkivanov.decompose.value.reduce
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import model.Aircraft
@@ -10,12 +12,24 @@ class FuelCalculator(
     aircraft: Aircraft,
     val onBack: () -> Unit
 ) {
-    private val _state = MutableStateFlow(ComponentData(aircraft.performance))
-    val state get() = _state.asStateFlow()
+    val state = MutableValue(ComponentData(aircraft.performance))
 
     fun onTripDistanceChange(value: Float) {
-        val new = state.value.copy(tripDistance = value)
-        _state.tryEmit(new)
+        state.reduce {
+            it.copy(tripDistance = value)
+        }
+    }
+
+    fun onAlterDistanceChange(value: Float) {
+        state.reduce {
+            it.copy(alterDistance = value)
+        }
+    }
+
+    fun onHeadWindChange(value: Int) {
+        state.reduce {
+            it.copy(headWindComponent = value)
+        }
     }
 
     data class ComponentData(

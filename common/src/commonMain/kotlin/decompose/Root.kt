@@ -33,9 +33,11 @@ class Root(
     private fun createChild(configuration: Configuration, context: ComponentContext): Content =
         when (configuration) {
 
-            Configuration.AircraftList -> AircraftList(aircraftBase.getAll()) { aircraft ->
-                router.push(Configuration.Checklists(aircraft.id))
-            }.asContent { AircraftListScreen(it) }
+            Configuration.AircraftList -> AircraftList(
+                aircraftList = aircraftBase.getAll(),
+            onSelected = { id -> router.push(Configuration.Checklists(id)) },
+                onCalculatorSelect = { id -> router.push(Configuration.FuelCalculator(id)) }
+            ).asContent { AircraftListScreen(it) }
 
             is Configuration.Checklists -> Checklists(
                 aircraft = aircraftBase.getById(configuration.aircraftId),
