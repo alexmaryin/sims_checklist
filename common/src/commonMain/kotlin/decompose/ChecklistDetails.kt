@@ -7,30 +7,35 @@ import model.Item
 
 class ChecklistDetails(
     checklist: Checklist,
-    private val onFinished: () -> Unit,
+    val onFinished: () -> Unit,
     private val updateBaseChecklist: (items: List<Item>) -> Unit
 ){
-    val caption = checklist.caption
-
-    private val _items = MutableStateFlow(checklist.items)
-    val items get() = _items.asStateFlow()
+    private val _state = MutableStateFlow(ComponentData(checklist.items, checklist.caption))
+    val state get() = _state.asStateFlow()
 
     fun clear() {
-        val new = items.value.map{ item ->
-            item.copy(checked = false)
-        }
-        _items.tryEmit(new)
+        val new = ComponentData(
+            state.value.items.map { item -> item.copy(checked = false) },
+            state.value.caption
+        )
+        _state.tryEmit(new)
+        updateBaseChecklist(state.value.items)
     }
 
     fun toggle(toggledIndex: Int) {
-        val new = items.value.mapIndexed { index, item ->
-            item.copy(checked = if(index == toggledIndex) !item.checked else item.checked)
-        }
-        _items.tryEmit(new)
+        val new = ComponentData(
+            state.value.items.mapIndexed { index, item ->
+                item.copy(checked = if(index == toggledIndex) !item.checked else item.checked)
+            },
+            state.value.caption
+        )
+        _state.tryEmit(new)
+        updateBaseChecklist(state.value.items)
     }
-    fun close() {
-        updateBaseChecklist(items.value)
-        onFinished()
-    }
+
+    class ComponentData(
+        val items: List<Item>,
+        val caption: String
+    )
 }
 

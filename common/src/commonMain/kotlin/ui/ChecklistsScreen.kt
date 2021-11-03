@@ -25,7 +25,7 @@ fun ChecklistsScreen(component: Checklists) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(component.name) },
+                title = { Text(component.state.value.name) },
                 navigationIcon = {
                     IconButton(onClick = component.onBack) {
                         Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back button")

@@ -12,9 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
@@ -34,9 +32,9 @@ fun ChecklistDetailsScreen(component: ChecklistDetails) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(component.caption) },
+                title = { Text(component.state.value.caption) },
                 navigationIcon = {
-                    IconButton(onClick = component::close) {
+                    IconButton(onClick = component.onFinished) {
                         Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back button")
                     }
                 },
@@ -49,7 +47,7 @@ fun ChecklistDetailsScreen(component: ChecklistDetails) {
         }
     ) {
 
-        val items by component.items.collectAsState()
+        val state by component.state.collectAsState()
         val listState = rememberLazyListState()
 
         Box {
@@ -57,8 +55,7 @@ fun ChecklistDetailsScreen(component: ChecklistDetails) {
                 modifier = Modifier.fillMaxSize().padding(end = offsetForScrollBar()),
                 state = listState,
             ) {
-                itemsIndexed(items) { index, item ->
-
+                itemsIndexed(state.items) { index, item ->
                     Row(
                         modifier = Modifier
                             .clickable { component.toggle(index) }
