@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import decompose.ChecklistDetails
+import kotlinx.coroutines.launch
 
 @Composable
 expect fun ScrollBarForList(modifier: Modifier, state: LazyListState)
@@ -30,7 +31,13 @@ expect fun offsetForScrollBar(): Dp
 @Composable
 fun ChecklistDetailsScreen(component: ChecklistDetails) {
 
+    val scaffoldState = rememberScaffoldState()
+    val state: State<ChecklistDetails.ComponentData> = component.state.subscribeAsState()
+    val isCompleted: State<Boolean> = component.isCompleted.subscribeAsState()
+    val scope = rememberCoroutineScope()
+
     Scaffold(
+        scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
                 title = { Text(component.state.value.caption) },
@@ -48,7 +55,16 @@ fun ChecklistDetailsScreen(component: ChecklistDetails) {
         }
     ) {
 
-        val state: State<ChecklistDetails.ComponentData> = component.state.subscribeAsState()
+        if (isCompleted.value) scope.launch {
+            val result = scaffoldState.snackbarHostState.showSnackbar(
+                "${state.value.caption} checklist is completed",
+                "Close?",
+                SnackbarDuration.Long)
+            if (result == SnackbarResult.ActionPerformed) component.onFinished()
+        } else {
+            scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
+        }
+
         val listState = rememberLazyListState()
 
         Box {

@@ -2,8 +2,6 @@ package decompose
 
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.reduce
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import model.Aircraft
 import model.Performance
 import kotlin.math.roundToInt
