@@ -1,17 +1,11 @@
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import com.arkivanov.decompose.DefaultComponentContext
-import com.arkivanov.essenty.lifecycle.Lifecycle
-import com.arkivanov.essenty.lifecycle.LifecycleRegistry
-import decompose.RootComponent
-import view.RootUi
+import decompose.Root
+import decompose.RootUi
 
 @Composable
-fun App(lifecycle: Lifecycle = LifecycleRegistry()) {
-    MaterialTheme {
-        val root = RootComponent(DefaultComponentContext(lifecycle))
+fun App(root: Root) {
+    Surface {
         RootUi(root)
     }
 }
-
-expect fun getPlatformName(): String
