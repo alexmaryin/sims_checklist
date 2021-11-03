@@ -12,11 +12,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import decompose.Checklists
 
 @Composable
@@ -39,11 +39,11 @@ fun ChecklistsScreen(component: Checklists) {
             )
         }
     ) {
-        val items by component.state.collectAsState()
+        val items: State<Checklists.ComponentData> = component.state.subscribeAsState()
         val state = rememberLazyListState()
         LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp), state) {
 
-            items(items.checklists) { item ->
+            items(items.value.checklists) { item ->
                 Card(
                     modifier = Modifier.padding(vertical = 1.dp),
                     elevation = 12.dp,

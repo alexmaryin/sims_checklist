@@ -1,7 +1,7 @@
 package decompose
 
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import com.arkivanov.decompose.value.MutableValue
+import com.arkivanov.decompose.value.reduce
 import model.Aircraft
 import model.Checklist
 
@@ -11,19 +11,21 @@ class Checklists(
     val onSelected: (checklist: Checklist) -> Unit,
     private val clearBaseChecklists: () -> Unit,
 ) {
-    private val _state = MutableStateFlow(ComponentData(aircraft.checklists, aircraft.name))
-    val state get() = _state.asStateFlow()
+    val state = MutableValue(ComponentData(aircraft.checklists, aircraft.name))
 
     fun clear() {
+        state.reduce {
+            it.copy(
+                checklists = it.checklists.map { checklist ->
+                    checklist.copy(items = checklist.items.map { item ->
+                        item.copy(checked = false) })
+                }
+            )
+        }
         clearBaseChecklists()
-        val new = ComponentData(state.value.checklists.map { checklist ->
-            checklist.copy(items = checklist.items.map { it.copy(checked = false) })
-        }, state.value.name)
-        _state.tryEmit(new)
-
     }
 
-    class ComponentData(
+    data class ComponentData(
         val checklists: List<Checklist>,
         val name: String
     )

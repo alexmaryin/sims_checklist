@@ -11,6 +11,7 @@ import model.AircraftBase
 import ui.AircraftListScreen
 import ui.ChecklistDetailsScreen
 import ui.ChecklistsScreen
+import ui.FuelCalculatorScreen
 
 typealias Content = @Composable () -> Unit
 
@@ -55,7 +56,10 @@ class Root(
                 }
             ).asContent { ChecklistDetailsScreen(it) }
 
-            is Configuration.FuelCalculator -> Unit.asContent {}
+            is Configuration.FuelCalculator -> FuelCalculator(
+                aircraft = aircraftBase.getById(configuration.aircraftId),
+                onBack = { router.pop() }
+            ).asContent { FuelCalculatorScreen(it) }
         }
 }
 

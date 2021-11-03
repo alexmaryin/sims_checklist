@@ -21,12 +21,12 @@ class AircraftBaseImpl : AircraftBase {
         base?.firstOrNull { it.id == aircraftId }?.checklists?.firstOrNull { it.id == checklistId } ?:
         throw IllegalArgumentException("Wrong checklist id!")
 
-    override fun updateBaseChecklist(aircraftId: Int, checklistId: Int, newItems: List<Item>) {
+    override fun updateBaseChecklist(aircraftId: Int, checklistId: Int, newValues: List<Boolean>) {
         base?.let { aircraft ->
             aircraft.first { it.id == aircraftId }
                 .checklists.first { it.id == checklistId }
-                .items.zip(newItems) { oldItem, newItem ->
-                oldItem.checked = newItem.checked
+                .items.zip(newValues) { oldItem, value ->
+                oldItem.checked = value
             }
         }
     }

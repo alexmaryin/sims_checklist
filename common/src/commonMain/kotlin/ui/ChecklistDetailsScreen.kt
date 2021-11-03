@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import decompose.ChecklistDetails
 
 @Composable
@@ -47,7 +48,7 @@ fun ChecklistDetailsScreen(component: ChecklistDetails) {
         }
     ) {
 
-        val state by component.state.collectAsState()
+        val state: State<ChecklistDetails.ComponentData> = component.state.subscribeAsState()
         val listState = rememberLazyListState()
 
         Box {
@@ -55,7 +56,7 @@ fun ChecklistDetailsScreen(component: ChecklistDetails) {
                 modifier = Modifier.fillMaxSize().padding(end = offsetForScrollBar()),
                 state = listState,
             ) {
-                itemsIndexed(state.items) { index, item ->
+                itemsIndexed(state.value.items) { index, item ->
                     Row(
                         modifier = Modifier
                             .clickable { component.toggle(index) }
