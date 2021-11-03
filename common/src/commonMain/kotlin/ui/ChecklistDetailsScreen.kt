@@ -3,13 +3,18 @@ package ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
@@ -17,36 +22,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
-import model.ChecklistViewState
-import kotlin.time.TimeMark
-import kotlin.time.TimeSource
+import decompose.ChecklistDetails
 
 @Composable
 expect fun ScrollBarForList(modifier: Modifier, state: LazyListState)
 expect fun offsetForScrollBar(): Dp
 
 @Composable
-fun ChecklistScreen(checklist: ChecklistViewState, onBackClick: () -> Unit) {
-
-    println("ChecklistScreen fun invoked")
-
-    val state by checklist.state().collectAsState()
+fun ChecklistDetailsScreen(component: ChecklistDetails) {
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(state.caption) },
+                title = { Text(component.caption) },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
+                    IconButton(onClick = component::close) {
                         Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back button")
                     }
                 },
                 actions = {
-                    IconButton(onClick = {
-                        checklist.clear()
-                    }) {
+                    IconButton(onClick = { component.clear() }) {
                         Icon(imageVector = Icons.Default.Clear, contentDescription = "Uncheck all")
                     }
                 }
@@ -54,6 +49,7 @@ fun ChecklistScreen(checklist: ChecklistViewState, onBackClick: () -> Unit) {
         }
     ) {
 
+        val items by component.items.collectAsState()
         val listState = rememberLazyListState()
 
         Box {
@@ -61,11 +57,11 @@ fun ChecklistScreen(checklist: ChecklistViewState, onBackClick: () -> Unit) {
                 modifier = Modifier.fillMaxSize().padding(end = offsetForScrollBar()),
                 state = listState,
             ) {
-                itemsIndexed(state.items) { index, item ->
+                itemsIndexed(items) { index, item ->
 
                     Row(
                         modifier = Modifier
-                            .clickable { checklist.toggleItem(index) }
+                            .clickable { component.toggle(index) }
                             .fillMaxWidth()
                             .background(if (item.checked) MaterialTheme.colors.secondary else MaterialTheme.colors.surface)
                             .padding(10.dp)

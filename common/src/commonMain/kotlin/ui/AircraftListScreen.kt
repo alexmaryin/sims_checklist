@@ -14,14 +14,12 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import model.Aircraft
+import decompose.AircraftList
 
 expect suspend fun loadAircraftPhoto(filename: String): Painter
 
 @Composable
-fun AircraftListScreen(
-    items: List<Aircraft>,
-    onAircraftClick: (aircraft: Aircraft) -> Unit) {
+fun AircraftListScreen(component: AircraftList) {
 
     Scaffold(
         topBar = {
@@ -32,8 +30,8 @@ fun AircraftListScreen(
     ) {
         val state = rememberLazyListState()
         LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp), state) {
-            items(items) { item ->
-                Card(elevation = 12.dp, modifier = Modifier.clickable { onAircraftClick(item) }) {
+            items(component.aircraftList) { item ->
+                Card(elevation = 12.dp, modifier = Modifier.clickable { component.onSelected(item) }) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
                         AsyncImage(

@@ -1,27 +1,36 @@
 package decompose
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
-import com.arkivanov.decompose.value.MutableValue
-import com.arkivanov.decompose.value.Value
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import model.Checklist
-import model.ChecklistReducer
-import ui.ChecklistScreen
+import model.Item
 
 class ChecklistDetails(
     checklist: Checklist,
-    val onFinished: () -> Unit
+    private val onFinished: () -> Unit,
+    private val updateBaseChecklist: (items: List<Item>) -> Unit
 ){
+    val caption = checklist.caption
 
-    val state: Value<Checklist> = MutableValue(checklist)
+    private val _items = MutableStateFlow(checklist.items)
+    val items get() = _items.asStateFlow()
+
+    fun clear() {
+        val new = items.value.map{ item ->
+            item.copy(checked = false)
+        }
+        _items.tryEmit(new)
+    }
+
+    fun toggle(toggledIndex: Int) {
+        val new = items.value.mapIndexed { index, item ->
+            item.copy(checked = if(index == toggledIndex) !item.checked else item.checked)
+        }
+        _items.tryEmit(new)
+    }
+    fun close() {
+        updateBaseChecklist(items.value)
+        onFinished()
+    }
 }
 
-@Composable
-fun ChecklistUi(items: ChecklistDetails) {
-    val state by items.state.subscribeAsState()
-    ChecklistScreen(
-        checklist = ChecklistReducer(state),
-        onBackClick = items.onFinished
-    )
-}

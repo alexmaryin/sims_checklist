@@ -8,6 +8,9 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.animation.child.slid
 import com.arkivanov.decompose.router.*
 import com.arkivanov.decompose.value.Value
 import model.AircraftBase
+import ui.AircraftListScreen
+import ui.ChecklistDetailsScreen
+import ui.ChecklistsScreen
 
 typealias Content = @Composable () -> Unit
 
@@ -31,18 +34,26 @@ class Root(
 
             Configuration.AircraftList -> AircraftList(aircraftBase.getAll()) { aircraft ->
                 router.push(Configuration.Checklists(aircraft.id))
-            }.asContent { AircraftListUi(it) }
+            }.asContent { AircraftListScreen(it) }
 
             is Configuration.Checklists -> Checklists(
-                aircraftBase.getById(configuration.aircraftId),
-                onBack = { router.pop() }
-            ) { checklist ->
-                router.push(Configuration.Checklist(configuration.aircraftId, checklist.id))
-            }.asContent { ChecklistsUi(it) }
+                aircraft = aircraftBase.getById(configuration.aircraftId),
+                onBack = { router.pop() },
+                onSelected = { checklist ->
+                    router.push(Configuration.Checklist(configuration.aircraftId, checklist.id))
+                },
+                clearBaseChecklists = {
+                    aircraftBase.clearBaseChecklists(configuration.aircraftId)
+                }
+            ).asContent { ChecklistsScreen(it) }
 
             is Configuration.Checklist -> ChecklistDetails(
-                aircraftBase.getChecklist(configuration.aircraftId, configuration.checklistId)
-            ) { router.pop() }.asContent { ChecklistUi(it) }
+                checklist = aircraftBase.getChecklist(configuration.aircraftId, configuration.checklistId),
+                onFinished = { router.pop() },
+                updateBaseChecklist = { items ->
+                    aircraftBase.updateBaseChecklist(configuration.aircraftId, configuration.checklistId, items)
+                }
+            ).asContent { ChecklistDetailsScreen(it) }
 
             is Configuration.FuelCalculator -> Unit.asContent {}
         }
