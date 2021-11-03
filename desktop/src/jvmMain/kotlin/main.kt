@@ -11,7 +11,7 @@ fun main() = application {
     val root = Root(DefaultComponentContext(LifecycleRegistry()), SimViewState().aircraftBase)
 
     Window(onCloseRequest = ::exitApplication) {
-        MaterialTheme(colors = darkColors()) {
+        MaterialTheme() {
             App(root)
         }
     }

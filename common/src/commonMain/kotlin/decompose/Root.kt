@@ -35,7 +35,7 @@ class Root(
 
             is Configuration.Checklists -> Checklists(
                 aircraftBase.getById(configuration.aircraftId),
-                onBack = router::pop
+                onBack = { router.pop() }
             ) { checklist ->
                 router.push(Configuration.Checklist(configuration.aircraftId, checklist.id))
             }.asContent { ChecklistsUi(it) }
