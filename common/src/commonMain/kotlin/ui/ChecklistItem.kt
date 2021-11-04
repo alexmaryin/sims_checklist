@@ -2,10 +2,7 @@ package ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
@@ -37,11 +34,14 @@ fun ChecklistItem(item: Item, onClick: () -> Unit) = Row(
         )
     }
 
+    Spacer(modifier = Modifier.width(24.dp))
+
     if (item.action.isNotEmpty())
         ToggableText(item.action, item.checked)
 
     if (item.checked) Icon(
         imageVector = Icons.Default.Done,
+        modifier = Modifier.size(24.dp),
         contentDescription = "item checked"
     )
 }
