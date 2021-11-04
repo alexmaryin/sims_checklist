@@ -25,9 +25,7 @@ fun AircraftListScreen(component: AircraftList) {
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Select your aircraft") },
-            )
+            TopAppBar(title = { Text("Select your aircraft") },)
         }
     ) {
         val state = rememberLazyListState()

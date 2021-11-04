@@ -11,7 +11,7 @@ class Checklists(
     val onSelected: (checklist: Checklist) -> Unit,
     private val clearBaseChecklists: () -> Unit,
 ) {
-    val state = MutableValue(ComponentData(aircraft.checklists, aircraft.name))
+    val state = MutableValue(aircraft)
 
     fun clear() {
         state.reduce {
@@ -24,9 +24,4 @@ class Checklists(
         }
         clearBaseChecklists()
     }
-
-    data class ComponentData(
-        val checklists: List<Checklist>,
-        val name: String
-    )
 }
