@@ -8,6 +8,6 @@ data class Performance(
     val averageCruiseSpeed: Float,
     val averageFuelFlow: Float,
     val taxiFuel: Float = 1f,
-    val contingency: Float = 0.05f,
+    val contingency: Int = 5,
     val reservesMinutes: Int = 45,
 )

@@ -7,43 +7,32 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import decompose.Checklists
+import model.Aircraft
 
 @Composable
 fun ChecklistsScreen(component: Checklists) {
 
+    val aircraft: State<Aircraft> = component.state.subscribeAsState()
+
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(component.state.value.name) },
-                navigationIcon = {
-                    IconButton(onClick = component.onBack) {
-                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back button")
-                    }
-                },
-                actions = {
-                    IconButton(onClick = { component.clear() }) {
-                        Icon(imageVector = Icons.Default.Clear, contentDescription = "Clear all checklists")
-                    }
-                }
-            )
-        }
+        topBar = { TopBarWithClearAction(aircraft.value.name, component.onBack, component::clear) }
     ) {
-        val items by component.state.collectAsState()
+
         val state = rememberLazyListState()
         LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp), state) {
 
-            items(items.checklists) { item ->
+            items(aircraft.value.checklists) { item ->
                 Card(
                     modifier = Modifier.padding(vertical = 1.dp),
                     elevation = 12.dp,

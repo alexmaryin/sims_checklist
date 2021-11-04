@@ -23,15 +23,13 @@ fun AircraftListScreen(component: AircraftList) {
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Select your aircraft") },
-            )
+            TopAppBar(title = { Text("Select your aircraft") })
         }
     ) {
         val state = rememberLazyListState()
         LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp), state) {
             items(component.aircraftList) { item ->
-                Card(elevation = 12.dp, modifier = Modifier.clickable { component.onSelected(item) }) {
+                Card(elevation = 12.dp, modifier = Modifier.clickable { component.onSelected(item.id) }) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
                         AsyncImage(
@@ -43,14 +41,16 @@ fun AircraftListScreen(component: AircraftList) {
                                 .size(150.dp)
                                 .shadow(elevation = 8.dp, shape = RoundedCornerShape(16.dp), clip = true)
                         )
-
                         Text(
                             text = item.name.uppercase(),
                             modifier = Modifier.fillMaxWidth().padding(16.dp),
-                            color =  MaterialTheme.colors.onSurface,
+                            color = MaterialTheme.colors.onSurface,
                             textAlign = TextAlign.Center,
                             style = LargeWithShadow()
                         )
+                        IconButton(onClick = { component.onCalculatorSelect(item.id) }) {
+                            Icon(imageVector = MyIcons.GasStation, contentDescription = "Open fuel calculator")
+                        }
                     }
                 }
             }

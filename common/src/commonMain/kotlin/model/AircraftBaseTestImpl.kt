@@ -85,7 +85,7 @@ class AircraftBaseTestImpl : AircraftBase {
     override fun getChecklist(aircraftId: Int, checklistId: Int): Checklist =
         getById(aircraftId).checklists.first { it.id == checklistId }
 
-    override fun updateBaseChecklist(aircraftId: Int, checklistId: Int, newItems: List<Item>) {
+    override fun updateBaseChecklist(aircraftId: Int, checklistId: Int, newValues: List<Boolean>) {
         TODO("Not yet implemented")
     }
 

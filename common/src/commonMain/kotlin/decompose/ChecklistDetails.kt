@@ -1,41 +1,33 @@
 package decompose
 
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import com.arkivanov.decompose.value.MutableValue
+import com.arkivanov.decompose.value.reduce
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import model.Checklist
-import model.Item
 
 class ChecklistDetails(
     checklist: Checklist,
     val onFinished: () -> Unit,
-    private val updateBaseChecklist: (items: List<Item>) -> Unit
+    private val updateBaseChecklist: (values: List<Boolean>) -> Unit
 ){
-    private val _state = MutableStateFlow(ComponentData(checklist.items, checklist.caption))
-    val state get() = _state.asStateFlow()
+    val state = MutableValue(checklist)
 
     fun clear() {
-        val new = ComponentData(
-            state.value.items.map { item -> item.copy(checked = false) },
-            state.value.caption
-        )
-        _state.tryEmit(new)
-        updateBaseChecklist(state.value.items)
+        state.reduce {
+            it.copy(items = state.value.items.map { item -> item.copy(checked = false) })
+        }
+        updateBaseChecklist(state.value.items.map { it.checked })
     }
 
-    fun toggle(toggledIndex: Int) {
-        val new = ComponentData(
-            state.value.items.mapIndexed { index, item ->
+    fun toggle(toggledIndex: Int) = CoroutineScope(Dispatchers.Default).launch {
+        state.reduce {
+            it.copy(items = state.value.items.mapIndexed { index, item ->
                 item.copy(checked = if(index == toggledIndex) !item.checked else item.checked)
-            },
-            state.value.caption
-        )
-        _state.tryEmit(new)
-        updateBaseChecklist(state.value.items)
+            })
+        }
+        updateBaseChecklist(state.value.items.map { it.checked })
     }
-
-    class ComponentData(
-        val items: List<Item>,
-        val caption: String
-    )
 }
 

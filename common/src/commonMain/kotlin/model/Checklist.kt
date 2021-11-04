@@ -2,6 +2,8 @@ package model
 
 import kotlinx.serialization.Serializable
 
+const val CHECKLIST_LINE = "LINE"
+
 @Serializable
 data class Checklist(
     val id: Int,
