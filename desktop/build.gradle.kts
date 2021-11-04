@@ -12,6 +12,7 @@ kotlin {
     jvm {
         withJava()
     }
+
     sourceSets {
         named("jvmMain") {
             dependencies {
@@ -31,8 +32,16 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "KotlinMultiplatformComposeDesktopApplication"
+            packageName = "Sims checklists"
             packageVersion = "1.0.0"
+            copyright = "© 2021 Alex Maryin. All rights reserved."
+
+            windows {
+                dirChooser = true
+                perUserInstall = true
+                menuGroup = "Sims checklists"
+                iconFile.set(project.file("sims_checklist.ico"))
+            }
         }
     }
 }

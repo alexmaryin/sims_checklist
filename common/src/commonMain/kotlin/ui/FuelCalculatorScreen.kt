@@ -89,7 +89,7 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
                     ),
                     modifier = inputModifier.weight(1f),
                     readOnly = true,
-                    label = { Text(if (state.fuelExceed) "Fuel exceed!" else "Calculated block fuel") },
+                    label = { Text(if (state.fuelExceed) "Fuel exceed!" else "Calculated block fuel, g") },
                     isError = state.fuelExceed,
                     trailingIcon = { ValidatorIcon(state.fuelExceed) }
                 )
@@ -152,7 +152,7 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
                     value = fuelCapacity,
                     modifier = inputModifier.weight(1f),
                     onValueChange = { new -> fuelCapacity = new; component.onFuelCapacityChange(new) },
-                    label = { Text("Average fuel flow, gph") },
+                    label = { Text("Fuel capacity, g") },
                     isError = component.isFloatIncorrect(fuelCapacity, false),
                     trailingIcon = { ValidatorIcon(component.isFloatIncorrect(fuelCapacity, false)) }
                 )
