@@ -2,7 +2,7 @@
 ###### [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 *My first multi platform App on Kotlin for Desktop & Android*
 
-###Application helps to control, proceed and complete checklists of virtual airplanes as far as calculate fuel quantity for your trip.
+### Application helps to control, proceed and complete checklists of virtual airplanes as far as calculate fuel quantity for your trip.
 
 At present implemented only one type of aircraft - Cessna 172 Skyhawk, the most popular general aviation in any simulator.
 
