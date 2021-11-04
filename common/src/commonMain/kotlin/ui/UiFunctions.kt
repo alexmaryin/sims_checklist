@@ -5,6 +5,8 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
@@ -56,3 +58,9 @@ fun TopBarWithClearAction(caption: String, onBack: () -> Unit, onClear: () -> Un
         }
     }
 )
+
+@Composable
+fun ValidatorIcon(term: Boolean) {
+    if (term) Icon(Icons.Default.Warning, "Incorrect")
+    else Icon(Icons.Default.Done, "Correct")
+}

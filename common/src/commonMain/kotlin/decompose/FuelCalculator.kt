@@ -1,63 +1,40 @@
 package decompose
 
-import com.arkivanov.decompose.value.MutableValue
-import com.arkivanov.decompose.value.reduce
+import androidx.compose.runtime.mutableStateOf
 import model.Aircraft
-import model.Performance
 import kotlin.math.roundToInt
 
 class FuelCalculator(
-    aircraft: Aircraft,
+    val aircraft: Aircraft,
     val onBack: () -> Unit
 ) {
-    val state = MutableValue(ComponentData(aircraft.performance))
+    var tripDistance = mutableStateOf(50f.toString())
+    var alterDistance = mutableStateOf(0f.toString())
+    var headWindComponent = mutableStateOf("0")
+    var blockFuel = mutableStateOf(0)
 
-    fun onTripDistanceChange(value: Float) {
-        state.reduce {
-            it.copy(tripDistance = value)
-        }
+    val correctInput = mutableStateOf({
+        isFloatIncorrect(tripDistance.value).not() && isFloatIncorrect(alterDistance.value).not() &&
+                isIntIncorrect(headWindComponent.value).not()
+    })
+
+    val fuelExceed = mutableStateOf({
+        blockFuel.value > aircraft.performance.fuelCapacity
+    })
+
+    fun isFloatIncorrect(value: String, canBeZero: Boolean = true) = with(value.toFloatOrNull()) {
+        this == null || (canBeZero && this < 0f) || (canBeZero.not() && this <= 0f)
     }
 
-    fun onAlterDistanceChange(value: Float) {
-        state.reduce {
-            it.copy(alterDistance = value)
-        }
-    }
+    fun isIntIncorrect(value: String) = value.toIntOrNull() == null
 
-    fun onHeadWindChange(value: Int) {
-        state.reduce {
-            it.copy(headWindComponent = value)
-        }
-    }
+    private fun fuelInGallons(distance: Float) = with(aircraft.performance) {
+        distance / (averageCruiseSpeed - headWindComponent.value.toInt()) * averageFuelFlow
+    }.roundToInt()
 
-    data class ComponentData(
-        val performance: Performance,
-        val tripDistance: Float = 50f,
-        val alterDistance: Float = 0f,
-        val headWindComponent: Int = 0,
-    ) {
-        override fun equals(other: Any?): Boolean {
-            return super.equals(other)
-        }
+    private fun contFuel() = (fuelInGallons(tripDistance.value.toFloat()) * aircraft.performance.contingency).roundToInt()
 
-        private fun fuelInGallons(distance: Float) = with(performance) {
-            distance / (averageCruiseSpeed - headWindComponent) * averageFuelFlow
-        }.roundToInt()
-
-        override fun hashCode(): Int {
-            var result = performance.hashCode()
-            result = 31 * result + tripDistance.hashCode()
-            result = 31 * result + alterDistance.hashCode()
-            result = 31 * result + headWindComponent
-            return result
-        }
-
-        val tripFuel get() = fuelInGallons(tripDistance)
-
-        val alterFuel get() = fuelInGallons(alterDistance)
-
-        val contFuel get() = (tripFuel * performance.contingency).roundToInt()
-
-        val blockFuel get() = tripFuel + alterFuel + contFuel
+    fun calculateFuel() {
+        blockFuel.value = fuelInGallons(tripDistance.value.toFloat()) + fuelInGallons(alterDistance.value.toFloat()) + contFuel()
     }
 }
