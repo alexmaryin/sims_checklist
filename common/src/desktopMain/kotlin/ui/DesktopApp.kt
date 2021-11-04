@@ -30,4 +30,3 @@ actual suspend fun loadAircraftPhoto(filename: String): Painter = withContext(Di
 }
 
 
-
