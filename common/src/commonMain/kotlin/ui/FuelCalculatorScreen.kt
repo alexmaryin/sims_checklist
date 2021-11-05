@@ -1,9 +1,12 @@
 package ui
 
+import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -46,7 +49,8 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
         var reserveTime by remember { mutableStateOf(state.performance.reservesMinutes.toString()) }
         var fuelCapacity by remember { mutableStateOf(state.performance.fuelCapacity.toString()) }
 
-        Column {
+        val scrollState = rememberScrollState()
+        Column(modifier = Modifier.verticalScroll(scrollState, enabled = true)) {
             Text(
                 text = "Calculate fuel quantity for your trip on ${component.aircraft.name}",
                 modifier = Modifier.padding(8.dp).align(Alignment.CenterHorizontally)
