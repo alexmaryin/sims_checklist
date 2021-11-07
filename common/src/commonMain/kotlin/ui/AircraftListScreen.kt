@@ -43,11 +43,12 @@ fun AircraftListScreen(component: AircraftList) {
                         )
                         Row(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.Center
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
                                 text = item.name.uppercase(),
-                                modifier = Modifier.padding(16.dp),
+                                modifier = Modifier.padding(8.dp),
                                 color = MaterialTheme.colors.onSurface,
                                 textAlign = TextAlign.Center,
                                 style = LargeWithShadow()
