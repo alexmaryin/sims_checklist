@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
@@ -64,3 +65,12 @@ fun ValidatorIcon(term: Boolean) {
     if (term) Icon(Icons.Default.Warning, "Incorrect")
     else Icon(Icons.Default.Done, "Correct")
 }
+
+@Composable
+expect fun loadXmlPicture(filename: String): ImageVector
+
+@Composable
+expect fun modifierForWindFace(): Modifier
+
+@Composable
+expect fun Dialog(onDismissRequest: () -> Unit, title: String, text: String)

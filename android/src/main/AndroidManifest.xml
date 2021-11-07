@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="ru.alexmaryin.simschecklist">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
             android:name=".AppAndroid"
             android:allowBackup="true"

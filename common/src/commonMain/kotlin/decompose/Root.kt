@@ -8,6 +8,8 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.animation.child.slid
 import com.arkivanov.decompose.router.*
 import com.arkivanov.decompose.value.Value
 import model.AircraftBase
+import feature.remote.service.MetarService
+import ui.metarscreen.MetarScreen
 import ui.AircraftListScreen
 import ui.ChecklistDetailsScreen
 import ui.ChecklistsScreen
@@ -19,7 +21,8 @@ fun <T : Any> T.asContent(content: @Composable (T) -> Unit): Content = { content
 
 class Root(
     componentContext: ComponentContext,
-    private val aircraftBase: AircraftBase
+    private val aircraftBase: AircraftBase,
+    private val metarService: MetarService
 ) : ComponentContext by componentContext {
 
     private val router = router<Configuration, Content>(
@@ -35,8 +38,9 @@ class Root(
 
             Configuration.AircraftList -> AircraftList(
                 aircraftList = aircraftBase.getAll(),
-            onSelected = { id -> router.push(Configuration.Checklists(id)) },
-                onCalculatorSelect = { id -> router.push(Configuration.FuelCalculator(id)) }
+                onSelected = { id -> router.push(Configuration.Checklists(id)) },
+                onCalculatorSelect = { id -> router.push(Configuration.FuelCalculator(id)) },
+                onMetarSelect = { router.push((Configuration.MetarScanner)) }
             ).asContent { AircraftListScreen(it) }
 
             is Configuration.Checklists -> Checklists(
@@ -62,6 +66,11 @@ class Root(
                 aircraft = aircraftBase.getById(configuration.aircraftId),
                 onBack = { router.pop() }
             ).asContent { FuelCalculatorScreen(it) }
+
+            is Configuration.MetarScanner -> MetarScanner(
+                metarService = metarService,
+                onBack = { router.pop() }
+            ).asContent { MetarScreen(it) }
         }
 }
 

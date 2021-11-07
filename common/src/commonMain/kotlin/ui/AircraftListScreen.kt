@@ -41,16 +41,25 @@ fun AircraftListScreen(component: AircraftList) {
                                 .size(150.dp)
                                 .shadow(elevation = 8.dp, shape = RoundedCornerShape(16.dp), clip = true)
                         )
-                        Text(
-                            text = item.name.uppercase(),
-                            modifier = Modifier.fillMaxWidth().padding(16.dp),
-                            color = MaterialTheme.colors.onSurface,
-                            textAlign = TextAlign.Center,
-                            style = LargeWithShadow()
-                        )
-                        IconButton(onClick = { component.onCalculatorSelect(item.id) }) {
-                            Icon(imageVector = MyIcons.GasStation, contentDescription = "Open fuel calculator")
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                text = item.name.uppercase(),
+                                modifier = Modifier.padding(16.dp),
+                                color = MaterialTheme.colors.onSurface,
+                                textAlign = TextAlign.Center,
+                                style = LargeWithShadow()
+                            )
+                            IconButton(onClick = { component.onCalculatorSelect(item.id) }) {
+                                Icon(imageVector = MyIcons.GasStation, contentDescription = "Open fuel calculator")
+                            }
+                            IconButton(onClick = { component.onMetarSelect() }) {
+                                Icon(imageVector = MyIcons.Air, contentDescription = "Open fuel calculator")
+                            }
                         }
+
                     }
                 }
             }

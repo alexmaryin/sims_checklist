@@ -11,6 +11,7 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import com.arkivanov.decompose.defaultComponentContext
 import decompose.Root
+import feature.remote.service.MetarService
 import viewState.SimViewState
 
 class MainActivity : AppCompatActivity() {
@@ -20,7 +21,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val root = Root(defaultComponentContext(), viewModel.aircraftBase)
+        val service = MetarService.create()
+        val root = Root(defaultComponentContext(), viewModel.aircraftBase, service)
 
         setContent {
             val isDark = isSystemInDarkTheme()

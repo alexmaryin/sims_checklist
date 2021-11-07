@@ -16,4 +16,7 @@ sealed class Configuration : Parcelable {
 
     @Parcelize
     data class FuelCalculator(val aircraftId: Int) : Configuration()
+
+    @Parcelize
+    object MetarScanner : Configuration()
 }
