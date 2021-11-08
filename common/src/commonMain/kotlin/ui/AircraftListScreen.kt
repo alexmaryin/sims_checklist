@@ -15,6 +15,8 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import decompose.AircraftList
+import ui.utils.LargeWithShadow
+import ui.utils.MyIcons
 
 expect suspend fun loadAircraftPhoto(filename: String): Painter
 

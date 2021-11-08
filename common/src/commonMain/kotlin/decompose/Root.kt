@@ -7,13 +7,17 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.animation.child.slide
 import com.arkivanov.decompose.router.*
 import com.arkivanov.decompose.value.Value
-import model.AircraftBase
+import feature.checklists.ChecklistDetails
+import feature.checklists.Checklists
+import feature.fuelcalculator.FuelCalculator
+import feature.metarscreen.MetarScanner
+import repository.AircraftRepository
 import feature.remote.service.MetarService
-import ui.metarscreen.MetarScreen
+import feature.metarscreen.ui.MetarScreen
 import ui.AircraftListScreen
-import ui.ChecklistDetailsScreen
-import ui.ChecklistsScreen
-import ui.FuelCalculatorScreen
+import feature.checklists.ui.ChecklistDetailsScreen
+import feature.checklists.ui.ChecklistsScreen
+import feature.fuelcalculator.ui.FuelCalculatorScreen
 
 typealias Content = @Composable () -> Unit
 
@@ -21,7 +25,7 @@ fun <T : Any> T.asContent(content: @Composable (T) -> Unit): Content = { content
 
 class Root(
     componentContext: ComponentContext,
-    private val aircraftBase: AircraftBase,
+    private val aircraftRepository: AircraftRepository,
     private val metarService: MetarService
 ) : ComponentContext by componentContext {
 
@@ -37,33 +41,33 @@ class Root(
         when (configuration) {
 
             Configuration.AircraftList -> AircraftList(
-                aircraftList = aircraftBase.getAll(),
+                aircraftList = aircraftRepository.getAll(),
                 onSelected = { id -> router.push(Configuration.Checklists(id)) },
                 onCalculatorSelect = { id -> router.push(Configuration.FuelCalculator(id)) },
                 onMetarSelect = { router.push((Configuration.MetarScanner)) }
             ).asContent { AircraftListScreen(it) }
 
             is Configuration.Checklists -> Checklists(
-                aircraft = aircraftBase.getById(configuration.aircraftId),
+                aircraft = aircraftRepository.getById(configuration.aircraftId),
                 onBack = { router.pop() },
                 onSelected = { checklist ->
                     router.push(Configuration.Checklist(configuration.aircraftId, checklist.id))
                 },
                 clearBaseChecklists = {
-                    aircraftBase.clearBaseChecklists(configuration.aircraftId)
+                    aircraftRepository.clearBaseChecklists(configuration.aircraftId)
                 }
             ).asContent { ChecklistsScreen(it) }
 
             is Configuration.Checklist -> ChecklistDetails(
-                checklist = aircraftBase.getChecklist(configuration.aircraftId, configuration.checklistId),
+                checklist = aircraftRepository.getChecklist(configuration.aircraftId, configuration.checklistId),
                 onFinished = { router.pop() },
                 updateBaseChecklist = { items ->
-                    aircraftBase.updateBaseChecklist(configuration.aircraftId, configuration.checklistId, items)
+                    aircraftRepository.updateBaseChecklist(configuration.aircraftId, configuration.checklistId, items)
                 }
             ).asContent { ChecklistDetailsScreen(it) }
 
             is Configuration.FuelCalculator -> FuelCalculator(
-                aircraft = aircraftBase.getById(configuration.aircraftId),
+                aircraft = aircraftRepository.getById(configuration.aircraftId),
                 onBack = { router.pop() }
             ).asContent { FuelCalculatorScreen(it) }
 

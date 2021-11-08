@@ -1,6 +1,6 @@
 package decompose
 
-import model.Aircraft
+import feature.checklists.model.Aircraft
 
 class AircraftList(
     val aircraftList: List<Aircraft>,
