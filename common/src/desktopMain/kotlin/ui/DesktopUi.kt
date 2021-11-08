@@ -1,5 +1,7 @@
 package ui
 
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
@@ -47,3 +49,6 @@ actual suspend fun loadAircraftPhoto(filename: String): Painter = withContext(Di
         BitmapPainter(loadImageBitmap(stream))
     }
 }
+
+@Composable
+actual fun inputModifier() = Modifier.padding(8.dp)

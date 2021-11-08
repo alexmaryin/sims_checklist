@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import feature.fuelcalculator.FuelCalculator
 import ui.ValidatorIcon
+import ui.inputModifier
 
 @Composable
 fun FuelCalculatorScreen(component: FuelCalculator) {
@@ -35,8 +36,6 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
             )
         }
     ) {
-        val inputModifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp).fillMaxWidth()
-
         val state: FuelCalculator.Model by component.state.subscribeAsState()
 
         var tripDistance by remember { mutableStateOf(state.tripDistance.toString()) }
@@ -58,7 +57,7 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
             Row {
                 OutlinedTextField(
                     value = tripDistance,
-                    modifier = inputModifier.weight(1f),
+                    modifier = Modifier.padding(8.dp).weight(1f),
                     onValueChange = { new -> tripDistance = new; component.onTripDistanceChange(new) },
                     label = { Text("Trip distance, sm") },
                     isError = component.isFloatIncorrect(tripDistance, false),
@@ -66,7 +65,7 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
                 )
                 OutlinedTextField(
                     value = alterDistance,
-                    modifier = inputModifier.weight(1f),
+                    modifier = Modifier.padding(8.dp).weight(1f),
                     onValueChange = { new -> alterDistance = new; component.onAlterDistanceChange(new) },
                     label = { Text("Alter distance, sm") },
                     isError = component.isFloatIncorrect(alterDistance),
@@ -77,7 +76,7 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
             Row {
                 OutlinedTextField(
                     value = headWind,
-                    modifier = inputModifier.weight(1f),
+                    modifier = Modifier.padding(8.dp).weight(1f),
                     onValueChange = { new -> headWind = new; component.onHeadwindChange(new) },
                     label = { Text("Headwind component, kt") },
                     isError = component.isIntIncorrect(headWind),
@@ -91,7 +90,7 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
                         fontWeight = FontWeight.ExtraBold,
                         color = if (state.fuelExceed) MaterialTheme.colors.error else Color.Unspecified
                     ),
-                    modifier = inputModifier.weight(1f),
+                    modifier = Modifier.padding(8.dp).weight(1f),
                     readOnly = true,
                     label = { Text(if (state.fuelExceed) "Fuel exceed!" else "Calculated block fuel, g") },
                     isError = state.fuelExceed,
@@ -101,7 +100,7 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
             Row {
                 OutlinedTextField(
                     value = taxiFuel,
-                    modifier = inputModifier.weight(1f),
+                    modifier = Modifier.padding(8.dp).weight(1f),
                     onValueChange = { new -> taxiFuel = new; component.onTaxiChange(new) },
                     label = { Text("Taxi fuel, g") },
                     isError = component.isFloatIncorrect(taxiFuel),
@@ -109,14 +108,14 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
                 )
                 OutlinedTextField(
                     value = "$contingency%",
-                    modifier = inputModifier.weight(1f),
+                    modifier = Modifier.padding(8.dp).weight(1f),
                     onValueChange = { new -> contingency = new.substringBefore("%"); component.onContingencyChange(new.substringBefore("%")) },
                     label = { Text("Contingency fuel, % of trip") },
                     isError = component.isFloatIncorrect(contingency),
                     trailingIcon = { ValidatorIcon(component.isFloatIncorrect(contingency)) }
                 )
             }
-            Divider(modifier = Modifier.padding(vertical = 6.dp, horizontal = 6.dp))
+            Divider(modifier = Modifier.padding(8.dp))
             Text(
                 text = "You may change params below due to the performance table",
                 modifier =  Modifier.padding(8.dp).align(Alignment.CenterHorizontally)
@@ -124,7 +123,7 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
             Row {
                 OutlinedTextField(
                     value = avgCruiseSpeed,
-                    modifier = inputModifier.weight(1f),
+                    modifier = Modifier.padding(8.dp).weight(1f),
                     onValueChange = { new -> avgCruiseSpeed = new; component.onCruiseSpeedChange(new) },
                     label = { Text("Average cruise speed, kt") },
                     isError = component.isFloatIncorrect(avgCruiseSpeed, false),
@@ -132,7 +131,7 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
                 )
                 OutlinedTextField(
                     value = avgFuelFlow,
-                    modifier = inputModifier.weight(1f),
+                    modifier = Modifier.padding(8.dp).weight(1f),
                     onValueChange = { new -> avgFuelFlow = new; component.onFuelFlowChange(new) },
                     label = { Text("Average fuel flow, gph") },
                     isError = component.isFloatIncorrect(avgFuelFlow, false),
@@ -146,7 +145,7 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
             Row {
                 OutlinedTextField(
                     value = reserveTime,
-                    modifier = inputModifier.weight(1f),
+                    modifier = inputModifier().weight(1f),
                     onValueChange = { new -> reserveTime = new; component.onReserveTimeChange(new) },
                     label = { Text("Reserve time, min") },
                     isError = component.isIntIncorrect(reserveTime),
@@ -154,7 +153,7 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
                 )
                 OutlinedTextField(
                     value = fuelCapacity,
-                    modifier = inputModifier.weight(1f),
+                    modifier = inputModifier().weight(1f),
                     onValueChange = { new -> fuelCapacity = new; component.onFuelCapacityChange(new) },
                     label = { Text("Fuel capacity, g") },
                     isError = component.isFloatIncorrect(fuelCapacity, false),

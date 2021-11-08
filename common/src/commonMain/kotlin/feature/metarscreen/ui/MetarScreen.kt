@@ -26,6 +26,7 @@ import feature.metarscreen.MetarUiEvent
 import feature.metarscreen.WindViewState
 import feature.metarscreen.model.ErrorType
 import ui.Dialog
+import ui.inputModifier
 import ui.modifierForWindFace
 
 @OptIn(ExperimentalAnimationApi::class, androidx.compose.ui.ExperimentalComposeUiApi::class)
@@ -33,7 +34,6 @@ import ui.modifierForWindFace
 fun MetarScreen(component: MetarScanner) {
 
     val state: WindViewState by component.state.subscribeAsState()
-
 
     var userAngle by remember { mutableStateOf(state.data.metarAngle ?: state.data.userAngle) }
     var icaoInput by remember { mutableStateOf("") }
@@ -136,9 +136,7 @@ fun MetarScreen(component: MetarScanner) {
                         capitalization = KeyboardCapitalization.Characters,
                         keyboardType = KeyboardType.Ascii
                     ),
-                    modifier = Modifier
-                        .padding(horizontal = 8.dp)
-                        .weight(1f)
+                    modifier = inputModifier().weight(1f)
                 )
 
                 Button(

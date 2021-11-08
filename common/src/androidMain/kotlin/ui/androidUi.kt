@@ -2,6 +2,7 @@ package ui
 
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -12,6 +13,9 @@ import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.dp
+import com.google.accompanist.insets.imePadding
+import com.google.accompanist.insets.navigationBarsWithImePadding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.alexmaryin.simschecklist.AppAndroid
@@ -40,3 +44,6 @@ actual suspend fun loadAircraftPhoto(filename: String): Painter = withContext(Di
         image = BitmapFactory.decodeStream(AppAndroid.instance().loadPhoto(filename)).asImageBitmap()
     )
 }
+
+@Composable
+actual fun inputModifier() = Modifier.padding(8.dp).navigationBarsWithImePadding()

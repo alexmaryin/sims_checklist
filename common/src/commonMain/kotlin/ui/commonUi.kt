@@ -74,3 +74,6 @@ expect fun modifierForWindFace(): Modifier
 
 @Composable
 expect fun Dialog(onDismissRequest: () -> Unit, title: String, text: String)
+
+@Composable
+expect fun inputModifier(): Modifier
