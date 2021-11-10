@@ -30,7 +30,4 @@ dependencies {
     implementation("com.arkivanov.decompose:extensions-compose-jetbrains:$decomposeVersion")
     implementation("androidx.core:core-ktx:1.7.0")
     implementation(kotlin("stdlib-jdk7", "1.5.31"))
-    // Accompanist
-    implementation ("com.google.accompanist:accompanist-insets:0.21.2-beta")
-    implementation ("com.google.accompanist:accompanist-insets-ui:0.21.2-beta")
 }

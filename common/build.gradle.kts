@@ -50,8 +50,6 @@ kotlin {
             dependencies {
                 api("androidx.appcompat:appcompat:1.3.1")
                 api("androidx.core:core-ktx:1.7.0")
-                // Accompanist
-                implementation ("com.google.accompanist:accompanist-insets:0.21.2-beta")
             }
         }
     }
@@ -79,10 +77,12 @@ android {
             assets.srcDirs("resources")
         }
     }
+
+    tasks.withType<KotlinCompile> {
+        kotlinOptions.freeCompilerArgs += listOf(
+            "-Xopt-in=kotlin.RequiresOptIn"
+        )
+    }
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.freeCompilerArgs = listOf(
-        "-Xopt-in=kotlin.RequiresOptIn"
-    )
-}
+

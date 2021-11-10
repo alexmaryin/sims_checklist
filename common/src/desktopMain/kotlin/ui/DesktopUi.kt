@@ -50,5 +50,3 @@ actual suspend fun loadAircraftPhoto(filename: String): Painter = withContext(Di
     }
 }
 
-@Composable
-actual fun inputModifier() = Modifier.padding(8.dp)

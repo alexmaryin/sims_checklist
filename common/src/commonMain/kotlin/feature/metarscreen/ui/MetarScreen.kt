@@ -2,6 +2,8 @@ package feature.metarscreen.ui
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -13,6 +15,7 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -25,11 +28,12 @@ import feature.metarscreen.MetarScanner
 import feature.metarscreen.MetarUiEvent
 import feature.metarscreen.WindViewState
 import feature.metarscreen.model.ErrorType
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import ui.Dialog
-import ui.inputModifier
 import ui.modifierForWindFace
 
-@OptIn(ExperimentalAnimationApi::class, androidx.compose.ui.ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalAnimationApi::class, androidx.compose.ui.ExperimentalComposeUiApi::class, androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
 fun MetarScreen(component: MetarScanner) {
 
@@ -87,6 +91,7 @@ fun MetarScreen(component: MetarScanner) {
         }
     ) {
         val scrollState = rememberScrollState()
+        val relocationRequester = remember { BringIntoViewRequester() }
 
         Column(
             modifier = Modifier
@@ -106,6 +111,7 @@ fun MetarScreen(component: MetarScanner) {
             BoxWithConstraints(modifier = modifierForWindFace().align(Alignment.CenterHorizontally)) {
                 WindSegment(this, component)
             }
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
@@ -120,10 +126,12 @@ fun MetarScreen(component: MetarScanner) {
                 )
                 Text("${state.data.metarAngle ?: userAngle}°", fontSize = 24.sp)
             }
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+
                 TextField(
                     value = icaoInput,
                     onValueChange = { new -> icaoInput = new },
@@ -136,7 +144,11 @@ fun MetarScreen(component: MetarScanner) {
                         capitalization = KeyboardCapitalization.Characters,
                         keyboardType = KeyboardType.Ascii
                     ),
-                    modifier = inputModifier().weight(1f)
+                    modifier = Modifier.padding(8.dp).weight(1f)
+                        .bringIntoViewRequester(relocationRequester)
+                        .onFocusEvent {
+                            if(it.isFocused) { scope.launch { delay(300); relocationRequester.bringIntoView() } }
+                        }
                 )
 
                 Button(
@@ -153,7 +165,7 @@ fun MetarScreen(component: MetarScanner) {
             Spacer(modifier = Modifier.height(8.dp))
 
             AnimatedVisibility(
-                visible = state.data.rawMetar.isNotBlank(),
+                visible = state.data.rawMetar.isNotBlank() || state.data.rawTaf.isNotBlank(),
                 enter = fadeIn() + slideInVertically(),
                 exit = fadeOut() + slideOutVertically()
             ) {
@@ -167,6 +179,12 @@ fun MetarScreen(component: MetarScanner) {
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = "METAR: ${state.data.rawMetar}",
+                        fontSize = 14.sp,
+                        color = MaterialTheme.colors.secondary
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "TAF: ${state.data.rawTaf}",
                         fontSize = 14.sp,
                         color = MaterialTheme.colors.secondary
                     )

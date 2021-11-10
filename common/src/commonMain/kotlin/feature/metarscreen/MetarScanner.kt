@@ -17,7 +17,7 @@ class MetarScanner(
 
     private var fetchJob: Job? = null
 
-    fun onEvent(event: MetarUiEvent) = when(event) {
+    fun onEvent(event: MetarUiEvent) = when (event) {
         is MetarUiEvent.SubmitAngle -> submitAngle(event.new)
         is MetarUiEvent.SubmitICAO -> submitICAO(event.station, event.scope)
         is MetarUiEvent.ShowInfoDialog -> showInfoDialog(true)
@@ -30,31 +30,25 @@ class MetarScanner(
     }
 
     private fun submitICAO(station: String, scope: CoroutineScope) {
-        fetchJob =  scope.launch {
+        fetchJob = scope.launch {
             // Say to Ui that loading has started
             state.reduce { it.copy(isLoading = true) }
             // Parse response for Ui
             when (val response = metarService.getMetar(station)) {
-                is MetarResponse.Success -> response.data.parseMetar()?.let { metar ->
+                is MetarResponse.Success -> {
                     state.reduce {
+                        val metar = response.data.parseMetar()
                         it.copy(
                             data = MetarUi(
-                                metarAngle = metar.windDirection,
-                                metarSpeedKt = metar.windSpeedKt,
+                                metarAngle = metar?.windDirection ?: it.data.metarAngle,
+                                metarSpeedKt = metar?.windSpeedKt ?: it.data.metarSpeedKt,
                                 airport = response.data.name,
                                 rawMetar = response.data.metar,
                                 rawTaf = response.data.taf,
                             ),
                             isLoading = false,
-                            isError = false
-                        )
-                    }
-                } ?: run {
-                    state.reduce {
-                        it.copy(
-                            isLoading = false,
-                            isError = true,
-                            error = ErrorUi(ErrorType.METAR_PARSE_ERROR)
+                            isError = metar?.let { false } ?: true,
+                            error = metar?.let { null } ?: ErrorUi(ErrorType.METAR_PARSE_ERROR)
                         )
                     }
                 }
@@ -62,7 +56,7 @@ class MetarScanner(
                     it.copy(
                         isLoading = false,
                         isError = true,
-                        error = ErrorUi (ErrorType.SERVER_ERROR, response.body.message ?: "")
+                        error = ErrorUi(ErrorType.SERVER_ERROR, response.body.message ?: "")
                     )
                 }
             }
