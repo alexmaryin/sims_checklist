@@ -31,6 +31,8 @@ import feature.metarscreen.model.ErrorType
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ui.Dialog
+import ui.RelativeOutlineInput
+import ui.ValidatedOutlineInput
 import ui.modifierForWindFace
 
 @OptIn(ExperimentalAnimationApi::class, androidx.compose.ui.ExperimentalComposeUiApi::class, androidx.compose.foundation.ExperimentalFoundationApi::class)
@@ -132,10 +134,10 @@ fun MetarScreen(component: MetarScanner) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
 
-                TextField(
+                OutlinedTextField(
                     value = icaoInput,
                     onValueChange = { new -> icaoInput = new },
-                    placeholder = { Text("enter ICAO") },
+                    label = { Text("enter ICAO") },
                     singleLine = true,
                     enabled = state.isLoading.not(),
                     keyboardActions = KeyboardActions(onDone = { submitICAO() }),

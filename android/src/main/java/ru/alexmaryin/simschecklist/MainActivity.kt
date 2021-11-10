@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         val root = Root(defaultComponentContext(), viewModel.aircraftRepository, service)
         setContent {
             val isDark = isSystemInDarkTheme()
-            MaterialTheme(colors = if (isDark) darkColors() else lightColors()) {
+            MaterialTheme(colors = if (isDark) Themes.dark else Themes.light) {
                 App(root)
             }
         }

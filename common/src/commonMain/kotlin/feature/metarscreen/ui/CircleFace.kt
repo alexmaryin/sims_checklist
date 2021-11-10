@@ -18,7 +18,7 @@ import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
 
-val CIRCLE_PADDING = 20.dp
+val CIRCLE_PADDING = 50.dp
 val LONG_STROKE = 20.dp
 val SHORT_STROKE = 10.dp
 

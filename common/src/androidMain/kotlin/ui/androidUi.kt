@@ -18,7 +18,12 @@ import ru.alexmaryin.simschecklist.AppAndroid
 import ru.alexmaryin.simschecklist.common.R
 
 @Composable
-actual fun loadXmlPicture(filename: String): ImageVector = ImageVector.vectorResource(R.drawable.ic_wind_vane)
+actual fun loadXmlPicture(filename: String): ImageVector = ImageVector.vectorResource(
+    when (filename) {
+        "ic_wind_vane.xml" -> R.drawable.ic_wind_vane
+        else -> throw RuntimeException("Xml resource $filename not exists")
+    }
+)
 
 @Composable
 actual fun modifierForWindFace(): Modifier = Modifier.fillMaxWidth()
