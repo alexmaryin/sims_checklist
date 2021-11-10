@@ -15,7 +15,7 @@ fun main() = application {
     Window(
         title = "Sims checklists",
         onCloseRequest = ::exitApplication) {
-        MaterialTheme() {
+        MaterialTheme(colors = Themes.light) {
             App(root)
         }
     }

@@ -64,7 +64,8 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
 
             Text(
                 text = "Calculate fuel quantity for your trip on ${component.aircraft.name}",
-                modifier = Modifier.padding(8.dp)
+                modifier = Modifier.padding(8.dp),
+                color = MaterialTheme.colors.onSurface
             )
             Row(modifier = Modifier.padding(padding)) {
                 ValidatedOutlineInput(
@@ -116,7 +117,8 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
             Divider(modifier = Modifier.padding(8.dp))
             Text(
                 text = "You may change params below due to the performance table",
-                modifier = Modifier.padding(8.dp).align(Alignment.CenterHorizontally)
+                modifier = Modifier.padding(8.dp).align(Alignment.CenterHorizontally),
+                color = MaterialTheme.colors.onSurface
             )
             Row {
                 RelativeOutlineInput(
@@ -132,7 +134,8 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
             }
             Text(
                 text = "You should not change params below, but you may on your own risk",
-                modifier = Modifier.padding(8.dp).align(Alignment.CenterHorizontally)
+                modifier = Modifier.padding(8.dp).align(Alignment.CenterHorizontally),
+                color = MaterialTheme.colors.onSurface
             )
             Row {
                 RelativeOutlineInput(

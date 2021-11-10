@@ -38,7 +38,7 @@ fun ChecklistsScreen(component: Checklists) {
                 Card(
                     modifier = Modifier.padding(vertical = 1.dp),
                     elevation = 12.dp,
-                    backgroundColor = if (item.isCompleted) MaterialTheme.colors.secondary else MaterialTheme.colors.surface
+                    backgroundColor = if (item.isCompleted) MaterialTheme.colors.secondaryVariant else MaterialTheme.colors.surface
                 ) {
                     Text(
                         text = item.caption.uppercase(),

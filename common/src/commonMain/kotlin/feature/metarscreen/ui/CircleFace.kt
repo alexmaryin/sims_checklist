@@ -3,6 +3,7 @@ package feature.metarscreen.ui
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.LocalTextStyle
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,7 +24,7 @@ val LONG_STROKE = 20.dp
 val SHORT_STROKE = 10.dp
 
 @Composable
-fun CircleFace(boxScope: BoxWithConstraintsScope, color: Color) {
+fun CircleFace(boxScope: BoxWithConstraintsScope, color: Color, surface: Color = MaterialTheme.colors.surface) {
     boxScope.apply {
         val sizeDp = min(maxWidth, maxHeight)
         val radius = (sizeDp - CIRCLE_PADDING) / 2
@@ -31,7 +32,7 @@ fun CircleFace(boxScope: BoxWithConstraintsScope, color: Color) {
 
         Canvas(modifier = Modifier.size(min(maxWidth, maxHeight)).align(Alignment.Center)) {
             drawCircle(
-                color = Color.White,
+                color = surface,
                 radius = (radius + CIRCLE_PADDING / 2).toPx(),
                 center = Offset(center.toPx(), center.toPx()),
                 style = Fill
