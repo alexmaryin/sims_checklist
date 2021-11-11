@@ -1,4 +1,4 @@
-package feature.checklists.ui
+package feature.checklistDetails.ui
 
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable

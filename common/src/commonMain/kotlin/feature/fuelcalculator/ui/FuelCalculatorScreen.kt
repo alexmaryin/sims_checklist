@@ -74,7 +74,7 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
                 ) { new -> tripDistance = new; component.onTripDistanceChange(new) }
 
                 ValidatedOutlineInput(
-                    alterDistance, "Alter distance, sm",
+                    alterDistance, "Alter. distance, sm",
                     component.isFloatIncorrect(alterDistance), Modifier.weight(1f)
                 ) { new -> alterDistance = new; component.onAlterDistanceChange(new) }
 
@@ -116,7 +116,7 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
             }
             Divider(modifier = Modifier.padding(8.dp))
             Text(
-                text = "You may change params below due to the performance table",
+                text = "You may change params below according to the performance table",
                 modifier = Modifier.padding(8.dp).align(Alignment.CenterHorizontally),
                 color = MaterialTheme.colors.onSurface
             )

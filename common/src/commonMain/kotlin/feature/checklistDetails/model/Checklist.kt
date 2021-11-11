@@ -1,4 +1,4 @@
-package feature.checklists.model
+package feature.checklistDetails.model
 
 import kotlinx.serialization.Serializable
 

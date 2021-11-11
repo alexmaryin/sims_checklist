@@ -1,4 +1,4 @@
-package feature.checklists.ui
+package feature.checklistDetails.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,7 +13,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import feature.checklists.model.Item
+import feature.checklistDetails.model.Item
 import ui.ToggableText
 
 @Composable

@@ -2,7 +2,7 @@ package repository
 
 import database.AircraftBase
 import feature.checklists.model.Aircraft
-import feature.checklists.model.Checklist
+import feature.checklistDetails.model.Checklist
 
 class AircraftRepositoryImpl(
     database: AircraftBase
@@ -10,33 +10,50 @@ class AircraftRepositoryImpl(
 
     private var base: List<Aircraft>? = database.getAircraft()
 
+    private var previousChecklistState: List<Boolean>? = null
+
     override fun getAll(): List<Aircraft> =
         base ?: throw IllegalStateException("Can't find files with aircraft!")
 
     override fun getById(id: Int): Aircraft =
-        base?.firstOrNull { it.id == id } ?: throw IllegalArgumentException("Wrong aircraft id!")
+        base?.firstOrNull { it.id == id }
+            ?: throw IllegalArgumentException("Wrong aircraft id!")
 
     override fun getChecklist(aircraftId: Int, checklistId: Int): Checklist =
-        base?.firstOrNull { it.id == aircraftId }?.checklists?.firstOrNull { it.id == checklistId } ?:
-        throw IllegalArgumentException("Wrong checklist id!")
+        getById(aircraftId).checklists.firstOrNull { it.id == checklistId }
+            ?: throw IllegalArgumentException("Wrong checklist id!")
 
-    override fun updateBaseChecklist(aircraftId: Int, checklistId: Int, newValues: List<Boolean>) {
-        base?.let { aircraft ->
-            aircraft.first { it.id == aircraftId }
-                .checklists.first { it.id == checklistId }
-                .items.zip(newValues) { oldItem, value ->
-                oldItem.checked = value
-            }
+    override fun toggleChecklistItem(aircraftId: Int, checklistId: Int, itemId: Int) {
+        with(getChecklist(aircraftId, checklistId)) {
+            items[itemId].checked = !items[itemId].checked
+        }
+    }
+
+    override fun clearChecklist(aircraftId: Int, checklistId: Int) {
+        previousChecklistState = getChecklist(aircraftId, checklistId).items.map { it.checked }
+        with(getChecklist(aircraftId, checklistId)) {
+            items.forEach { it.checked = false }
         }
     }
 
     override fun clearBaseChecklists(aircraftId: Int) {
-        base?.let { aircraft ->
-            aircraft.first { it.id == aircraftId }.checklists.forEach { checklist ->
+        with(getById(aircraftId)) {
+            checklists.forEach { checklist ->
                 checklist.items.forEach { item ->
                     item.checked = false
                 }
             }
         }
     }
+
+    override fun undoChecklistChanges(aircraftId: Int, checklistId: Int) {
+        previousChecklistState?.let { old ->
+            with(getChecklist(aircraftId, checklistId)) {
+                items.zip(old) { item, oldValue ->
+                    item.checked = oldValue
+                }
+            }
+        }
+    }
 }
+

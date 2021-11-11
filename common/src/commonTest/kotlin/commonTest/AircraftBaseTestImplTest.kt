@@ -4,7 +4,9 @@ import database.AircraftBase
 import feature.checklists.model.Aircraft
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import repository.AircraftRepository
 import repository.AircraftRepositoryImpl
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
@@ -81,12 +83,18 @@ const val TEST_DATA = """
 
 internal class AircraftBaseTestImplTest {
 
-    private val aircraftBaseTestImpl = object  : AircraftBase {
-        override fun getAircraft(): List<Aircraft>? =
-            try { listOf(Json.decodeFromString(TEST_DATA)) } catch (E: IllegalArgumentException) { null }
+    private lateinit var aircraftBaseTestImpl: AircraftBase
+    private lateinit var repository: AircraftRepository
 
+    @BeforeTest
+    fun startup() {
+        aircraftBaseTestImpl = object  : AircraftBase {
+            override fun getAircraft(): List<Aircraft>? =
+                try { listOf(Json.decodeFromString(TEST_DATA)) } catch (E: IllegalArgumentException) { null }
+
+        }
+        repository = AircraftRepositoryImpl(aircraftBaseTestImpl)
     }
-    private val repository = AircraftRepositoryImpl(aircraftBaseTestImpl)
 
     @Test
     fun `get all should return one test aircraft`() {
@@ -105,13 +113,31 @@ internal class AircraftBaseTestImplTest {
 
     @Test
     fun `update all items of checklist to true should change isCompleted`() {
-        repository.updateBaseChecklist(0, 0, List(12) { true })
+        repository.getChecklist(0, 0).items.forEach {
+            it.checked = true
+        }
         assertTrue { repository.getChecklist(0, 0).isCompleted }
     }
 
     @Test
     fun `clearing checklist should update isCompleted`() {
+        repository.getChecklist(0, 0).items.forEach {
+            it.checked = listOf(false, true).random()
+        }
         repository.clearBaseChecklists(0)
         assertTrue { repository.getChecklist(0, 0).isCompleted.not() }
+    }
+
+    @Test
+    fun `undo should return previous state of aircraft's checklists`() {
+        val testValues = List(12) { listOf(true, false).random() }
+        testValues.forEachIndexed { index, value ->
+            if (value) repository.toggleChecklistItem(0, 0, index)
+        }
+        repository.clearChecklist(0, 0)
+        repository.undoChecklistChanges(0, 0)
+        assertTrue {
+            repository.getChecklist(0, 0).items.map { it.checked } == testValues
+        }
     }
 }

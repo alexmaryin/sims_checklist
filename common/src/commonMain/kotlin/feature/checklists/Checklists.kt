@@ -2,26 +2,34 @@ package feature.checklists
 
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.reduce
-import feature.checklists.model.Aircraft
-import feature.checklists.model.Checklist
+import repository.AircraftRepository
 
 class Checklists(
-    aircraft: Aircraft,
-    val onBack: () -> Unit,
-    val onSelected: (checklist: Checklist) -> Unit,
-    private val clearBaseChecklists: () -> Unit,
+    private val aircraftId: Int,
+    private val repository: AircraftRepository,
+    private val onBack: () -> Unit,
+    private val onSelected: (checklistId: Int) -> Unit,
 ) {
-    val state = MutableValue(aircraft)
+    val state = MutableValue(ChecklistsViewState(
+        caption = repository.getById(aircraftId).name,
+        list = repository.getById(aircraftId).checklists
+    ))
 
-    fun clear() {
+    fun onEvent(event: ChecklistsUiEvent) {
+        var snackBar: ListSnackBarState? = null
+        when (event) {
+            is ChecklistsUiEvent.ConfirmClear -> snackBar = ListSnackBarState.Undo
+            is ChecklistsUiEvent.ClearAll -> repository.clearBaseChecklists(aircraftId)
+            is ChecklistsUiEvent.Back -> onBack()
+            is ChecklistsUiEvent.SelectChecklist -> onSelected(event.checklistId)
+        }
         state.reduce {
-            it.copy(
-                checklists = it.checklists.map { checklist ->
-                    checklist.copy(items = checklist.items.map { item ->
-                        item.copy(checked = false) })
-                }
+            ChecklistsViewState(
+                caption = it.caption,
+                list = repository.getById(aircraftId).checklists,
+                snackBar = snackBar
             )
         }
-        clearBaseChecklists()
+        println("State is ${state.value}")
     }
 }

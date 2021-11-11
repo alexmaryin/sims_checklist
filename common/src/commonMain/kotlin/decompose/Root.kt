@@ -7,7 +7,7 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.animation.child.slide
 import com.arkivanov.decompose.router.*
 import com.arkivanov.decompose.value.Value
-import feature.checklists.ChecklistDetails
+import feature.checklistDetails.ChecklistDetails
 import feature.checklists.Checklists
 import feature.fuelcalculator.FuelCalculator
 import feature.metarscreen.MetarScanner
@@ -15,7 +15,7 @@ import repository.AircraftRepository
 import feature.remote.service.MetarService
 import feature.metarscreen.ui.MetarScreen
 import ui.AircraftListScreen
-import feature.checklists.ui.ChecklistDetailsScreen
+import feature.checklistDetails.ui.ChecklistDetailsScreen
 import feature.checklists.ui.ChecklistsScreen
 import feature.fuelcalculator.ui.FuelCalculatorScreen
 
@@ -48,22 +48,19 @@ class Root(
             ).asContent { AircraftListScreen(it) }
 
             is Configuration.Checklists -> Checklists(
-                aircraft = aircraftRepository.getById(configuration.aircraftId),
+                aircraftId = configuration.aircraftId,
+                repository = aircraftRepository,
                 onBack = { router.pop() },
-                onSelected = { checklist ->
-                    router.push(Configuration.Checklist(configuration.aircraftId, checklist.id))
-                },
-                clearBaseChecklists = {
-                    aircraftRepository.clearBaseChecklists(configuration.aircraftId)
+                onSelected = { checklistId ->
+                    router.push(Configuration.Checklist(configuration.aircraftId, checklistId))
                 }
             ).asContent { ChecklistsScreen(it) }
 
             is Configuration.Checklist -> ChecklistDetails(
-                checklist = aircraftRepository.getChecklist(configuration.aircraftId, configuration.checklistId),
-                onFinished = { router.pop() },
-                updateBaseChecklist = { items ->
-                    aircraftRepository.updateBaseChecklist(configuration.aircraftId, configuration.checklistId, items)
-                }
+                aircraftId = configuration.aircraftId,
+                checklistId = configuration.checklistId,
+                repository = aircraftRepository,
+                onFinished = { router.pop() }
             ).asContent { ChecklistDetailsScreen(it) }
 
             is Configuration.FuelCalculator -> FuelCalculator(
