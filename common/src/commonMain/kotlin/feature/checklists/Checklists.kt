@@ -30,6 +30,5 @@ class Checklists(
                 snackBar = snackBar
             )
         }
-        println("State is ${state.value}")
     }
 }

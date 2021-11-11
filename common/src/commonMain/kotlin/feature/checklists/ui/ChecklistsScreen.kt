@@ -36,6 +36,7 @@ fun ChecklistsScreen(component: Checklists) {
     }
 
     Scaffold(
+        scaffoldState = scaffoldState,
         topBar = {
             TopBarWithClearAction(
                 caption = state.value.caption,
