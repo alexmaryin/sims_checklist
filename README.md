@@ -2,14 +2,16 @@
 ###### [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 *My first multi platform App on Kotlin for Desktop & Android*
 
-### Application helps to control, proceed and complete checklists of virtual airplanes as far as calculate fuel quantity for your trip.
+### Application helps to control, proceed and complete checklists of virtual airplanes as far as calculate fuel quantity for your trip and get METAR/TAF with visualized wind director.
 
-At present implemented only one type of aircraft - Cessna 172 Skyhawk, the most popular general aviation in any simulator.
+At present checklists are implemented only for the one type of aircraft - Cessna 172 Skyhawk, the most popular general aviation in any simulator.
 
-Sometime  it will be featured custom editor or import mode from simple text files.
+Someday it will be featured custom editor or import mode from simple text files.
 
 *Some develop details:*
 - Jetbrains Compose library for Desktop and Jetpack Compose for Android
+- Custom Canvas view for wind director
+- NETAR/TAF info is fetching from https://metartaf.ru/
 - Awesome library Decompose for navigation and lifecycle management, thanks to @arkivanov
 - Google Material library for UI with dark and light theme support
 - Started to implement MVI architecture.
