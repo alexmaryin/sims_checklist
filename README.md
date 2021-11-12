@@ -11,8 +11,8 @@ Someday it will be featured custom editor or import mode from simple text files.
 *Some develop details:*
 - Jetbrains Compose library for Desktop and Jetpack Compose for Android
 - Custom Canvas view for wind director
-- NETAR/TAF info is fetching from https://metartaf.ru/
-- Awesome library Decompose for navigation and lifecycle management, thanks to @arkivanov
+- METAR/TAF info is fetching from https://metartaf.ru/
+- Awesome library [Decompose](https://github.com/arkivanov/Decompose) for navigation and lifecycle management, thanks to @arkivanov
 - Google Material library for UI with dark and light theme support
 - Started to implement MVI architecture.
 
