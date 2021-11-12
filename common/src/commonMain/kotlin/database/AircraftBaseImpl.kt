@@ -4,7 +4,7 @@ import feature.checklists.model.Aircraft
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
-const val AIRCRAFT_FILE = "aircraft.json"
+const val AIRCRAFT_FILE = "raw/aircraft.json"
 
 expect fun loadAircraftJson(filename: String): String
 

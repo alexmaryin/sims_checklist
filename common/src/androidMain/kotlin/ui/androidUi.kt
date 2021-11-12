@@ -7,11 +7,15 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
+import androidx.core.graphics.drawable.toBitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.alexmaryin.simschecklist.AppAndroid
@@ -19,11 +23,8 @@ import ru.alexmaryin.simschecklist.common.R
 
 @Composable
 actual fun loadXmlPicture(filename: String): ImageVector = ImageVector.vectorResource(
-    when (filename) {
-        "ic_wind_vane.xml" -> R.drawable.ic_wind_vane
-        else -> throw RuntimeException("Xml resource $filename not exists")
-    }
-)
+        AppAndroid.instance().resources.getIdentifier(filename, "drawable", null)
+    )
 
 @Composable
 actual fun modifierForWindFace(): Modifier = Modifier.fillMaxWidth()
@@ -40,9 +41,8 @@ actual fun Dialog(onDismissRequest: () -> Unit, title: String, text: String) = A
     }
 )
 
-actual suspend fun loadAircraftPhoto(filename: String): Painter = withContext(Dispatchers.IO) {
-    BitmapPainter(
-        image = BitmapFactory.decodeStream(AppAndroid.instance().loadPhoto(filename)).asImageBitmap()
-    )
+actual suspend fun loadAircraftPhoto(filename: String): Painter =  with (AppAndroid.instance()) {
+    BitmapPainter(resources.getDrawable(R.drawable.cessna172).toBitmap().asImageBitmap())
 }
+
 

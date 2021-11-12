@@ -3,7 +3,7 @@
     "id": 0,
     "name": "Cessna 172 Skyhawk",
     "performance": {
-      "fuelCapacity": 28,
+      "fuelCapacity": 56,
       "averageCruiseSpeed": 100,
       "averageFuelFlow": 8
     },
@@ -334,6 +334,6 @@
         ]
       }
     ],
-    "photo": "photo/cessna172.jpg"
+    "photo": "photo/cessna172"
   }
 ]
