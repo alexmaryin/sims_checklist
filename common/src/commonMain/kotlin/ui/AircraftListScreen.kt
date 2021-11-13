@@ -18,7 +18,7 @@ import decompose.AircraftList
 import ui.utils.LargeWithShadow
 import ui.utils.MyIcons
 
-expect suspend fun loadAircraftPhoto(filename: String): Painter
+expect suspend fun loadAircraftJpgPhoto(name: String): Painter
 
 @Composable
 fun AircraftListScreen(component: AircraftList) {
@@ -35,13 +35,17 @@ fun AircraftListScreen(component: AircraftList) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
                         AsyncImage(
-                            loader = { loadAircraftPhoto(item.photo) },
+                            loader = { loadAircraftJpgPhoto(item.photo) },
                             painterFor = { it },
                             contentDescription = "Photo of ${item.name}",
                             modifier = Modifier
                                 .padding(8.dp)
                                 .size(150.dp)
-                                .shadow(elevation = 8.dp, shape = RoundedCornerShape(16.dp), clip = true)
+                                .shadow(
+                                    elevation = 8.dp,
+                                    shape = RoundedCornerShape(16.dp),
+                                    clip = true
+                                )
                         )
                         Row(
                             modifier = Modifier.fillMaxWidth(),

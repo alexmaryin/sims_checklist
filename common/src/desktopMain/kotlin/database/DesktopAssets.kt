@@ -2,5 +2,6 @@ package database
 
 import androidx.compose.ui.res.useResource
 
-actual fun loadAircraftJson(filename: String): String = useResource(filename) { it.bufferedReader().readText() }
+actual fun loadAircraftJson(filename: String): String =
+    useResource("raw/$filename") { it.bufferedReader().readText() }
 

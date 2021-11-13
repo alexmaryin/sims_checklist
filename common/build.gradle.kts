@@ -61,7 +61,7 @@ android {
     defaultConfig {
         minSdkVersion(22)
         targetSdkVersion(31)
-        versionCode = 2
+        versionCode = 3
         versionName = "1.0"
     }
 
@@ -73,16 +73,14 @@ android {
     sourceSets {
         named("main") {
             manifest.srcFile("src/androidMain/AndroidManifest.xml")
-            res.srcDirs("src/androidMain/res")
-            assets.srcDirs("resources")
+            res.srcDirs("resources")
         }
-    }
-
-    tasks.withType<KotlinCompile> {
-        kotlinOptions.freeCompilerArgs += listOf(
-            "-Xopt-in=kotlin.RequiresOptIn"
-        )
     }
 }
 
+tasks.withType<KotlinCompile> {
+    kotlinOptions.freeCompilerArgs += listOf(
+        "-Xopt-in=kotlin.RequiresOptIn"
+    )
+}
 
