@@ -1,8 +1,12 @@
 package database
 
 import ru.alexmaryin.simschecklist.AppAndroid
-import ru.alexmaryin.simschecklist.common.R
 
-actual fun loadAircraftJson(filename: String) = with (AppAndroid.instance()) {
-    resources.openRawResource(R.raw.aircraft).bufferedReader().readText()
-}
+actual fun loadAircraftJson(filename: String) =
+    with(AppAndroid.instance()) {
+        val resourceId = resources.getIdentifier(
+            filename.substringBefore("."), "raw", packageName
+        )
+        resources.openRawResource(resourceId)
+            .bufferedReader().readText()
+    }

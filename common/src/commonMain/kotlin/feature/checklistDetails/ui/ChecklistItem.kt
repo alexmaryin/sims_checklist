@@ -14,7 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import feature.checklistDetails.model.Item
-import ui.ToggableText
+import ui.ToggleableText
 
 @Composable
 fun ChecklistItem(item: Item, onClick: () -> Unit) = Row(
@@ -26,8 +26,8 @@ fun ChecklistItem(item: Item, onClick: () -> Unit) = Row(
 ) {
 
     Column(modifier = Modifier.weight(1f).fillMaxWidth()) {
-        ToggableText(item.caption, item.checked)
-        if (item.details.isNotEmpty()) ToggableText(
+        ToggleableText(item.caption, item.checked)
+        if (item.details.isNotEmpty()) ToggleableText(
             text = item.details,
             isToggled = item.checked,
             modifier = Modifier.padding(start = 6.dp),
@@ -38,7 +38,7 @@ fun ChecklistItem(item: Item, onClick: () -> Unit) = Row(
     Spacer(modifier = Modifier.width(24.dp))
 
     if (item.action.isNotEmpty())
-        ToggableText(item.action, item.checked)
+        ToggleableText(item.action, item.checked)
 
     if (item.checked) Icon(
         imageVector = Icons.Default.Done,

@@ -7,7 +7,7 @@ object Themes {
         primary = Color(0xff3e2723),
         primaryVariant = Color(0xff6a4f4b),
         surface = Color(0xffefebe9),
-        secondary = Color(0xffd7ccc8),
+        secondary = Color(0xff212121),
         secondaryVariant = Color(0xff00c853),
         onPrimary = Color(0xfffff3e0),
         onSecondary = Color(0xff212121),
@@ -15,12 +15,13 @@ object Themes {
     )
 
     val dark = darkColors(
-        primary = Color(0xff1b0000),
+        primary = Color(0xffd7ccc8),
         primaryVariant = Color(0xff3e2723),
+        surface = Color(0xff212121),
         secondary = Color(0xffa69b97),
         secondaryVariant = Color(0xff00c853),
-        onPrimary = Color(0xfffff59d),
+        onPrimary = Color(0xff1b0000),
         onSecondary = Color(0xff4e342e),
-        onSurface = Color(0xff1b0000)
+        onSurface = Color(0xfffbe9e7)
     )
 }

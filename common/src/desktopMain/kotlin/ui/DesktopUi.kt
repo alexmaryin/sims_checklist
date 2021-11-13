@@ -1,7 +1,5 @@
 package ui
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
@@ -22,9 +20,10 @@ import kotlinx.coroutines.withContext
 import org.xml.sax.InputSource
 
 @Composable
-actual fun loadXmlPicture(filename: String): ImageVector = useResource(filename) { stream ->
-    loadXmlImageVector(InputSource(stream), LocalDensity.current)
-}
+actual fun loadXmlPicture(name: String): ImageVector =
+    useResource("drawable/$name.xml") { stream ->
+        loadXmlImageVector(InputSource(stream), LocalDensity.current)
+    }
 
 @Composable
 actual fun modifierForWindFace(): Modifier = Modifier.size(300.dp)
@@ -44,9 +43,10 @@ actual fun Dialog(onDismissRequest: () -> Unit, title: String, text: String) = A
 )
 
 
-actual suspend fun loadAircraftPhoto(filename: String): Painter = withContext(Dispatchers.IO) {
-    useResource(filename) { stream ->
-        BitmapPainter(loadImageBitmap(stream))
+actual suspend fun loadAircraftJpgPhoto(name: String): Painter =
+    withContext(Dispatchers.IO) {
+        useResource("drawable/$name.jpg") { stream ->
+            BitmapPainter(loadImageBitmap(stream))
+        }
     }
-}
 

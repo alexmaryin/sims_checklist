@@ -39,7 +39,7 @@ fun WindPointer(boxScope: BoxWithConstraintsScope, component: MetarScanner, colo
         )
 
         Image(
-            imageVector =  loadXmlPicture("ic_wind_vane.xml"),
+            imageVector =  loadXmlPicture("ic_wind_vane"),
             contentDescription = "Wind vane",
             modifier = Modifier
                 .align(Alignment.Center)

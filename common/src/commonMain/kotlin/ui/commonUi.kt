@@ -37,12 +37,16 @@ fun <T> AsyncImage(
         value = loader()
     }
     image?.let {
-        Image(painter = painterFor(it), contentDescription = contentDescription, modifier = modifier)
+        Image(
+            painter = painterFor(it),
+            contentDescription = contentDescription,
+            modifier = modifier
+        )
     }
 }
 
 @Composable
-fun ToggableText(
+fun ToggleableText(
     text: String,
     isToggled: Boolean,
     modifier: Modifier = Modifier,
@@ -117,7 +121,7 @@ fun ValidatedOutlineInput(
 )
 
 @Composable
-expect fun loadXmlPicture(filename: String): ImageVector
+expect fun loadXmlPicture(name: String): ImageVector
 
 @Composable
 expect fun modifierForWindFace(): Modifier
