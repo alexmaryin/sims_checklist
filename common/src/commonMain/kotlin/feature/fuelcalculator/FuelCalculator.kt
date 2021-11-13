@@ -3,104 +3,144 @@ package feature.fuelcalculator
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.reduce
 import feature.checklists.model.Aircraft
-import feature.fuelcalculator.model.Performance
-import kotlin.math.roundToInt
 
 class FuelCalculator(
-    val aircraft: Aircraft,
-    val onBack: () -> Unit
+    aircraft: Aircraft,
+    private val onBack: () -> Unit
 ) {
 
-    val state = MutableValue(Model(aircraft.performance))
+    val state = MutableValue(FuelCalcViewState(aircraft.name, aircraft.performance))
 
     fun isFloatIncorrect(value: String, canBeZero: Boolean = true) = with(value.toFloatOrNull()) {
         this == null || (canBeZero && this < 0f) || (canBeZero.not() && this <= 0f)
     }
 
-    fun isIntIncorrect(value: String) = value.toIntOrNull() == null || value.toInt() >= state.value.performance.averageCruiseSpeed
+    fun isIntIncorrect(value: String, maxValue: Int = 100) =
+        value.toIntOrNull() == null || value.toInt() >= maxValue
 
-    fun onTripDistanceChange(new: String) {
+    fun onEvent(event: FuelUiEvent) {
+        when (event) {
+            is FuelUiEvent.TripDistanceChange -> onTripDistanceChange(event.new)
+            is FuelUiEvent.AlterDistanceChange -> onAlterDistanceChange(event.new)
+            is FuelUiEvent.HeadwindChange -> onHeadwindChange(event.new)
+            is FuelUiEvent.CruiseSpeedChange -> onCruiseSpeedChange(event.new)
+            is FuelUiEvent.FuelFlowChange -> onFuelFlowChange(event.new)
+            is FuelUiEvent.TaxiChange -> onTaxiChange(event.new)
+            is FuelUiEvent.ContingencyChange -> onContingencyChange(event.new)
+            is FuelUiEvent.ReserveTimeChange -> onReserveTimeChange(event.new)
+            is FuelUiEvent.FuelCapacityChange -> onFuelCapacityChange(event.new)
+            is FuelUiEvent.SnackBarClose -> state.reduce { it.copy(snackBar = null) }
+            is FuelUiEvent.Back -> onBack()
+        }
+    }
+
+
+    private fun onTripDistanceChange(new: String) {
         if (isFloatIncorrect(new).not()) state.reduce {
-            it.copy(tripDistance = new.toFloat())
+            it.copy(tripDistance = new.toFloat(), snackBar = null)
+        } else {
+            state.reduce {
+                it.copy(snackBar = FuelSnackBarState.ErrorHint("Only digits are allowed in trip distance"))
+            }
         }
     }
 
-    fun onAlterDistanceChange(new: String) {
+
+    private fun onAlterDistanceChange(new: String) {
         if (isFloatIncorrect(new).not()) state.reduce {
-            it.copy(alterDistance = new.toFloat())
+            it.copy(alterDistance = new.toFloat(), snackBar = null)
+        } else {
+            state.reduce {
+                it.copy(snackBar = FuelSnackBarState.ErrorHint("Only digits are allowed in alter. distance"))
+            }
         }
     }
 
-    fun onHeadwindChange(new: String) {
-        if (isIntIncorrect(new).not()) state.reduce {
-            it.copy(headWindComponent = new.toInt())
+    private fun onHeadwindChange(new: String) {
+        if (isIntIncorrect(new, state.value.performance.averageCruiseSpeed.toInt()).not()) state.reduce {
+            it.copy(headWindComponent = new.toInt(), snackBar = null)
+        } else {
+            state.reduce {
+                it.copy(snackBar = FuelSnackBarState.ErrorHint("Only digits are allowed in headwind and not exceed the speed of aircraft"))
+            }
         }
     }
 
-    fun onCruiseSpeedChange(new: String) {
+    private fun onCruiseSpeedChange(new: String) {
         if (isFloatIncorrect(new, false).not()) state.reduce {
-            it.copy(performance = it.performance.copy(
-                averageCruiseSpeed = new.toFloat()
-            ))
+            it.copy(
+                performance = it.performance.copy(averageCruiseSpeed = new.toFloat()),
+                snackBar = null
+            )
+        } else {
+            state.reduce {
+                it.copy(snackBar = FuelSnackBarState.ErrorHint("Only digits are allowed in cruise speed"))
+            }
         }
     }
 
-    fun onFuelFlowChange(new: String) {
+    private fun onFuelFlowChange(new: String) {
         if (isFloatIncorrect(new, false).not()) state.reduce {
-            it.copy(performance = it.performance.copy(
-                averageFuelFlow = new.toFloat()
-            ))
+            it.copy(
+                performance = it.performance.copy(averageFuelFlow = new.toFloat()),
+                snackBar = null
+            )
+        } else {
+            state.reduce {
+                it.copy(snackBar = FuelSnackBarState.ErrorHint("Only digits are allowed in fuel flow"))
+            }
         }
     }
 
-    fun onTaxiChange(new: String) {
+    private fun onTaxiChange(new: String) {
         if (isFloatIncorrect(new).not()) state.reduce {
-            it.copy(performance = it.performance.copy(
-                taxiFuel = new.toFloat()
-            ))
+            it.copy(
+                performance = it.performance.copy(taxiFuel = new.toFloat()),
+                snackBar = null
+            )
+        } else {
+            state.reduce {
+                it.copy(snackBar = FuelSnackBarState.ErrorHint("Only digits are allowed in taxi"))
+            }
         }
     }
 
-    fun onContingencyChange(new: String) {
-        if (isIntIncorrect(new).not()) state.reduce {
-            it.copy(performance = it.performance.copy(
-                contingency = new.toInt()
-            ))
+    private fun onContingencyChange(new: String) {
+        if (isIntIncorrect(new, 100).not()) state.reduce {
+            it.copy(
+                performance = it.performance.copy(contingency = new.toInt()),
+                snackBar = null
+            )
+        } else {
+            state.reduce {
+                it.copy(snackBar = FuelSnackBarState.ErrorHint("Only digits are allowed in contingency and not exceed 100%"))
+            }
         }
     }
 
-    fun onReserveTimeChange(new: String) {
-        if (isIntIncorrect(new).not()) state.reduce {
-            it.copy(performance = it.performance.copy(
-                reservesMinutes = new.toInt()
-            ))
+    private fun onReserveTimeChange(new: String) {
+        if (isIntIncorrect(new, 90).not()) state.reduce {
+            it.copy(
+                performance = it.performance.copy(reservesMinutes = new.toInt()),
+                snackBar = null
+            )
+        } else {
+            state.reduce {
+                it.copy(snackBar = FuelSnackBarState.ErrorHint("Only digits are allowed in reserve time and not exceed 90 min"))
+            }
         }
     }
 
-    fun onFuelCapacityChange(new: String) {
+    private fun onFuelCapacityChange(new: String) {
         if (isFloatIncorrect(new).not()) state.reduce {
-            it.copy(performance = it.performance.copy(
-                fuelCapacity = new.toFloat()
-            ))
+            it.copy(
+                performance = it.performance.copy(fuelCapacity = new.toFloat()),
+                snackBar = null
+            )
+        } else {
+            state.reduce {
+                it.copy(snackBar = FuelSnackBarState.ErrorHint("Only digits are allowed in fuel capacity"))
+            }
         }
-    }
-
-    data class Model(
-        val performance: Performance,
-        val tripDistance: Float = 100f,
-        val alterDistance: Float = 0f,
-        val headWindComponent: Int = 0,
-    ) {
-        private fun fuelInGallons(distance: Float) = with(performance) {
-            distance / (averageCruiseSpeed - headWindComponent) * averageFuelFlow
-        }.roundToInt()
-
-        private fun contFuel() = fuelInGallons(tripDistance * performance.contingency / 100)
-
-        private fun reserveFuel() = performance.reservesMinutes / 60 * performance.averageFuelFlow
-
-        fun blockFuel() = fuelInGallons(tripDistance) + fuelInGallons(alterDistance) + contFuel() + performance.taxiFuel + reserveFuel()
-
-        val fuelExceed get() = blockFuel() > performance.fuelCapacity
     }
 }

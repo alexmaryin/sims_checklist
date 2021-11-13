@@ -13,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusEvent
@@ -31,8 +32,6 @@ import feature.metarscreen.model.ErrorType
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ui.Dialog
-import ui.RelativeOutlineInput
-import ui.ValidatedOutlineInput
 import ui.modifierForWindFace
 
 @OptIn(ExperimentalAnimationApi::class, androidx.compose.ui.ExperimentalComposeUiApi::class, androidx.compose.foundation.ExperimentalFoundationApi::class)
@@ -41,8 +40,8 @@ fun MetarScreen(component: MetarScanner) {
 
     val state: WindViewState by component.state.subscribeAsState()
 
-    var userAngle by remember { mutableStateOf(state.data.metarAngle ?: state.data.userAngle) }
-    var icaoInput by remember { mutableStateOf("") }
+    var userAngle by rememberSaveable { mutableStateOf(state.data.metarAngle ?: state.data.userAngle) }
+    var icaoInput by rememberSaveable { mutableStateOf("") }
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 
