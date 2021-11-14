@@ -7,7 +7,7 @@ const val METER_TO_KNOT = 1.94384f
 
 sealed class MetarResponse {
     data class Success(val data: MetarTaf) : MetarResponse()
-    data class Error(val body: Exception) : MetarResponse()
+    data class Error(val body: ErrorUi) : MetarResponse()
 }
 
 

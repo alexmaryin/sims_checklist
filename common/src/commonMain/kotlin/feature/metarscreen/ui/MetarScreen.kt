@@ -28,7 +28,6 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import feature.metarscreen.MetarScanner
 import feature.metarscreen.MetarUiEvent
 import feature.metarscreen.WindViewState
-import feature.metarscreen.model.ErrorType
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ui.Dialog
@@ -45,14 +44,10 @@ fun MetarScreen(component: MetarScanner) {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 
-    if (state.isError) {
+    state.error?.let {
         LaunchedEffect(key1 = scaffoldState.snackbarHostState) {
             scaffoldState.snackbarHostState.showSnackbar(
-                message = when (state.error?.type) {
-                    ErrorType.SERVER_ERROR -> state.error!!.message
-                    ErrorType.METAR_PARSE_ERROR -> "Metar has no correct wind information"
-                    else -> "Can\\'t fetch metar from server"
-                },
+                message = it.message,
                 actionLabel = "Close"
             )
         }

@@ -47,16 +47,14 @@ class MetarScanner(
                                 rawTaf = response.data.taf,
                             ),
                             isLoading = false,
-                            isError = metar?.let { false } ?: true,
-                            error = metar?.let { null } ?: ErrorUi(ErrorType.METAR_PARSE_ERROR)
+                            error = metar?.let { null } ?: ErrorUi(ErrorType.METAR_PARSE_ERROR, "Metar has no correct wind information")
                         )
                     }
                 }
                 is MetarResponse.Error -> state.reduce {
                     it.copy(
                         isLoading = false,
-                        isError = true,
-                        error = ErrorUi(ErrorType.SERVER_ERROR, response.body.message ?: "")
+                        error = response.body
                     )
                 }
             }
