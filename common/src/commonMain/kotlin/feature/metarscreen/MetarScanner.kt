@@ -3,10 +3,10 @@ package feature.metarscreen
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.reduce
 import feature.metarscreen.model.*
+import feature.remote.service.MetarService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import feature.remote.service.MetarService
 
 class MetarScanner(
     private val metarService: MetarService,
@@ -38,7 +38,7 @@ class MetarScanner(
                 is MetarResponse.Success -> {
                     state.reduce {
                         val metar = response.data.parseMetar()
-                        it.copy(
+                        WindViewState(
                             data = MetarUi(
                                 metarAngle = metar?.windDirection ?: it.data.metarAngle,
                                 metarSpeedKt = metar?.windSpeedKt ?: it.data.metarSpeedKt,
@@ -47,9 +47,12 @@ class MetarScanner(
                                 rawTaf = response.data.taf,
                             ),
                             isLoading = false,
-                            error = metar?.let { null } ?: ErrorUi(ErrorType.METAR_PARSE_ERROR, "Metar has no correct wind information")
+                            error = if(metar == null) {
+                                ErrorUi(ErrorType.METAR_PARSE_ERROR, "Metar has no correct wind information")
+                            } else null
                         )
                     }
+                    println("SUCCESS: ${state.value}")
                 }
                 is MetarResponse.Error -> state.reduce {
                     it.copy(
