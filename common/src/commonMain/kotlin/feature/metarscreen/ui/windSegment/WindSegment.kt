@@ -8,14 +8,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
-import feature.metarscreen.MetarScanner
 
 @Composable
-fun WindSegment(minSide: Dp, component: MetarScanner) {
+fun WindSegment(minSide: Dp, angle: Int) {
     BoxWithConstraints(
         modifier = Modifier.size(min(400.dp, minSide - 50.dp)),
     ) {
         CircleFace(boxScope = this, color = MaterialTheme.colors.onSurface)
-        WindPointer(boxScope = this, component, color = MaterialTheme.colors.secondary)
+        WindPointer(boxScope = this, angle, color = MaterialTheme.colors.secondary)
     }
 }

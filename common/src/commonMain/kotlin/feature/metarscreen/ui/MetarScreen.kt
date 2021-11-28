@@ -7,8 +7,11 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
@@ -26,7 +29,6 @@ fun MetarScreen(component: MetarScanner) {
 
     val state: WindViewState by component.state.subscribeAsState()
 
-    val userAngle by rememberSaveable { mutableStateOf(state.data.metarAngle ?: state.data.userAngle) }
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 
@@ -73,10 +75,12 @@ fun MetarScreen(component: MetarScanner) {
         }
     ) {
         AdaptiveLayout { width, height ->
-            WindSegment(min(width, height), component)
+            WindSegment(min(width, height), state.data.metarAngle ?: state.data.userAngle)
 
-            Column {
-                WindSlider(state.data.metarAngle ?: userAngle) { value ->
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                WindSlider(state.data.metarAngle ?: state.data.userAngle) { value ->
                     component.onEvent(MetarUiEvent.SubmitAngle(value))
                 }
 
