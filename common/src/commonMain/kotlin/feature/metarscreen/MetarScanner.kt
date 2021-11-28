@@ -3,7 +3,7 @@ package feature.metarscreen
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.reduce
 import feature.metarscreen.model.*
-import feature.remote.service.MetarService
+import feature.remote.metarService.MetarService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch

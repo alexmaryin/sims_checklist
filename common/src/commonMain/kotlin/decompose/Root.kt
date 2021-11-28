@@ -12,7 +12,7 @@ import feature.checklists.Checklists
 import feature.fuelcalculator.FuelCalculator
 import feature.metarscreen.MetarScanner
 import repository.AircraftRepository
-import feature.remote.service.MetarService
+import feature.remote.metarService.MetarService
 import feature.metarscreen.ui.MetarScreen
 import ui.AircraftListScreen
 import feature.checklistDetails.ui.ChecklistDetailsScreen

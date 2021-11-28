@@ -1,4 +1,4 @@
-package feature.remote.service
+package feature.remote.metarService
 
 import feature.metarscreen.model.ErrorType
 import feature.metarscreen.model.ErrorUi

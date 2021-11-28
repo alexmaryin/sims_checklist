@@ -5,7 +5,7 @@ import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import decompose.Root
 import decompose.SimViewState
-import feature.remote.service.MetarService
+import feature.remote.metarService.MetarService
 
 fun main() = application {
 

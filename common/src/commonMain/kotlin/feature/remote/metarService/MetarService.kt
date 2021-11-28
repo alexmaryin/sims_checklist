@@ -1,4 +1,4 @@
-package feature.remote.service
+package feature.remote.metarService
 
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
