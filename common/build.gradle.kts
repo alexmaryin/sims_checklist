@@ -38,7 +38,7 @@ kotlin {
                 implementation ("io.ktor:ktor-client-logging:1.6.5")
                 implementation ("io.ktor:ktor-client-serialization:1.6.5")
                 implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
-                implementation ("ch.qos.logback:logback-classic:1.2.3")
+                implementation ("ch.qos.logback:logback-classic:1.2.7")
             }
         }
         val commonTest by getting {
@@ -48,7 +48,7 @@ kotlin {
         }
         named("androidMain") {
             dependencies {
-                api("androidx.appcompat:appcompat:1.3.1")
+                api("androidx.appcompat:appcompat:1.4.0")
                 api("androidx.core:core-ktx:1.7.0")
             }
         }

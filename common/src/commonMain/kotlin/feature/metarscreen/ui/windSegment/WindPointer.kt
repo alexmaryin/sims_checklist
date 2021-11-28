@@ -1,4 +1,4 @@
-package feature.metarscreen.ui
+package feature.metarscreen.ui.windSegment
 
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState

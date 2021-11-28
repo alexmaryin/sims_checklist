@@ -1,4 +1,4 @@
-package feature.metarscreen.ui
+package feature.metarscreen.ui.windSegment
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
@@ -77,7 +77,7 @@ fun DegreesLabels(boxScope: BoxScope, radius: Dp, color: Color) {
                     .rotate(angle.toFloat())
                     .offset(0.dp, 30.dp - radius),
                 style = LocalTextStyle.current.copy(
-                    fontSize = 24.sp,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.Light
                 ),
                 color = color
