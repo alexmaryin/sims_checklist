@@ -1,23 +1,9 @@
 package feature.metarscreen.model
 
-import kotlinx.serialization.Serializable
+import services.metarService.model.MetarTaf
 import kotlin.math.roundToInt
 
 const val METER_TO_KNOT = 1.94384f
-
-sealed class MetarResponse {
-    data class Success(val data: MetarTaf) : MetarResponse()
-    data class Error(val body: ErrorUi) : MetarResponse()
-}
-
-
-@Serializable
-data class MetarTaf(
-    val icao: String,
-    val name: String,
-    val metar: String,
-    val taf: String
-)
 
 data class Metar(
     val icao: String,

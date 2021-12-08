@@ -2,6 +2,8 @@ import org.jetbrains.compose.compose
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val decomposeVersion = "0.4.0"
+val koinVersion= "3.1.4"
+val ktorVersion = "1.6.6"
 
 plugins {
     id("com.android.library")
@@ -30,13 +32,13 @@ kotlin {
                 implementation("com.arkivanov.decompose:extensions-compose-jetbrains:$decomposeVersion")
                 // Serialization
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
-                // Kodein-DI
-//                implementation("org.kodein.di:kodein-di:7.9.0")
+                // Koin-DI
+                implementation("io.insert-koin:koin-core:$koinVersion")
                 // Ktor
-                implementation ("io.ktor:ktor-client-core:1.6.5")
-                implementation ("io.ktor:ktor-client-cio:1.6.5")
-                implementation ("io.ktor:ktor-client-logging:1.6.5")
-                implementation ("io.ktor:ktor-client-serialization:1.6.5")
+                implementation ("io.ktor:ktor-client-core:$ktorVersion")
+                implementation ("io.ktor:ktor-client-cio:$ktorVersion")
+                implementation ("io.ktor:ktor-client-logging:$ktorVersion")
+                implementation ("io.ktor:ktor-client-serialization:$ktorVersion")
                 implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
                 implementation ("ch.qos.logback:logback-classic:1.2.7")
             }
@@ -50,6 +52,8 @@ kotlin {
             dependencies {
                 api("androidx.appcompat:appcompat:1.4.0")
                 api("androidx.core:core-ktx:1.7.0")
+                // Koin DI
+                implementation("io.insert-koin:koin-android:$koinVersion")
             }
         }
     }
@@ -61,8 +65,8 @@ android {
     defaultConfig {
         minSdkVersion(22)
         targetSdkVersion(31)
-        versionCode = 4
-        versionName = "1.0"
+//        versionCode = 4
+//        versionName = "1.0"
     }
 
     compileOptions {

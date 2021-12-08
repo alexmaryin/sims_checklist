@@ -5,6 +5,7 @@ plugins {
 }
 
 val decomposeVersion = "0.4.0"
+//val koinVersion= "3.1.4"
 
 android {
     compileSdkVersion(31)
@@ -30,4 +31,6 @@ dependencies {
     implementation("com.arkivanov.decompose:extensions-compose-jetbrains:$decomposeVersion")
     implementation("androidx.core:core-ktx:1.7.0")
     implementation(kotlin("stdlib-jdk7", "1.5.31"))
+    // Koin DI
+//    implementation("io.insert-koin:koin-android:$koinVersion")
 }

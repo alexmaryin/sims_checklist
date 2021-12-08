@@ -35,7 +35,7 @@ fun MetarScreen(component: MetarScanner) {
     state.error?.let {
         LaunchedEffect(key1 = scaffoldState.snackbarHostState) {
             scaffoldState.snackbarHostState.showSnackbar(
-                message = it.message,
+                message = it,
                 actionLabel = "Close"
             )
         }
@@ -86,6 +86,15 @@ fun MetarScreen(component: MetarScanner) {
 
                 IcaoInput(state.isLoading.not()) { icao ->
                     component.onEvent(MetarUiEvent.SubmitICAO(icao.uppercase(), scope))
+                }
+
+                AnimatedVisibility(
+                    visible = state.airport != null,
+                    enter = fadeIn() + slideInVertically(),
+                    exit = fadeOut() + slideOutVertically(),
+                    modifier = Modifier.padding(8.dp)
+                ) {
+                    state.airport?.let { AirportInfo(it) }
                 }
 
                 AnimatedVisibility(

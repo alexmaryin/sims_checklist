@@ -4,13 +4,17 @@ import androidx.compose.ui.window.application
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import decompose.Root
-import decompose.SimViewState
-import feature.remote.metarService.MetarService
+import di.apiModule
+import di.dbModule
+import org.koin.core.context.startKoin
 
 fun main() = application {
 
-    val service = MetarService.create()
-    val root = Root(DefaultComponentContext(LifecycleRegistry()), SimViewState().aircraftRepository, service)
+    startKoin {
+        modules(dbModule, apiModule)
+    }
+
+    val root = Root(DefaultComponentContext(LifecycleRegistry()))
 
     Window(
         title = "Sims checklists",
@@ -20,3 +24,4 @@ fun main() = application {
         }
     }
 }
+
