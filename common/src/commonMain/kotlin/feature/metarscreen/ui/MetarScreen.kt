@@ -75,7 +75,11 @@ fun MetarScreen(component: MetarScanner) {
         }
     ) {
         AdaptiveLayout { width, height ->
-            WindSegment(min(width, height), state.data.metarAngle ?: state.data.userAngle)
+            WindSegment(
+                min(width, height),
+                state.data.metarAngle ?: state.data.userAngle,
+                state.airport?.runways?.first()?.lowHeading ?: 0
+            )
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally

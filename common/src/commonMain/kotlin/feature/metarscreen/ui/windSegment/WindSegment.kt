@@ -10,11 +10,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 
 @Composable
-fun WindSegment(minSide: Dp, angle: Int) {
+fun WindSegment(minSide: Dp, windAngle: Int, runwayAngle: Int) {
     BoxWithConstraints(
         modifier = Modifier.size(min(400.dp, minSide - 50.dp)),
     ) {
         CircleFace(boxScope = this, color = MaterialTheme.colors.onSurface)
-        WindPointer(boxScope = this, angle, color = MaterialTheme.colors.secondary)
+        Runway(boxScope = this, runwayAngle)
+        WindPointer(boxScope = this, windAngle, color = MaterialTheme.colors.secondary)
     }
 }
