@@ -1,5 +1,5 @@
 buildscript {
-    val composeVersion = "1.0.0"
+    val composeVersion = "1.0.1-rc2"
 
     repositories {
         mavenCentral()
@@ -9,8 +9,8 @@ buildscript {
 
     dependencies {
         classpath("org.jetbrains.compose:compose-gradle-plugin:$composeVersion")
-        classpath("com.android.tools.build:gradle:7.0.0")
-        classpath(kotlin("gradle-plugin", version = "1.5.31"))
+        classpath("com.android.tools.build:gradle:7.0.4")
+        classpath(kotlin("gradle-plugin", version = "1.6.10"))
     }
 }
 
