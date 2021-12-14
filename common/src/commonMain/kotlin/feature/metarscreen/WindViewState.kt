@@ -8,5 +8,6 @@ data class WindViewState(
     val airport: Airport? = null,
     val isLoading: Boolean = false,
     val error: String? = null,
-    val showInfo: Boolean = false
+    val showInfo: Boolean = false,
+    val runwayHeading: Int = 0,
 )

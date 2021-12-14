@@ -19,6 +19,10 @@ class MetarScanner(
     val onBack: () -> Unit
 ) : KoinComponent {
 
+    data class Loading(var loadMetar: Boolean = false, var loadAirport: Boolean = false) {
+        val state get() = loadMetar || loadAirport
+    }
+
     private val metarService: MetarService by inject()
     private val airportService: AirportService by inject()
 
@@ -27,9 +31,12 @@ class MetarScanner(
     private var metarJob: Job? = null
     private var airportJob: Job? = null
 
+    private val combineLoading = Loading()
+
     fun onEvent(event: MetarUiEvent) = when (event) {
         is MetarUiEvent.SubmitAngle -> submitAngle(event.new)
         is MetarUiEvent.SubmitICAO -> submitICAO(event.station, event.scope)
+        is MetarUiEvent.SubmitRunwayHeading -> submitRunwayHeading(event.new)
         is MetarUiEvent.ShowInfoDialog -> showInfoDialog(true)
         is MetarUiEvent.DismissInfoDialog -> showInfoDialog(false)
     }
@@ -40,10 +47,18 @@ class MetarScanner(
         state.value = WindViewState(data = MetarUi(userAngle = new))
     }
 
+    private fun submitRunwayHeading(new: Int) {
+        state.reduce {
+            it.copy(
+                runwayHeading = new
+            )
+        }
+    }
+
     private fun setErrorState(error: Result.Error) {
         state.reduce {
             it.copy(
-                isLoading = false,
+                isLoading = combineLoading.state,
                 error = error.message
             )
         }
@@ -53,6 +68,7 @@ class MetarScanner(
         val response = metarService.getMetar(station)
         response.forSuccess { metarApi ->
             state.reduce {
+                combineLoading.loadMetar = false
                 val metar = metarApi.parseMetar()
                 it.copy(
                     data = MetarUi(
@@ -62,7 +78,7 @@ class MetarScanner(
                         rawMetar = metarApi.metar,
                         rawTaf = metarApi.taf,
                     ),
-                    isLoading = false,
+                    isLoading = combineLoading.state,
                     error = if (metar == null) { "Metar has no correct wind information" } else null
                 )
             }
@@ -73,10 +89,12 @@ class MetarScanner(
     private suspend fun fetchAirport(icao: String) {
         val response = airportService.getAirportByICAO(icao)
         response.forSuccess { airport ->
+            combineLoading.loadAirport = false
             state.reduce {
                 it.copy(
                     airport = airport,
-                    isLoading = false
+                    isLoading = combineLoading.state,
+                    runwayHeading = airport.runways.first().lowHeading
                 )
             }
         }
@@ -85,7 +103,9 @@ class MetarScanner(
 
     private fun submitICAO(station: String, scope: CoroutineScope) {
         // Say to Ui that loading has started
-        state.reduce { it.copy(isLoading = true) }
+        combineLoading.loadMetar = true
+        combineLoading.loadAirport = true
+        state.reduce { it.copy(isLoading = combineLoading.state, airport = null) }
         // Start requests to METAR and Airport API in parallel
         metarJob = scope.launch { fetchMetar(station) }
         airportJob = scope.launch { fetchAirport(station) }

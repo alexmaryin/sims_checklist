@@ -79,7 +79,7 @@ fun MetarScreen(component: MetarScanner) {
             WindSegment(
                 min(width, height),
                 state.data.metarAngle ?: state.data.userAngle,
-                state.airport?.runways?.first()?.lowHeading ?: 0
+                state.runwayHeading
             )
 
             Column(
@@ -99,7 +99,11 @@ fun MetarScreen(component: MetarScanner) {
                     exit = fadeOut() + slideOutVertically(),
                     modifier = Modifier.padding(8.dp)
                 ) {
-                    state.airport?.let { AirportInfo(it) }
+                    state.airport?.let { airport ->
+                        AirportInfo(airport) {
+                            component.onEvent(MetarUiEvent.SubmitRunwayHeading(it))
+                        }
+                    }
                 }
 
                 AnimatedVisibility(

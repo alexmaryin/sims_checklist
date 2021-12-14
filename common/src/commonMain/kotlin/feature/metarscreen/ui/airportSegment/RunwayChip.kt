@@ -10,19 +10,16 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.unit.toSize
 
 @Composable
-fun RunwayChip(text: String, isDefault: Boolean = false, onClick: (Rect) -> Unit) {
+fun RunwayChip(text: String, onClick: (Rect) -> Unit) {
 
     var chipRect by remember { mutableStateOf(Rect.Zero) }
 
@@ -34,9 +31,6 @@ fun RunwayChip(text: String, isDefault: Boolean = false, onClick: (Rect) -> Unit
                 chipRect = it.boundsInParent()
             }
     ) {
-
-        if (isDefault) onClick(chipRect)
-
         Text(
             modifier = Modifier
                 .padding(12.dp)
