@@ -19,6 +19,7 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import feature.metarscreen.MetarScanner
 import feature.metarscreen.MetarUiEvent
 import feature.metarscreen.WindViewState
+import feature.metarscreen.ui.airportSegment.AirportInfo
 import feature.metarscreen.ui.windSegment.WindSegment
 import ui.AdaptiveLayout
 import ui.Dialog

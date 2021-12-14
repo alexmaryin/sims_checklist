@@ -1,4 +1,4 @@
-package feature.metarscreen.ui
+package feature.metarscreen.ui.airportSegment
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
@@ -9,6 +9,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import services.airportService.model.Airport
+import ui.FlowRow
 
 @Composable
 fun AirportInfo(airport: Airport) {
@@ -20,11 +21,19 @@ fun AirportInfo(airport: Airport) {
             color = MaterialTheme.colors.secondary
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Row {
-            airport.runways.forEach { runway ->
-                Text("${runway.lowNumber}/${runway.highNumber}")
-                Spacer(modifier = Modifier.width(8.dp))
+
+        Box {
+            FlowRow(spacing = 8.dp) {
+                airport.runways.forEachIndexed { index, runway ->
+                    val selected = index == 0
+                    RunwayChip("${runway.lowNumber}/${runway.highNumber}", selected) { rect ->
+                        println("$rect")
+                    }
+                }
             }
+
         }
+
+
     }
 }
