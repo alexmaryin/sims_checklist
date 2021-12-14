@@ -33,8 +33,8 @@ fun ChipSelector(rect: Rect) {
             color = Color(0xff00c853),
             topLeft = Offset(selectorRect.value.left, selectorRect.value.top),
             size = selectorRect.value.size,
-            style = Stroke(width = 4f),
-            cornerRadius = CornerRadius(30f)
+            style = Stroke(width = 4.dp.toPx()),
+            cornerRadius = CornerRadius(30.dp.toPx())
         )
     }
 }

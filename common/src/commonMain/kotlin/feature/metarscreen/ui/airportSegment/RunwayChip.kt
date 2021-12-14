@@ -36,8 +36,8 @@ fun RunwayChip(text: String, onClick: (Rect) -> Unit) {
                 .padding(12.dp)
                 .clickable { onClick(chipRect) },
             text = text,
-            color = Color(0xFF2C2C2C),
-            fontSize = 24.sp,
+            color = MaterialTheme.colors.onSurface,
+            fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold
         )
     }
