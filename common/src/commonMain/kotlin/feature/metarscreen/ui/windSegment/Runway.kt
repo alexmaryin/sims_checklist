@@ -4,9 +4,13 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.BoxWithConstraintsScope
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
@@ -15,28 +19,37 @@ import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
+import androidx.compose.ui.unit.sp
+import feature.metarscreen.model.RunwayUi
 import ui.loadXmlPicture
 
 @Composable
-fun Runway(boxScope: BoxWithConstraintsScope, angle: Int) {
-    boxScope.apply {
+fun Runway(data: RunwayUi) {
 
-        val animatedAngle = animateFloatAsState(
-            targetValue = (if (angle >= 180) angle - 180 else angle + 180).toFloat(),
-            animationSpec = tween(
-                durationMillis = 500,
-                delayMillis = 50,
-                easing = FastOutSlowInEasing
-            )
+    val animatedAngle = animateFloatAsState(
+        targetValue = data.angle.toFloat(),
+        animationSpec = tween(
+            durationMillis = 500,
+            delayMillis = 50,
+            easing = FastOutSlowInEasing
         )
+    )
 
+    LaunchedEffect(data) {
+
+    }
+
+    BoxWithConstraints(
+        modifier = Modifier
+            .rotate(animatedAngle.value)
+    ) {
         Image(
             imageVector = loadXmlPicture("runway"),
             contentDescription = "runway",
             modifier = Modifier
-                .align(Alignment.Center)
-                .rotate(animatedAngle.value)
                 .size(min(maxWidth, maxHeight))
                 .graphicsLayer { alpha = 0.99f }
                 .drawWithContent {
@@ -57,8 +70,28 @@ fun Runway(boxScope: BoxWithConstraintsScope, angle: Int) {
                         ),
                         blendMode = BlendMode.DstIn
                     )
-
                 }
+        )
+
+        Text(
+            text = data.low,
+            color = MaterialTheme.colors.onSurface,
+            fontWeight = FontWeight.Bold,
+            fontSize = 18.sp,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 5.dp)
+        )
+
+        Text(
+            text = data.high,
+            color = MaterialTheme.colors.onSurface,
+            fontWeight = FontWeight.Bold,
+            fontSize = 18.sp,
+            modifier = Modifier
+                .rotate(180f)
+                .align(Alignment.TopCenter)
+                .padding(top = 5.dp)
         )
     }
 }

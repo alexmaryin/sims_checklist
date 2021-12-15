@@ -3,7 +3,9 @@ package feature.metarscreen
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.reduce
 import feature.metarscreen.model.MetarUi
+import feature.metarscreen.model.RunwayUi
 import feature.metarscreen.model.parseMetar
+import feature.metarscreen.model.toUi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -36,7 +38,7 @@ class MetarScanner(
     fun onEvent(event: MetarUiEvent) = when (event) {
         is MetarUiEvent.SubmitAngle -> submitAngle(event.new)
         is MetarUiEvent.SubmitICAO -> submitICAO(event.station, event.scope)
-        is MetarUiEvent.SubmitRunwayHeading -> submitRunwayHeading(event.new)
+        is MetarUiEvent.SubmitRunway-> submitRunway(event.new)
         is MetarUiEvent.ShowInfoDialog -> showInfoDialog(true)
         is MetarUiEvent.DismissInfoDialog -> showInfoDialog(false)
     }
@@ -47,10 +49,10 @@ class MetarScanner(
         state.value = WindViewState(data = MetarUi(userAngle = new))
     }
 
-    private fun submitRunwayHeading(new: Int) {
+    private fun submitRunway(new: RunwayUi) {
         state.reduce {
             it.copy(
-                runwayHeading = new
+                runway = new
             )
         }
     }
@@ -94,7 +96,7 @@ class MetarScanner(
                 it.copy(
                     airport = airport,
                     isLoading = combineLoading.state,
-                    runwayHeading = airport.runways.first().lowHeading
+                    runway = airport.runways.first().toUi()
                 )
             }
         }

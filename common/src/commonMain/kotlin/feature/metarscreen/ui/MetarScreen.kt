@@ -19,6 +19,7 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import feature.metarscreen.MetarScanner
 import feature.metarscreen.MetarUiEvent
 import feature.metarscreen.WindViewState
+import feature.metarscreen.model.toUi
 import feature.metarscreen.ui.airportSegment.AirportInfo
 import feature.metarscreen.ui.windSegment.WindSegment
 import ui.AdaptiveLayout
@@ -79,7 +80,7 @@ fun MetarScreen(component: MetarScanner) {
             WindSegment(
                 min(width, height),
                 state.data.metarAngle ?: state.data.userAngle,
-                state.runwayHeading
+                state.runway
             )
 
             Column(
@@ -100,8 +101,8 @@ fun MetarScreen(component: MetarScanner) {
                     modifier = Modifier.padding(8.dp)
                 ) {
                     state.airport?.let { airport ->
-                        AirportInfo(airport) {
-                            component.onEvent(MetarUiEvent.SubmitRunwayHeading(it))
+                        AirportInfo(airport) { runway ->
+                            component.onEvent(MetarUiEvent.SubmitRunway(runway.toUi()))
                         }
                     }
                 }

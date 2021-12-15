@@ -12,10 +12,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import services.airportService.model.Airport
+import services.airportService.model.Runway
 import ui.FlowRow
 
 @Composable
-fun AirportInfo(airport: Airport, onSelectRunway: (Int) -> Unit) {
+fun AirportInfo(airport: Airport, onSelectRunway: (Runway) -> Unit) {
     Column {
         Text(
             text = airport.name,
@@ -33,7 +34,7 @@ fun AirportInfo(airport: Airport, onSelectRunway: (Int) -> Unit) {
                 airport.runways.forEach { runway ->
                     RunwayChip("${runway.lowNumber}/${runway.highNumber}") { rect ->
                         selectorRect = rect
-                        onSelectRunway(runway.lowHeading)
+                        onSelectRunway(runway)
                     }
                 }
             }
