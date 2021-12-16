@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
@@ -37,10 +36,6 @@ fun Runway(data: RunwayUi) {
             easing = FastOutSlowInEasing
         )
     )
-
-    LaunchedEffect(data) {
-
-    }
 
     BoxWithConstraints(
         modifier = Modifier

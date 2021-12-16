@@ -13,8 +13,9 @@ import feature.metarscreen.model.RunwayUi
 @Composable
 fun WindSegment(minSide: Dp, windAngle: Int, runway: RunwayUi) {
     BoxWithConstraints(
-        modifier = Modifier.size(min(400.dp, minSide - 50.dp)),
+        modifier = Modifier.size(min(400.dp, minSide)),
     ) {
+
         CircleFace(boxScope = this, color = MaterialTheme.colors.onSurface)
         Runway(runway)
         WindPointer(boxScope = this, windAngle, color = MaterialTheme.colors.secondary)
