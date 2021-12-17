@@ -38,7 +38,6 @@ class MetarScanner(
         is MetarUiEvent.SubmitRunway-> submitRunway(event.new)
         is MetarUiEvent.ShowInfoDialog -> showInfoDialog(true)
         is MetarUiEvent.DismissInfoDialog -> showInfoDialog(false)
-        is MetarUiEvent.ShowRunwayWind -> showRunwayWind()
     }
 
     private fun submitAngle(new: Int) {
@@ -49,9 +48,16 @@ class MetarScanner(
 
     private fun submitRunway(new: RunwayUi) {
         state.reduce {
-            it.copy(
-                runway = new
-            )
+            if (state.value.data.metarAngle != null && state.value.data.metarSpeedKt != null) {
+                it.copy(
+                    runway = state.value.runway.withCalculatedWind(
+                        state.value.data.metarSpeedKt!!,
+                        state.value.data.metarAngle!!
+                    )
+                )
+            } else {
+                it.copy(runway = new)
+            }
         }
     }
 
@@ -114,19 +120,6 @@ class MetarScanner(
     private fun showInfoDialog(show: Boolean = true) {
         state.reduce {
             it.copy(showInfo = show)
-        }
-    }
-
-    private fun showRunwayWind() {
-        if (state.value.data.metarAngle != null && state.value.data.metarSpeedKt != null) {
-            state.reduce {
-                it.copy(
-                    runway = state.value.runway.withCalculatedWind(
-                        state.value.data.metarSpeedKt!!,
-                        state.value.data.metarAngle!!
-                    )
-                )
-            }
         }
     }
 }

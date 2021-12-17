@@ -4,7 +4,8 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraintsScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.MaterialTheme
@@ -12,6 +13,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.BlendMode
@@ -26,7 +28,7 @@ import feature.metarscreen.model.RunwayUi
 import ui.loadXmlPicture
 
 @Composable
-fun Runway(data: RunwayUi) {
+fun Runway(boxScope: BoxWithConstraintsScope, data: RunwayUi) {
 
     val animatedAngle = animateFloatAsState(
         targetValue = data.lowHeading.toFloat(),
@@ -36,16 +38,17 @@ fun Runway(data: RunwayUi) {
             easing = FastOutSlowInEasing
         )
     )
-
-    BoxWithConstraints(
+    Box(
         modifier = Modifier
+            .padding(5.dp)
             .rotate(animatedAngle.value)
+            .clipToBounds()
     ) {
         Image(
             imageVector = loadXmlPicture("runway"),
             contentDescription = "runway",
             modifier = Modifier
-                .size(min(maxWidth, maxHeight))
+                .size(min(boxScope.maxWidth, boxScope.maxHeight))
                 .graphicsLayer { alpha = 0.99f }
                 .drawWithContent {
                     val gradientHeight = size.height / 5
@@ -75,7 +78,6 @@ fun Runway(data: RunwayUi) {
             fontSize = 18.sp,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 5.dp)
         )
 
         Text(
@@ -86,7 +88,6 @@ fun Runway(data: RunwayUi) {
             modifier = Modifier
                 .rotate(180f)
                 .align(Alignment.TopCenter)
-                .padding(top = 5.dp)
         )
     }
 }

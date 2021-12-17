@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
@@ -101,7 +100,6 @@ fun MetarScreen(component: MetarScanner) {
                     state.airport?.let { airport ->
                         AirportInfo(airport) { runway ->
                             component.onEvent(MetarUiEvent.SubmitRunway(runway.toUi()))
-                            component.onEvent(MetarUiEvent.ShowRunwayWind)
                         }
                     }
                 }

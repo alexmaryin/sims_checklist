@@ -9,5 +9,4 @@ sealed class MetarUiEvent {
     data class SubmitRunway(val new: RunwayUi) : MetarUiEvent()
     object ShowInfoDialog : MetarUiEvent()
     object DismissInfoDialog : MetarUiEvent()
-    object ShowRunwayWind : MetarUiEvent()
 }
