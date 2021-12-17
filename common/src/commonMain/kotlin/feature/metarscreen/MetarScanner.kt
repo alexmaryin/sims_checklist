@@ -50,7 +50,7 @@ class MetarScanner(
         state.reduce {
             if (state.value.data.metarAngle != null && state.value.data.metarSpeedKt != null) {
                 it.copy(
-                    runway = state.value.runway.withCalculatedWind(
+                    runway = new.withCalculatedWind(
                         state.value.data.metarSpeedKt!!,
                         state.value.data.metarAngle!!
                     )

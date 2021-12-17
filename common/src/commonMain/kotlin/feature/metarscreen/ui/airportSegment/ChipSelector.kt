@@ -4,9 +4,11 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateRectAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
@@ -17,17 +19,18 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun ChipSelector(rect: Rect) {
 
+    if (rect == Rect.Zero) return
+
     val selectorRect = animateRectAsState(
         targetValue = rect,
         animationSpec = tween(
-            durationMillis = 300,
+            durationMillis = 200,
             easing = FastOutSlowInEasing
         )
     )
 
     Canvas(
         modifier = Modifier
-            .size(rect.width.dp, rect.height.dp)
     ) {
         drawRoundRect(
             color = Color(0xff00c853),
