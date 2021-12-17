@@ -2,10 +2,7 @@ package feature.metarscreen
 
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.reduce
-import feature.metarscreen.model.MetarUi
-import feature.metarscreen.model.RunwayUi
-import feature.metarscreen.model.parseMetar
-import feature.metarscreen.model.toUi
+import feature.metarscreen.model.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -41,6 +38,7 @@ class MetarScanner(
         is MetarUiEvent.SubmitRunway-> submitRunway(event.new)
         is MetarUiEvent.ShowInfoDialog -> showInfoDialog(true)
         is MetarUiEvent.DismissInfoDialog -> showInfoDialog(false)
+        is MetarUiEvent.ShowRunwayWind -> showRunwayWind()
     }
 
     private fun submitAngle(new: Int) {
@@ -116,6 +114,19 @@ class MetarScanner(
     private fun showInfoDialog(show: Boolean = true) {
         state.reduce {
             it.copy(showInfo = show)
+        }
+    }
+
+    private fun showRunwayWind() {
+        if (state.value.data.metarAngle != null && state.value.data.metarSpeedKt != null) {
+            state.reduce {
+                it.copy(
+                    runway = state.value.runway.withCalculatedWind(
+                        state.value.data.metarSpeedKt!!,
+                        state.value.data.metarAngle!!
+                    )
+                )
+            }
         }
     }
 }

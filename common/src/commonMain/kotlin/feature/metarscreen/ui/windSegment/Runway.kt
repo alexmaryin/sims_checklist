@@ -29,7 +29,7 @@ import ui.loadXmlPicture
 fun Runway(data: RunwayUi) {
 
     val animatedAngle = animateFloatAsState(
-        targetValue = data.angle.toFloat(),
+        targetValue = data.lowHeading.toFloat(),
         animationSpec = tween(
             durationMillis = 500,
             delayMillis = 50,

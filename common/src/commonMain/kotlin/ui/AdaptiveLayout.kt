@@ -19,11 +19,11 @@ fun AdaptiveLayout(children: @Composable (width: Dp, height: Dp) -> Unit) {
         val width = maxWidth
         val height = maxHeight
         if (width > 600.dp) {
-            Row(modifier = layoutModifier.align(Alignment.TopCenter)) {
+            Row(modifier = layoutModifier) {
                 children(width, height)
             }
         } else {
-            Column(modifier = layoutModifier.align(Alignment.TopCenter)) {
+            Column(modifier = layoutModifier) {
                 children(width, height)
             }
         }

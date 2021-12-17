@@ -11,6 +11,8 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import feature.metarscreen.model.RunwayUi
+import feature.metarscreen.model.toUi
 import services.airportService.model.Airport
 import services.airportService.model.Runway
 import ui.FlowRow
@@ -37,6 +39,12 @@ fun AirportInfo(airport: Airport, onSelectRunway: (Runway) -> Unit) {
                         onSelectRunway(runway)
                     }
                 }
+                Text(
+                    text = "",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colors.secondary
+                )
             }
             ChipSelector(selectorRect)
         }

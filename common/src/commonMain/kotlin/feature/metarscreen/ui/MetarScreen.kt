@@ -83,9 +83,7 @@ fun MetarScreen(component: MetarScanner) {
                 state.runway
             )
 
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+            Column {
                 WindSlider(state.data.metarAngle ?: state.data.userAngle) { value ->
                     component.onEvent(MetarUiEvent.SubmitAngle(value))
                 }
@@ -103,6 +101,21 @@ fun MetarScreen(component: MetarScanner) {
                     state.airport?.let { airport ->
                         AirportInfo(airport) { runway ->
                             component.onEvent(MetarUiEvent.SubmitRunway(runway.toUi()))
+                            component.onEvent(MetarUiEvent.ShowRunwayWind)
+                        }
+                    }
+                }
+
+                AnimatedVisibility(
+                    visible = state.runway.wind != null,
+                    enter = fadeIn() + slideInVertically(),
+                    exit = fadeOut() + slideOutVertically(),
+                    modifier = Modifier.padding(8.dp)
+                ) {
+                    state.runway.wind?.let { (lowWind, highWind) ->
+                        Column(modifier = Modifier.padding(8.dp)) {
+                            RunwayWindInfo(state.runway.low, lowWind)
+                            RunwayWindInfo(state.runway.high, highWind)
                         }
                     }
                 }
