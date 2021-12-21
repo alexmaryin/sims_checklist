@@ -24,7 +24,7 @@ kotlin {
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)
-//                api(compose.materialIconsExtended)
+                api(compose.materialIconsExtended)
                 // Needed only for preview.
                 implementation(compose.preview)
                 // Decompose navigation library

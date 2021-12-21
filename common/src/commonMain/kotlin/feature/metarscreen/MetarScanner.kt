@@ -72,9 +72,9 @@ class MetarScanner(
 
     private suspend fun fetchMetar(station: String) {
         val response = metarService.getMetar(station)
+        combineLoading.loadMetar = false
         response.forSuccess { metarApi ->
             state.reduce {
-                combineLoading.loadMetar = false
                 val metar = metarApi.parseMetar()
                 it.copy(
                     data = MetarUi(
@@ -94,13 +94,13 @@ class MetarScanner(
 
     private suspend fun fetchAirport(icao: String) {
         val response = airportService.getAirportByICAO(icao)
+        combineLoading.loadAirport = false
         response.forSuccess { airport ->
-            combineLoading.loadAirport = false
             state.reduce {
                 it.copy(
                     airport = airport,
                     isLoading = combineLoading.state,
-                    runway = airport.runways.first().toUi()
+                    runway = airport.runways.firstOrNull()?.toUi() ?: RunwayUi()
                 )
             }
         }

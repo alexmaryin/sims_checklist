@@ -1,20 +1,14 @@
 package feature.metarscreen.ui
 
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.text.font.FontWeight
-import feature.metarscreen.model.WindComponent
+import feature.metarscreen.model.Wind
+import feature.metarscreen.ui.airportSegment.RunwayHeadwindBubble
+import feature.metarscreen.ui.airportSegment.RunwayTailwindBubble
 
 @Composable
-fun RunwayWindInfo(runwayName: String, wind: WindComponent) {
-
-    Text(
-        text = buildString {
-            append("For runway $runwayName ")
-            append(if (wind.crossWind >= 1) "crosswind is ${wind.crossWind} kt\n" else "no crosswind reported\n")
-            if (wind.headWind >= 1) append("Headwind - ${wind.headWind} Kt")
-            if (wind.tailWind >= 1) append("Tailwind - ${wind.tailWind} Kt")
-        },
-        fontWeight = FontWeight.Light
-    )
+fun RunwayWindInfo(runwayName: String, wind: Wind) {
+    when(wind) {
+        is Wind.LeftCrossHeadWind, is Wind.RightCrossHeadWind -> RunwayHeadwindBubble(runwayName, wind)
+        is Wind.LeftCrossTailWind, is Wind.RightCrossTailWind -> RunwayTailwindBubble(runwayName, wind)
+    }
 }
