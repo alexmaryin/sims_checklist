@@ -2,28 +2,28 @@ package ru.alexmaryin.simschecklist
 
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
-import androidx.compose.ui.graphics.Color
+import ui.utils.SimColors
 
 object Themes {
     val light = lightColors(
-        primary = Color(0xff3e2723),
-        primaryVariant = Color(0xff6a4f4b),
-        surface = Color(0xffefebe9),
-        secondary = Color(0xff212121),
-        secondaryVariant = Color(0xff00c853),
-        onPrimary = Color(0xfffff3e0),
-        onSecondary = Color(0xff212121),
-        onSurface = Color(0xff1b0000)
+        primary = SimColors.backgroundBrown,
+        primaryVariant = SimColors.accentBrown,
+        surface = SimColors.lightSurface,
+        secondary = SimColors.textDark,
+        secondaryVariant = SimColors.accentGreen,
+        onPrimary = SimColors.textLight,
+        onSecondary = SimColors.textDark,
+        onSurface = SimColors.textBlack
     )
 
     val dark = darkColors(
-        primary = Color(0xffd7ccc8),
-        primaryVariant = Color(0xff3e2723),
-        surface = Color(0xff212121),
-        secondary = Color(0xffa69b97),
-        secondaryVariant = Color(0xff00c853),
-        onPrimary = Color(0xff1b0000),
-        onSecondary = Color(0xff4e342e),
-        onSurface = Color(0xfffbe9e7)
+        primary = SimColors.backgroundLight,
+        primaryVariant = SimColors.backgroundBrown,
+        surface = SimColors.textDark,
+        secondary = SimColors.backgroundGray,
+        secondaryVariant = SimColors.accentGreen,
+        onPrimary = SimColors.textBlack,
+        onSecondary = SimColors.textBrown,
+        onSurface = SimColors.textUltraLight
     )
 }

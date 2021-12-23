@@ -7,10 +7,7 @@ import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
@@ -68,7 +65,7 @@ fun TopBarWithClearAction(caption: String, onBack: () -> Unit, onClear: () -> Un
     },
     actions = {
         IconButton(onClick = onClear) {
-            Icon(imageVector = Icons.Default.Clear, contentDescription = "Uncheck all")
+            Icon(imageVector = Icons.Default.CheckBoxOutlineBlank, contentDescription = "Uncheck all")
         }
     }
 )

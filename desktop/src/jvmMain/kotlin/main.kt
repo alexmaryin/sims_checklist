@@ -1,3 +1,4 @@
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
@@ -19,7 +20,8 @@ fun main() = application {
     Window(
         title = "Sims checklists",
         onCloseRequest = ::exitApplication) {
-        MaterialTheme(colors = Themes.light) {
+        val isDark = isSystemInDarkTheme()
+        MaterialTheme(colors = if (isDark) Themes.dark else Themes.light) {
             App(root)
         }
     }

@@ -17,6 +17,6 @@ fun WindSegment(minSide: Dp, windAngle: Int, runway: RunwayUi) {
     ) {
         CircleFace(boxScope = this, color = MaterialTheme.colors.onSurface)
         Runway(boxScope = this, runway)
-        WindPointer(boxScope = this, windAngle, color = MaterialTheme.colors.secondary)
+        WindPointer(boxScope = this, windAngle, color = MaterialTheme.colors.onSurface)
     }
 }

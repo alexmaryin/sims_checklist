@@ -4,6 +4,7 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraintsScope
 import androidx.compose.foundation.layout.padding
@@ -44,8 +45,9 @@ fun Runway(boxScope: BoxWithConstraintsScope, data: RunwayUi) {
             .rotate(animatedAngle.value)
             .clipToBounds()
     ) {
+        val filename = if(isSystemInDarkTheme()) "runway_dark" else "runway_light"
         Image(
-            imageVector = loadXmlPicture("runway"),
+            imageVector = loadXmlPicture(filename),
             contentDescription = "runway",
             modifier = Modifier
                 .size(min(boxScope.maxWidth, boxScope.maxHeight))

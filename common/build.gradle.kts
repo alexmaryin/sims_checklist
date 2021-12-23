@@ -15,7 +15,11 @@ plugins {
 
 kotlin {
     android()
-    jvm("desktop")
+    jvm("desktop") {
+        testRuns["test"].executionTask.configure {
+            useJUnitPlatform()
+        }
+    }
 
     sourceSets {
         named("commonMain") {
@@ -41,6 +45,8 @@ kotlin {
                 implementation ("io.ktor:ktor-client-serialization:$ktorVersion")
                 implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
                 implementation ("ch.qos.logback:logback-classic:1.2.7")
+                // Date-time
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.1")
             }
         }
         val commonTest by getting {
@@ -60,13 +66,11 @@ kotlin {
 }
 
 android {
-    compileSdkVersion(31)
+    compileSdk =31
 
     defaultConfig {
-        minSdkVersion(22)
-        targetSdkVersion(31)
-//        versionCode = 4
-//        versionName = "1.0"
+        minSdk =22
+        targetSdk =31
     }
 
     compileOptions {
