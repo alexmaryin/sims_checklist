@@ -54,19 +54,17 @@ fun AircraftListScreen(component: AircraftList) {
                                     clip = true
                                 )
                         )
-                        Box(
-                            modifier = Modifier.fillMaxWidth(),
-                            contentAlignment = Alignment.Center
+                        Row (
+                            modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally)
                         ) {
                             Text(
                                 text = item.name.uppercase(),
-                                modifier = Modifier.padding(8.dp),
+                                modifier = Modifier.padding(8.dp).weight(1f),
                                 color = MaterialTheme.colors.onSurface,
                                 textAlign = TextAlign.Center,
                                 style = LargeWithShadow()
                             )
                             IconButton(
-                                modifier = Modifier.align(Alignment.BottomEnd) ,
                                 onClick = { component.onCalculatorSelect(item.id) }
                             ) {
                                 Icon(imageVector = MyIcons.GasStation, contentDescription = "Open fuel calculator")

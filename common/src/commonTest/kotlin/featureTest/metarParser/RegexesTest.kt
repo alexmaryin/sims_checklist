@@ -88,21 +88,21 @@ internal class RegexesTest {
     }
 
     @Test
-    fun `Parses should find correct phenomenon information`() {
+    fun `Parser should find correct phenomenon information`() {
         val phenomenons = metarExamples.mapNotNull { raw ->
             MetarParser(raw).parse().phenomenons
         }
         assertTrue {
             phenomenons == listOf(
                 Phenomenons(all = setOf(WeatherPhenomenons.SHOWER, WeatherPhenomenons.SNOW, WeatherPhenomenons.DRIFTING),
-                    intensity = PhenomenonIntensity.DECREASING),
+                    intensity = PhenomenonIntensity.LIGHT),
                 Phenomenons(all = setOf(WeatherPhenomenons.FOG))
             )
         }
     }
 
     @Test
-    fun `Parses should find correct cloud layers information`() {
+    fun `Parser should find correct cloud layers information`() {
         val clouds = metarExamples.map { raw ->
             MetarParser(raw).parse().clouds
         }
@@ -129,7 +129,7 @@ internal class RegexesTest {
     }
 
     @Test
-    fun `Parses should find temperature information`() {
+    fun `Parser should find temperature information`() {
         val temperature = metarExamples.mapNotNull { raw ->
             MetarParser(raw).parse().temperature
         }
@@ -144,5 +144,13 @@ internal class RegexesTest {
                 Temperature(-57, -60),
             )
         }
+    }
+
+    @Test
+    fun `Parser should find pressure information`() {
+        val pressure = metarExamples.mapNotNull { raw ->
+            MetarParser(raw).parse().pressureQNH
+        }
+        println(pressure)
     }
 }

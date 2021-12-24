@@ -4,6 +4,7 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import kotlin.math.round
 
 data class Metar(
     val station: String?,
@@ -12,7 +13,8 @@ data class Metar(
     val visibility: Visibility?,
     val phenomenons: Phenomenons?,
     val clouds: List<CloudLayer>,
-    val temperature: Temperature?
+    val temperature: Temperature?,
+    val pressureQNH: PressureQNH?
 ) {
     val ceilingAndVisibilityOK get() = clouds.isEmpty() && visibility?.distAll == 9999 && phenomenons != null
 }
@@ -60,13 +62,20 @@ data class Temperature(
     val dewPoint: Int
 )
 
+data class PressureQNH(
+    val hPa: Int,
+    val inHg: Float
+)
+
+const val ONE_INCH_HG = 33.863886666667
+
 enum class WindUnit { KT, MPS, KPH }
 
 enum class VisibilityUnit { METERS, SM }
 
 enum class VisibilityDirection { NORTH, NORTH_EAST, EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST, NORTH_WEST }
 
-enum class PhenomenonIntensity { NONE, INCREASING, DECREASING }
+enum class PhenomenonIntensity { NONE, HIGH, LIGHT }
 
 enum class WeatherPhenomenons(val code: String) {
     DRIZZLE("DZ"), RAIN("RA"), SNOW("SN"), SNOW_GRAINS("SG"), ICE_PELLETS("PL"), SMALL_HAIL("GS"),
@@ -81,6 +90,7 @@ enum class CloudsType(val code: String) {
 }
 
 enum class CumulusType { CUMULONIMBUS, TOWERING_CUMULUS }
+
 
 class MetarParser(raw: String) {
     private val parts = raw.split(" ", "\t")
@@ -177,8 +187,8 @@ class MetarParser(raw: String) {
             MetarGroups.PHENOMENONS.find(part)?.let { match ->
                 if (match.groupValues[1].isNotBlank()) {
                     intensity = when(match.groupValues[1]) {
-                        "+" -> PhenomenonIntensity.INCREASING
-                        "-" -> PhenomenonIntensity.DECREASING
+                        "+" -> PhenomenonIntensity.HIGH
+                        "-" -> PhenomenonIntensity.LIGHT
                         else -> PhenomenonIntensity.NONE
                     }
                 }
@@ -226,8 +236,27 @@ class MetarParser(raw: String) {
         return null
     }
 
-    fun parse(): Metar {
+    private fun parsePressure(): PressureQNH? {
+        parts.forEach { part ->
+            MetarGroups.PRESSURE.find(part)?.let { match ->
+                if(match.groupValues[1].isNotBlank()) {
+                    return PressureQNH(
+                        inHg = match.groupValues[1].substringAfter('A').toInt() / 100f,
+                        hPa = round(match.groupValues[1].substringAfter('A').toInt() * ONE_INCH_HG / 100).toInt()
+                    )
+                }
+                if(match.groupValues[2].isNotBlank()) {
+                    return PressureQNH(
+                        hPa = match.groupValues[2].substringAfter('Q').toInt(),
+                        inHg =  (match.groupValues[2].substringAfter('Q').toInt() / ONE_INCH_HG).toFloat()
+                    )
+                }
+            }
+        }
+        return null
+    }
 
+    fun parse(): Metar {
         return Metar(
             station = parseStation(),
             reportTime = parseReportTime(),
@@ -236,7 +265,7 @@ class MetarParser(raw: String) {
             phenomenons = parsePhenomenons(),
             clouds = parseClouds(),
             temperature = parseTemperature(),
+            pressureQNH = parsePressure()
         )
     }
 }
-
