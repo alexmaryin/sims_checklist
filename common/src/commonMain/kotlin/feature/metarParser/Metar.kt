@@ -6,6 +6,8 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.math.round
 
+expect fun Double.formatToFloat(decimals: Int): Float
+
 data class Metar(
     val station: String?,
     val reportTime: LocalDateTime?,
@@ -248,7 +250,7 @@ class MetarParser(raw: String) {
                 if(match.groupValues[2].isNotBlank()) {
                     return PressureQNH(
                         hPa = match.groupValues[2].substringAfter('Q').toInt(),
-                        inHg =  (match.groupValues[2].substringAfter('Q').toInt() / ONE_INCH_HG).toFloat()
+                        inHg =  (match.groupValues[2].substringAfter('Q').toInt() / ONE_INCH_HG).formatToFloat(2)
                     )
                 }
             }
