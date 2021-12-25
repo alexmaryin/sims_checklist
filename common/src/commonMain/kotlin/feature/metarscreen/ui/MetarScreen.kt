@@ -1,8 +1,7 @@
 package feature.metarscreen.ui
 
 import androidx.compose.animation.*
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -13,12 +12,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import feature.metarscreen.MetarScanner
 import feature.metarscreen.MetarUiEvent
 import feature.metarscreen.WindViewState
+import feature.metarscreen.model.toUi
+import feature.metarscreen.ui.airportSegment.AirportInfo
 import feature.metarscreen.ui.windSegment.WindSegment
 import ui.AdaptiveLayout
 import ui.Dialog
@@ -35,7 +37,7 @@ fun MetarScreen(component: MetarScanner) {
     state.error?.let {
         LaunchedEffect(key1 = scaffoldState.snackbarHostState) {
             scaffoldState.snackbarHostState.showSnackbar(
-                message = it.message,
+                message = it,
                 actionLabel = "Close"
             )
         }
@@ -75,11 +77,13 @@ fun MetarScreen(component: MetarScanner) {
         }
     ) {
         AdaptiveLayout { width, height ->
-            WindSegment(min(width, height), state.data.metarAngle ?: state.data.userAngle)
+            WindSegment(
+                min(width, height),
+                state.data.metarAngle ?: state.data.userAngle,
+                state.runway
+            )
 
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+            Column {
                 WindSlider(state.data.metarAngle ?: state.data.userAngle) { value ->
                     component.onEvent(MetarUiEvent.SubmitAngle(value))
                 }
@@ -89,10 +93,41 @@ fun MetarScreen(component: MetarScanner) {
                 }
 
                 AnimatedVisibility(
+                    visible = state.airport != null,
+                    enter = fadeIn() + slideInVertically(),
+                    exit = fadeOut() + slideOutVertically(),
+                    modifier = Modifier.padding(8.dp).fillMaxWidth()
+                ) {
+                    state.airport?.let { airport ->
+                        AirportInfo(airport) { runway ->
+                            component.onEvent(MetarUiEvent.SubmitRunway(runway.toUi()))
+                        }
+                    }
+                }
+
+                AnimatedVisibility(
+                    visible = state.runway.wind != null,
+                    enter = fadeIn() + slideInVertically(),
+                    exit = fadeOut() + slideOutVertically(),
+                    modifier = Modifier.padding(8.dp).fillMaxWidth()
+                ) {
+                    state.runway.wind?.let { (lowWind, highWind) ->
+                        Column(modifier = Modifier.padding(8.dp).fillMaxWidth().align(Alignment.CenterHorizontally)) {
+                            Text(text = "Wind for selected runway:", textAlign = TextAlign.Center)
+                            Row {
+                                RunwayWindInfo(state.runway.low, lowWind)
+                                Spacer(modifier = Modifier.size(8.dp))
+                                RunwayWindInfo(state.runway.high, highWind)
+                            }
+                        }
+                    }
+                }
+
+                AnimatedVisibility(
                     visible = state.data.rawMetar.isNotBlank() || state.data.rawTaf.isNotBlank(),
                     enter = fadeIn() + slideInVertically(),
                     exit = fadeOut() + slideOutVertically(),
-                    modifier = Modifier.padding(8.dp)
+                    modifier = Modifier.padding(8.dp).fillMaxWidth()
                 ) {
                     MetarInfo(state.data)
                 }

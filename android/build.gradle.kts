@@ -7,12 +7,12 @@ plugins {
 val decomposeVersion = "0.4.0"
 
 android {
-    compileSdkVersion(31)
+    compileSdk = 31
 
     defaultConfig {
-        minSdkVersion(22)
-        targetSdkVersion(31)
-        versionCode = 4
+        minSdk = 22
+        targetSdk = 31
+        versionCode = 5
         versionName = "1.0"
     }
 
@@ -29,5 +29,5 @@ dependencies {
     implementation("com.arkivanov.decompose:decompose:$decomposeVersion")
     implementation("com.arkivanov.decompose:extensions-compose-jetbrains:$decomposeVersion")
     implementation("androidx.core:core-ktx:1.7.0")
-    implementation(kotlin("stdlib-jdk7", "1.5.31"))
+    implementation(kotlin("stdlib-jdk7", "1.6.10"))
 }

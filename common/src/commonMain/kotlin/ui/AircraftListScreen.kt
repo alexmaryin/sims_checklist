@@ -25,7 +25,14 @@ fun AircraftListScreen(component: AircraftList) {
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Select your aircraft") })
+            TopAppBar(
+                title = { Text("Select your aircraft") },
+                actions = {
+                    IconButton(onClick = { component.onMetarSelect() }) {
+                        Icon(imageVector = MyIcons.Air, contentDescription = "Weather and airport")
+                    }
+                }
+            )
         }
     ) {
         val state = rememberLazyListState()
@@ -47,26 +54,22 @@ fun AircraftListScreen(component: AircraftList) {
                                     clip = true
                                 )
                         )
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically
+                        Row (
+                            modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally)
                         ) {
                             Text(
                                 text = item.name.uppercase(),
-                                modifier = Modifier.padding(8.dp),
+                                modifier = Modifier.padding(8.dp).weight(1f),
                                 color = MaterialTheme.colors.onSurface,
                                 textAlign = TextAlign.Center,
                                 style = LargeWithShadow()
                             )
-                            IconButton(onClick = { component.onCalculatorSelect(item.id) }) {
+                            IconButton(
+                                onClick = { component.onCalculatorSelect(item.id) }
+                            ) {
                                 Icon(imageVector = MyIcons.GasStation, contentDescription = "Open fuel calculator")
                             }
-                            IconButton(onClick = { component.onMetarSelect() }) {
-                                Icon(imageVector = MyIcons.Air, contentDescription = "Open fuel calculator")
-                            }
                         }
-
                     }
                 }
             }

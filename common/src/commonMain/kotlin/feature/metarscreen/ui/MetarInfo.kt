@@ -16,13 +16,6 @@ import feature.metarscreen.model.MetarUi
 fun MetarInfo(info: MetarUi) {
     Column {
         Text(
-            text = info.airport,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colors.secondary
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
             text = "METAR: ${info.rawMetar}",
             fontSize = 14.sp,
             color = MaterialTheme.colors.secondary

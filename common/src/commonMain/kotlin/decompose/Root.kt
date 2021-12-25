@@ -5,19 +5,23 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.extensions.compose.jetbrains.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.animation.child.slide
-import com.arkivanov.decompose.router.*
+import com.arkivanov.decompose.router.RouterState
+import com.arkivanov.decompose.router.pop
+import com.arkivanov.decompose.router.push
+import com.arkivanov.decompose.router.router
 import com.arkivanov.decompose.value.Value
 import feature.checklistDetails.ChecklistDetails
-import feature.checklists.Checklists
-import feature.fuelcalculator.FuelCalculator
-import feature.metarscreen.MetarScanner
-import repository.AircraftRepository
-import feature.remote.metarService.MetarService
-import feature.metarscreen.ui.MetarScreen
-import ui.AircraftListScreen
 import feature.checklistDetails.ui.ChecklistDetailsScreen
+import feature.checklists.Checklists
 import feature.checklists.ui.ChecklistsScreen
+import feature.fuelcalculator.FuelCalculator
 import feature.fuelcalculator.ui.FuelCalculatorScreen
+import feature.metarscreen.MetarScanner
+import feature.metarscreen.ui.MetarScreen
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import repository.AircraftRepository
+import ui.AircraftListScreen
 
 typealias Content = @Composable () -> Unit
 
@@ -25,9 +29,9 @@ fun <T : Any> T.asContent(content: @Composable (T) -> Unit): Content = { content
 
 class Root(
     componentContext: ComponentContext,
-    private val aircraftRepository: AircraftRepository,
-    private val metarService: MetarService
-) : ComponentContext by componentContext {
+) : KoinComponent, ComponentContext by componentContext {
+
+    private val aircraftRepository: AircraftRepository by inject()
 
     private val router = router<Configuration, Content>(
         initialConfiguration = Configuration.AircraftList,
@@ -69,7 +73,6 @@ class Root(
             ).asContent { FuelCalculatorScreen(it) }
 
             is Configuration.MetarScanner -> MetarScanner(
-                metarService = metarService,
                 onBack = { router.pop() }
             ).asContent { MetarScreen(it) }
         }

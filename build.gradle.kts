@@ -1,5 +1,5 @@
 buildscript {
-    val composeVersion = System.getenv("COMPOSE_TEMPLATE_COMPOSE_VERSION") ?: "1.0.0-beta5"
+    val composeVersion = "1.0.1-rc2"
 
     repositories {
         mavenCentral()
@@ -9,8 +9,8 @@ buildscript {
 
     dependencies {
         classpath("org.jetbrains.compose:compose-gradle-plugin:$composeVersion")
-        classpath("com.android.tools.build:gradle:4.2.2")
-        classpath(kotlin("gradle-plugin", version = "1.5.31"))
+        classpath("com.android.tools.build:gradle:7.0.4")
+        classpath(kotlin("gradle-plugin", version = "1.6.10"))
     }
 }
 
@@ -33,17 +33,17 @@ allprojects {
     }
 }
 
-//subprojects {
-//    afterEvaluate {
-//        project.extensions.findByType<KotlinMultiplatformExtension>()?.let { ext ->
-//            ext.sourceSets.removeAll { sourceSet ->
-//                setOf(
-//                    "androidAndroidTestRelease",
-//                    "androidTestFixtures",
-//                    "androidTestFixturesDebug",
-//                    "androidTestFixturesRelease",
-//                ).contains(sourceSet.name)
-//            }
-//        }
-//    }
-//}
+subprojects {
+    afterEvaluate {
+        project.extensions.findByType<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension>()?.let { ext ->
+            ext.sourceSets.removeAll { sourceSet ->
+                setOf(
+                    "androidAndroidTestRelease",
+                    "androidTestFixtures",
+                    "androidTestFixturesDebug",
+                    "androidTestFixturesRelease",
+                ).contains(sourceSet.name)
+            }
+        }
+    }
+}
