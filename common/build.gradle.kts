@@ -47,6 +47,8 @@ kotlin {
                 implementation ("ch.qos.logback:logback-classic:1.2.7")
                 // Date-time
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.1")
+                // METAR parser
+                implementation("alexmaryin.metarkt:parser:1.0.0")
             }
         }
         val commonTest by getting {
