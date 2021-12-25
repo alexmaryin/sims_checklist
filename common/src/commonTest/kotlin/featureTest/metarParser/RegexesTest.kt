@@ -151,6 +151,16 @@ internal class RegexesTest {
         val pressure = metarExamples.mapNotNull { raw ->
             MetarParser(raw).parse().pressureQNH
         }
-        println(pressure)
+        assertTrue {
+            pressure == listOf(
+                PressureQNH(hPa=1012, inHg=29.88f),
+                PressureQNH(hPa=1017, inHg=30.03f),
+                PressureQNH(hPa=1018, inHg=30.06f),
+                PressureQNH(hPa=998, inHg=29.47f),
+                PressureQNH(hPa=1012, inHg=29.88f),
+                PressureQNH(hPa=1008, inHg=29.77f),
+                PressureQNH(hPa=1038, inHg=30.65f)
+            )
+        }
     }
 }

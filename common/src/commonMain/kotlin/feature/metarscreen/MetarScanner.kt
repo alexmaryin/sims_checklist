@@ -78,14 +78,14 @@ class MetarScanner(
                 val metar = metarApi.parseMetar()
                 it.copy(
                     data = MetarUi(
-                        metarAngle = metar?.windDirection ?: it.data.metarAngle,
-                        metarSpeedKt = metar?.windSpeedKt ?: it.data.metarSpeedKt,
+                        metarAngle = metar.wind?.direction ?: it.data.metarAngle,
+                        metarSpeedKt = metar.wind?.speedKt ?: it.data.metarSpeedKt,
                         airport = metarApi.name,
                         rawMetar = metarApi.metar,
                         rawTaf = metarApi.taf,
                     ),
                     isLoading = combineLoading.state,
-                    error = if (metar == null) { "Metar has no correct wind information" } else null
+                    error = if (metar.wind == null) { "METAR has incorrect wind information" } else null
                 )
             }
         }
