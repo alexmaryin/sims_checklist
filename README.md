@@ -12,9 +12,11 @@ Someday it will be featured custom editor or import mode from simple text files.
 - Jetbrains Compose library for Desktop and Jetpack Compose for Android
 - Custom Canvas view for wind director
 - METAR/TAF info is fetching from https://metartaf.ru/
+- Airports information fetches from my own REST API [ourairports-json](https://github.com/alexmaryin/ourairports_json)
+- METAR parser from my library [metarKt](https://github.com/alexmaryin/metarKt) published on MavenCentral.
 - Awesome library [Decompose](https://github.com/arkivanov/Decompose) for navigation and lifecycle management, thanks to @arkivanov
 - Google Material library for UI with dark and light theme support
-- Started to implement MVI architecture.
+- MVI architecture.
 
 Glad to see you soon in virtual skies!
 
