@@ -48,7 +48,7 @@ kotlin {
                 // Date-time
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.1")
                 // METAR parser
-                implementation("alexmaryin.metarkt:parser:1.0.0")
+                implementation("io.github.alexmaryin.metarkt:parser:1.0.1")
             }
         }
         val commonTest by getting {
