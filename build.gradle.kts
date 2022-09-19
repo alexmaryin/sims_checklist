@@ -1,5 +1,5 @@
 buildscript {
-    val composeVersion = "1.0.1-rc2"
+    val composeVersion = "1.2.0-beta01"
 
     repositories {
         mavenCentral()
@@ -9,21 +9,10 @@ buildscript {
 
     dependencies {
         classpath("org.jetbrains.compose:compose-gradle-plugin:$composeVersion")
-        classpath("com.android.tools.build:gradle:7.0.4")
-        classpath(kotlin("gradle-plugin", version = "1.6.10"))
+        classpath("com.android.tools.build:gradle:7.2.2")
+        classpath(kotlin("gradle-plugin", version = "1.7.10"))
     }
 }
-
-//plugins {
-//    id("io.gitlab.arturbosch.detekt").version("1.18.1")
-//}
-//
-//detekt {
-//    toolVersion = "1.18.1"
-//    config = files("config/detekt/detekt.yml")
-//    source = files("common/src", "android/src/main/java", "desktop/src/jvmMain")
-//    buildUponDefaultConfig = true
-//}
 
 allprojects {
     repositories {

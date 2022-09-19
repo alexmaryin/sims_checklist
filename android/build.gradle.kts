@@ -7,11 +7,11 @@ plugins {
 val decomposeVersion = "0.4.0"
 
 android {
-    compileSdk = 31
+    compileSdk = 33
 
     defaultConfig {
         minSdk = 22
-        targetSdk = 31
+        targetSdk = 33
         versionCode = 5
         versionName = "1.0"
     }
@@ -24,10 +24,10 @@ android {
 
 dependencies {
     implementation(project(":common"))
-    implementation("androidx.activity:activity-compose:1.4.0")
+    implementation("androidx.activity:activity-compose:1.5.1")
     // Decompose navigation library
     implementation("com.arkivanov.decompose:decompose:$decomposeVersion")
     implementation("com.arkivanov.decompose:extensions-compose-jetbrains:$decomposeVersion")
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation(kotlin("stdlib-jdk7", "1.6.10"))
+    implementation("androidx.core:core-ktx:1.9.0")
+    implementation(kotlin("stdlib-jdk7", "1.7.10"))
 }

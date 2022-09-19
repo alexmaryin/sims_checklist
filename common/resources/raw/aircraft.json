@@ -335,5 +335,351 @@
       }
     ],
     "photo": "cessna172"
+  },
+
+  {
+    "id": 1,
+    "name": "Cirrus SR22",
+    "performance": {
+      "fuelCapacity": 92,
+      "averageCruiseSpeed": 157,
+      "averageFuelFlow": 15.3
+    },
+    "checklists": [
+      {
+        "id": 0,
+        "caption": "Engine start (normal)",
+        "items": [
+          {
+            "caption": "Brakes",
+            "action": "HOLD"
+          },
+          {
+            "caption": "Bat master switches",
+            "action": "ON (check volts)"
+          },
+          {
+            "caption": "Strobe lights",
+            "action": "ON"
+          },
+          {
+            "caption": "Mixture",
+            "action": "FULL RICH"
+          },
+          {
+            "caption": "Power lever",
+            "action": "FULL FORWARD"
+          },
+          {
+            "caption": "Fuel pump",
+            "action": "PRIME, then BOOST"
+          },
+          {
+            "caption": "Propeller area",
+            "action": "CLEAR"
+          },
+          {
+            "caption": "Power lever",
+            "action": "OPEN ¼ inch"
+          },
+          {
+            "caption": "Ignition switch",
+            "action": "START",
+            "details": "release after engine starts"
+          }
+        ]
+      },
+      {
+        "id": 1,
+        "caption": "After engine start",
+        "items": [
+          {
+            "caption": "Power lever",
+            "action": "RETARD",
+            "details": "To maintain 1000 RPM"
+          },
+          {
+            "caption": "Oil pressure",
+            "action": "CHECK"
+          },
+          {
+            "caption": "Alt master switches",
+            "action": "ON"
+          },
+          {
+            "caption": "Avionics power switch",
+            "action": "ON"
+          },
+          {
+            "caption": "Engine parameters",
+            "action": "MONITOR"
+          },
+          {
+            "caption": "Ammeter",
+            "action": "CHECK"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "caption": "Taxi",
+        "items": [
+          {
+            "caption": "Brakes",
+            "action": "CHECK"
+          },
+          {
+            "caption": "Flaps",
+            "action": "UP (0%)"
+          },
+          {
+            "caption": "Radios/Avionics",
+            "action": "AS REQUIRED"
+          },
+          {
+            "caption": "Cabin heat/Defrost",
+            "action": "AS REQUIRED"
+          },
+          {
+            "caption": "LINE"
+          },
+          {
+            "caption": "HSI orientation",
+            "action": "CHECK"
+          },
+          {
+            "caption": "Attitude Gyro",
+            "action": "CHECK"
+          },
+          {
+            "caption": "Turn coordinator",
+            "action": "CHECK"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "caption": "Before takeoff",
+        "items": [
+          {
+            "caption": "Doors",
+            "action": "LATCHED"
+          },
+          {
+            "caption": "Brakes",
+            "action": "HOLD"
+          },
+          {
+            "caption": "Flight Controls",
+            "action": "FREE & CORRECT"
+          },
+          {
+            "caption": "Trim",
+            "action": "SET Takeoff"
+          },
+          {
+            "caption": "Autopilot",
+            "action": "DISCONNECT"
+          },
+          {
+            "caption": "Flaps",
+            "action": "SET 50% & CHECK"
+          },
+          {
+            "caption": "Fuel quantity",
+            "action": "CONFIRM"
+          },
+          {
+            "caption": "Fuel selector",
+            "action": "FULLEST TANK"
+          },
+          {
+            "caption": "Propeller",
+            "action": "CHECK",
+            "details": "Power lever - INCREASE to detent\bNote RPM rises to approximately 2000 RPM and manifold pressure increases slightly as Power lever is set to detent"
+          },
+          {
+            "caption": "Power Lever",
+            "action": "1700 RPM"
+          },
+          {
+            "caption": "Alternator",
+            "action": "CHECK"
+          },
+          {
+            "caption": "Pitot heat",
+            "action": "ON"
+          },
+          {
+            "caption": "Navigation lights",
+            "action": "ON"
+          },
+          {
+            "caption": "Landing lights",
+            "action": "ON"
+          },
+          {
+            "caption": "Run-up",
+            "action": "PERFORM",
+            "details": "If necessary in case of cold or first start"
+          },
+          {
+            "caption": "Power lever",
+            "action": "1000 RPM"
+          },
+          {
+            "caption": "Transponder",
+            "action": "ALT"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "caption": "Takeoff",
+        "items": [
+          {
+            "caption": "Power lever",
+            "action": "FULL FORWARD"
+          },
+          {
+            "caption": "Engine instruments",
+            "action": "CHECK"
+          },
+          {
+            "caption": "Brakes",
+            "action": "RELEASE"
+          },
+          {
+            "caption": "LINE"
+          },
+          {
+            "caption": "Rotate Speed",
+            "action": "70-73 KTS"
+          },
+          {
+            "caption": "Flaps up",
+            "action": "80 KIAS"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "caption": "Cruise & leaning",
+        "items": [
+          {
+            "caption": "Landing lights",
+            "action": "OFF"
+          },
+          {
+            "caption": "Best power",
+            "action": "75°F EGT"
+          },
+          {
+            "caption": "Best economy",
+            "action": "50°F EGT"
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "caption": "Before landing",
+        "items": [
+          {
+            "caption": "Mixture",
+            "action": "FULL RICH"
+          },
+          {
+            "caption": "Fuel pump",
+            "action": "BOOST"
+          },
+          {
+            "caption": "Flaps",
+            "action": "AS REQUIRED"
+          },
+          {
+            "caption": "Landing lights",
+            "action": "ON"
+          },
+          {
+            "caption": "Autopilot",
+            "action": "DISENGAGE"
+          },
+          {
+            "caption": "LINE"
+          },
+          {
+            "caption": "Approach Speed",
+            "action": "77 KIAS"
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "caption": "After landing",
+        "items": [
+          {
+            "caption": "Flaps",
+            "action": "UP"
+          },
+          {
+            "caption": "Power lever",
+            "action": "1000 RPM"
+          },
+          {
+            "caption": "Transponder",
+            "action": "STBY"
+          },
+          {
+            "caption": "Pitot heat",
+            "action": "OFF"
+          },
+          {
+            "caption": "Fuel pump",
+            "action": "OFF"
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "caption": "Shutdown",
+        "items": [
+          {
+            "caption": "Avionic switch",
+            "action": "OFF"
+          },
+          {
+            "caption": "Mixture",
+            "action": "CUTOFF"
+          },
+          {
+            "caption": "Magnetos",
+            "action": "OFF"
+          },
+          {
+            "caption": "Bat/Alt master switches",
+            "action": "OFF"
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "caption": "Securing aircraft",
+        "items": [
+          {
+            "caption": "Control Lock",
+            "action": "INSTALL"
+          },
+          {
+            "caption": "Tie-downs/Chocks",
+            "action": "INSTALL"
+          },
+          {
+            "caption": "Pitot cover",
+            "action": "INSTALL"
+          }
+        ]
+      }
+    ],
+    "photo": "cirrus_sr22"
   }
 ]
