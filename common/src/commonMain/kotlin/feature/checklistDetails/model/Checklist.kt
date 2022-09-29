@@ -10,5 +10,6 @@ data class Checklist(
     val caption: String,
     val items: List<Item>
 ) {
-    val isCompleted: Boolean get() = items.all { it.checked }
+    val isCompleted: Boolean get() =
+        items.filterNot { it.caption == CHECKLIST_LINE }.all { it.checked }
 }

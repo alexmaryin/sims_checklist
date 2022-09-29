@@ -5,6 +5,6 @@ import alexmaryin.metarkt.models.Metar
 import services.metarService.model.MetarTaf
 
 fun MetarTaf.parseMetar(): Metar {
-    val (_, metarRaw) = metar.split("\n")
+    val metarRaw = metar.split("\n").last()
     return MetarParser.current().parse(metarRaw)
 }
