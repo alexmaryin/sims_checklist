@@ -6,9 +6,13 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import utils.isNetworkConnected
 
-suspend inline fun <reified R> HttpClient.requestFor(url: String): Result<R> =
+suspend inline fun <reified R> HttpClient.requestFor(url: String, headers: Map<String, String> = emptyMap()): Result<R> =
     if (isNetworkConnected()) try {
-        Result.Success(get(url))
+        Result.Success(get(url) {
+            headers.forEach { (key, value) ->
+                header(key, value)
+            }
+        })
     } catch (e: ClientRequestException) {
         // 4xx errors
         if (e.response.status == HttpStatusCode.BadRequest) {

@@ -1,4 +1,7 @@
+import org.gradle.initialization.Environment.Properties
 import org.jetbrains.compose.compose
+import org.jetbrains.compose.internal.getLocalProperty
+import org.jetbrains.compose.internal.localPropertiesFile
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val decomposeVersion = "0.4.0"
@@ -11,6 +14,11 @@ plugins {
     id("org.jetbrains.compose")
     id("kotlin-parcelize")
     kotlin("plugin.serialization") version "1.5.31"
+    id("com.github.gmazzo.buildconfig") version "3.1.0"
+}
+
+buildConfig {
+    buildConfigField("String", "WXAPI_KEY", "${project.getLocalProperty("WXAPI_KEY")}")
 }
 
 kotlin {
@@ -93,4 +101,3 @@ tasks.withType<KotlinCompile> {
         "-Xopt-in=kotlin.RequiresOptIn"
     )
 }
-
