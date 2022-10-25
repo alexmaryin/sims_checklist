@@ -10,6 +10,7 @@ import io.ktor.client.features.logging.*
 import org.koin.dsl.module
 import services.airportService.AirportService
 import services.airportService.AirportServiceImpl
+import services.metarService.CheckWxMetarService
 
 val apiModule = module {
 
@@ -22,6 +23,7 @@ val apiModule = module {
         }
     }
 
-    single<MetarService> { MetarServiceImpl(httpClient) }
+//    single<MetarService> { MetarServiceImpl(httpClient) }
+    single<MetarService> { CheckWxMetarService(httpClient) }
     single<AirportService> { AirportServiceImpl(httpClient) }
 }
