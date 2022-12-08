@@ -8,15 +8,14 @@ import io.realm.kotlin.types.annotations.Index
 import io.realm.kotlin.types.annotations.PrimaryKey
 
 class AirportRealm : RealmObject {
-    @PrimaryKey val _id: ObjectId = ObjectId.create()
-    @Index val icao: String = ""
-    val type: String = ""
-    val name: String = ""
-    val latitude: Float = 0.0f
-    val longitude: Float = 0.0f
-    val elevation: Int = 0
-    val webSite: String? = null
-    val wiki: String? = null
-    val frequencies: RealmList<FrequencyRealm> = realmListOf()
-    val runways: RealmList<RunwayRealm> = realmListOf()
+    @PrimaryKey var icao: String = ""
+    var type: String = ""
+    var name: String = ""
+    var latitude: Float = 0.0f
+    var longitude: Float = 0.0f
+    var elevation: Int = 0
+    var webSite: String? = null
+    var wiki: String? = null
+    var frequencies: RealmList<FrequencyRealm> = realmListOf()
+    var runways: RealmList<RunwayRealm> = realmListOf()
 }

@@ -1,7 +1,5 @@
-import org.gradle.initialization.Environment.Properties
 import org.jetbrains.compose.compose
 import org.jetbrains.compose.internal.getLocalProperty
-import org.jetbrains.compose.internal.localPropertiesFile
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val decomposeVersion = "0.4.0"

@@ -5,15 +5,15 @@ import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
 
 class RunwayRealm : RealmObject {
-    @PrimaryKey val _id: ObjectId = ObjectId.create()
-    val lengthFeet: Int? = null
-    val widthFeet: Int? = null
-    val surface: String = ""
-    val closed: Boolean = false
-    val lowNumber: String = ""
-    val lowElevationFeet: Int? = null
-    val lowHeading: Int = 0
-    val highNumber: String = ""
-    val highElevationFeet: Int? = null
-    val highHeading: Int = 0
+    @PrimaryKey var _id: ObjectId = ObjectId.create()
+    var lengthFeet: Int? = null
+    var widthFeet: Int? = null
+    var surface: String = ""
+    var closed: Boolean = false
+    var lowNumber: String = ""
+    var lowElevationFeet: Int? = null
+    var lowHeading: Int = 0
+    var highNumber: String = ""
+    var highElevationFeet: Int? = null
+    var highHeading: Int = 0
 }

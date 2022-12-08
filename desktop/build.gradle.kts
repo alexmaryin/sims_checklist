@@ -24,6 +24,8 @@ kotlin {
                 implementation("com.arkivanov.decompose:extensions-compose-jetbrains:$decomposeVersion")
                 // Koin-DI
                 implementation("io.insert-koin:koin-core:$koinVersion")
+                // Realm
+                compileOnly("io.realm.kotlin:library-base:1.4.0")
             }
         }
     }

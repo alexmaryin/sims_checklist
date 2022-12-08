@@ -13,8 +13,14 @@ val realmModule = module {
 
     val config = RealmConfiguration.Builder(
         setOf(FrequencyRealm::class, RunwayRealm::class, AirportRealm::class)
-    ).build()
-    val realm = Realm.open(config)
+    ).directory("./common/resources/realmdb")
+        .build()
+    val realm = try {
+        Realm.open(config)
+    } catch (e: RuntimeException) {
+        println("Error: ${e.localizedMessage}")
+        throw (e)
+    }
 
     single<AirportService> { AirportServiceRealmImpl(realm) }
 }
