@@ -15,6 +15,7 @@ plugins {
     id("kotlin-parcelize")
     kotlin("plugin.serialization") version "1.5.31"
     id("com.github.gmazzo.buildconfig") version "3.1.0"
+    id("io.realm.kotlin")
 }
 
 buildConfig {
@@ -57,6 +58,8 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.1")
                 // METAR parser
                 implementation("io.github.alexmaryin.metarkt:parser:1.0.1")
+                // Realm
+                implementation("io.realm.kotlin:library-base:1.4.0")
             }
         }
         val commonTest by getting {

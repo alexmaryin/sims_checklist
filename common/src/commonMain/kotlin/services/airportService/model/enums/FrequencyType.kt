@@ -7,7 +7,6 @@ import kotlinx.serialization.Serializable
 enum class FrequencyType {
     @SerialName("TML") TERMINAL,
     @SerialName("CTAF") ADVISORY_SERVICE,
-    @SerialName("CTR") RADAR,
     @SerialName("UNKNOWN") UNRECOGNIZED,
     @SerialName("AFIS") FLIGHT_INFORMATION_SERVICE,
     @SerialName("APP") APPROACH,

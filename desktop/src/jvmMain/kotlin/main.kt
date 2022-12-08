@@ -7,12 +7,13 @@ import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import decompose.Root
 import di.apiModule
 import di.dbModule
+import di.realmModule
 import org.koin.core.context.startKoin
 
 fun main() = application {
 
     startKoin {
-        modules(dbModule, apiModule)
+        modules(dbModule, apiModule, realmModule)
     }
 
     val root = Root(DefaultComponentContext(LifecycleRegistry()))

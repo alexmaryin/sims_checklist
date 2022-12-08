@@ -36,7 +36,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Sims checklists"
-            packageVersion = "1.1.0"
+            packageVersion = "1.2.0"
             copyright = "© 2021 Alex Maryin. All rights reserved."
 
             windows {
@@ -48,7 +48,7 @@ compose.desktop {
 
             linux {
                 // a version for all Linux distributable
-                packageVersion = "1:1.0"
+                packageVersion = "1:2.0"
                 debMaintainer = "java.ul@gmail.com"
                 menuGroup = "Sims checklists"
                 appRelease = "3"

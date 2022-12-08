@@ -11,6 +11,7 @@ buildscript {
         classpath("org.jetbrains.compose:compose-gradle-plugin:$composeVersion")
         classpath("com.android.tools.build:gradle:7.3.1")
         classpath(kotlin("gradle-plugin", version = "1.7.10"))
+        classpath("io.realm.kotlin:gradle-plugin:1.4.0")
     }
 }
 
