@@ -12,6 +12,8 @@ import services.airportService.model.realm.FrequencyRealm
 import services.airportService.model.realm.MetadataRealm
 import services.airportService.model.realm.RunwayRealm
 
+expect fun getRealmDirectory(): String
+
 val realmModule = module {
 
     val config = RealmConfiguration.Builder(
@@ -21,7 +23,7 @@ val realmModule = module {
             AirportRealm::class,
             MetadataRealm::class
         )
-    ).directory("../realmdb")
+    ).directory(getRealmDirectory())
         .build()
     val realm = try {
         Realm.open(config)

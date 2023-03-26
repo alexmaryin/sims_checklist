@@ -4,7 +4,7 @@ plugins {
     id("org.jetbrains.compose")
 }
 
-group = "ru.alexmaryin.simschecklists"
+group = "ru.alexmaryin.simschecklist"
 version = "1.0.0"
 
 val decomposeVersion = "0.4.0"
@@ -13,7 +13,6 @@ android {
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "ru.alexmaryin.simschecklists.android"
         minSdk = 22
         targetSdk = 33
         versionCode = 8

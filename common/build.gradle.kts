@@ -93,7 +93,12 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    sourceSets {
+        named("main") {
+            manifest.srcFile("src/androidMain/AndroidManifest.xml")
+            res.srcDirs("resources")
+        }
+    }
 }
 
 buildkonfig {
