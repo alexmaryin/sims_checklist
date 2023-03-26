@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import services.airportService.LocalBaseConverter
 import services.airportService.LocalBaseConverter.UpdateResult
 import services.airportService.model.LastUpdate
+import services.airportService.model.enums.AirportType
 import services.airportService.model.realm.*
 import java.io.File
 import java.nio.file.Paths
@@ -43,6 +44,8 @@ class RealmConverter(private val realm: Realm) : LocalBaseConverter {
                     airport.elevation = row["elevation_ft"]?.toIntOrNull() ?: 0
                     airport.latitude = row["latitude_deg"]?.toFloatOrNull() ?: 0.0f
                     airport.longitude = row["longitude_deg"]?.toFloatOrNull() ?: 0.0f
+                    airport.runways.clear()
+                    airport.frequencies.clear()
                 } else {
                     copyToRealm(AirportRealm().apply {
                         icao = code

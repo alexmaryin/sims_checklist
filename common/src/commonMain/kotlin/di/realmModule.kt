@@ -15,7 +15,12 @@ import services.airportService.model.realm.RunwayRealm
 val realmModule = module {
 
     val config = RealmConfiguration.Builder(
-        setOf(FrequencyRealm::class, RunwayRealm::class, AirportRealm::class, MetadataRealm::class)
+        setOf(
+            FrequencyRealm::class,
+            RunwayRealm::class,
+            AirportRealm::class,
+            MetadataRealm::class
+        )
     ).directory("../realmdb")
         .build()
     val realm = try {

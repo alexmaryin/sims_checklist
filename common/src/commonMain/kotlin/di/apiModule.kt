@@ -22,8 +22,6 @@ val apiModule = module {
         }
     }
 
-//    single<MetarService> { MetarServiceImpl(httpClient) }
     single<MetarService> { CheckWxMetarService(httpClient) }
-//    single<AirportService> { AirportServiceImpl(httpClient) }
     single<AirportUpdateService> { AirportUpdateServiceImpl(httpClient) }
 }
