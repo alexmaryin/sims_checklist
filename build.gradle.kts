@@ -1,19 +1,5 @@
-buildscript {
-    val composeVersion = "1.3.0-beta03"
-
-    repositories {
-        mavenCentral()
-        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-        google()
-    }
-
-    dependencies {
-        classpath("org.jetbrains.compose:compose-gradle-plugin:$composeVersion")
-        classpath("com.android.tools.build:gradle:7.3.1")
-        classpath(kotlin("gradle-plugin", version = "1.7.20"))
-        classpath("io.realm.kotlin:gradle-plugin:1.4.0")
-    }
-}
+group = "ru.alexmaryin.simschecklists"
+version = "1.0.0"
 
 allprojects {
     repositories {
@@ -23,17 +9,13 @@ allprojects {
     }
 }
 
-subprojects {
-    afterEvaluate {
-        project.extensions.findByType<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension>()?.let { ext ->
-            ext.sourceSets.removeAll { sourceSet ->
-                setOf(
-                    "androidAndroidTestRelease",
-                    "androidTestFixtures",
-                    "androidTestFixturesDebug",
-                    "androidTestFixturesRelease",
-                ).contains(sourceSet.name)
-            }
-        }
-    }
+plugins {
+    kotlin("multiplatform") apply false
+    kotlin("android") apply false
+    id("com.android.application") apply false
+    id("com.android.library") apply false
+    id("org.jetbrains.compose") apply false
+    kotlin("plugin.serialization") apply false
+    id("com.codingfeline.buildkonfig") apply false
+    id("io.realm.kotlin") apply false
 }

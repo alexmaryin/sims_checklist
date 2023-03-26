@@ -9,13 +9,17 @@ plugins {
     id("org.jetbrains.compose")
 }
 
+group = "ru.alexmaryin.simschecklists"
+version = "1.0.0"
+
 kotlin {
     jvm {
+        jvmToolchain(11)
         withJava()
     }
 
     sourceSets {
-        named("jvmMain") {
+        val jvmMain by getting {
             dependencies {
                 implementation(compose.desktop.currentOs)
                 implementation(project(":common"))

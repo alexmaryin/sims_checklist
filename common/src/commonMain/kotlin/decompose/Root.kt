@@ -10,6 +10,8 @@ import com.arkivanov.decompose.router.pop
 import com.arkivanov.decompose.router.push
 import com.arkivanov.decompose.router.router
 import com.arkivanov.decompose.value.Value
+import feature.airportsBase.AirportsBase
+import feature.airportsBase.ui.AirportsBaseScreen
 import feature.checklistDetails.ChecklistDetails
 import feature.checklistDetails.ui.ChecklistDetailsScreen
 import feature.checklists.Checklists
@@ -48,7 +50,8 @@ class Root(
                 aircraftList = aircraftRepository.getAll(),
                 onSelected = { id -> router.push(Configuration.Checklists(id)) },
                 onCalculatorSelect = { id -> router.push(Configuration.FuelCalculator(id)) },
-                onMetarSelect = { router.push((Configuration.MetarScanner)) }
+                onMetarSelect = { router.push(Configuration.MetarScanner) },
+                onAirportsBaseSelect = { router.push(Configuration.AirportsBase) }
             ).asContent { AircraftListScreen(it) }
 
             is Configuration.Checklists -> Checklists(
@@ -75,6 +78,10 @@ class Root(
             is Configuration.MetarScanner -> MetarScanner(
                 onBack = { router.pop() }
             ).asContent { MetarScreen(it) }
+
+            is Configuration.AirportsBase -> AirportsBase(
+                onBack = { router.pop() }
+            ).asContent { AirportsBaseScreen(it) }
         }
 }
 

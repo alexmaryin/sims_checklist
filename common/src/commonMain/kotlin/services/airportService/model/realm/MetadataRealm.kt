@@ -4,9 +4,8 @@ import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
 import org.mongodb.kbson.ObjectId
 
-class FrequencyRealm : RealmObject {
+class MetadataRealm : RealmObject {
     @PrimaryKey var _id: ObjectId = ObjectId()
-    var type: String = ""
-    var description: String? = null
-    var valueMhz: Float = 0.0F
+    var updateTimestamp: Long = 0L
+    var airportsCount: Long = 0L
 }

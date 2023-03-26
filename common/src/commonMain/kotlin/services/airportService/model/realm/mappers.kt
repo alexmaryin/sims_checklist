@@ -2,6 +2,7 @@ package services.airportService.model.realm
 
 import services.airportService.model.Airport
 import services.airportService.model.Frequency
+import services.airportService.model.LastUpdate
 import services.airportService.model.Runway
 import services.airportService.model.enums.AirportType
 import services.airportService.model.enums.FrequencyType
@@ -37,4 +38,9 @@ fun RunwayRealm.toDomain(): Runway = Runway(
     highNumber = highNumber,
     highElevationFeet = highElevationFeet,
     highHeading = highHeading
+)
+
+fun MetadataRealm.toDomain(): LastUpdate = LastUpdate(
+    time = updateTimestamp, airports = airportsCount
+
 )
