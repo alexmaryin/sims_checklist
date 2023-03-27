@@ -61,10 +61,7 @@ fun AirportsBaseScreen(component: AirportEventExecutor) {
                 Text("Have not updated yet", Modifier.padding(8.dp))
             }
             IconButton(
-                onClick = {
-                    component(AirportsUiEvent.StartUpdate(scope))
-                    component(AirportsUiEvent.StartConvert(scope))
-                },
+                onClick = { component(AirportsUiEvent.StartUpdate(scope)) },
                 modifier = Modifier.padding(8.dp),
                 enabled = !state.value.updating,
             ) {

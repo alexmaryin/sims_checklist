@@ -26,7 +26,6 @@ class AirportsBase(
             AirportsUiEvent.Back -> onBack()
             AirportsUiEvent.SnackBarClose -> state.reduce { it.copy(snackbar = null) }
             is AirportsUiEvent.StartUpdate -> event.scope.onStartUpdate()
-            is AirportsUiEvent.StartConvert -> event.scope.onStartConvert()
             is AirportsUiEvent.GetLastUpdate -> event.scope.onLastUpdate()
         }
     }
@@ -47,6 +46,7 @@ class AirportsBase(
                         SimpleDateFormat("dd MMMM yyyy, HH:mm:ss", Locale.getDefault()).format(it.time)
                     }
                     state.reduce { it.copy(lastUpdate = timeString) }
+                    onStartConvert()
                 }
 
                 is AirportUpdateService.UpdateResult.Error -> {
