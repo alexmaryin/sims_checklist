@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import services.airportService.LocalBaseConverter
 import services.airportService.LocalBaseConverter.UpdateResult
+import services.airportService.getFilePath
 import services.airportService.model.LastUpdate
 import services.airportService.model.enums.AirportType
 import services.airportService.model.realm.*
@@ -18,10 +19,11 @@ import java.nio.file.Paths
 class RealmConverter(private val realm: Realm) : LocalBaseConverter {
 
     private fun getLinesAsSequence(filename: String, process: (Map<String, String>) -> Unit) {
-        val headers = File(filename).useLines {
+        println("try to open ${getFilePath(filename)}")
+        val headers = File(getFilePath(filename)).useLines {
             it.firstOrNull()?.replace("\"", "")?.split(",")
         } ?: throw RuntimeException("File $filename has not valid headers")
-        File(filename).useLines { file ->
+        File(getFilePath(filename)).useLines { file ->
             file.drop(1)
                 .map { it.replace("\"", "").split(",") }
                 .map { headers.zip(it).toMap() }
@@ -133,5 +135,3 @@ class RealmConverter(private val realm: Realm) : LocalBaseConverter {
         return count
     }
 }
-
-
