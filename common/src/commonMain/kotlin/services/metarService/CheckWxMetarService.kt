@@ -10,13 +10,13 @@ import services.commonApi.requestFor
 import services.metarService.model.MetarTaf
 import services.metarService.model.WxMetar
 import services.metarService.model.WxTaf
-import sims_checklist.common.BuildConfig
+import common.BuildKonfig
 
 class CheckWxMetarService(
     private val client: HttpClient
 ) : MetarService {
     override suspend fun getMetar(station: String): Result<MetarTaf> {
-        val headers = mapOf("X-API-Key" to BuildConfig.WXAPI_KEY)
+        val headers = mapOf("X-API-Key" to BuildKonfig.WXAPI_KEY)
         val metar = client.requestFor<WxMetar>(HttpRoutes.CHECK_WX_METAR + station, headers)
         val taf = client.requestFor<WxTaf>(HttpRoutes.CHECK_WX_TAF + station, headers)
         metar.forError { type, message ->

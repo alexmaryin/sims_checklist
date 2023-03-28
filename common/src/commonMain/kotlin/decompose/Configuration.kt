@@ -19,4 +19,7 @@ sealed class Configuration : Parcelable {
 
     @Parcelize
     object MetarScanner : Configuration()
+
+    @Parcelize
+    object AirportsBase : Configuration()
 }

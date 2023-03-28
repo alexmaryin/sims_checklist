@@ -31,6 +31,9 @@ fun AircraftListScreen(component: AircraftList) {
                     IconButton(onClick = { component.onMetarSelect() }) {
                         Icon(imageVector = MyIcons.Air, contentDescription = "Weather and airport")
                     }
+                    IconButton(onClick = { component.onAirportsBaseSelect() }) {
+                        Icon(imageVector = MyIcons.Update, contentDescription = "Airports database")
+                    }
                 }
             )
         }
