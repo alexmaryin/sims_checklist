@@ -1,4 +1,3 @@
-import org.jetbrains.compose.compose
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 val decomposeVersion = "0.4.0"
@@ -10,7 +9,7 @@ plugins {
 }
 
 group = "ru.alexmaryin.simschecklists"
-version = "1.0.0"
+version = "1.2.0"
 
 kotlin {
     jvm {
@@ -29,7 +28,7 @@ kotlin {
                 // Koin-DI
                 implementation("io.insert-koin:koin-core:$koinVersion")
                 // Realm
-                compileOnly("io.realm.kotlin:library-base:1.4.0")
+                compileOnly("io.realm.kotlin:library-base:1.7.0")
             }
         }
     }
@@ -39,13 +38,20 @@ compose.desktop {
     application {
         mainClass = "MainKt"
 
+        buildTypes.release.proguard {
+            configurationFiles.from(project.file("compose-desktop.pro"))
+        }
+
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Sims checklists"
             packageVersion = "1.2.0"
-            copyright = "© 2021 Alex Maryin. All rights reserved."
+            copyright = "© 2023 Alex Maryin. All rights reserved."
+            modules("java.instrument", "java.management", "java.naming", "java.sql", "jdk.unsupported")
 
             windows {
+                console = true
+                vendor = "Alex Maryin"
                 dirChooser = true
                 perUserInstall = true
                 menuGroup = "Sims checklists"
@@ -57,7 +63,7 @@ compose.desktop {
                 packageVersion = "1:2.0"
                 debMaintainer = "java.ul@gmail.com"
                 menuGroup = "Sims checklists"
-                appRelease = "3"
+                appRelease = "4"
                 iconFile.set(project.file("sims_checklist.ico"))
             }
         }

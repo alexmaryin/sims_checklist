@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Update
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
@@ -15,6 +14,7 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import feature.airportsBase.AirportEventExecutor
 import feature.airportsBase.AirportsUiEvent
 import kotlinx.coroutines.launch
+import ui.utils.MyIcons
 
 @Composable
 fun AirportsBaseScreen(component: AirportEventExecutor) {
@@ -68,7 +68,7 @@ fun AirportsBaseScreen(component: AirportEventExecutor) {
                 if (state.value.updating) {
                     CircularProgressIndicator()
                 } else {
-                    Icon(Icons.Default.Update, "update database", Modifier.padding(8.dp))
+                    Icon(MyIcons.Update, "update database", Modifier.padding(8.dp))
                 }
             }
             if (state.value.updating) {

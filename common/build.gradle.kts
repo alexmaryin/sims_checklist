@@ -34,14 +34,14 @@ kotlin {
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)
-                api(compose.materialIconsExtended)
+//                api(compose.materialIconsExtended)
                 // Needed only for preview.
                 implementation(compose.preview)
                 // Decompose navigation library
                 implementation("com.arkivanov.decompose:decompose:$decomposeVersion")
                 implementation("com.arkivanov.decompose:extensions-compose-jetbrains:$decomposeVersion")
                 // Serialization
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
                 // Koin-DI
                 implementation("io.insert-koin:koin-core:$koinVersion")
                 // Ktor
@@ -49,7 +49,6 @@ kotlin {
                 implementation("io.ktor:ktor-client-cio:$ktorVersion")
                 implementation("io.ktor:ktor-client-logging:$ktorVersion")
                 implementation("io.ktor:ktor-client-serialization:$ktorVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
                 implementation("ch.qos.logback:logback-classic:1.2.7")
                 // Date-time
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.1")
@@ -63,6 +62,8 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test")) // This brings all the platform dependencies automatically
+                implementation(kotlin("test-common"))
+                implementation(kotlin("test-annotations-common"))
             }
         }
         val androidMain by getting {
@@ -75,6 +76,7 @@ kotlin {
         }
         val androidTest by getting {
             dependencies {
+                implementation(kotlin("test-junit"))
                 implementation("junit:junit:4.13.2")
             }
         }
@@ -86,6 +88,7 @@ android {
 
     defaultConfig {
         minSdk = 22
+        targetSdk = 33
     }
 
     compileOptions {

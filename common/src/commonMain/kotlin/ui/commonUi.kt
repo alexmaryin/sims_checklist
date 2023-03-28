@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ui.utils.MyIcons
 
 @Composable
 fun <T> AsyncImage(
@@ -65,7 +66,7 @@ fun TopBarWithClearAction(caption: String, onBack: () -> Unit, onClear: () -> Un
     },
     actions = {
         IconButton(onClick = onClear) {
-            Icon(imageVector = Icons.Default.CheckBoxOutlineBlank, contentDescription = "Uncheck all")
+            Icon(imageVector = MyIcons.CheckBoxOutlineBlank, contentDescription = "Uncheck all")
         }
     }
 )

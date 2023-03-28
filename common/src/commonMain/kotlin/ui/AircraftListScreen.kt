@@ -7,8 +7,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Update
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,7 +32,7 @@ fun AircraftListScreen(component: AircraftList) {
                         Icon(imageVector = MyIcons.Air, contentDescription = "Weather and airport")
                     }
                     IconButton(onClick = { component.onAirportsBaseSelect() }) {
-                        Icon(imageVector = Icons.Default.Update, contentDescription = "Airports database")
+                        Icon(imageVector = MyIcons.Update, contentDescription = "Airports database")
                     }
                 }
             )
