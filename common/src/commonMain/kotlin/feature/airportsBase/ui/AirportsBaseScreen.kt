@@ -68,7 +68,7 @@ fun AirportsBaseScreen(component: AirportEventExecutor) {
                 if (state.value.updating) {
                     CircularProgressIndicator()
                 } else {
-                    Icon(MyIcons.Update, "update database", Modifier.padding(8.dp))
+                    Icon(imageVector = MyIcons.Update, "update database", Modifier.padding(8.dp))
                 }
             }
             if (state.value.updating) {

@@ -15,7 +15,7 @@ plugins {
     id("io.realm.kotlin")
 }
 
-group = "ru.alexmaryin.simschecklists"
+group = "ru.alexmaryin.simschecklist"
 version = "1.0.0"
 
 kotlin {

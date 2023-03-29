@@ -18,6 +18,6 @@ pluginManagement {
     }
 }
 
-rootProject.name = "sims_checklists"
+rootProject.name = "sims_checklist"
 
 include(":common", ":android", ":desktop")

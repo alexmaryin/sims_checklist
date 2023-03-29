@@ -4,9 +4,6 @@ plugins {
     id("org.jetbrains.compose")
 }
 
-group = "ru.alexmaryin.simschecklist"
-version = "1.0.0"
-
 val decomposeVersion = "0.4.0"
 
 android {
@@ -15,7 +12,7 @@ android {
     defaultConfig {
         minSdk = 22
         targetSdk = 33
-        versionCode = 9
+        versionCode = 10
         versionName = "1.2.0"
     }
 
@@ -26,6 +23,7 @@ android {
     
     buildTypes {
         getByName("release") {
+//            isDebuggable = true
             isMinifyEnabled = false
         }
     }
@@ -34,9 +32,10 @@ android {
 dependencies {
     implementation(project(":common"))
     implementation("androidx.activity:activity-compose:1.7.0")
+    implementation("androidx.compose.material:material-icons-core:1.4.0")
     // Decompose navigation library
     implementation("com.arkivanov.decompose:decompose:$decomposeVersion")
     implementation("com.arkivanov.decompose:extensions-compose-jetbrains:$decomposeVersion")
     implementation("androidx.core:core-ktx:1.9.0")
-    implementation(kotlin("stdlib-jdk7", "1.7.10"))
+    implementation(kotlin("stdlib-jdk7", "1.8.0"))
 }

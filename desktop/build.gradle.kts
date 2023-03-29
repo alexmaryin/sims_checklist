@@ -8,7 +8,7 @@ plugins {
     id("org.jetbrains.compose")
 }
 
-group = "ru.alexmaryin.simschecklists"
+group = "ru.alexmaryin.simschecklist"
 version = "1.2.0"
 
 kotlin {
