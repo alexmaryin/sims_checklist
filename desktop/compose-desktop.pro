@@ -2,11 +2,18 @@
     public static void main(java.lang.String[]);
 }
 
+-keeppackagenames resources.**
+
 -dontwarn kotlinx.coroutines.debug.**
 
 -dontwarn ch.qos.logback.**
 
 -dontwarn io.ktor.**
+
+-dontwarn org.koin.core.time.MeasureKt.**
+
+-dontshrink
+-dontoptimize
 
 -keep class kotlin.** { *; }
 -keep class kotlinx.** { *; }
@@ -54,10 +61,10 @@
 # Keep Serializers
 
 -keep,includedescriptorclasses class com.company.package.**$$serializer { *; }  # <-- Change com.company.package
--keepclassmembers class com.company.package.** {  # <-- Change com.company.package to yours
+-keepclassmembers class ru.alexmaryin.simschecklist.** {  # <-- Change com.company.package to yours
     *** Companion;
 }
--keepclasseswithmembers class com.company.package.** { # <-- Change com.company.package to yours
+-keepclasseswithmembers class ru.alexmaryin.simschecklist.** { # <-- Change com.company.package to yours
     kotlinx.serialization.KSerializer serializer(...);
 }
 
@@ -165,6 +172,12 @@
     *;
 }
 -keep class io.realm.kotlin.Deleteable {
+    *;
+}
+-keep class io.realm.kotlin.jvm.SoLoader {
+    *;
+}
+-keep class io.realm.kotlin.internal.interop.sync {
     *;
 }
 -keep class io.realm.kotlin.internal.interop.sync.JVMSyncSessionTransferCompletionCallback {

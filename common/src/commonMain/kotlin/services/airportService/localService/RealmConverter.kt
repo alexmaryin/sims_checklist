@@ -15,6 +15,7 @@ import services.airportService.model.enums.AirportType
 import services.airportService.model.realm.*
 import java.io.File
 import java.nio.file.Paths
+import kotlin.math.roundToInt
 
 class RealmConverter(private val realm: Realm) : LocalBaseConverter {
 
@@ -100,10 +101,10 @@ class RealmConverter(private val realm: Realm) : LocalBaseConverter {
                         closed = row["closed"]?.toBooleanStrictOrNull() ?: false
                         lowNumber = row["le_ident"] ?: "36"
                         lowElevationFeet = row["le_elevation_ft"]?.toIntOrNull() ?: 0
-                        lowHeading = row["le_heading_degT"]?.toIntOrNull() ?: 360
+                        lowHeading = row["le_heading_degT"]?.toFloatOrNull()?.roundToInt() ?: 0
                         highNumber = row["he_ident"] ?: "36"
                         highElevationFeet = row["he_elevation_ft"]?.toIntOrNull() ?: 0
-                        highHeading = row["he_heading_degT"]?.toIntOrNull() ?: 360
+                        highHeading = row["he_heading_degT"]?.toFloatOrNull()?.roundToInt() ?: 0
                     }
                     count++
                 } else {

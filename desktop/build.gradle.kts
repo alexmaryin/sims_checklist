@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "ru.alexmaryin.simschecklist"
-version = "1.2.0"
+version = "1.0.3"
 
 kotlin {
     jvm {
@@ -28,7 +28,7 @@ kotlin {
                 // Koin-DI
                 implementation("io.insert-koin:koin-core:$koinVersion")
                 // Realm
-                compileOnly("io.realm.kotlin:library-base:1.7.0")
+                compileOnly("io.realm.kotlin:library-base:1.10.2")
             }
         }
     }
@@ -49,7 +49,7 @@ compose.desktop {
             packageVersion = "1.2.0"
             copyright = "© 2023 Alex Maryin. All rights reserved."
             modules("java.instrument", "java.management", "java.naming", "java.sql", "jdk.unsupported")
-
+            appResourcesRootDir.set(project.layout.projectDirectory.dir("../common/resources"))
             windows {
                 console = true
                 vendor = "Alex Maryin"
@@ -61,7 +61,7 @@ compose.desktop {
 
             linux {
                 // a version for all Linux distributable
-                packageVersion = "1:2.0"
+                packageVersion = "1:0.3"
                 debMaintainer = "java.ul@gmail.com"
                 menuGroup = "Sims checklists"
                 appRelease = "4"

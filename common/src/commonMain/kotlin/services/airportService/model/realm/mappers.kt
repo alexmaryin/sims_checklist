@@ -7,6 +7,8 @@ import services.airportService.model.Runway
 import services.airportService.model.enums.AirportType
 import services.airportService.model.enums.FrequencyType
 import services.airportService.model.enums.RunwaySurface
+import utils.filterDigitsToInt
+import utils.ifZero
 
 fun AirportRealm.toDomain(): Airport = Airport(
     icao = icao,
@@ -34,10 +36,10 @@ fun RunwayRealm.toDomain(): Runway = Runway(
     closed = closed,
     lowNumber = lowNumber,
     lowElevationFeet = lowElevationFeet,
-    lowHeading = lowHeading,
+    lowHeading = lowHeading.ifZero { lowNumber.filterDigitsToInt() * 10 },
     highNumber = highNumber,
     highElevationFeet = highElevationFeet,
-    highHeading = highHeading
+    highHeading = highHeading.ifZero { highNumber.filterDigitsToInt() * 10 }
 )
 
 fun MetadataRealm.toDomain(): LastUpdate = LastUpdate(

@@ -7,10 +7,10 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 data class RunwayUi(
-    val low: String = "36",
-    val high: String = "18",
-    val lowHeading: Int = 0,
-    val highHeading: Int = 180,
+    val low: String = "",
+    val high: String = "",
+    val lowHeading: Int = 180,
+    val highHeading: Int = 360,
     val wind: RunwayWind? = null
 )
 

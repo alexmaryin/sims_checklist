@@ -16,7 +16,7 @@ plugins {
 }
 
 group = "ru.alexmaryin.simschecklist"
-version = "1.0.0"
+version = "1.0.3"
 
 kotlin {
     androidTarget()
@@ -84,12 +84,11 @@ kotlin {
 }
 
 android {
-    namespace = "ru.alexmaryin.simschecklists"
+    namespace = "ru.alexmaryin.simschecklist"
     compileSdk = 33
 
     defaultConfig {
         minSdk = 22
-        targetSdk = 33
     }
 
     compileOptions {

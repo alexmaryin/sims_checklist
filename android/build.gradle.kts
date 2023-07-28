@@ -7,20 +7,20 @@ plugins {
 val decomposeVersion = "2.0.1"
 
 android {
-    namespace = "ru.alexmaryin.simschecklists"
+    namespace = "ru.alexmaryin.simschecklist"
 
     compileSdk = 33
 
     defaultConfig {
         minSdk = 22
         targetSdk = 33
-        versionCode = 10
-        versionName = "1.2.0"
+        versionCode = 11
+        versionName = "1.0.3"
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     
     buildTypes {
