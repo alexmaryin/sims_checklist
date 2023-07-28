@@ -10,7 +10,7 @@ import services.airportService.model.enums.RunwaySurface
 
 fun AirportRealm.toDomain(): Airport = Airport(
     icao = icao,
-    type = AirportType.values().firstOrNull { it.csv == type } ?: AirportType.SMALL,
+    type = AirportType.entries.firstOrNull { it.csv == type } ?: AirportType.SMALL,
     name = name,
     latitude = latitude,
     longitude = longitude,
@@ -22,7 +22,7 @@ fun AirportRealm.toDomain(): Airport = Airport(
 )
 
 fun FrequencyRealm.toDomain(): Frequency = Frequency(
-    type = FrequencyType.values().firstOrNull { it.csv == type } ?: FrequencyType.TOWER,
+    type = FrequencyType.entries.firstOrNull { it.csv == type } ?: FrequencyType.TOWER,
     description = description,
     valueMhz = valueMhz
 )
@@ -30,7 +30,7 @@ fun FrequencyRealm.toDomain(): Frequency = Frequency(
 fun RunwayRealm.toDomain(): Runway = Runway(
     lengthFeet = lengthFeet,
     widthFeet = widthFeet,
-    surface = RunwaySurface.values().firstOrNull { it.csv == surface } ?: RunwaySurface.CONCRETE,
+    surface = RunwaySurface.entries.firstOrNull { it.csv == surface } ?: RunwaySurface.CONCRETE,
     closed = closed,
     lowNumber = lowNumber,
     lowElevationFeet = lowElevationFeet,

@@ -56,7 +56,7 @@ kotlin {
                 implementation("io.github.alexmaryin.metarkt:parser:1.0.1")
                 // Realm
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2")
-                implementation("io.realm.kotlin:library-base:1.7.0")
+                implementation("io.realm.kotlin:library-base:1.10.2")
             }
         }
         val commonTest by getting {
