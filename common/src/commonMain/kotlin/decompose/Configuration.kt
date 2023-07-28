@@ -6,7 +6,9 @@ import com.arkivanov.essenty.parcelable.Parcelize
 sealed class Configuration : Parcelable {
 
     @Parcelize
-    object AircraftList : Configuration()
+    data object AircraftList : Configuration() {
+        private fun readResolve(): Any = AircraftList
+    }
 
     @Parcelize
     data class Checklists(val aircraftId: Int) : Configuration()
@@ -18,8 +20,12 @@ sealed class Configuration : Parcelable {
     data class FuelCalculator(val aircraftId: Int) : Configuration()
 
     @Parcelize
-    object MetarScanner : Configuration()
+    data object MetarScanner : Configuration() {
+        private fun readResolve(): Any = MetarScanner
+    }
 
     @Parcelize
-    object AirportsBase : Configuration()
+    data object AirportsBase : Configuration() {
+        private fun readResolve(): Any = AirportsBase
+    }
 }

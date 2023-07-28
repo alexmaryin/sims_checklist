@@ -1,7 +1,7 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.jetbrains.compose.internal.utils.getLocalProperty
 
-val decomposeVersion = "0.4.0"
+val decomposeVersion = "2.0.1"
 val koinVersion = "3.1.4"
 val ktorVersion = "1.6.6"
 
@@ -19,7 +19,7 @@ group = "ru.alexmaryin.simschecklist"
 version = "1.0.0"
 
 kotlin {
-    android()
+    androidTarget()
     jvm("desktop") {
         jvmToolchain(11)
         testRuns["test"].executionTask.configure {
@@ -55,7 +55,7 @@ kotlin {
                 // METAR parser
                 implementation("io.github.alexmaryin.metarkt:parser:1.0.1")
                 // Realm
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2")
                 implementation("io.realm.kotlin:library-base:1.7.0")
             }
         }
@@ -69,12 +69,12 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 api("androidx.appcompat:appcompat:1.6.1")
-                api("androidx.core:core-ktx:1.9.0")
+                api("androidx.core:core-ktx:1.10.1")
                 // Koin DI
                 implementation("io.insert-koin:koin-android:$koinVersion")
             }
         }
-        val androidTest by getting {
+        val androidUnitTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
                 implementation("junit:junit:4.13.2")
@@ -84,6 +84,7 @@ kotlin {
 }
 
 android {
+    namespace = "ru.alexmaryin.simschecklists"
     compileSdk = 33
 
     defaultConfig {

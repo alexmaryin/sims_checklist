@@ -1,7 +1,7 @@
 package feature.metarscreen
 
 import com.arkivanov.decompose.value.MutableValue
-import com.arkivanov.decompose.value.reduce
+import com.arkivanov.decompose.value.update
 import feature.metarscreen.model.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -47,7 +47,7 @@ class MetarScanner(
     }
 
     private fun submitRunway(new: RunwayUi) {
-        state.reduce {
+        state.update {
             if (state.value.data.metarAngle != null && state.value.data.metarSpeedKt != null) {
                 it.copy(
                     runway = new.withCalculatedWind(
@@ -62,7 +62,7 @@ class MetarScanner(
     }
 
     private fun setErrorState(error: Result.Error) {
-        state.reduce {
+        state.update {
             it.copy(
                 isLoading = combineLoading.state,
                 error = error.message
@@ -74,7 +74,7 @@ class MetarScanner(
         val response = metarService.getMetar(station)
         combineLoading.loadMetar = false
         response.forSuccess { metarApi ->
-            state.reduce {
+            state.update {
                 val metar = metarApi.parseMetar()
                 it.copy(
                     data = MetarUi(
@@ -96,7 +96,7 @@ class MetarScanner(
         val response = airportService.getAirportByICAO(icao)
         combineLoading.loadAirport = false
         response.forSuccess { airport ->
-            state.reduce {
+            state.update {
                 it.copy(
                     airport = airport,
                     isLoading = combineLoading.state,
@@ -111,14 +111,14 @@ class MetarScanner(
         // Say to Ui that loading has started
         combineLoading.loadMetar = true
         combineLoading.loadAirport = true
-        state.reduce { it.copy(isLoading = combineLoading.state, airport = null) }
+        state.update { it.copy(isLoading = combineLoading.state, airport = null) }
         // Start requests to METAR and Airport API in parallel
         metarJob = scope.launch { fetchMetar(station) }
         airportJob = scope.launch { fetchAirport(station) }
     }
 
     private fun showInfoDialog(show: Boolean = true) {
-        state.reduce {
+        state.update {
             it.copy(showInfo = show)
         }
     }

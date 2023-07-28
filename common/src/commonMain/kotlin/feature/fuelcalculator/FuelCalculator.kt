@@ -1,7 +1,7 @@
 package feature.fuelcalculator
 
 import com.arkivanov.decompose.value.MutableValue
-import com.arkivanov.decompose.value.reduce
+import com.arkivanov.decompose.value.update
 import feature.checklists.model.Aircraft
 
 class FuelCalculator(
@@ -29,17 +29,17 @@ class FuelCalculator(
             is FuelUiEvent.ContingencyChange -> onContingencyChange(event.new)
             is FuelUiEvent.ReserveTimeChange -> onReserveTimeChange(event.new)
             is FuelUiEvent.FuelCapacityChange -> onFuelCapacityChange(event.new)
-            is FuelUiEvent.SnackBarClose -> state.reduce { it.copy(snackBar = null) }
+            is FuelUiEvent.SnackBarClose -> state.update { it.copy(snackBar = null) }
             is FuelUiEvent.Back -> onBack()
         }
     }
 
 
     private fun onTripDistanceChange(new: String) {
-        if (isFloatIncorrect(new).not()) state.reduce {
+        if (isFloatIncorrect(new).not()) state.update {
             it.copy(tripDistance = new.toFloat(), snackBar = null)
         } else {
-            state.reduce {
+            state.update {
                 it.copy(snackBar = FuelSnackBarState.ErrorHint("Only digits are allowed in trip distance"))
             }
         }
@@ -47,98 +47,98 @@ class FuelCalculator(
 
 
     private fun onAlterDistanceChange(new: String) {
-        if (isFloatIncorrect(new).not()) state.reduce {
+        if (isFloatIncorrect(new).not()) state.update {
             it.copy(alterDistance = new.toFloat(), snackBar = null)
         } else {
-            state.reduce {
+            state.update {
                 it.copy(snackBar = FuelSnackBarState.ErrorHint("Only digits are allowed in alter. distance"))
             }
         }
     }
 
     private fun onHeadwindChange(new: String) {
-        if (isIntIncorrect(new, state.value.performance.averageCruiseSpeed.toInt()).not()) state.reduce {
+        if (isIntIncorrect(new, state.value.performance.averageCruiseSpeed.toInt()).not()) state.update {
             it.copy(headWindComponent = new.toInt(), snackBar = null)
         } else {
-            state.reduce {
+            state.update {
                 it.copy(snackBar = FuelSnackBarState.ErrorHint("Only digits are allowed in headwind and not exceed the speed of aircraft"))
             }
         }
     }
 
     private fun onCruiseSpeedChange(new: String) {
-        if (isFloatIncorrect(new, false).not()) state.reduce {
+        if (isFloatIncorrect(new, false).not()) state.update {
             it.copy(
                 performance = it.performance.copy(averageCruiseSpeed = new.toFloat()),
                 snackBar = null
             )
         } else {
-            state.reduce {
+            state.update {
                 it.copy(snackBar = FuelSnackBarState.ErrorHint("Only digits are allowed in cruise speed"))
             }
         }
     }
 
     private fun onFuelFlowChange(new: String) {
-        if (isFloatIncorrect(new, false).not()) state.reduce {
+        if (isFloatIncorrect(new, false).not()) state.update {
             it.copy(
                 performance = it.performance.copy(averageFuelFlow = new.toFloat()),
                 snackBar = null
             )
         } else {
-            state.reduce {
+            state.update {
                 it.copy(snackBar = FuelSnackBarState.ErrorHint("Only digits are allowed in fuel flow"))
             }
         }
     }
 
     private fun onTaxiChange(new: String) {
-        if (isFloatIncorrect(new).not()) state.reduce {
+        if (isFloatIncorrect(new).not()) state.update {
             it.copy(
                 performance = it.performance.copy(taxiFuel = new.toFloat()),
                 snackBar = null
             )
         } else {
-            state.reduce {
+            state.update {
                 it.copy(snackBar = FuelSnackBarState.ErrorHint("Only digits are allowed in taxi"))
             }
         }
     }
 
     private fun onContingencyChange(new: String) {
-        if (isIntIncorrect(new, 100).not()) state.reduce {
+        if (isIntIncorrect(new, 100).not()) state.update {
             it.copy(
                 performance = it.performance.copy(contingency = new.toInt()),
                 snackBar = null
             )
         } else {
-            state.reduce {
+            state.update {
                 it.copy(snackBar = FuelSnackBarState.ErrorHint("Only digits are allowed in contingency and not exceed 100%"))
             }
         }
     }
 
     private fun onReserveTimeChange(new: String) {
-        if (isIntIncorrect(new, 90).not()) state.reduce {
+        if (isIntIncorrect(new, 90).not()) state.update {
             it.copy(
                 performance = it.performance.copy(reservesMinutes = new.toInt()),
                 snackBar = null
             )
         } else {
-            state.reduce {
+            state.update {
                 it.copy(snackBar = FuelSnackBarState.ErrorHint("Only digits are allowed in reserve time and not exceed 90 min"))
             }
         }
     }
 
     private fun onFuelCapacityChange(new: String) {
-        if (isFloatIncorrect(new).not()) state.reduce {
+        if (isFloatIncorrect(new).not()) state.update {
             it.copy(
                 performance = it.performance.copy(fuelCapacity = new.toFloat()),
                 snackBar = null
             )
         } else {
-            state.reduce {
+            state.update {
                 it.copy(snackBar = FuelSnackBarState.ErrorHint("Only digits are allowed in fuel capacity"))
             }
         }

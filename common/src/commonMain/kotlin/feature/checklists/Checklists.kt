@@ -1,7 +1,7 @@
 package feature.checklists
 
 import com.arkivanov.decompose.value.MutableValue
-import com.arkivanov.decompose.value.reduce
+import com.arkivanov.decompose.value.update
 import repository.AircraftRepository
 
 class Checklists(
@@ -23,7 +23,7 @@ class Checklists(
             is ChecklistsUiEvent.Back -> onBack()
             is ChecklistsUiEvent.SelectChecklist -> onSelected(event.checklistId)
         }
-        state.reduce {
+        state.update {
             ChecklistsViewState(
                 caption = it.caption,
                 list = repository.getById(aircraftId).checklists,

@@ -1,6 +1,6 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
-val decomposeVersion = "0.4.0"
+val decomposeVersion = "2.0.1"
 val koinVersion= "3.1.4"
 
 plugins {

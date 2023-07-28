@@ -2,14 +2,14 @@ package decompose
 
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.ExperimentalDecomposeApi
-import com.arkivanov.decompose.extensions.compose.jetbrains.Children
-import com.arkivanov.decompose.extensions.compose.jetbrains.animation.child.slide
-import com.arkivanov.decompose.router.RouterState
-import com.arkivanov.decompose.router.pop
-import com.arkivanov.decompose.router.push
-import com.arkivanov.decompose.router.router
+import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
+import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.fade
+import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.plus
+import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.scale
+import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.stackAnimation
+import com.arkivanov.decompose.router.stack.*
 import com.arkivanov.decompose.value.Value
+import decompose.RootComponent.Child.*
 import feature.airportsBase.AirportsBase
 import feature.airportsBase.ui.AirportsBaseScreen
 import feature.checklistDetails.ChecklistDetails
@@ -25,68 +25,89 @@ import org.koin.core.component.inject
 import repository.AircraftRepository
 import ui.AircraftListScreen
 
-typealias Content = @Composable () -> Unit
-
-fun <T : Any> T.asContent(content: @Composable (T) -> Unit): Content = { content(this) }
-
 class Root(
     componentContext: ComponentContext,
-) : KoinComponent, ComponentContext by componentContext {
+) : RootComponent, KoinComponent, ComponentContext by componentContext {
 
     private val aircraftRepository: AircraftRepository by inject()
 
-    private val router = router<Configuration, Content>(
+    private val navigation = StackNavigation<Configuration>()
+    override val stack: Value<ChildStack<*, RootComponent.Child>> = childStack(
+        source = navigation,
         initialConfiguration = Configuration.AircraftList,
-        childFactory = ::createChild,
         handleBackButton = true,
+        childFactory = ::createChild
     )
 
-    val routerState: Value<RouterState<*, Content>> = router.state
+    override fun onBackClicked(toIndex: Int) = navigation.popTo(toIndex)
 
-    private fun createChild(configuration: Configuration, context: ComponentContext): Content =
+    private fun aircraftList() = AircraftList(
+        aircraftList = aircraftRepository.getAll(),
+        onSelected = { id -> navigation.push(Configuration.Checklists(id)) },
+        onCalculatorSelect = { id -> navigation.push(Configuration.FuelCalculator(id)) },
+        onMetarSelect = { navigation.push(Configuration.MetarScanner) },
+        onAirportsBaseSelect = { navigation.push(Configuration.AirportsBase) }
+    )
+
+    private fun checklists(aircraftId: Int) = Checklists(
+        aircraftId = aircraftId,
+        repository = aircraftRepository,
+        onBack = { navigation.pop() },
+        onSelected = { checklistId ->
+            navigation.push(Configuration.Checklist(aircraftId, checklistId))
+        }
+    )
+
+    private fun checklist(aircraftId: Int, checklistId: Int) = ChecklistDetails(
+        aircraftId = aircraftId,
+        checklistId = checklistId,
+        repository = aircraftRepository,
+        onFinished = { navigation.pop() }
+    )
+
+    private fun fuelCalculator(aircraftId: Int) = FuelCalculator(
+        aircraft = aircraftRepository.getById(aircraftId),
+        onBack = { navigation.pop() }
+    )
+
+    private fun metarScanner() = MetarScanner(
+        onBack = { navigation.pop() }
+    )
+
+    private fun airportsBase() = AirportsBase(
+        onBack = { navigation.pop() }
+    )
+
+    private fun createChild(configuration: Configuration, context: ComponentContext): RootComponent.Child =
         when (configuration) {
 
-            Configuration.AircraftList -> AircraftList(
-                aircraftList = aircraftRepository.getAll(),
-                onSelected = { id -> router.push(Configuration.Checklists(id)) },
-                onCalculatorSelect = { id -> router.push(Configuration.FuelCalculator(id)) },
-                onMetarSelect = { router.push(Configuration.MetarScanner) },
-                onAirportsBaseSelect = { router.push(Configuration.AirportsBase) }
-            ).asContent { AircraftListScreen(it) }
+            Configuration.AircraftList -> AircraftListChild(aircraftList())
 
-            is Configuration.Checklists -> Checklists(
-                aircraftId = configuration.aircraftId,
-                repository = aircraftRepository,
-                onBack = { router.pop() },
-                onSelected = { checklistId ->
-                    router.push(Configuration.Checklist(configuration.aircraftId, checklistId))
-                }
-            ).asContent { ChecklistsScreen(it) }
+            is Configuration.Checklists -> ChecklistsChild(checklists(configuration.aircraftId))
 
-            is Configuration.Checklist -> ChecklistDetails(
-                aircraftId = configuration.aircraftId,
-                checklistId = configuration.checklistId,
-                repository = aircraftRepository,
-                onFinished = { router.pop() }
-            ).asContent { ChecklistDetailsScreen(it) }
+            is Configuration.Checklist -> ChecklistDetailsChild(checklist(configuration.aircraftId, configuration.checklistId))
 
-            is Configuration.FuelCalculator -> FuelCalculator(
-                aircraft = aircraftRepository.getById(configuration.aircraftId),
-                onBack = { router.pop() }
-            ).asContent { FuelCalculatorScreen(it) }
+            is Configuration.FuelCalculator -> FuelCalculatorChild(fuelCalculator(configuration.aircraftId))
 
-            is Configuration.MetarScanner -> MetarScanner(
-                onBack = { router.pop() }
-            ).asContent { MetarScreen(it) }
+            is Configuration.MetarScanner -> MetarScannerChild(metarScanner())
 
-            is Configuration.AirportsBase -> AirportsBase(
-                onBack = { router.pop() }
-            ).asContent { AirportsBaseScreen(it) }
+            is Configuration.AirportsBase -> AirportsBaseChild(airportsBase())
         }
 }
 
-@OptIn(ExperimentalDecomposeApi::class)
 @Composable
-fun RootUi(root: Root) {
-    Children(root.routerState, animation = slide()) { it.instance() }
+fun RootUi(root: RootComponent) {
+    Children(
+        stack = root.stack,
+        animation = stackAnimation(fade() + scale()),
+    ) {
+        when (val child = it.instance) {
+            is AircraftListChild -> AircraftListScreen(child.component)
+            is AirportsBaseChild -> AirportsBaseScreen(child.component)
+            is ChecklistDetailsChild -> ChecklistDetailsScreen(child.component)
+            is ChecklistsChild -> ChecklistsScreen(child.component)
+            is FuelCalculatorChild -> FuelCalculatorScreen(child.component)
+            is MetarScannerChild -> MetarScreen(child.component)
+        }
+    }
 }

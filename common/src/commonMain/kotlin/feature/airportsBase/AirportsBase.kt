@@ -1,7 +1,7 @@
 package feature.airportsBase
 
 import com.arkivanov.decompose.value.MutableValue
-import com.arkivanov.decompose.value.reduce
+import com.arkivanov.decompose.value.update
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -24,7 +24,7 @@ class AirportsBase(
     override fun invoke(event: AirportsUiEvent) {
         when (event) {
             AirportsUiEvent.Back -> onBack()
-            AirportsUiEvent.SnackBarClose -> state.reduce { it.copy(snackbar = null) }
+            AirportsUiEvent.SnackBarClose -> state.update { it.copy(snackbar = null) }
             is AirportsUiEvent.StartUpdate -> event.scope.onStartUpdate()
             is AirportsUiEvent.GetLastUpdate -> event.scope.onLastUpdate()
         }
@@ -33,11 +33,11 @@ class AirportsBase(
     private fun CoroutineScope.onStartUpdate() = launch {
         println("Start update")
         println("Working dir is ${Paths.get("").toAbsolutePath()}")
-        state.reduce { it.copy(updating = true) }
+        state.update { it.copy(updating = true) }
         updateService.updateFlow(this).collect { result ->
             when (result) {
                 is AirportUpdateService.UpdateResult.Progress -> {
-                    state.reduce { it.copy(processingFile = result.file, progress = result.percent) }
+                    state.update { it.copy(processingFile = result.file, progress = result.percent) }
                 }
 
                 is AirportUpdateService.UpdateResult.Success -> {
@@ -45,12 +45,12 @@ class AirportsBase(
                         it.timeInMillis = result.lastUpdate
                         SimpleDateFormat("dd MMMM yyyy, HH:mm:ss", Locale.getDefault()).format(it.time)
                     }
-                    state.reduce { it.copy(lastUpdate = timeString) }
+                    state.update { it.copy(lastUpdate = timeString) }
                     onStartConvert()
                 }
 
                 is AirportUpdateService.UpdateResult.Error -> {
-                    state.reduce { it.copy(snackbar = AirportsSnackBarState.ErrorHint(error = result.message)) }
+                    state.update { it.copy(snackbar = AirportsSnackBarState.ErrorHint(error = result.message)) }
                 }
             }
         }
@@ -60,7 +60,7 @@ class AirportsBase(
         realmConverter.convertFiles(this).collect { result ->
             when (result) {
                 is LocalBaseConverter.UpdateResult.Progress -> {
-                    state.reduce {
+                    state.update {
                         it.copy(
                             processingLabel = result.label,
                             airportsCount = result.count
@@ -68,7 +68,7 @@ class AirportsBase(
                     }
                 }
 
-                is LocalBaseConverter.UpdateResult.Success -> state.reduce {
+                is LocalBaseConverter.UpdateResult.Success -> state.update {
                     it.copy(
                         updating = false,
                         airportsCount = result.count
@@ -84,7 +84,7 @@ class AirportsBase(
                 it.timeInMillis = result.time
                 SimpleDateFormat("dd MMMM yyyy, HH:mm:ss", Locale.getDefault()).format(it.time)
             }
-            state.reduce {
+            state.update {
                 it.copy(
                     lastUpdate = timeString,
                     airportsCount = result.airports
