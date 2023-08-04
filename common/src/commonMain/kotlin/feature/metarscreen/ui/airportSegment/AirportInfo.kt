@@ -18,6 +18,13 @@ import ui.FlowRow
 
 @Composable
 fun AirportInfo(airport: Airport, onSelectRunway: (Runway) -> Unit) {
+
+    var selectorRect by remember { mutableStateOf(Rect.Zero) }
+
+    LaunchedEffect(airport) {
+        selectorRect = Rect.Zero
+    }
+
     Column {
         Text(
             text = airport.name,
@@ -28,8 +35,6 @@ fun AirportInfo(airport: Airport, onSelectRunway: (Runway) -> Unit) {
         Spacer(modifier = Modifier.height(8.dp))
 
         Box {
-
-            var selectorRect by remember { mutableStateOf(Rect.Zero) }
 
             FlowRow(
                 spacing = 8.dp

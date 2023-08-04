@@ -1,10 +1,15 @@
 package services.airportService.updateService
 
 import io.ktor.client.*
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.launch
 import services.airportService.getFilePath
 import services.airportService.updateService.AirportUpdateService.UpdateResult
+import java.nio.file.Files
+import kotlin.io.path.Path
 
 class AirportUpdateServiceImpl(
     private val httpClient: HttpClient
@@ -28,5 +33,12 @@ class AirportUpdateServiceImpl(
             }.join()
         }
         send(UpdateResult.Success(System.currentTimeMillis()))
+    }
+
+    override suspend fun clearAfterUpdate() {
+        FilesLinks.files.forEach { file ->
+            Files.deleteIfExists(Path(getFilePath(file)))
+            println("$file file deleted.")
+        }
     }
 }

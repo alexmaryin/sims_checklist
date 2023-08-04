@@ -3,6 +3,7 @@ package feature.airportsBase
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -69,6 +70,7 @@ class AirportsBase(
                 }
 
                 is LocalBaseConverter.UpdateResult.Success -> state.update {
+                    launch(Dispatchers.IO) { updateService.clearAfterUpdate() }
                     it.copy(
                         updating = false,
                         airportsCount = result.count

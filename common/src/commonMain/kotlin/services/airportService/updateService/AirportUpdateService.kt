@@ -3,8 +3,10 @@ package services.airportService.updateService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 
-fun interface AirportUpdateService {
+interface AirportUpdateService {
     suspend fun updateFlow(scope: CoroutineScope): Flow<UpdateResult>
+
+    suspend fun clearAfterUpdate()
 
     sealed class UpdateResult {
         data class Success(val lastUpdate: Long) : UpdateResult()
