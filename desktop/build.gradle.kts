@@ -1,15 +1,17 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
-val decomposeVersion = "2.0.1"
-val koinVersion= "3.1.4"
+val decomposeVersion = extra["decompose.version"] as String
+val koinVersion= extra["koin.version"] as String
 
 plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
 }
 
-group = "ru.alexmaryin.simschecklist"
-version = "1.0.3"
+group = extra["app.group"] as String
+version = extra["app.version"] as String
+val linuxVersion = extra["app.linux.version"] as String
+val release = extra["app.release"] as String
 
 kotlin {
     jvm {
@@ -46,12 +48,12 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Sims checklists"
-            packageVersion = "1.2.0"
+            packageVersion = version.toString()
             copyright = "© 2023 Alex Maryin. All rights reserved."
             modules("java.instrument", "java.management", "java.naming", "java.sql", "jdk.unsupported")
             appResourcesRootDir.set(project.layout.projectDirectory.dir("../common/resources"))
             windows {
-                console = true
+                console = false
                 vendor = "Alex Maryin"
                 dirChooser = true
                 perUserInstall = true
@@ -61,10 +63,10 @@ compose.desktop {
 
             linux {
                 // a version for all Linux distributable
-                packageVersion = "1:0.3"
+                packageVersion = linuxVersion
                 debMaintainer = "java.ul@gmail.com"
                 menuGroup = "Sims checklists"
-                appRelease = "4"
+                appRelease = release
                 iconFile.set(project.file("sims_checklist.ico"))
             }
         }

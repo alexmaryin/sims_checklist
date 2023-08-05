@@ -1,9 +1,9 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.jetbrains.compose.internal.utils.getLocalProperty
 
-val decomposeVersion = "2.0.1"
-val koinVersion = "3.1.4"
-val ktorVersion = "1.6.6"
+val decomposeVersion = extra["decompose.version"] as String
+val koinVersion = extra["koin.version"] as String
+val ktorVersion = extra["ktor.version"] as String
 
 plugins {
     id("com.android.library")
@@ -15,8 +15,8 @@ plugins {
     id("io.realm.kotlin")
 }
 
-group = "ru.alexmaryin.simschecklist"
-version = "1.0.3"
+group = extra["app.group"] as String
+version = extra["app.version"] as String
 
 kotlin {
     androidTarget()
@@ -84,7 +84,7 @@ kotlin {
 }
 
 android {
-    namespace = "ru.alexmaryin.simschecklist"
+    namespace = extra["app.group"] as String
     compileSdk = 33
 
     defaultConfig {
@@ -92,8 +92,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     sourceSets {

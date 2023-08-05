@@ -4,18 +4,18 @@ plugins {
     id("org.jetbrains.compose")
 }
 
-val decomposeVersion = "2.0.1"
+val decomposeVersion = extra["decompose.version"] as String
 
 android {
-    namespace = "ru.alexmaryin.simschecklist"
+    namespace = extra["app.group"] as String
 
     compileSdk = 33
 
     defaultConfig {
         minSdk = 22
         targetSdk = 33
-        versionCode = 11
-        versionName = "1.0.3"
+        versionCode = (extra["app.release"] as String).toInt()
+        versionName = extra["app.version"] as String
     }
 
     compileOptions {

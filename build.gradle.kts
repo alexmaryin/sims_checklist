@@ -1,5 +1,5 @@
 group = "ru.alexmaryin.simschecklist"
-version = "1.0.3"
+version = "1.2.1"
 
 allprojects {
     repositories {
