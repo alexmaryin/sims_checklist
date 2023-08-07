@@ -1,5 +1,5 @@
-group = "ru.alexmaryin.simschecklist"
-version = "1.2.1"
+group = extra["app.group"] as String
+version = extra["app.version"] as String
 
 allprojects {
     repositories {

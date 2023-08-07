@@ -11,6 +11,10 @@ android {
 
     compileSdk = 33
 
+    kotlin {
+        jvmToolchain(8)
+    }
+
     defaultConfig {
         minSdk = 22
         targetSdk = 33
@@ -18,11 +22,6 @@ android {
         versionName = extra["app.version"] as String
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    
     buildTypes {
         getByName("release") {
 //            isDebuggable = true

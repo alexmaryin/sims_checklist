@@ -7,7 +7,7 @@ val ktorVersion = extra["ktor.version"] as String
 
 plugins {
     id("com.android.library")
-    kotlin("multiplatform")
+    kotlin("multiplatform") version "1.9.0"
     id("org.jetbrains.compose")
     id("kotlin-parcelize")
     kotlin("plugin.serialization")
@@ -85,17 +85,12 @@ kotlin {
 
 android {
     namespace = extra["app.group"] as String
+
     compileSdk = 33
 
-    defaultConfig {
-        minSdk = 22
+    kotlin {
+        jvmToolchain(8)
     }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
     sourceSets {
         named("main") {
             manifest.srcFile("src/androidMain/AndroidManifest.xml")
