@@ -15,7 +15,6 @@ val release = extra["app.release"] as String
 
 kotlin {
     jvm {
-        jvmToolchain(11)
         withJava()
     }
 

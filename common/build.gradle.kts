@@ -89,7 +89,7 @@ android {
     compileSdk = 33
 
     kotlin {
-        jvmToolchain(8)
+        jvmToolchain(11)
     }
     sourceSets {
         named("main") {
@@ -106,3 +106,8 @@ buildkonfig {
     }
 }
 
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+}

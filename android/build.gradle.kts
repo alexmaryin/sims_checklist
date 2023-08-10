@@ -12,7 +12,7 @@ android {
     compileSdk = 33
 
     kotlin {
-        jvmToolchain(8)
+        jvmToolchain(11)
     }
 
     defaultConfig {
