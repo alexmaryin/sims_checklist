@@ -86,7 +86,7 @@ kotlin {
 android {
     namespace = extra["app.group"] as String
 
-    compileSdk = 33
+    compileSdk = 34
 
     kotlin {
         jvmToolchain(11)

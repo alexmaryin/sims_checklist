@@ -336,7 +336,6 @@
     ],
     "photo": "cessna172"
   },
-
   {
     "id": 1,
     "name": "Cirrus SR22",
@@ -681,5 +680,362 @@
       }
     ],
     "photo": "cirrus_sr22"
+  },
+  {
+    "id": 2,
+    "name": "Cessna Citation X",
+    "performance": {
+      "fuelCapacity": 1930,
+      "averageCruiseSpeed": 528,
+      "averageFuelFlow": 336
+    },
+    "checklists": [
+      {
+        "id": 0,
+        "caption": "Pre start",
+        "items": [
+          {
+            "caption": "Takeoff briefing",
+            "action": "COMPLETED"
+          },
+          {
+            "caption": "Gears",
+            "action": "DOWN"
+          },
+          {
+            "caption": "Fuel boost switches",
+            "action": "OFF"
+          },
+          {
+            "caption": "Ignition",
+            "action": "OFF"
+          },
+          {
+            "caption": "Batteries",
+            "action": "ON"
+          },
+          {
+            "caption": "Avionics EICAS",
+            "action": "ON"
+          },
+          {
+            "caption": "Hydraulic A AUX pump",
+            "action": "ON"
+          },
+          {
+            "caption": "APU gen",
+            "action": "ON"
+          },
+          {
+            "caption": "APU master",
+            "action": "ON"
+          },
+          {
+            "caption": "APU start",
+            "action": "ON",
+            "details": "hold 5 sec"
+          },
+          {
+            "caption": "Bleed air",
+            "action": "ON"
+          },
+          {
+            "caption": "PACS",
+            "action": "On"
+          },
+          {
+            "caption": "Avionics",
+            "action": "On"
+          },
+          {
+            "caption": "Flight plan & perf",
+            "action": "SET"
+          },
+          {
+            "caption": "Altimeter",
+            "action": "SET"
+          }
+        ]
+      },
+      {
+        "id": 1,
+        "caption": "Start up",
+        "items": [
+          {
+            "caption": "Doors & windows",
+            "action": "CLOSED"
+          },
+          {
+            "caption": "Seatbelts sign",
+            "action": "ON"
+          },
+          {
+            "caption": "Anti-ice",
+            "action": "AS REQUIRED"
+          },
+          {
+            "caption": "Gnd rec lights",
+            "action": "ON"
+          },
+          {
+            "caption": "Throttles",
+            "action": "CUT OFF"
+          },
+          {
+            "caption": "Fuel boost switches",
+            "action": "ON"
+          },
+          {
+            "caption": "PACS",
+            "action": "OFF"
+          },
+          {
+            "caption": "Engine 1 & 2 start:",
+            "action": "DONE",
+            "details": "Ignition... NORM\nEngine start... ON\nN2% > 10% - throttle... IDLE\nIgnition... OFF"
+          },
+          {
+            "caption": "PACS",
+            "action": "ON"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "caption": "After start",
+        "items": [
+          {
+            "caption": "Generators",
+            "action": "ON"
+          },
+          {
+            "caption": "Hydraulic A AUX pump",
+            "action": "OFF"
+          },
+          {
+            "caption": "APU bleed",
+            "action": "OFF"
+          },
+          {
+            "caption": "APU",
+            "action": "STOP",
+            "details": "hold 5 sec"
+          },
+          {
+            "caption": "Pass oxy",
+            "action": "AUTO"
+          },
+          {
+            "caption": "Center wings xfer L & R",
+            "action": "NORM"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "caption": "Taxi",
+        "items": [
+          {
+            "caption": "taxi lights",
+            "action": "ON"
+          },
+          {
+            "caption": "Pitot heat",
+            "action": "ON"
+          },
+          {
+            "caption": "Windshield heat",
+            "action": "AS REQUIRED"
+          },
+          {
+            "caption": "Flaps",
+            "action": "AS REQUIRED"
+          },
+          {
+            "caption": "Nav lights",
+            "action": "ON"
+          },
+          {
+            "caption": "TRIM",
+            "action": "SET TO T/O"
+          },
+          {
+            "caption": "Engines bleed air",
+            "action": "HP/LP"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "caption": "Line up",
+        "items": [
+          {
+            "caption": "landing lights",
+            "action": "ON"
+          },
+          {
+            "caption": "Taxi lights",
+            "action": "OFF"
+          },
+          {
+            "caption": "Strobe light",
+            "action": "ON",
+            "details": "V rotate - 145 Kt"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "caption": "After take off",
+        "items": [
+          {
+            "caption": "Gears",
+            "action": "UP"
+          },
+          {
+            "caption": "Autopilot",
+            "action": "ENGAGED"
+          },
+          {
+            "caption": "Landing lights",
+            "action": "OFF"
+          },
+          {
+            "caption": "Flaps",
+            "action": "RETRACTED"
+          },
+          {
+            "caption": "Climb power",
+            "action": "SET"
+          },
+          {
+            "caption": "Oil pressure",
+            "action": "IN GREEN"
+          },
+          {
+            "caption": "Fuel boost switches",
+            "action": "NORM"
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "caption": "Cruise",
+        "items": [
+          {
+            "caption": "Cruise power",
+            "action": "SET"
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "caption": "Approach",
+        "items": [
+          {
+            "caption": "Altimeter",
+            "action": "SET"
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "caption": "Landing",
+        "items": [
+          {
+            "caption": "Landing lights",
+            "action": "ON"
+          },
+          {
+            "caption": "Flaps",
+            "action": "AS REQUIRED"
+          },
+          {
+            "caption": "Gears",
+            "action": "DOWN",
+            "details": "Vref... 132 Kt"
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "caption": "After landing",
+        "items": [
+          {
+            "caption": "Taxi lights",
+            "action": "ON"
+          },
+          {
+            "caption": "Landing lights",
+            "action": "OFF"
+          },
+          {
+            "caption": "Strobe",
+            "action": "OFF"
+          },
+          {
+            "caption": "Flaps",
+            "action": "RETRACTED"
+          },
+          {
+            "caption": "Spoilers",
+            "action": "RETRACTED"
+          },
+          {
+            "caption": "APU master",
+            "action": "ON"
+          },
+          {
+            "caption": "APU",
+            "action": "START",
+            "details": "hold 5 sec"
+          },
+          {
+            "caption": "APU bleed",
+            "action": "ON"
+          }
+        ]
+      },
+      {
+        "id": 10,
+        "caption": "Shutdown",
+        "items": [
+          {
+            "caption": "Throttles",
+            "action": "CUT OFF"
+          },
+          {
+            "caption": "Fuel boost switches",
+            "action": "OFF"
+          },
+          {
+            "caption": "Ignition",
+            "action": "OFF"
+          },
+          {
+            "caption": "Avionics",
+            "action": "OFF"
+          },
+          {
+            "caption": "Batteries",
+            "action": "OFF"
+          },
+          {
+            "caption": "PACS",
+            "action": "OFF"
+          },
+          {
+            "caption": "APU",
+            "action": "STOP",
+            "details": "hold 5 sec"
+          },
+          {
+            "caption": "APU bleed",
+            "action": "OFF"
+          }
+        ]
+      }
+    ],
+    "photo": "citationx"
   }
 ]
