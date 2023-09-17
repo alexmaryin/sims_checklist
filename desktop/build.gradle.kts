@@ -15,9 +15,8 @@ val release = extra["app.release"] as String
 
 kotlin {
     jvm {
-        withJava()
+//        withJava()
     }
-
     sourceSets {
         val jvmMain by getting {
             dependencies {

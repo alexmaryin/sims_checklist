@@ -6,10 +6,7 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import repository.AircraftRepository
 import repository.AircraftRepositoryImpl
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import kotlin.test.assertFailsWith
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 const val TEST_DATA = """
     {

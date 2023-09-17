@@ -1,10 +1,7 @@
 package feature.metarscreen.model
 
 import services.airportService.model.Runway
-import kotlin.math.PI
-import kotlin.math.abs
-import kotlin.math.cos
-import kotlin.math.sin
+import kotlin.math.*
 
 data class RunwayUi(
     val low: String = "",
@@ -20,6 +17,14 @@ fun Runway.toUi() = RunwayUi(
     lowHeading = lowHeading,
     highHeading = highHeading
 )
+
+fun Heading.toRunwayUi(): RunwayUi {
+    val lowHeading = if (this < 180 || this == 360) this else this - 180
+    val highHeading = if (this >= 180 && this != 360) this else this + 180
+    val lowNumber = round(lowHeading / 10.0).toString()
+    val highNumber = round(highHeading / 10.0).toString()
+    return RunwayUi(lowNumber, highNumber, lowHeading, highHeading)
+}
 
 fun RunwayUi.withCalculatedWind(speedKt: Int, windAngle: Int): RunwayUi {
 

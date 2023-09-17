@@ -6,10 +6,10 @@ import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.features.logging.*
 import kotlinx.coroutines.runBlocking
-import org.junit.jupiter.api.Assertions.*
 import services.commonApi.forError
 import services.commonApi.forSuccess
 import kotlin.test.Test
+import kotlin.test.assertTrue
 
 internal class CheckWxMetarServiceTest {
 

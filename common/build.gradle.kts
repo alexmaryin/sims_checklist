@@ -6,8 +6,8 @@ val koinVersion = extra["koin.version"] as String
 val ktorVersion = extra["ktor.version"] as String
 
 plugins {
+    kotlin("multiplatform")
     id("com.android.library")
-    kotlin("multiplatform") version "1.9.0"
     id("org.jetbrains.compose")
     id("kotlin-parcelize")
     kotlin("plugin.serialization")
@@ -20,21 +20,17 @@ version = extra["app.version"] as String
 
 kotlin {
     androidTarget()
-    jvm("desktop") {
-        jvmToolchain(11)
-        testRuns["test"].executionTask.configure {
-            useJUnitPlatform()
-        }
-    }
+    jvm("desktop")
 
     sourceSets {
         val commonMain by getting {
             resources.srcDirs("resources")
             dependencies {
-                api(compose.runtime)
-                api(compose.foundation)
-                api(compose.material)
-//                api(compose.materialIconsExtended)
+                implementation(compose.ui)
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material)
+//                implementation(compose.materialIconsExtended)
                 // Needed only for preview.
                 implementation(compose.preview)
                 // Decompose navigation library
@@ -61,7 +57,8 @@ kotlin {
         }
         val commonTest by getting {
             dependencies {
-                implementation(kotlin("test")) // This brings all the platform dependencies automatically
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+                implementation(kotlin("test"))
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
             }
@@ -69,33 +66,30 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 api("androidx.appcompat:appcompat:1.6.1")
-                api("androidx.core:core-ktx:1.10.1")
+                api("androidx.core:core-ktx:1.12.0")
                 // Koin DI
                 implementation("io.insert-koin:koin-android:$koinVersion")
-            }
-        }
-        val androidUnitTest by getting {
-            dependencies {
-                implementation(kotlin("test-junit"))
-                implementation("junit:junit:4.13.2")
             }
         }
     }
 }
 
 android {
+    compileSdk = 34
     namespace = extra["app.group"] as String
 
-    compileSdk = 34
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    sourceSets["main"].resources.srcDirs("resources")
 
-    kotlin {
-        jvmToolchain(11)
+    defaultConfig {
+        minSdk = 26
     }
-    sourceSets {
-        named("main") {
-            manifest.srcFile("src/androidMain/AndroidManifest.xml")
-            res.srcDirs("resources")
-        }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    kotlin {
+        jvmToolchain(17)
     }
 }
 
@@ -103,11 +97,5 @@ buildkonfig {
     packageName = "common"
     defaultConfigs {
         buildConfigField(STRING, "WXAPI_KEY", project.getLocalProperty("WXAPI_KEY"))
-    }
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    kotlinOptions {
-        jvmTarget = "11"
     }
 }
