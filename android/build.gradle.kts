@@ -11,7 +11,7 @@ kotlin {
     sourceSets {
         val androidMain by getting {
             dependencies {
-                implementation(project(":common"))
+                implementation(project(":shared"))
             }
         }
     }
@@ -35,21 +35,4 @@ android {
     kotlin {
         jvmToolchain(17)
     }
-
-    buildTypes {
-        getByName("release") {
-//            isDebuggable = true
-            isMinifyEnabled = false
-        }
-    }
-}
-
-dependencies {
-    implementation(project(":common"))
-    implementation("androidx.activity:activity-compose:1.7.2")
-    implementation("androidx.compose.material:material-icons-core:1.5.1")
-    // Decompose navigation library
-    implementation("com.arkivanov.decompose:decompose:$decomposeVersion")
-    implementation("com.arkivanov.decompose:extensions-compose-jetbrains:$decomposeVersion")
-    implementation("androidx.core:core-ktx:1.12.0")
 }

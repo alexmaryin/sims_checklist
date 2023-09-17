@@ -37,7 +37,7 @@ kotlin {
                 implementation("com.arkivanov.decompose:decompose:$decomposeVersion")
                 implementation("com.arkivanov.decompose:extensions-compose-jetbrains:$decomposeVersion")
                 // Serialization
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
                 // Koin-DI
                 implementation("io.insert-koin:koin-core:$koinVersion")
                 // Ktor
@@ -57,18 +57,23 @@ kotlin {
         }
         val commonTest by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
                 implementation(kotlin("test"))
-                implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
             }
         }
         val androidMain by getting {
             dependencies {
+                api("androidx.activity:activity-compose:1.7.2")
                 api("androidx.appcompat:appcompat:1.6.1")
                 api("androidx.core:core-ktx:1.12.0")
                 // Koin DI
                 implementation("io.insert-koin:koin-android:$koinVersion")
+            }
+        }
+        val desktopMain by getting {
+            dependencies {
+                implementation(compose.desktop.common)
             }
         }
     }
@@ -79,6 +84,7 @@ android {
     namespace = extra["app.group"] as String
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    sourceSets["main"].res.srcDirs("src/androidMain/res")
     sourceSets["main"].resources.srcDirs("resources")
 
     defaultConfig {

@@ -2,7 +2,6 @@ package commonTest
 
 import database.AircraftBase
 import feature.checklists.model.Aircraft
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import repository.AircraftRepository
 import repository.AircraftRepositoryImpl

@@ -3,7 +3,6 @@ package database
 import feature.checklists.model.Aircraft
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import java.io.File
 
 const val AIRCRAFT_FILE = "aircraft.json"
 

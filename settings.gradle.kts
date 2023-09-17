@@ -19,18 +19,18 @@ pluginManagement {
         id("com.android.application").version(agpVersion)
         id("com.android.library").version(agpVersion)
         id("org.jetbrains.compose").version(composeVersion)
-        kotlin("plugin.serialization").version(extra["serialization.version"] as String)
+        kotlin("plugin.serialization").version(kotlinVersion)
         id("io.realm.kotlin").version(extra["realm.version"] as String)
         id("com.codingfeline.buildkonfig").version("0.14.0")
     }
 }
 
 plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version("0.4.0")
+    id("org.gradle.toolchains.foojay-resolver-convention") version("0.5.0")
 }
 
 rootProject.name = "sims_checklist"
 
-include(":common")
+include(":shared")
 include(":android")
 include(":desktop")
