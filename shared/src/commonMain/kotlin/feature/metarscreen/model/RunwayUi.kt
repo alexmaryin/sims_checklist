@@ -18,31 +18,32 @@ fun Runway.toUi() = RunwayUi(
     highHeading = highHeading
 )
 
-fun Int.coerceNum() = if (this > 5) this else 36
-
 fun Heading.toRunwayUi(): RunwayUi {
-    val lowHeading = (if (this < 180) this else this - 180)
-    val highHeading = (if (this >= 180) this else this + 180)
-    val lowNumber = round(lowHeading / 10.0).toInt().coerceNum().toString()
-    val highNumber = round(highHeading / 10.0).toInt().toString()
+
+    fun Int.checkZero() = if (this != 0) this else 36
+
+    val lowHeading = (if (this <= 180) this else this - 180)
+    val highHeading = (if (this > 180) this else this + 180)
+    val lowNumber = String.format("%02d", (lowHeading / 10.0).roundToInt().checkZero())
+    val highNumber = String.format("%02d", (highHeading / 10.0).roundToInt())
     return RunwayUi(lowNumber, highNumber, lowHeading, highHeading)
 }
 
 fun RunwayUi.withCalculatedWind(speedKt: Int, windAngle: Int): RunwayUi {
 
     fun calculate(heading: Int, wind: Int, speed: Int): Wind {
-        var angle = abs(heading - wind)
+        val correctedHeading = if (heading == 360) 0 else heading
+        var angle = abs(correctedHeading - wind)
         val tail = angle > 90
-        val rightSide = (heading - wind) in -180..0
+        val rightSide = sign(((correctedHeading - wind + 540) % 360.0) - 180) <= 0
         if (tail) angle = abs(180 - angle)
-        val corrected = (speed * cos(angle * PI / 180)).toInt().coerceAtLeast(0)
-        val cross = (speed * sin(angle * PI / 180)).toInt().coerceAtLeast(0)
+        val corrected = (speed * cos(angle * PI / 180)).roundToInt().coerceAtLeast(0)
+        val cross = (speed * sin(angle * PI / 180)).roundToInt().coerceAtLeast(0)
         return when {
             rightSide && tail -> Wind.RightCrossTailWind(cross, corrected)
-            rightSide && tail.not() -> Wind.RightCrossHeadWind(cross, corrected)
-            rightSide.not() && tail -> Wind.LeftCrossTailWind(cross, corrected)
-            rightSide.not() && tail.not() -> Wind.LeftCrossHeadWind(cross, corrected)
-            else -> throw RuntimeException("Wind calculation error")
+            rightSide -> Wind.RightCrossHeadWind(cross, corrected)
+            !rightSide && tail -> Wind.LeftCrossTailWind(cross, corrected)
+            else  -> Wind.LeftCrossHeadWind(cross, corrected)
         }
     }
 
