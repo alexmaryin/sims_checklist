@@ -122,7 +122,4 @@ fun ValidatedOutlineInput(
 expect fun loadXmlPicture(name: String): ImageVector
 
 @Composable
-expect fun modifierForWindFace(): Modifier
-
-@Composable
 expect fun Dialog(onDismissRequest: () -> Unit, title: String, text: String)

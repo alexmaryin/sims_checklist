@@ -12,6 +12,13 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(project(":shared"))
+                implementation(compose.foundation)
+                implementation(compose.material)
+                implementation("androidx.activity:activity-compose:1.7.2")
+                implementation("androidx.core:core-ktx:1.12.0")
+                // Decompose
+                implementation("com.arkivanov.decompose:decompose:$decomposeVersion")
+                implementation("com.arkivanov.decompose:extensions-compose-jetbrains:$decomposeVersion")
             }
         }
     }
@@ -27,7 +34,6 @@ android {
         versionCode = (extra["app.release"] as String).toInt()
         versionName = extra["app.version"] as String
     }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17

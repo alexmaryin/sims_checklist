@@ -14,9 +14,8 @@ val linuxVersion = extra["app.linux.version"] as String
 val release = extra["app.release"] as String
 
 kotlin {
-    jvm {
-//        withJava()
-    }
+    jvm {}
+
     sourceSets {
         val jvmMain by getting {
             dependencies {

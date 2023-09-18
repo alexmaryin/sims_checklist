@@ -3,7 +3,6 @@ package ui
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -25,10 +24,6 @@ actual fun loadXmlPicture(name: String): ImageVector =
         loadXmlImageVector(InputSource(stream), LocalDensity.current)
     }
 
-@Composable
-actual fun modifierForWindFace(): Modifier = Modifier.size(300.dp)
-
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 actual fun Dialog(onDismissRequest: () -> Unit, title: String, text: String) = AlertDialog(
     onDismissRequest = onDismissRequest,

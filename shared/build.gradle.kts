@@ -1,5 +1,6 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.jetbrains.compose.internal.utils.getLocalProperty
+import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 val decomposeVersion = extra["decompose.version"] as String
 val koinVersion = extra["koin.version"] as String
@@ -59,6 +60,7 @@ kotlin {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
                 implementation(kotlin("test"))
+                implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
             }
         }
@@ -69,6 +71,7 @@ kotlin {
                 api("androidx.core:core-ktx:1.12.0")
                 // Koin DI
                 implementation("io.insert-koin:koin-android:$koinVersion")
+
             }
         }
         val desktopMain by getting {
@@ -84,8 +87,8 @@ android {
     namespace = extra["app.group"] as String
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    sourceSets["main"].res.srcDirs("src/androidMain/res")
-    sourceSets["main"].resources.srcDirs("resources")
+    sourceSets["main"].res.srcDirs("resources")
+//    sourceSets["main"].resources.srcDirs("resources")
 
     defaultConfig {
         minSdk = 26
@@ -105,3 +108,4 @@ buildkonfig {
         buildConfigField(STRING, "WXAPI_KEY", project.getLocalProperty("WXAPI_KEY"))
     }
 }
+
