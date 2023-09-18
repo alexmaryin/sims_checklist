@@ -5,7 +5,7 @@
 
 ### Application helps to control, proceed and complete checklists of virtual airplanes as far as calculate fuel quantity for your trip and get METAR/TAF with visualized wind director.
 
-At present checklists are implemented for Cessna 172 Skyhawk, the most popular general aviation in any simulator, and Cirrus SR-22, the luxury one.
+At present checklists are implemented for Cessna 172 Skyhawk, the most popular general aviation in any simulator, Cirrus SR-22, the luxury one, and ultimate Cessna Citation X.
 
 Someday it will be featured custom editor or import mode from simple text files.
 
