@@ -18,11 +18,13 @@ fun Runway.toUi() = RunwayUi(
     highHeading = highHeading
 )
 
+fun Int.coerceNum() = if (this > 5) this else 36
+
 fun Heading.toRunwayUi(): RunwayUi {
-    val lowHeading = if (this < 180 || this == 360) this else this - 180
-    val highHeading = if (this >= 180 && this != 360) this else this + 180
-    val lowNumber = round(lowHeading / 10.0).toString()
-    val highNumber = round(highHeading / 10.0).toString()
+    val lowHeading = (if (this < 180) this else this - 180)
+    val highHeading = (if (this >= 180) this else this + 180)
+    val lowNumber = round(lowHeading / 10.0).toInt().coerceNum().toString()
+    val highNumber = round(highHeading / 10.0).toInt().toString()
     return RunwayUi(lowNumber, highNumber, lowHeading, highHeading)
 }
 

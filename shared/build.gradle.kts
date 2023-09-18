@@ -1,6 +1,5 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.jetbrains.compose.internal.utils.getLocalProperty
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 val decomposeVersion = extra["decompose.version"] as String
 val koinVersion = extra["koin.version"] as String
@@ -58,10 +57,15 @@ kotlin {
         }
         val commonTest by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
                 implementation(kotlin("test"))
-                implementation(kotlin("test-common"))
+                implementation(kotlin("test-junit"))
                 implementation(kotlin("test-annotations-common"))
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.2")
+                implementation("io.ktor:ktor-client-core:$ktorVersion")
+                implementation("io.ktor:ktor-client-cio:$ktorVersion")
+                implementation("io.ktor:ktor-client-logging:$ktorVersion")
+                implementation("io.ktor:ktor-client-serialization:$ktorVersion")
             }
         }
         val androidMain by getting {
