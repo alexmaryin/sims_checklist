@@ -11,12 +11,12 @@ import androidx.compose.ui.unit.min
 import feature.metarscreen.model.RunwayUi
 
 @Composable
-fun WindSegment(minSide: Dp, windAngle: Int, runway: RunwayUi) {
+fun WindSegment(minSide: Dp, windAngle: Int, runway: RunwayUi, userAngleEnter: (Int) -> Unit) {
     BoxWithConstraints(
         modifier = Modifier.size(min(400.dp, minSide)),
     ) {
         CircleFace(boxScope = this, color = MaterialTheme.colors.onSurface)
-        Runway(boxScope = this, runway)
+        Runway(boxScope = this, runway, userAngleEnter)
         WindPointer(boxScope = this, windAngle, color = MaterialTheme.colors.onSurface)
     }
 }

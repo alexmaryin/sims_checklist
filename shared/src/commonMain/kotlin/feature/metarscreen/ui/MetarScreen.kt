@@ -80,7 +80,9 @@ fun MetarScreen(component: MetarScanner) {
                 min(width, height),
                 state.data.metarAngle ?: state.data.userAngle,
                 state.runway
-            )
+            ) { value ->
+                component.onEvent(MetarUiEvent.SubmitRunwayAngle(value))
+            }
 
             Column {
                 WindSlider(state.data.metarAngle ?: state.data.userAngle) { value ->

@@ -35,29 +35,46 @@ class MetarScanner(
     fun onEvent(event: MetarUiEvent) = when (event) {
         is MetarUiEvent.SubmitAngle -> submitAngle(event.new)
         is MetarUiEvent.SubmitICAO -> submitICAO(event.station, event.scope)
-        is MetarUiEvent.SubmitRunway-> submitRunway(event.new)
+        is MetarUiEvent.SubmitRunway -> submitRunway(event.new)
         is MetarUiEvent.ShowInfoDialog -> showInfoDialog(true)
         is MetarUiEvent.DismissInfoDialog -> showInfoDialog(false)
+        is MetarUiEvent.SubmitRunwayAngle -> submitRunwayAngle(event.new)
     }
+
+    private fun WindViewState.updateRunwayWind(new: RunwayUi): WindViewState =
+        if (state.value.data.metarAngle != null && state.value.data.metarSpeedKt != null) {
+            copy(
+                runway = new.withCalculatedWind(
+                    state.value.data.metarSpeedKt!!,
+                    state.value.data.metarAngle!!
+                )
+            )
+        } else {
+            copy(runway = new.withCalculatedWind(8, state.value.data.userAngle))
+        }
 
     private fun submitAngle(new: Int) {
         metarJob?.cancel().also { metarJob = null }
         airportJob?.cancel().also { airportJob = null }
-        state.value = WindViewState(data = MetarUi(userAngle = new))
+        state.update {
+            it.copy(data = state.value.data.copy(userAngle = new, metarAngle = null, metarSpeedKt = null))
+                .updateRunwayWind(state.value.runway)
+        }
+    }
+
+    private fun submitRunwayAngle(new: Int) {
+        println("New runway angle set to $new")
+        val runwayUi = new.toRunwayUi().withCalculatedWind(
+            speedKt = 8,
+            windAngle = state.value.data.userAngle
+        )
+        state.update { it.copy(airport = null) }
+        submitRunway(runwayUi)
     }
 
     private fun submitRunway(new: RunwayUi) {
         state.update {
-            if (state.value.data.metarAngle != null && state.value.data.metarSpeedKt != null) {
-                it.copy(
-                    runway = new.withCalculatedWind(
-                        state.value.data.metarSpeedKt!!,
-                        state.value.data.metarAngle!!
-                    )
-                )
-            } else {
-                it.copy(runway = new)
-            }
+            it.updateRunwayWind(new)
         }
     }
 
@@ -85,7 +102,9 @@ class MetarScanner(
                         rawTaf = metarApi.taf,
                     ),
                     isLoading = combineLoading.state,
-                    error = if (metar.wind == null) { "METAR has incorrect wind information" } else null
+                    error = if (metar.wind == null) {
+                        "METAR has incorrect wind information"
+                    } else null
                 )
             }
         }
