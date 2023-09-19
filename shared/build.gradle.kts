@@ -92,7 +92,6 @@ android {
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].res.srcDirs("resources")
-//    sourceSets["main"].resources.srcDirs("resources")
 
     defaultConfig {
         minSdk = 26

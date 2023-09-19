@@ -25,7 +25,6 @@ import feature.metarscreen.ui.windSegment.WindSegment
 import ui.AdaptiveLayout
 import ui.Dialog
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MetarScreen(component: MetarScanner) {
 

@@ -31,6 +31,7 @@ android {
     defaultConfig {
         minSdk = 26
         targetSdk = 34
+        applicationId = extra["app.group"] as String
         versionCode = (extra["app.release"] as String).toInt()
         versionName = extra["app.version"] as String
     }

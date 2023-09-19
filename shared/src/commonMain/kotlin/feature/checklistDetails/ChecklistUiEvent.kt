@@ -2,7 +2,7 @@ package feature.checklistDetails
 
 sealed class ChecklistUiEvent {
     data class Toggle(val toggledIndex: Int) : ChecklistUiEvent()
-    object Clear : ChecklistUiEvent()
-    object Undo : ChecklistUiEvent()
-    object Back : ChecklistUiEvent()
+    data object Clear : ChecklistUiEvent()
+    data object Undo : ChecklistUiEvent()
+    data object Back : ChecklistUiEvent()
 }

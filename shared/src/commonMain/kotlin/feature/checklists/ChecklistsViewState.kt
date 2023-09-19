@@ -13,7 +13,7 @@ sealed class ListSnackBarState(
     val button: String,
     val event: ChecklistsUiEvent
 ) {
-    object Undo : ListSnackBarState(
+    data object Undo : ListSnackBarState(
         message = "Clear all checklists?",
         button = "Clear",
         event = ChecklistsUiEvent.ClearAll

@@ -6,8 +6,8 @@ import kotlin.math.*
 data class RunwayUi(
     val low: String = "",
     val high: String = "",
-    val lowHeading: Int = 180,
-    val highHeading: Int = 360,
+    val lowHeading: Heading = 180,
+    val highHeading: Heading = 360,
     val wind: RunwayWind? = null
 )
 
@@ -29,9 +29,9 @@ fun Heading.toRunwayUi(): RunwayUi {
     return RunwayUi(lowNumber, highNumber, lowHeading, highHeading)
 }
 
-fun RunwayUi.withCalculatedWind(speedKt: Int, windAngle: Int): RunwayUi {
+fun RunwayUi.withCalculatedWind(speedKt: Int, windAngle: Heading): RunwayUi {
 
-    fun calculate(heading: Int, wind: Int, speed: Int): Wind {
+    fun calculate(heading: Heading, wind: Heading, speed: Int): Wind {
         val correctedHeading = if (heading == 360) 0 else heading
         var angle = abs(correctedHeading - wind)
         val tail = angle > 90

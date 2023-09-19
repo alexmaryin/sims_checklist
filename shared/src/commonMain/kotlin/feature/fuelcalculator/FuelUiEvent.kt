@@ -10,6 +10,6 @@ sealed class FuelUiEvent {
     data class ContingencyChange(val new: String) : FuelUiEvent()
     data class ReserveTimeChange(val new: String) : FuelUiEvent()
     data class FuelCapacityChange(val new: String) : FuelUiEvent()
-    object SnackBarClose : FuelUiEvent()
-    object Back : FuelUiEvent()
+    data object SnackBarClose : FuelUiEvent()
+    data object Back : FuelUiEvent()
 }

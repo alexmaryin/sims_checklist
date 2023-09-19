@@ -2,19 +2,14 @@ package services.airportService.localService
 
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
-import io.realm.kotlin.query.find
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
 import services.airportService.LocalBaseConverter
 import services.airportService.LocalBaseConverter.UpdateResult
 import services.airportService.getFilePath
 import services.airportService.model.LastUpdate
-import services.airportService.model.enums.AirportType
 import services.airportService.model.realm.*
 import java.io.File
-import java.nio.file.Paths
 import kotlin.math.roundToInt
 
 class RealmConverter(private val realm: Realm) : LocalBaseConverter {

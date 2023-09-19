@@ -1,7 +1,7 @@
 package services.airportService.updateService
 
 sealed class DownloadResult {
-    object Success : DownloadResult()
+    data object Success : DownloadResult()
     data class Error(val message: String, val error: Exception? = null) : DownloadResult()
 }
 
