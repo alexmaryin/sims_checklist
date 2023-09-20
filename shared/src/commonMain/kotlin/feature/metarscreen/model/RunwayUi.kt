@@ -4,8 +4,8 @@ import services.airportService.model.Runway
 import kotlin.math.*
 
 data class RunwayUi(
-    val low: String = "",
-    val high: String = "",
+    val low: String = "18",
+    val high: String = "36",
     val lowHeading: Heading = 180,
     val highHeading: Heading = 360,
     val wind: RunwayWind? = null

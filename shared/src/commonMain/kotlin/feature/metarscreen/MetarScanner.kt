@@ -63,11 +63,7 @@ class MetarScanner(
     }
 
     private fun submitRunwayAngle(new: Int) {
-        println("New runway angle set to $new")
-        val runwayUi = new.toRunwayUi().withCalculatedWind(
-            speedKt = 8,
-            windAngle = state.value.data.userAngle
-        )
+        val runwayUi = new.toRunwayUi()
         state.update { it.copy(airport = null) }
         submitRunway(runwayUi)
     }
