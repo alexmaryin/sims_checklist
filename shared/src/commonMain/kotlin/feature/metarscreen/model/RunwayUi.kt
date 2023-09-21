@@ -1,6 +1,7 @@
 package feature.metarscreen.model
 
 import services.airportService.model.Runway
+import utils.angleBetweenHeadings
 import kotlin.math.*
 
 data class RunwayUi(
@@ -29,20 +30,15 @@ fun Heading.toRunwayUi(): RunwayUi {
     return RunwayUi(lowNumber, highNumber, lowHeading, highHeading)
 }
 
-fun headRange(heading: Heading): IntRange {
-    var start = if (heading > 90) heading - 90 else heading + 270
-    var end = if (heading < 270) heading + 90 else heading - 270
-    return start..end
-}
 fun RunwayUi.withCalculatedWind(speedKt: Int, windAngle: Heading): RunwayUi {
 
     fun calculate(heading: Heading, wind: Heading, speed: Int): Wind {
         val rightSide = sign(((heading - wind + 540) % 360.0) - 180) <= 0
-        var angle = abs(heading - wind)
-        val tail = angle in headRange(heading)
-        if (tail) angle = abs(180 - angle)
-        val corrected = (speed * cos(angle * PI / 180)).roundToInt().coerceAtLeast(0)
-        val cross = (speed * sin(angle * PI / 180)).roundToInt().coerceAtLeast(0)
+        val angle = angleBetweenHeadings(heading, wind)
+        var corrected = (speed * cos(angle * PI / 180)).roundToInt()
+        val cross = abs(speed * sin(angle * PI / 180)).roundToInt()
+        val tail = corrected < 0
+        corrected = abs(corrected)
         return when {
             rightSide && tail -> Wind.RightCrossTailWind(cross, corrected)
             rightSide -> Wind.RightCrossHeadWind(cross, corrected)
