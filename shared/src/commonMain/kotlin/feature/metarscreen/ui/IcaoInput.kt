@@ -2,7 +2,6 @@ package feature.metarscreen.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
@@ -28,6 +27,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun IcaoInput(
+    modifier: Modifier,
     enabled: Boolean,
     onClick: (String) -> Unit
 ) {
@@ -43,7 +43,7 @@ fun IcaoInput(
     }
 
     Row(
-        modifier = Modifier.fillMaxWidth().padding(8.dp),
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
         OutlinedTextField(

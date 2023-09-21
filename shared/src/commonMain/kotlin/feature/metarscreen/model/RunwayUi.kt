@@ -29,13 +29,17 @@ fun Heading.toRunwayUi(): RunwayUi {
     return RunwayUi(lowNumber, highNumber, lowHeading, highHeading)
 }
 
+fun headRange(heading: Heading): IntRange {
+    var start = if (heading > 90) heading - 90 else heading + 270
+    var end = if (heading < 270) heading + 90 else heading - 270
+    return start..end
+}
 fun RunwayUi.withCalculatedWind(speedKt: Int, windAngle: Heading): RunwayUi {
 
     fun calculate(heading: Heading, wind: Heading, speed: Int): Wind {
-        val correctedHeading = if (heading == 360) 0 else heading
-        var angle = abs(correctedHeading - wind)
-        val tail = angle > 90
-        val rightSide = sign(((correctedHeading - wind + 540) % 360.0) - 180) <= 0
+        val rightSide = sign(((heading - wind + 540) % 360.0) - 180) <= 0
+        var angle = abs(heading - wind)
+        val tail = angle in headRange(heading)
         if (tail) angle = abs(180 - angle)
         val corrected = (speed * cos(angle * PI / 180)).roundToInt().coerceAtLeast(0)
         val cross = (speed * sin(angle * PI / 180)).roundToInt().coerceAtLeast(0)
@@ -48,7 +52,7 @@ fun RunwayUi.withCalculatedWind(speedKt: Int, windAngle: Heading): RunwayUi {
     }
 
     return copy(
-        wind = if(windAngle != 0 && speedKt != 0) RunwayWind(
+        wind = if(speedKt != 0) RunwayWind(
             lowRunway = calculate(lowHeading, windAngle, speedKt),
             highRunway = calculate(highHeading, windAngle, speedKt)
         ) else null

@@ -33,31 +33,36 @@ class MetarScanner(
     private val combineLoading = Loading()
 
     fun onEvent(event: MetarUiEvent) = when (event) {
-        is MetarUiEvent.SubmitAngle -> submitAngle(event.new)
+        is MetarUiEvent.SubmitWindAngle -> submitWindAngle(event.new)
         is MetarUiEvent.SubmitICAO -> submitICAO(event.station, event.scope)
         is MetarUiEvent.SubmitRunway -> submitRunway(event.new)
         is MetarUiEvent.ShowInfoDialog -> showInfoDialog(true)
         is MetarUiEvent.DismissInfoDialog -> showInfoDialog(false)
         is MetarUiEvent.SubmitRunwayAngle -> submitRunwayAngle(event.new)
+        is MetarUiEvent.SubmitWindSpeed -> submitWindSpeed(event.new)
     }
 
-    private fun WindViewState.updateRunwayWind(new: RunwayUi): WindViewState =
-        if (state.value.data.metarAngle != null && state.value.data.metarSpeedKt != null) {
-            copy(
-                runway = new.withCalculatedWind(
-                    state.value.data.metarSpeedKt!!,
-                    state.value.data.metarAngle!!
-                )
-            )
-        } else {
-            copy(runway = new.withCalculatedWind(8, state.value.data.userAngle))
-        }
+    private fun WindViewState.updateRunwayWind(new: RunwayUi = state.value.runway): WindViewState = copy(
+        runway = new.withCalculatedWind(
+            speedKt = state.value.data.metarSpeedKt ?: state.value.data.userSpeed,
+            windAngle = state.value.data.metarAngle ?: state.value.data.userAngle
+        )
+    )
 
-    private fun submitAngle(new: Int) {
+    private fun submitWindAngle(new: Int) {
         metarJob?.cancel().also { metarJob = null }
         airportJob?.cancel().also { airportJob = null }
         state.update {
             it.copy(data = state.value.data.copy(userAngle = new, metarAngle = null, metarSpeedKt = null))
+                .updateRunwayWind(state.value.runway)
+        }
+    }
+
+    private fun submitWindSpeed(new: Int) {
+        metarJob?.cancel().also { metarJob = null }
+        airportJob?.cancel().also { airportJob = null }
+        state.update {
+            it.copy(data = state.value.data.copy(userSpeed = new, metarAngle = null, metarSpeedKt = null))
                 .updateRunwayWind(state.value.runway)
         }
     }
@@ -72,6 +77,7 @@ class MetarScanner(
         state.update {
             it.updateRunwayWind(new)
         }
+        println(state.value)
     }
 
     private fun setErrorState(error: Result.Error) {

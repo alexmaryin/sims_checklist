@@ -1,7 +1,6 @@
 package feature.metarscreen
 
-import feature.metarscreen.model.MetarUi
-import feature.metarscreen.model.RunwayUi
+import feature.metarscreen.model.*
 import services.airportService.model.Airport
 
 data class WindViewState(
@@ -10,5 +9,5 @@ data class WindViewState(
     val isLoading: Boolean = false,
     val error: String? = null,
     val showInfo: Boolean = false,
-    val runway: RunwayUi = RunwayUi(),
+    val runway: RunwayUi = RunwayUi().withCalculatedWind(INIT_WIND_SPEED, INIT_WIND_HEADING),
 )

@@ -12,9 +12,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
+import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import feature.metarscreen.MetarScanner
 import feature.metarscreen.MetarUiEvent
@@ -24,6 +26,7 @@ import feature.metarscreen.ui.airportSegment.AirportInfo
 import feature.metarscreen.ui.windSegment.WindSegment
 import ui.AdaptiveLayout
 import ui.Dialog
+import ui.ScrollableDigitField
 
 @Composable
 fun MetarScreen(component: MetarScanner) {
@@ -85,12 +88,45 @@ fun MetarScreen(component: MetarScanner) {
             }
 
             Column {
-                WindSlider(state.data.metarAngle ?: state.data.userAngle) { value ->
-                    component.onEvent(MetarUiEvent.SubmitAngle(value))
+                Row(Modifier.fillMaxWidth().padding(6.dp)) {
+                    Column(Modifier.weight(0.5f), horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text("wind °", fontWeight = FontWeight.Bold)
+                        ScrollableDigitField(
+                            state.data.metarAngle ?: state.data.userAngle,
+                            1..360,
+                            speed = 3,
+                            fontSize = 16.sp
+                        ) {
+                            component.onEvent(MetarUiEvent.SubmitWindAngle(it))
+                        }
+                    }
+                    Column(Modifier.weight(0.5f), horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text("runway °", fontWeight = FontWeight.Bold)
+                        ScrollableDigitField(
+                            state.runway.lowHeading,
+                            1..180,
+                            fontSize = 16.sp
+                        ) {
+                            component.onEvent(MetarUiEvent.SubmitRunwayAngle(it))
+                        }
+                    }
                 }
 
-                IcaoInput(state.isLoading.not()) { icao ->
-                    component.onEvent(MetarUiEvent.SubmitICAO(icao.uppercase(), scope))
+                Row(Modifier.fillMaxWidth().padding(6.dp)) {
+                    Column(Modifier.weight(0.5f), horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text("wind speed, Kt", fontWeight = FontWeight.Bold)
+                        ScrollableDigitField(
+                            state.data.metarSpeedKt ?: state.data.userSpeed,
+                            0..30,
+                            fontSize = 16.sp
+                        ) {
+                            component.onEvent(MetarUiEvent.SubmitWindSpeed(it))
+                        }
+                    }
+
+                    IcaoInput(Modifier.weight(0.5f), state.isLoading.not()) { icao ->
+                        component.onEvent(MetarUiEvent.SubmitICAO(icao.uppercase(), scope))
+                    }
                 }
 
                 AnimatedVisibility(
