@@ -16,6 +16,7 @@ import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -29,7 +30,7 @@ import kotlin.math.roundToInt
 fun ScrollableDigitField(
     value: Int,
     range: IntRange,
-    speed: Int = 1,
+    speed: Float = 1f,
     fontSize: TextUnit = 24.sp,
     fontWeight: FontWeight = FontWeight.Bold,
     onChange: (Int) -> Unit
@@ -38,6 +39,7 @@ fun ScrollableDigitField(
     var isUp by remember { mutableStateOf(false) }
     var isEditable by remember { mutableStateOf(false) }
     var tempValue by remember { mutableStateOf("$value") }
+    val density = LocalDensity.current.density * 2
 
     Row(verticalAlignment = Alignment.CenterVertically) {
         TextButton(
@@ -84,7 +86,7 @@ fun ScrollableDigitField(
                         .scrollable(orientation = Orientation.Vertical, reverseDirection = true,
                             state = rememberScrollableState { delta ->
                                 isUp = delta > 0
-                                val newValue = ((delta / 3 * speed).roundToInt() + value).coerceIn(range)
+                                val newValue = ((delta / density * speed).roundToInt() + value).coerceIn(range)
                                 onChange(newValue)
                                 newValue.toFloat()
                             })

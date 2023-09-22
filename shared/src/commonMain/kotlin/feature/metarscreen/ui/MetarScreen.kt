@@ -94,7 +94,6 @@ fun MetarScreen(component: MetarScanner) {
                         ScrollableDigitField(
                             state.data.metarAngle ?: state.data.userAngle,
                             1..360,
-                            speed = 3,
                             fontSize = 16.sp
                         ) {
                             component.onEvent(MetarUiEvent.SubmitWindAngle(it))
@@ -105,6 +104,7 @@ fun MetarScreen(component: MetarScanner) {
                         ScrollableDigitField(
                             state.runway.lowHeading,
                             1..180,
+                            speed = 0.5f,
                             fontSize = 16.sp
                         ) {
                             component.onEvent(MetarUiEvent.SubmitRunwayAngle(it))
@@ -118,6 +118,7 @@ fun MetarScreen(component: MetarScanner) {
                         ScrollableDigitField(
                             state.data.metarSpeedKt ?: state.data.userSpeed,
                             0..30,
+                            speed = 0.5f,
                             fontSize = 16.sp
                         ) {
                             component.onEvent(MetarUiEvent.SubmitWindSpeed(it))
