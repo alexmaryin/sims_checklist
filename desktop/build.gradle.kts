@@ -14,15 +14,13 @@ val linuxVersion = extra["app.linux.version"] as String
 val release = extra["app.release"] as String
 
 kotlin {
-    jvm {
-        withJava()
-    }
+    jvm {}
 
     sourceSets {
         val jvmMain by getting {
             dependencies {
                 implementation(compose.desktop.currentOs)
-                implementation(project(":common"))
+                implementation(project(":shared"))
                 // Decompose navigation library
                 implementation("com.arkivanov.decompose:decompose:$decomposeVersion")
                 implementation("com.arkivanov.decompose:extensions-compose-jetbrains:$decomposeVersion")
