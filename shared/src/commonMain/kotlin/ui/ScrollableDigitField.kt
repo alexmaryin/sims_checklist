@@ -2,6 +2,7 @@ package ui
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.gestures.scrollable
@@ -16,6 +17,7 @@ import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
@@ -88,7 +90,7 @@ fun ScrollableDigitField(
                                 isUp = delta > 0
                                 val newValue = ((delta / density * speed).roundToInt() + value).coerceIn(range)
                                 onChange(newValue)
-                                newValue.toFloat()
+                                delta
                             })
                         .clickable { isEditable = true }
                 )
