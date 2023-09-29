@@ -77,7 +77,6 @@ class MetarScanner(
         state.update {
             it.updateRunwayWind(new)
         }
-        println(state.value)
     }
 
     private fun setErrorState(error: Result.Error) {
