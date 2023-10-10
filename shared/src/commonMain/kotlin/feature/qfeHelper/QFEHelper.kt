@@ -31,7 +31,7 @@ class QFEHelper(
             it.copy(
                 elevationMeters = meters,
                 airportName = null,
-                airportICAO = "",
+                airportICAO = null,
                 error = null
             )
         }
