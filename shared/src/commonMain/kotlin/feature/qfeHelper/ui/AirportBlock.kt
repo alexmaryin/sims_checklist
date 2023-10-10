@@ -26,7 +26,7 @@ fun AirportBlock (
     airportName: String?,
     onSubmit: (String) -> Unit
 ) {
-
+    println("icao: $icao name: $airportName")
     var fieldICAO by remember { mutableStateOf(icao ?: "") }
 
     OutlinedTextField(
@@ -36,7 +36,10 @@ fun AirportBlock (
         value = fieldICAO,
         onValueChange = { new -> fieldICAO = new },
         trailingIcon = {
-            IconButton(onClick = { onSubmit(fieldICAO.uppercase(Locale.getDefault())) }) {
+            IconButton(onClick = {
+                onSubmit(fieldICAO.uppercase(Locale.getDefault()))
+                fieldICAO = ""
+            }) {
                 Icon(imageVector = Icons.Default.Send, contentDescription = "submit")
             }
         },
