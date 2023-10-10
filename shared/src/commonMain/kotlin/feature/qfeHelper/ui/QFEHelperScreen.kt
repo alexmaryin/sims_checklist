@@ -15,13 +15,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import feature.qfeHelper.QFEEvent
 import feature.qfeHelper.QFEHelper
 import feature.qfeHelper.QFEHelperState
+import ui.ScrollableDigitField
 import java.util.*
 
 @Composable
@@ -32,10 +32,7 @@ fun QFEHelperScreen(component: QFEHelper) {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 
-    var fieldICAO by remember { mutableStateOf(state.value.airportICAO) }
-    var fieldElevation by remember { mutableStateOf(state.value.elevationMeters) }
-    var fieldQFE by remember { mutableStateOf(state.value.qfeMmHg) }
-    var fieldHeightPlus by remember { mutableStateOf(state.value.heightPlusMeters) }
+    var fieldICAO by remember { mutableStateOf("") }
 
     state.value.error?.let {
         LaunchedEffect(scaffoldState.snackbarHostState) {
@@ -96,24 +93,13 @@ fun QFEHelperScreen(component: QFEHelper) {
                 )
             }
 
-            OutlinedTextField(
-                modifier = Modifier.padding(6.dp),
-                label = { Text("Elevation (meters)") },
-                placeholder = { Text("airport elevation in meters") },
-                value = "$fieldElevation",
-                onValueChange = { new ->
-                    new.toIntOrNull()?.let { fieldElevation = it }
-                },
-                trailingIcon = {
-                    IconButton(onClick = {
-                        component.onEvent(QFEEvent.SubmitElevationMeters(fieldElevation))
-                    }) {
-                        Icon(imageVector = Icons.Default.Send, contentDescription = "submit")
-                    }
-                },
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-            )
+            Text("Elevation (meters)")
+            ScrollableDigitField(
+                value = state.value.elevationMeters,
+                range = 0..10000,
+            ) {
+                component.onEvent(QFEEvent.SubmitElevationMeters(it))
+            }
 
             AnimatedVisibility(
                 visible = state.value.elevationMeters > 0,
@@ -129,28 +115,17 @@ fun QFEHelperScreen(component: QFEHelper) {
                 )
             }
 
-            OutlinedTextField(
-                modifier = Modifier.padding(6.dp),
-                label = { Text("QFE (${state.value.qfeMilliBar} mBar)") },
-                placeholder = { Text("airport QFE in mmHg") },
-                value = "$fieldQFE",
-                onValueChange = { new ->
-                    new.toIntOrNull()?.let { fieldQFE = it }
-                },
-                trailingIcon = {
-                    IconButton(onClick = {
-                        component.onEvent(QFEEvent.SubmitQFEmmHg(fieldQFE))
-                    }) {
-                        Icon(imageVector = Icons.Default.Send, contentDescription = "submit")
-                    }
-                },
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-            )
+            Text("QFE in mmHg")
+            ScrollableDigitField(
+                value = state.value.qfeMmHg,
+                range = 600..1000
+            ) {
+                component.onEvent(QFEEvent.SubmitQFEmmHg(it))
+            }
 
             Text(
                 modifier = Modifier.padding(6.dp),
-                text = "QNH: ${state.value.qnh} hPa",
+                text = "QNH: ${state.value.qnh()} hPa",
                 fontSize = 12.sp,
                 color = Color.DarkGray,
                 fontStyle = FontStyle.Italic

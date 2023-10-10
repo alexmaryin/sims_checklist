@@ -14,6 +14,6 @@ data class QFEHelperState(
     val heightPlusMeters: Int = 0
 ) {
     val elevationFeet get() = (elevationMeters * METER_FEET).roundToInt()
-    val qfeMilliBar get() = (qfeMmHg / ONE_BAR).roundToInt() * 1000
-    val qnh get() = elevationFeet / 30 + qfeMilliBar
+    private val qfeMilliBar get() = (qfeMmHg / ONE_BAR).roundToInt() * 1000
+    fun qnh() = elevationFeet / 30 + qfeMilliBar
 }
