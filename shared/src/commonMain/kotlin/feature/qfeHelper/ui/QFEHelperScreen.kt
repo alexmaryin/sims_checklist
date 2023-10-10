@@ -27,24 +27,18 @@ import java.util.*
 @Composable
 fun QFEHelperScreen(component: QFEHelper) {
 
-    val state: QFEHelperState by component.state.subscribeAsState()
-    println("recompose: $state")
+    val state: State<QFEHelperState> = component.state.subscribeAsState()
 
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 
-    var fieldICAO by remember { mutableStateOf(state.airportICAO) }
-    var fieldElevation by remember { mutableStateOf("") }
-    var fieldQFE by remember { mutableStateOf(state.qfeMmHg.toString()) }
-    var fieldHeightPlus by remember { mutableStateOf(state.heightPlusMeters) }
+    var fieldICAO by remember { mutableStateOf(state.value.airportICAO) }
+    var fieldElevation by remember { mutableStateOf(state.value.elevationMeters) }
+    var fieldQFE by remember { mutableStateOf(state.value.qfeMmHg) }
+    var fieldHeightPlus by remember { mutableStateOf(state.value.heightPlusMeters) }
 
-    LaunchedEffect(state.elevationMeters, state.qfeMmHg) {
-        fieldElevation = state.elevationMeters.toString()
-//        fieldQFE = state.qfeMmHg.toString()
-    }
-
-    state.error?.let {
-        LaunchedEffect(key1 = scaffoldState.snackbarHostState) {
+    state.value.error?.let {
+        LaunchedEffect(scaffoldState.snackbarHostState) {
             scaffoldState.snackbarHostState.showSnackbar(
                 message = it,
                 actionLabel = "Close"
@@ -73,7 +67,14 @@ fun QFEHelperScreen(component: QFEHelper) {
                 value = fieldICAO,
                 onValueChange = { new -> fieldICAO = new },
                 trailingIcon = {
-                    IconButton(onClick = { component.onEvent(QFEEvent.SubmitICAO(fieldICAO.uppercase(Locale.getDefault()), scope)) }) {
+                    IconButton(onClick = {
+                        component.onEvent(
+                            QFEEvent.SubmitICAO(
+                                fieldICAO.uppercase(Locale.getDefault()),
+                                scope
+                            )
+                        )
+                    }) {
                         Icon(imageVector = Icons.Default.Send, contentDescription = "submit")
                     }
                 },
@@ -82,13 +83,13 @@ fun QFEHelperScreen(component: QFEHelper) {
             )
 
             AnimatedVisibility(
-                visible = state.airportName != null,
+                visible = state.value.airportName != null,
                 modifier = Modifier.padding(6.dp),
                 enter = slideInVertically(),
                 exit = slideOutVertically()
-                ) {
+            ) {
                 Text(
-                    text = state.airportName ?: "",
+                    text = state.value.airportName ?: "",
                     fontSize = 12.sp,
                     color = Color.DarkGray,
                     fontStyle = FontStyle.Italic
@@ -99,30 +100,29 @@ fun QFEHelperScreen(component: QFEHelper) {
                 modifier = Modifier.padding(6.dp),
                 label = { Text("Elevation (meters)") },
                 placeholder = { Text("airport elevation in meters") },
-                value = fieldElevation,
-                onValueChange = { new -> fieldElevation = new },
+                value = "$fieldElevation",
+                onValueChange = { new ->
+                    new.toIntOrNull()?.let { fieldElevation = it }
+                },
                 trailingIcon = {
                     IconButton(onClick = {
-                        fieldElevation.toIntOrNull()?.let {
-                            component.onEvent(QFEEvent.SubmitElevationMeters(it))
-                        }
+                        component.onEvent(QFEEvent.SubmitElevationMeters(fieldElevation))
                     }) {
                         Icon(imageVector = Icons.Default.Send, contentDescription = "submit")
                     }
                 },
-                isError = fieldElevation.toIntOrNull() == null,
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
 
             AnimatedVisibility(
-                visible = state.elevationMeters > 0,
+                visible = state.value.elevationMeters > 0,
                 modifier = Modifier.padding(6.dp),
                 enter = slideInVertically(),
                 exit = slideOutVertically()
             ) {
                 Text(
-                    text = "${state.elevationFeet} feet",
+                    text = "${state.value.elevationFeet} feet",
                     fontSize = 12.sp,
                     color = Color.DarkGray,
                     fontStyle = FontStyle.Italic
@@ -131,32 +131,30 @@ fun QFEHelperScreen(component: QFEHelper) {
 
             OutlinedTextField(
                 modifier = Modifier.padding(6.dp),
-                label = { Text("QFE (${state.qfeMilliBar} mBar)") },
+                label = { Text("QFE (${state.value.qfeMilliBar} mBar)") },
                 placeholder = { Text("airport QFE in mmHg") },
-                value = fieldQFE,
-                onValueChange = { new -> fieldQFE = new },
+                value = "$fieldQFE",
+                onValueChange = { new ->
+                    new.toIntOrNull()?.let { fieldQFE = it }
+                },
                 trailingIcon = {
                     IconButton(onClick = {
-                        fieldQFE.toIntOrNull()?.let {
-                            component.onEvent(QFEEvent.SubmitQFEmmHg(it))
-                        }
+                        component.onEvent(QFEEvent.SubmitQFEmmHg(fieldQFE))
                     }) {
                         Icon(imageVector = Icons.Default.Send, contentDescription = "submit")
                     }
                 },
-                isError = fieldQFE.toIntOrNull() == null,
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
 
             Text(
                 modifier = Modifier.padding(6.dp),
-                text = "QNH: ${state.qnh} hPa",
+                text = "QNH: ${state.value.qnh} hPa",
                 fontSize = 12.sp,
                 color = Color.DarkGray,
                 fontStyle = FontStyle.Italic
             )
         }
-
     }
 }

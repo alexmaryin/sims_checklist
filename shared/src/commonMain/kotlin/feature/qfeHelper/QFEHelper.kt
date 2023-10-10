@@ -30,9 +30,9 @@ class QFEHelper(
         state.update {
             it.copy(
                 elevationMeters = meters,
-                elevationFeet = it.elevationFeet(meters),
                 airportName = null,
-                airportICAO = ""
+                airportICAO = "",
+                error = null
             )
         }
     }
@@ -50,7 +50,9 @@ class QFEHelper(
                     it.copy(
                         airportICAO = icao,
                         airportName = airport.name,
-                        elevationMeters = (airport.elevation / METER_FEET).roundToInt(), isLoading = false
+                        elevationMeters = (airport.elevation / METER_FEET).roundToInt(),
+                        isLoading = false,
+                        error = null
                     )
                 }
             }
@@ -61,10 +63,6 @@ class QFEHelper(
     }
 
     private fun submitQFE(mmHg: Int) {
-        state.update { it.copy(
-            qfeMmHg = mmHg,
-            qfeMilliBar = it.qfeMilliBar(mmHg),
-            qnh = it.qnh()
-        ) }
+        state.update { it.copy(qfeMmHg = mmHg) }
     }
 }
