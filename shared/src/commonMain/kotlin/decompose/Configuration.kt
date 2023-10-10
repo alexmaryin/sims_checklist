@@ -28,4 +28,9 @@ sealed class Configuration : Parcelable {
     data object AirportsBase : Configuration() {
         private fun readResolve(): Any = AirportsBase
     }
+
+    @Parcelize
+    data object QFEHelper : Configuration() {
+        private fun readResolve(): Any = QFEHelper
+    }
 }

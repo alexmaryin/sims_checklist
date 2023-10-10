@@ -34,6 +34,9 @@ fun AircraftListScreen(component: AircraftList) {
                     IconButton(onClick = { component.onAirportsBaseSelect() }) {
                         Icon(imageVector = MyIcons.Update, contentDescription = "Airports database")
                     }
+                    IconButton(onClick = { component.onQFEHelperSelect() }) {
+                        Icon(imageVector = MyIcons.Compress, contentDescription = "QFE helper")
+                    }
                 }
             )
         }

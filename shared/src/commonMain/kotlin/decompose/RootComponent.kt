@@ -7,6 +7,7 @@ import feature.checklistDetails.ChecklistDetails
 import feature.checklists.Checklists
 import feature.fuelcalculator.FuelCalculator
 import feature.metarscreen.MetarScanner
+import feature.qfeHelper.QFEHelper
 
 interface RootComponent {
     val stack: Value<ChildStack<*, Child>>
@@ -20,5 +21,6 @@ interface RootComponent {
         class FuelCalculatorChild(val component: FuelCalculator): Child()
         class MetarScannerChild(val component: MetarScanner): Child()
         class AirportsBaseChild(val component: AirportsBase): Child()
+        class QFEHelperChild(val component: QFEHelper): Child()
     }
 }

@@ -20,6 +20,8 @@ import feature.fuelcalculator.FuelCalculator
 import feature.fuelcalculator.ui.FuelCalculatorScreen
 import feature.metarscreen.MetarScanner
 import feature.metarscreen.ui.MetarScreen
+import feature.qfeHelper.QFEHelper
+import feature.qfeHelper.ui.QFEHelperScreen
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import repository.AircraftRepository
@@ -46,7 +48,8 @@ class Root(
         onSelected = { id -> navigation.push(Configuration.Checklists(id)) },
         onCalculatorSelect = { id -> navigation.push(Configuration.FuelCalculator(id)) },
         onMetarSelect = { navigation.push(Configuration.MetarScanner) },
-        onAirportsBaseSelect = { navigation.push(Configuration.AirportsBase) }
+        onAirportsBaseSelect = { navigation.push(Configuration.AirportsBase) },
+        onQFEHelperSelect = { navigation.push(Configuration.QFEHelper) }
     )
 
     private fun checklists(aircraftId: Int) = Checklists(
@@ -78,6 +81,10 @@ class Root(
         onBack = { navigation.pop() }
     )
 
+    private fun qfeHelper() = QFEHelper(
+        onBack = { navigation.pop() }
+    )
+
     private fun createChild(configuration: Configuration, context: ComponentContext): RootComponent.Child =
         when (configuration) {
 
@@ -92,6 +99,8 @@ class Root(
             is Configuration.MetarScanner -> MetarScannerChild(metarScanner())
 
             is Configuration.AirportsBase -> AirportsBaseChild(airportsBase())
+
+            is Configuration.QFEHelper -> QFEHelperChild(qfeHelper())
         }
 }
 
@@ -108,6 +117,7 @@ fun RootUi(root: RootComponent) {
             is ChecklistsChild -> ChecklistsScreen(child.component)
             is FuelCalculatorChild -> FuelCalculatorScreen(child.component)
             is MetarScannerChild -> MetarScreen(child.component)
+            is QFEHelperChild -> QFEHelperScreen(child.component)
         }
     }
 }
