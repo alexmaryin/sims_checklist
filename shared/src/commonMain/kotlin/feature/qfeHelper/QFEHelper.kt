@@ -41,6 +41,10 @@ class QFEHelper(
         state.update { it.copy(heightPlusMeters = meters) }
     }
 
+    private fun submitQFE(mmHg: Int) {
+        state.update { it.copy(qfeMmHg = mmHg) }
+    }
+
     private fun submitICAO(icao: String, scope: CoroutineScope) {
         state.update { it.copy(isLoading = true) }
         scope.launch {
@@ -60,9 +64,5 @@ class QFEHelper(
                 state.update { it.copy(isLoading = false, error = error.message) }
             }
         }
-    }
-
-    private fun submitQFE(mmHg: Int) {
-        state.update { it.copy(qfeMmHg = mmHg) }
     }
 }

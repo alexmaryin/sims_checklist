@@ -1,5 +1,6 @@
 package feature.qfeHelper
 
+import kotlin.math.ceil
 import kotlin.math.roundToInt
 
 const val METER_FEET = 3.280839895
@@ -16,7 +17,9 @@ data class QFEHelperState(
 ) {
     val elevationFeet get() = (elevationMeters * METER_FEET).roundToInt()
 
-    private val qfeMilliBar get() = (qfeMmHg / ONE_BAR).roundToInt() * 1000
+    val qfeMilliBar get() = ceil(qfeMmHg / ONE_BAR * 1000).roundToInt()
 
-    fun qnh() = elevationFeet / 30 + qfeMilliBar
+    val qnh get() = elevationFeet / 30 + qfeMilliBar
+
+    val heightAboveSea get() = elevationFeet + (heightPlusMeters * METER_FEET).roundToInt()
 }

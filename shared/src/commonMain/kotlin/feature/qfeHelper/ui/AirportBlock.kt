@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -15,18 +16,18 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.util.*
 
 @Composable
-fun AirportBlock (
+fun AirportBlock(
     icao: String?,
     airportName: String?,
     onSubmit: (String) -> Unit
 ) {
-    println("icao: $icao name: $airportName")
     var fieldICAO by remember { mutableStateOf(icao ?: "") }
 
     OutlinedTextField(
@@ -44,7 +45,11 @@ fun AirportBlock (
             }
         },
         singleLine = true,
-        keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Characters)
+        keyboardOptions = KeyboardOptions(
+            capitalization = KeyboardCapitalization.Characters,
+            imeAction = ImeAction.Send
+        ),
+        keyboardActions = KeyboardActions { onSubmit(fieldICAO.uppercase(Locale.getDefault())) }
     )
 
     AnimatedVisibility(
@@ -54,7 +59,7 @@ fun AirportBlock (
         exit = slideOutVertically()
     ) {
         Text(
-            text = airportName ?: "",
+            text = "$icao $airportName",
             fontSize = 12.sp,
             color = Color.DarkGray,
             fontStyle = FontStyle.Italic
