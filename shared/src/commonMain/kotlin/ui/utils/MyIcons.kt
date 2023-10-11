@@ -135,4 +135,40 @@ object MyIcons {
             close()
         }
     }
+
+    val Compress = materialIcon(name = "Filled.Compress") {
+        materialPath {
+            moveTo(8.0f, 19.0f)
+            horizontalLineToRelative(3.0f)
+            verticalLineToRelative(3.0f)
+            horizontalLineToRelative(2.0f)
+            verticalLineToRelative(-3.0f)
+            horizontalLineToRelative(3.0f)
+            lineToRelative(-4.0f, -4.0f)
+            lineToRelative(-4.0f, 4.0f)
+            close()
+            moveTo(16.0f, 4.0f)
+            horizontalLineToRelative(-3.0f)
+            lineTo(13.0f, 1.0f)
+            horizontalLineToRelative(-2.0f)
+            verticalLineToRelative(3.0f)
+            lineTo(8.0f, 4.0f)
+            lineToRelative(4.0f, 4.0f)
+            lineToRelative(4.0f, -4.0f)
+            close()
+            moveTo(4.0f, 9.0f)
+            verticalLineToRelative(2.0f)
+            horizontalLineToRelative(16.0f)
+            lineTo(20.0f, 9.0f)
+            lineTo(4.0f, 9.0f)
+            close()
+        }
+        materialPath {
+            moveTo(4.0f, 12.0f)
+            horizontalLineToRelative(16.0f)
+            verticalLineToRelative(2.0f)
+            horizontalLineTo(4.0f)
+            close()
+        }
+    }
 }

@@ -7,5 +7,6 @@ class AircraftList(
     val onSelected: (aircraftId: Int) -> Unit,
     val onCalculatorSelect: (aircraftId: Int) -> Unit,
     val onMetarSelect: () -> Unit,
-    val onAirportsBaseSelect: () -> Unit
+    val onAirportsBaseSelect: () -> Unit,
+    val onQFEHelperSelect: () -> Unit
 )
