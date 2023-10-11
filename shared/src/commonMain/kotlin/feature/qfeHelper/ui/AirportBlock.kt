@@ -16,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
@@ -60,9 +61,10 @@ fun AirportBlock(
     ) {
         Text(
             text = "$icao $airportName",
-            fontSize = 12.sp,
+            fontSize = 16.sp,
             color = Color.DarkGray,
-            fontStyle = FontStyle.Italic
+            fontStyle = FontStyle.Italic,
+            fontWeight = FontWeight.SemiBold
         )
     }
 }

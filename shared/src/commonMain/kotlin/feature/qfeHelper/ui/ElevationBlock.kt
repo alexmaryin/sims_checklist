@@ -33,7 +33,7 @@ fun ElevationBlock(
     ) {
         Text(
             text = "$feet feet",
-            fontSize = 12.sp,
+            fontSize = 16.sp,
             color = Color.DarkGray,
             fontStyle = FontStyle.Italic
         )

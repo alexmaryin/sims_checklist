@@ -24,7 +24,7 @@ fun HeightBlock(
     Text(
         modifier = Modifier.padding(6.dp),
         text = "Feet ASL: $feetAboveSea",
-        fontSize = 12.sp,
+        fontSize = 16.sp,
         color = Color.DarkGray,
         fontStyle = FontStyle.Italic
     )

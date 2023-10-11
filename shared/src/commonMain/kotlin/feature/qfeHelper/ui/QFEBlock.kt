@@ -26,7 +26,7 @@ fun QFEBlock(
     Text(
         modifier = Modifier.padding(6.dp),
         text = "QNH: $qnh hPa",
-        fontSize = 12.sp,
+        fontSize = 16.sp,
         color = Color.DarkGray,
         fontStyle = FontStyle.Italic
     )
