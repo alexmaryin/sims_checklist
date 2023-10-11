@@ -6,8 +6,8 @@
 ### Application helps to control, proceed and complete checklists of virtual airplanes as far as calculate fuel quantity for your trip and get METAR/TAF with visualized wind director.
 
 At present checklists are implemented for Cessna 172 Skyhawk, the most popular general aviation in any simulator, Cirrus SR-22, the luxury one, and ultimate Cessna Citation X.
-
-Someday it will be featured custom editor or import mode from simple text files.
+* New feature - QFE Helper!
+You can easily convert QFE air pressure given you by ATC to QNH for modern aircrafts which do not support QFE. Also feature allows you to convert Height given in meters AGL (above ground level) to feet ASL (above sea level). 
 
 *Some develop details:*
 - Jetbrains Compose library (Jetpack Compose for Android)
