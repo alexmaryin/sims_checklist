@@ -1,24 +1,41 @@
 package feature.metarscreen.ui
 
-import androidx.compose.animation.*
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
-import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
+import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import feature.metarscreen.MetarScanner
 import feature.metarscreen.MetarUiEvent
 import feature.metarscreen.WindViewState
@@ -47,6 +64,10 @@ fun MetarScreen(component: MetarScanner) {
         }
     }
 
+    LaunchedEffect(state.isLoading) {
+        component.onEvent(MetarUiEvent.LoadTopLatest(scope))
+    }
+
     if (state.showInfo) {
         Dialog(
             onDismissRequest = { component.onEvent(MetarUiEvent.DismissInfoDialog) },
@@ -69,7 +90,10 @@ fun MetarScreen(component: MetarScanner) {
                 title = { Text("Metar scan") },
                 navigationIcon = {
                     IconButton(onClick = component.onBack) {
-                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back button")
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back button"
+                        )
                     }
                 },
                 actions = {
@@ -94,7 +118,10 @@ fun MetarScreen(component: MetarScanner) {
 
             Column {
                 Row(Modifier.fillMaxWidth().padding(6.dp)) {
-                    Column(Modifier.weight(0.5f), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Column(
+                        Modifier.weight(0.5f),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
                         Text("wind °", fontWeight = FontWeight.Bold)
                         ScrollableDigitField(
                             state.data.metarAngle ?: state.data.userAngle,
@@ -104,7 +131,10 @@ fun MetarScreen(component: MetarScanner) {
                             component.onEvent(MetarUiEvent.SubmitWindAngle(it))
                         }
                     }
-                    Column(Modifier.weight(0.5f), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Column(
+                        Modifier.weight(0.5f),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
                         Text("runway °", fontWeight = FontWeight.Bold)
                         ScrollableDigitField(
                             state.runway.lowHeading,
@@ -118,7 +148,10 @@ fun MetarScreen(component: MetarScanner) {
                 }
 
                 Row(Modifier.fillMaxWidth().padding(6.dp)) {
-                    Column(Modifier.weight(0.5f), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Column(
+                        Modifier.weight(0.5f),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
                         Text("wind speed, Kt", fontWeight = FontWeight.Bold)
                         ScrollableDigitField(
                             state.data.metarSpeedKt ?: state.data.userSpeed,
@@ -155,7 +188,10 @@ fun MetarScreen(component: MetarScanner) {
                     modifier = Modifier.padding(8.dp).fillMaxWidth()
                 ) {
                     state.runway.wind?.let { (lowWind, highWind) ->
-                        Column(modifier = Modifier.padding(8.dp).fillMaxWidth().align(Alignment.CenterHorizontally)) {
+                        Column(
+                            modifier = Modifier.padding(8.dp).fillMaxWidth()
+                                .align(Alignment.CenterHorizontally)
+                        ) {
                             Text(text = "Wind for selected runway:", textAlign = TextAlign.Center)
                             Row {
                                 RunwayWindInfo(state.runway.low, lowWind)
@@ -173,6 +209,33 @@ fun MetarScreen(component: MetarScanner) {
                     modifier = Modifier.padding(8.dp).fillMaxWidth()
                 ) {
                     MetarInfo(state.data)
+                }
+
+                AnimatedVisibility(
+                    visible = state.historyAirports.isNotEmpty(),
+                    enter = fadeIn() + slideInVertically(),
+                    exit = fadeOut() + slideOutVertically(),
+                    modifier = Modifier.padding(8.dp).fillMaxWidth()
+                ) {
+                    Column {
+                        Text(
+                            text = "Top latest airports:",
+                            modifier = Modifier.padding(5.dp),
+                            fontSize = 14.sp,
+                            color = MaterialTheme.colors.secondary
+                        )
+                        state.historyAirports.forEachIndexed { index, airport ->
+                            val background = if (index % 2 == 0) MaterialTheme.colors.surface else Color.Transparent
+                            Text(
+                                text = "${airport.icao} : ${airport.name}",
+                                fontSize = 18.sp,
+                                color = MaterialTheme.colors.primary,
+                                modifier = Modifier.fillMaxWidth().background(background).padding(5.dp).clickable {
+                                    component.onEvent(MetarUiEvent.SubmitICAO(airport.icao, scope))
+                                }
+                            )
+                        }
+                    }
                 }
             }
         }

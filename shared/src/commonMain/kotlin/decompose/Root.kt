@@ -2,11 +2,11 @@ package decompose
 
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
-import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.fade
-import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.plus
-import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.scale
-import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.stackAnimation
+import com.arkivanov.decompose.extensions.compose.stack.Children
+import com.arkivanov.decompose.extensions.compose.stack.animation.fade
+import com.arkivanov.decompose.extensions.compose.stack.animation.plus
+import com.arkivanov.decompose.extensions.compose.stack.animation.scale
+import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
 import com.arkivanov.decompose.router.stack.*
 import com.arkivanov.decompose.value.Value
 import decompose.RootComponent.Child.*
@@ -36,6 +36,7 @@ class Root(
     private val navigation = StackNavigation<Configuration>()
     override val stack: Value<ChildStack<*, RootComponent.Child>> = childStack(
         source = navigation,
+        serializer = Configuration.serializer(),
         initialConfiguration = Configuration.AircraftList,
         handleBackButton = true,
         childFactory = ::createChild

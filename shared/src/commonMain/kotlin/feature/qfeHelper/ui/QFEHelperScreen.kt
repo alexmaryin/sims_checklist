@@ -12,7 +12,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
+import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import feature.qfeHelper.QFEEvent
 import feature.qfeHelper.QFEHelper
 import feature.qfeHelper.QFEHelperState

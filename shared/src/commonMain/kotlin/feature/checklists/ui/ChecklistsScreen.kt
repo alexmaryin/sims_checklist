@@ -14,7 +14,7 @@ import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
+import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import feature.checklists.Checklists
 import feature.checklists.ChecklistsUiEvent
 import feature.checklists.ChecklistsViewState
