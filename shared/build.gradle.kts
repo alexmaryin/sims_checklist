@@ -3,7 +3,7 @@ import org.jetbrains.compose.internal.utils.getLocalProperty
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.buildKonfig)
@@ -82,14 +82,13 @@ kotlin {
 }
 
 android {
-    namespace = libs.versions.app.group.toString()
+    namespace = "ru.alexmaryin.simschecklist"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].res.srcDirs("resources")
 
     defaultConfig {
-        applicationId = libs.versions.app.group.toString()
         minSdk = libs.versions.android.minSdk.get().toInt()
     }
     compileOptions {

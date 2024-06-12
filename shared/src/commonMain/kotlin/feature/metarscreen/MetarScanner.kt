@@ -40,6 +40,7 @@ class MetarScanner(
         is MetarUiEvent.DismissInfoDialog -> showInfoDialog(false)
         is MetarUiEvent.SubmitRunwayAngle -> submitRunwayAngle(event.new)
         is MetarUiEvent.SubmitWindSpeed -> submitWindSpeed(event.new)
+        is MetarUiEvent.LoadTopLatest -> fetchHistoryAirports(event.scope)
     }
 
     private fun WindViewState.updateRunwayWind(new: RunwayUi = state.value.runway): WindViewState = copy(
@@ -127,14 +128,28 @@ class MetarScanner(
         response.forError { error -> setErrorState(error) }
     }
 
+    private fun fetchHistoryAirports(scope: CoroutineScope) {
+        scope.launch {
+            val response = airportService.getAirportsHistory()
+            response.forSuccess { airports ->
+                state.update {
+                    it.copy(
+                        historyAirports = airports
+                    )
+                }
+            }
+        }
+    }
+
     private fun submitICAO(station: String, scope: CoroutineScope) {
         // Say to Ui that loading has started
         combineLoading.loadMetar = true
         combineLoading.loadAirport = true
-        state.update { it.copy(isLoading = combineLoading.state, airport = null) }
+        state.update { it.copy(isLoading = combineLoading.state, airport = null, historyAirports = emptyList()) }
         // Start requests to METAR and Airport API in parallel
         metarJob = scope.launch { fetchMetar(station) }
         airportJob = scope.launch { fetchAirport(station) }
+        fetchHistoryAirports(scope)
     }
 
     private fun showInfoDialog(show: Boolean = true) {

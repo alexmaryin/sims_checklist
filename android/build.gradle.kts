@@ -32,13 +32,14 @@ kotlin {
 }
 
 android {
-    namespace = libs.versions.app.group.toString()
+    namespace = "ru.alexmaryin.simschecklist"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
+    sourceSets["main"].res.srcDirs("resources")
 
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        applicationId = libs.versions.app.group.toString()
+        applicationId = "ru.alexmaryin.simschecklist"
         versionCode = libs.versions.app.release.get().toInt()
         versionName = libs.versions.app.version.toString()
     }

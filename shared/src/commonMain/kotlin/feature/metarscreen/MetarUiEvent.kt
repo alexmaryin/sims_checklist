@@ -11,4 +11,5 @@ sealed class MetarUiEvent {
     data class SubmitRunwayAngle(val new: Int) : MetarUiEvent()
     data object ShowInfoDialog : MetarUiEvent()
     data object DismissInfoDialog : MetarUiEvent()
+    data class LoadTopLatest(val scope: CoroutineScope) : MetarUiEvent()
 }

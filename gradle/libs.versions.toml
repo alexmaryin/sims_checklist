@@ -10,12 +10,12 @@ agp="8.3.2"
 compose-plugin="1.6.11"
 kotlinxCoroutinesCore="1.8.0"
 kotlinxDatetime="0.6.0"
-kotlinxSerializationJson="1.6.0"
+kotlinxSerializationJson="1.6.3"
 logbackClassic="1.2.7"
 parser="1.0.1"
 realm="2.0.0"
 build-konfig="0.15.1"
-decompose="2.2.2"
+decompose="3.0.0"
 koin="3.5.3"
 ktor="1.6.8"
 android-compileSdk = "34"
@@ -27,7 +27,7 @@ activity-compose = { module = "androidx.activity:activity-compose", version.ref 
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
 decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
-decompose-extensions = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "decompose" }
+decompose-extensions = { module = "com.arkivanov.decompose:extensions-compose", version.ref = "decompose" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }

@@ -9,6 +9,7 @@ import services.airportService.localService.AirportServiceRealmImpl
 import services.airportService.localService.RealmConverter
 import services.airportService.model.realm.AirportRealm
 import services.airportService.model.realm.FrequencyRealm
+import services.airportService.model.realm.HistoryAirportRealm
 import services.airportService.model.realm.MetadataRealm
 import services.airportService.model.realm.RunwayRealm
 
@@ -21,7 +22,8 @@ val realmModule = module {
             FrequencyRealm::class,
             RunwayRealm::class,
             AirportRealm::class,
-            MetadataRealm::class
+            MetadataRealm::class,
+            HistoryAirportRealm::class
         )
     ).directory(getRealmDirectory())
         .build()
