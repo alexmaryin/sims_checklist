@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,7 +41,7 @@ fun QFEHelperScreen(component: QFEHelper) {
                 title = { Text("QFE Helper") },
                 navigationIcon = {
                     IconButton(onClick = component.onBack) {
-                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back button")
+                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back button")
                     }
                 }
             )

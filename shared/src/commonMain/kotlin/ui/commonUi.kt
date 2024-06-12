@@ -7,6 +7,7 @@ import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -61,7 +62,7 @@ fun TopBarWithClearAction(caption: String, onBack: () -> Unit, onClear: () -> Un
     title = { Text(caption) },
     navigationIcon = {
         IconButton(onClick = onBack) {
-            Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back button")
+            Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back button")
         }
     },
     actions = {

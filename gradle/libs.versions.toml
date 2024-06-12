@@ -1,0 +1,52 @@
+[versions]
+activityCompose="1.9.0"
+app-version="1.4.0"
+app-release="17"
+app-group="ru.alexmaryin.simschecklist"
+appcompat="1.7.0"
+coreKtx="1.13.1"
+kotlin="2.0.0"
+agp="8.3.2"
+compose-plugin="1.6.11"
+kotlinxCoroutinesCore="1.8.0"
+kotlinxDatetime="0.6.0"
+kotlinxSerializationJson="1.6.0"
+logbackClassic="1.2.7"
+parser="1.0.1"
+realm="2.0.0"
+build-konfig="0.15.1"
+decompose="2.2.2"
+koin="3.5.3"
+ktor="1.6.8"
+android-compileSdk = "34"
+android-minSdk = "24"
+android-targetSdk = "34"
+
+[libraries]
+activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
+appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
+decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
+decompose-extensions = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "decompose" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+koin = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktor-client-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktor" }
+realm-base = { module = "io.realm.kotlin:library-base", version.ref = "realm" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logbackClassic" }
+parser = { module = "io.github.alexmaryin.metarkt:parser", version.ref = "parser" }
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+buildKonfig = { id = "com.codingfeline.buildkonfig", version.ref = "build-konfig" }
+realm = { id = "io.realm.kotlin", version.ref = "realm" }

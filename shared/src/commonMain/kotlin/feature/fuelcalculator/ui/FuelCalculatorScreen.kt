@@ -10,6 +10,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -48,7 +49,7 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
                 title = { Text("Block fuel calculator") },
                 navigationIcon = {
                     IconButton(onClick = { component.onEvent(FuelUiEvent.Back) }) {
-                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back button")
+                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back button")
                     }
                 }
             )

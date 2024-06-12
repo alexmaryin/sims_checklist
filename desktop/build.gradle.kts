@@ -1,17 +1,10 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
-val decomposeVersion = extra["decompose.version"] as String
-val koinVersion= extra["koin.version"] as String
-
 plugins {
-    kotlin("multiplatform")
-    id("org.jetbrains.compose")
+    alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.compose.compiler)
 }
-
-group = extra["app.group"] as String
-version = extra["app.version"] as String
-val linuxVersion = extra["app.linux.version"] as String
-val release = extra["app.release"] as String
 
 kotlin {
     jvm {}
@@ -22,12 +15,12 @@ kotlin {
                 implementation(compose.desktop.currentOs)
                 implementation(project(":shared"))
                 // Decompose navigation library
-                implementation("com.arkivanov.decompose:decompose:$decomposeVersion")
-                implementation("com.arkivanov.decompose:extensions-compose-jetbrains:$decomposeVersion")
+                implementation(libs.decompose)
+                implementation(libs.decompose.extensions)
                 // Koin-DI
-                implementation("io.insert-koin:koin-core:$koinVersion")
+                implementation(libs.koin)
                 // Realm
-                compileOnly("io.realm.kotlin:library-base:1.10.2")
+                compileOnly(libs.realm.base)
             }
         }
     }
@@ -43,9 +36,8 @@ compose.desktop {
         }
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            targetFormats(TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Sims checklists"
-            packageVersion = version.toString()
             copyright = "© 2023 Alex Maryin. All rights reserved."
             modules("java.instrument", "java.management", "java.naming", "java.sql", "jdk.unsupported")
             appResourcesRootDir.set(project.layout.projectDirectory.dir("../common/resources"))
@@ -60,10 +52,10 @@ compose.desktop {
 
             linux {
                 // a version for all Linux distributable
-                packageVersion = linuxVersion
+                debPackageVersion = "1:4.0"
                 debMaintainer = "java.ul@gmail.com"
                 menuGroup = "Sims checklists"
-                appRelease = release
+                appRelease = libs.versions.app.release.toString()
                 iconFile.set(project.file("sims_checklist.ico"))
             }
         }

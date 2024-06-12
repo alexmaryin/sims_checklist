@@ -1,22 +1,15 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.jetbrains.compose.internal.utils.getLocalProperty
 
-val decomposeVersion = extra["decompose.version"] as String
-val koinVersion = extra["koin.version"] as String
-val ktorVersion = extra["ktor.version"] as String
-
 plugins {
-    kotlin("multiplatform")
-    id("com.android.library")
-    id("org.jetbrains.compose")
-    id("kotlin-parcelize")
-    kotlin("plugin.serialization")
-    id("com.codingfeline.buildkonfig")
-    id("io.realm.kotlin")
+    alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.buildKonfig)
+    alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.realm)
 }
-
-group = extra["app.group"] as String
-version = extra["app.version"] as String
 
 kotlin {
     androidTarget()
@@ -34,25 +27,25 @@ kotlin {
                 // Needed only for preview.
                 implementation(compose.preview)
                 // Decompose navigation library
-                implementation("com.arkivanov.decompose:decompose:$decomposeVersion")
-                implementation("com.arkivanov.decompose:extensions-compose-jetbrains:$decomposeVersion")
+                implementation(libs.decompose)
+                implementation(libs.decompose.extensions)
                 // Serialization
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+                implementation(libs.kotlinx.serialization.json)
                 // Koin-DI
-                implementation("io.insert-koin:koin-core:$koinVersion")
+                implementation(libs.koin)
                 // Ktor
-                implementation("io.ktor:ktor-client-core:$ktorVersion")
-                implementation("io.ktor:ktor-client-cio:$ktorVersion")
-                implementation("io.ktor:ktor-client-logging:$ktorVersion")
-                implementation("io.ktor:ktor-client-serialization:$ktorVersion")
-                implementation("ch.qos.logback:logback-classic:1.2.7")
+                implementation(libs.ktor.client.core)
+                implementation(libs.ktor.client.cio)
+                implementation(libs.ktor.client.logging)
+                implementation(libs.ktor.client.serialization)
+                implementation(libs.logback.classic)
                 // Date-time
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.1")
+                implementation(libs.kotlinx.datetime)
                 // METAR parser
-                implementation("io.github.alexmaryin.metarkt:parser:1.0.1")
+                implementation(libs.parser)
                 // Realm
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2")
-                implementation("io.realm.kotlin:library-base:1.10.2")
+                implementation(libs.kotlinx.coroutines.core)
+                implementation(libs.realm.base)
             }
         }
         val commonTest by getting {
@@ -60,22 +53,22 @@ kotlin {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-junit"))
                 implementation(kotlin("test-annotations-common"))
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.2")
-                implementation("io.ktor:ktor-client-core:$ktorVersion")
-                implementation("io.ktor:ktor-client-cio:$ktorVersion")
-                implementation("io.ktor:ktor-client-logging:$ktorVersion")
-                implementation("io.ktor:ktor-client-serialization:$ktorVersion")
+                implementation(libs.kotlinx.serialization.json)
+                implementation(libs.kotlinx.coroutines.core)
+                implementation(libs.ktor.client.core)
+                implementation(libs.ktor.client.cio)
+                implementation(libs.ktor.client.logging)
+                implementation(libs.ktor.client.serialization)
             }
         }
         val androidMain by getting {
             dependencies {
-                api("androidx.activity:activity-compose:1.7.2")
-                api("androidx.appcompat:appcompat:1.6.1")
-                api("androidx.core:core-ktx:1.12.0")
+                api(libs.activity.compose)
+                api(libs.appcompat)
+                api(libs.core.ktx)
                 implementation(compose.foundation)
                 // Koin DI
-                implementation("io.insert-koin:koin-android:$koinVersion")
+                implementation(libs.koin.android)
 
             }
         }
@@ -89,21 +82,25 @@ kotlin {
 }
 
 android {
-    compileSdk = 34
-    namespace = extra["app.group"] as String
+    namespace = libs.versions.app.group.toString()
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].res.srcDirs("resources")
 
     defaultConfig {
-        minSdk = 26
+        applicationId = libs.versions.app.group.toString()
+        minSdk = libs.versions.android.minSdk.get().toInt()
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlin {
-        jvmToolchain(17)
+    buildFeatures {
+        compose = true
+    }
+    dependencies {
+        debugImplementation(compose.uiTooling)
     }
 }
 

@@ -1,35 +1,35 @@
 package decompose
 
 import com.arkivanov.essenty.parcelable.Parcelable
-import com.arkivanov.essenty.parcelable.Parcelize
+import kotlinx.serialization.Serializable
 
 sealed class Configuration : Parcelable {
 
-    @Parcelize
+    @Serializable
     data object AircraftList : Configuration() {
         private fun readResolve(): Any = AircraftList
     }
 
-    @Parcelize
+    @Serializable
     data class Checklists(val aircraftId: Int) : Configuration()
 
-    @Parcelize
+    @Serializable
     data class Checklist(val aircraftId: Int, val checklistId: Int) : Configuration()
 
-    @Parcelize
+    @Serializable
     data class FuelCalculator(val aircraftId: Int) : Configuration()
 
-    @Parcelize
+    @Serializable
     data object MetarScanner : Configuration() {
         private fun readResolve(): Any = MetarScanner
     }
 
-    @Parcelize
+    @Serializable
     data object AirportsBase : Configuration() {
         private fun readResolve(): Any = AirportsBase
     }
 
-    @Parcelize
+    @Serializable
     data object QFEHelper : Configuration() {
         private fun readResolve(): Any = QFEHelper
     }

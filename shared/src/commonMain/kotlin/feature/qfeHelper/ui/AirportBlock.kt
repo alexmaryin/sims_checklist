@@ -11,6 +11,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -42,7 +43,7 @@ fun AirportBlock(
                 onSubmit(fieldICAO.uppercase(Locale.getDefault()))
                 fieldICAO = ""
             }) {
-                Icon(imageVector = Icons.Default.Send, contentDescription = "submit")
+                Icon(imageVector = Icons.AutoMirrored.Filled.Send, contentDescription = "submit")
             }
         },
         singleLine = true,

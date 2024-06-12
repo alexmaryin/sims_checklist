@@ -3,6 +3,7 @@ package feature.airportsBase.ui
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,7 +31,7 @@ fun AirportsBaseScreen(component: AirportEventExecutor) {
                 title = { Text("Airports base") },
                 navigationIcon = {
                     IconButton(onClick = { component(AirportsUiEvent.Back) }) {
-                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back button")
+                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back button")
                     }
                 }
             )

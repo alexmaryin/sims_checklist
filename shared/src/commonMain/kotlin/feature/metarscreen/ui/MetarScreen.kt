@@ -4,6 +4,7 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.Composable
@@ -68,7 +69,7 @@ fun MetarScreen(component: MetarScanner) {
                 title = { Text("Metar scan") },
                 navigationIcon = {
                     IconButton(onClick = component.onBack) {
-                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back button")
+                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back button")
                     }
                 },
                 actions = {

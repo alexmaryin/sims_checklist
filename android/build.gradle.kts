@@ -1,45 +1,55 @@
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
-    kotlin("multiplatform")
-    id("com.android.application")
-    id("org.jetbrains.compose")
+    alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.compose.compiler)
 }
 
-val decomposeVersion = extra["decompose.version"] as String
-
 kotlin {
-    androidTarget()
+    androidTarget {
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
+    }
     sourceSets {
         val androidMain by getting {
             dependencies {
                 implementation(project(":shared"))
                 implementation(compose.foundation)
                 implementation(compose.material)
-                implementation("androidx.activity:activity-compose:1.7.2")
-                implementation("androidx.core:core-ktx:1.12.0")
+                implementation(libs.activity.compose)
+                implementation(libs.core.ktx)
                 // Decompose
-                implementation("com.arkivanov.decompose:decompose:$decomposeVersion")
-                implementation("com.arkivanov.decompose:extensions-compose-jetbrains:$decomposeVersion")
+                implementation(libs.decompose)
+                implementation(libs.decompose.extensions)
             }
         }
     }
 }
 
 android {
-    compileSdk = 34
-    namespace = extra["app.group"] as String
+    namespace = libs.versions.app.group.toString()
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 26
-        targetSdk = 34
-        applicationId = extra["app.group"] as String
-        versionCode = (extra["app.release"] as String).toInt()
-        versionName = extra["app.version"] as String
+        minSdk = libs.versions.android.minSdk.get().toInt()
+        targetSdk = libs.versions.android.targetSdk.get().toInt()
+        applicationId = libs.versions.app.group.toString()
+        versionCode = libs.versions.app.release.get().toInt()
+        versionName = libs.versions.app.version.toString()
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlin {
-        jvmToolchain(17)
+    buildFeatures {
+        compose = true
+    }
+    dependencies {
+        debugImplementation(compose.uiTooling)
     }
 }
