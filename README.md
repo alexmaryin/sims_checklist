@@ -6,15 +6,15 @@
 ### Application helps to control, proceed and complete checklists of virtual airplanes as far as calculate fuel quantity for your trip and get METAR/TAF with visualized wind director.
 
 At present checklists are implemented for Cessna 172 Skyhawk, the most popular general aviation in any simulator, Cirrus SR-22, the luxury one, and ultimate Cessna Citation X.
-* New feature - QFE Helper!
-You can easily convert QFE air pressure given you by ATC to QNH for modern aircrafts which do not support QFE. Also feature allows you to convert Height given in meters AGL (above ground level) to feet ASL (above sea level). 
+QFE Helper! You can easily convert QFE air pressure given you by ATC to QNH for modern aircrafts which do not support QFE. Also feature allows you to convert Height given in meters AGL (above ground level) to feet ASL (above sea level). 
+Top list of recent airports on METAR screen for faster access.
 
 *Some develop details:*
-- Jetbrains Compose library (Jetpack Compose for Android)
+- Compose Multiplatform project in Kotlin 2.0
 - Custom Canvas view for wind director
 - METAR/TAF info is fetching from https://checkwx.com/
 - Airports information fetches from CSV files (https://davidmegginson.github.io/ourairports-data) and maps to local Realm database.
-- METAR parser from my library [metarKt](https://github.com/alexmaryin/metarKt) published on MavenCentral.
+- METAR parser from my own library [metarKt](https://github.com/alexmaryin/metarKt) published on MavenCentral.
 - Awesome library [Decompose](https://github.com/arkivanov/Decompose) for navigation and lifecycle management, thanks to @arkivanov
 - Google Material library for UI with dark and light theme support.
 - MVI architecture.
