@@ -38,9 +38,10 @@ android {
 
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
+        targetSdk = libs.versions.android.compileSdk.get().toInt()
         applicationId = "ru.alexmaryin.simschecklist"
         versionCode = libs.versions.app.release.get().toInt()
-        versionName = libs.versions.app.version.toString()
+        versionName = "1.4.1"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21

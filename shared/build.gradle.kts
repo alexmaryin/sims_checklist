@@ -82,7 +82,7 @@ kotlin {
 
 android {
     namespace = "ru.alexmaryin.simschecklist"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
+    compileSdk = 35
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].res.srcDirs("resources")
