@@ -38,7 +38,6 @@ kotlin {
                 implementation(libs.ktor.client.cio)
                 implementation(libs.ktor.client.logging)
                 implementation(libs.ktor.client.serialization)
-                implementation(libs.logback.classic)
                 // Date-time
                 implementation(libs.kotlinx.datetime)
                 // METAR parser
@@ -91,9 +90,10 @@ android {
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
     }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     buildFeatures {
         compose = true
