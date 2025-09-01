@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
@@ -36,7 +35,7 @@ fun AirportsBaseScreen(component: AirportEventExecutor) {
                 }
             )
         }
-    ) {
+    ) { paddingValues ->
 
         LaunchedEffect(true) {
             component(AirportsUiEvent.GetLastUpdate(scope))
@@ -51,7 +50,7 @@ fun AirportsBaseScreen(component: AirportEventExecutor) {
         }
 
         Column(
-            modifier = Modifier.fillMaxSize().padding(it),
+            modifier = Modifier.fillMaxSize().padding(paddingValues),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

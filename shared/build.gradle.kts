@@ -28,6 +28,7 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material)
+                implementation(libs.material.icons)
 //                implementation(compose.materialIconsExtended)
                 // Needed only for preview.
                 implementation(compose.preview)

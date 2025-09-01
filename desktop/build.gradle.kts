@@ -36,7 +36,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Sims checklists"
-            copyright = "© 2023 Alex Maryin. All rights reserved."
+            copyright = "© 2025 Alex Maryin. All rights reserved."
             modules("java.instrument", "java.management", "java.naming", "java.sql", "jdk.unsupported")
             appResourcesRootDir.set(project.layout.projectDirectory.dir("../common/resources"))
             windows {
@@ -50,7 +50,7 @@ compose.desktop {
 
             linux {
                 // a version for all Linux distributable
-                debPackageVersion = "1:4.0"
+                debPackageVersion = "1:5.0"
                 debMaintainer = "java.ul@gmail.com"
                 menuGroup = "Sims checklists"
                 appRelease = libs.versions.app.release.toString()
