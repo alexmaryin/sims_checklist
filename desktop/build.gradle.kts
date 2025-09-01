@@ -19,8 +19,6 @@ kotlin {
                 implementation(libs.decompose.extensions)
                 // Koin-DI
                 implementation(libs.koin)
-                // Realm
-                compileOnly(libs.realm.base)
             }
         }
     }

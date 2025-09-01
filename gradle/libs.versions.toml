@@ -12,11 +12,13 @@ kotlinxCoroutinesCore="1.8.0"
 kotlinxDatetime="0.6.2"
 kotlinxSerializationJson="1.8.1"
 parser="1.0.1"
-realm="3.0.0"
 build-konfig="0.15.1"
 decompose="3.0.0"
 koin="3.5.3"
 ktor="1.6.8"
+room = "2.7.2"
+sqlite = "2.5.2"
+ksp = "2.0.20-1.0.25"
 android-compileSdk = "35"
 android-minSdk = "24"
 
@@ -35,8 +37,12 @@ ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 ktor-client-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktor" }
-realm-base = { module = "io.realm.kotlin:library-base", version.ref = "realm" }
 parser = { module = "io.github.alexmaryin.metarkt:parser", version.ref = "parser" }
+androidx-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+androidx-room-sqlite-wrapper = { module = "androidx.room:room-sqlite-wrapper", version.ref = "room" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -46,4 +52,5 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 buildKonfig = { id = "com.codingfeline.buildkonfig", version.ref = "build-konfig" }
-realm = { id = "io.realm.kotlin", version.ref = "realm" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+androidx-room = { id = "androidx.room", version.ref = "room" }

@@ -1,9 +1,7 @@
-package ru.alexmaryin.simschecklist
-
 import android.app.Application
 import di.apiModule
 import di.dbModule
-import di.realmModule
+import di.roomModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -15,7 +13,7 @@ class AppAndroid : Application() {
 
         startKoin {
             androidContext(this@AppAndroid)
-            modules(dbModule, apiModule, realmModule)
+            modules(dbModule, apiModule, roomModule)
         }
     }
 

@@ -13,7 +13,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.core.graphics.drawable.toBitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import ru.alexmaryin.simschecklist.AppAndroid
+import AppAndroid
 
 @Composable
 actual fun loadXmlPicture(name: String): ImageVector =

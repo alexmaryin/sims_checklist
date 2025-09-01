@@ -10,7 +10,7 @@ interface AirportUpdateService {
 
     sealed class UpdateResult {
         data class Success(val lastUpdate: Long) : UpdateResult()
-        data class Progress(val file: String, val percent: Int) : UpdateResult()
+        data class Progress(val file: String, val count: Int) : UpdateResult()
         data class Error(val message: String, val e: Exception? = null) : UpdateResult()
     }
 }

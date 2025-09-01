@@ -3,7 +3,7 @@ package utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import ru.alexmaryin.simschecklist.AppAndroid
+import AppAndroid
 
 actual fun isNetworkConnected(): Boolean {
     val connectivityManager =

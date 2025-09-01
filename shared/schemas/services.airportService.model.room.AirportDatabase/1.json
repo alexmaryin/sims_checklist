@@ -1,0 +1,300 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "03f1e41fe2e8549f790b2209c98a55f1",
+    "entities": [
+      {
+        "tableName": "airports",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`icao` TEXT NOT NULL, `type` TEXT NOT NULL, `name` TEXT NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `elevation` INTEGER NOT NULL, `webSite` TEXT, `wiki` TEXT, PRIMARY KEY(`icao`))",
+        "fields": [
+          {
+            "fieldPath": "icao",
+            "columnName": "icao",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "latitude",
+            "columnName": "latitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "longitude",
+            "columnName": "longitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "elevation",
+            "columnName": "elevation",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "webSite",
+            "columnName": "webSite",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "wiki",
+            "columnName": "wiki",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "icao"
+          ]
+        }
+      },
+      {
+        "tableName": "frequencies",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `airportIcao` TEXT NOT NULL, `type` TEXT NOT NULL, `description` TEXT, `valueMhz` REAL NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`airportIcao`) REFERENCES `airports`(`icao`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "airportIcao",
+            "columnName": "airportIcao",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "valueMhz",
+            "columnName": "valueMhz",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_frequencies_airportIcao",
+            "unique": false,
+            "columnNames": [
+              "airportIcao"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_frequencies_airportIcao` ON `${TABLE_NAME}` (`airportIcao`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "airports",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "airportIcao"
+            ],
+            "referencedColumns": [
+              "icao"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "runways",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `airportIcao` TEXT NOT NULL, `lengthFeet` INTEGER, `widthFeet` INTEGER, `surface` TEXT NOT NULL, `closed` INTEGER NOT NULL, `lowNumber` TEXT NOT NULL, `lowElevationFeet` INTEGER, `lowHeading` INTEGER NOT NULL, `highNumber` TEXT NOT NULL, `highElevationFeet` INTEGER, `highHeading` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`airportIcao`) REFERENCES `airports`(`icao`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "airportIcao",
+            "columnName": "airportIcao",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lengthFeet",
+            "columnName": "lengthFeet",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "widthFeet",
+            "columnName": "widthFeet",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "surface",
+            "columnName": "surface",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "closed",
+            "columnName": "closed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lowNumber",
+            "columnName": "lowNumber",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lowElevationFeet",
+            "columnName": "lowElevationFeet",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "lowHeading",
+            "columnName": "lowHeading",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "highNumber",
+            "columnName": "highNumber",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "highElevationFeet",
+            "columnName": "highElevationFeet",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "highHeading",
+            "columnName": "highHeading",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_runways_airportIcao",
+            "unique": false,
+            "columnNames": [
+              "airportIcao"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_runways_airportIcao` ON `${TABLE_NAME}` (`airportIcao`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "airports",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "airportIcao"
+            ],
+            "referencedColumns": [
+              "icao"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "history_airports",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`timestamp` INTEGER NOT NULL, `icao` TEXT NOT NULL, `name` TEXT NOT NULL, PRIMARY KEY(`timestamp`))",
+        "fields": [
+          {
+            "fieldPath": "timestamp",
+            "columnName": "timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "icao",
+            "columnName": "icao",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "timestamp"
+          ]
+        }
+      },
+      {
+        "tableName": "metadata",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `updateTimestamp` INTEGER NOT NULL, `airportsCount` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updateTimestamp",
+            "columnName": "updateTimestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "airportsCount",
+            "columnName": "airportsCount",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '03f1e41fe2e8549f790b2209c98a55f1')"
+    ]
+  }
+}
