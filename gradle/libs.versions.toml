@@ -21,11 +21,7 @@ app-group="ru.alexmaryin.simschecklist"
 appcompat="1.7.1"
 coreKtx="1.17.0"
 kotlin="2.2.10"
-agp="8.11.0"
-##⬆= "8.11.1"
-##⬆= "8.12.0"
-##⬆= "8.12.1"
-##⬆= "8.12.2"
+agp="8.11.1"
 compose-plugin="1.8.2"
 kotlinxCoroutinesCore="1.10.2"
 kotlinxDatetime="0.7.1"
@@ -34,13 +30,12 @@ parser="1.0.3"
 build-konfig="0.17.1"
 decompose="3.3.0"
 koin="4.1.0"
-ktor="1.6.8"
-##⬆= "3.2.3"
+ktor="3.2.3"
 room = "2.7.2"
 sqlite = "2.5.2"
 ksp = "2.2.10-2.0.2"
-android-compileSdk = "35"
-android-minSdk = "24"
+android-compileSdk = "36"
+android-minSdk = "26"
 icons = "1.7.3"
 
 [libraries]
@@ -57,8 +52,8 @@ koin = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
-ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
-ktor-client-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktor" }
+ktor-client-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 parser = { module = "io.github.alexmaryin.metarkt:metarkt", version.ref = "parser" }
 androidx-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }

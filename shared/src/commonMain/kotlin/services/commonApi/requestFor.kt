@@ -1,18 +1,20 @@
 package services.commonApi
 
 import io.ktor.client.*
-import io.ktor.client.features.*
+import io.ktor.client.call.*
+import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import utils.isNetworkConnected
 
 suspend inline fun <reified R> HttpClient.requestFor(url: String, headers: Map<String, String> = emptyMap()): Result<R> =
     if (isNetworkConnected()) try {
-        Result.Success(get(url) {
+        val response = get(url) {
             headers.forEach { (key, value) ->
                 header(key, value)
             }
-        })
+        }
+        Result.Success(response.body<R>())
     } catch (e: ClientRequestException) {
         // 4xx errors
         if (e.response.status == HttpStatusCode.BadRequest) {
@@ -27,7 +29,7 @@ suspend inline fun <reified R> HttpClient.requestFor(url: String, headers: Map<S
         } else {
             Result.Error(ErrorType.OTHER_SERVER_ERROR, e.message)
         }
-    } catch (e: Exception) {
+    } catch (_: Exception) {
         // Other errors
         Result.Error(ErrorType.UNKNOWN, "Unknown error")
     }
