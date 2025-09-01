@@ -18,7 +18,7 @@ class AirportsBase(
 ) : KoinComponent, AirportEventExecutor {
 
     private val updateService: AirportUpdateService by inject()
-    private val realmConverter: LocalBaseConverter by inject()
+    private val csvConverter: LocalBaseConverter by inject()
 
     override val state = MutableValue(AirportsBaseViewState())
 
@@ -38,7 +38,7 @@ class AirportsBase(
         updateService.updateFlow(this).collect { result ->
             when (result) {
                 is AirportUpdateService.UpdateResult.Progress -> {
-                    state.update { it.copy(processingFile = result.file, progress = result.percent) }
+                    state.update { it.copy(processingFile = result.file, progress = result.count) }
                 }
 
                 is AirportUpdateService.UpdateResult.Success -> {
@@ -58,7 +58,7 @@ class AirportsBase(
     }
 
     private fun CoroutineScope.onStartConvert() = launch {
-        realmConverter.convertFiles(this).collect { result ->
+        csvConverter.convertFiles(this).collect { result ->
             when (result) {
                 is LocalBaseConverter.UpdateResult.Progress -> {
                     state.update {
@@ -81,7 +81,7 @@ class AirportsBase(
     }
 
     private fun CoroutineScope.onLastUpdate() = launch {
-        realmConverter.getLastUpdate()?.let { result ->
+        csvConverter.getLastUpdate()?.let { result ->
             val timeString = Calendar.getInstance(Locale.getDefault()).let {
                 it.timeInMillis = result.time
                 SimpleDateFormat("dd MMMM yyyy, HH:mm:ss", Locale.getDefault()).format(it.time)

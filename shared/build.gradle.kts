@@ -8,7 +8,12 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.buildKonfig)
     alias(libs.plugins.kotlinSerialization)
-    alias(libs.plugins.realm)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.androidx.room)
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
 kotlin {
@@ -23,6 +28,7 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material)
+                implementation(libs.material.icons)
 //                implementation(compose.materialIconsExtended)
                 // Needed only for preview.
                 implementation(compose.preview)
@@ -36,15 +42,17 @@ kotlin {
                 // Ktor
                 implementation(libs.ktor.client.core)
                 implementation(libs.ktor.client.cio)
-                implementation(libs.ktor.client.logging)
+                implementation(libs.ktor.negotiation)
+                implementation(libs.ktor.client.serialization)
+//                implementation(libs.ktor.client.logging)
                 implementation(libs.ktor.client.serialization)
                 // Date-time
                 implementation(libs.kotlinx.datetime)
                 // METAR parser
                 implementation(libs.parser)
-                // Realm
-                implementation(libs.kotlinx.coroutines.core)
-                implementation(libs.realm.base)
+                // Room
+                implementation(libs.androidx.room.runtime)
+                implementation(libs.androidx.sqlite.bundled)
             }
         }
         val commonTest by getting {
@@ -56,8 +64,8 @@ kotlin {
                 implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.ktor.client.core)
                 implementation(libs.ktor.client.cio)
-                implementation(libs.ktor.client.logging)
                 implementation(libs.ktor.client.serialization)
+                implementation(libs.ktor.negotiation)
             }
         }
         val androidMain by getting {
@@ -68,6 +76,8 @@ kotlin {
                 implementation(compose.foundation)
                 // Koin DI
                 implementation(libs.koin.android)
+                // Room for version > 2.8.0
+//                implementation(libs.androidx.room.sqlite.wrapper)
 
             }
         }
@@ -109,4 +119,10 @@ buildkonfig {
         buildConfigField(STRING, "WXAPI_KEY", project.getLocalProperty("WXAPI_KEY"))
     }
 }
+
+dependencies {
+    add("kspAndroid", libs.androidx.room.compiler)
+    add("kspDesktop", libs.androidx.room.compiler)
+}
+
 

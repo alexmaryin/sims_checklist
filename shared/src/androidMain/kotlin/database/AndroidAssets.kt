@@ -1,6 +1,6 @@
 package database
 
-import ru.alexmaryin.simschecklist.AppAndroid
+import AppAndroid
 import ru.alexmaryin.simschecklist.R
 
 actual fun loadAircraftJson(filename: String) =

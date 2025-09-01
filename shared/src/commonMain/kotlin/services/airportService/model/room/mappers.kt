@@ -1,4 +1,4 @@
-package services.airportService.model.realm
+package services.airportService.model.room
 
 import services.airportService.model.Airport
 import services.airportService.model.Frequency
@@ -11,7 +11,10 @@ import services.airportService.model.enums.RunwaySurface
 import utils.filterDigitsToInt
 import utils.ifZero
 
-fun AirportRealm.toDomain(): Airport = Airport(
+fun AirportEntity.toDomain(
+    frequencies: List<FrequencyEntity> = emptyList(),
+    runways: List<RunwayEntity> = emptyList()
+): Airport = Airport(
     icao = icao,
     type = AirportType.entries.firstOrNull { it.csv == type } ?: AirportType.SMALL,
     name = name,
@@ -20,17 +23,17 @@ fun AirportRealm.toDomain(): Airport = Airport(
     elevation = elevation,
     webSite = webSite,
     wiki = wiki,
-    frequencies = frequencies.map(FrequencyRealm::toDomain),
-    runways = runways.map(RunwayRealm::toDomain)
+    frequencies = frequencies.map(FrequencyEntity::toDomain),
+    runways = runways.map(RunwayEntity::toDomain)
 )
 
-fun FrequencyRealm.toDomain(): Frequency = Frequency(
+fun FrequencyEntity.toDomain(): Frequency = Frequency(
     type = FrequencyType.entries.firstOrNull { it.csv == type } ?: FrequencyType.TOWER,
     description = description,
     valueMhz = valueMhz
 )
 
-fun RunwayRealm.toDomain(): Runway = Runway(
+fun RunwayEntity.toDomain(): Runway = Runway(
     lengthFeet = lengthFeet,
     widthFeet = widthFeet,
     surface = RunwaySurface.entries.firstOrNull { it.csv == surface } ?: RunwaySurface.CONCRETE,
@@ -43,9 +46,13 @@ fun RunwayRealm.toDomain(): Runway = Runway(
     highHeading = highHeading.ifZero { highNumber.filterDigitsToInt() * 10 }
 )
 
-fun HistoryAirportRealm.toDomain(): HistoryAirport = HistoryAirport(timestamp, icao, name)
+fun HistoryAirportEntity.toDomain(): HistoryAirport = HistoryAirport(
+    timestamp = timestamp,
+    icao = icao,
+    name = name
+)
 
-fun MetadataRealm.toDomain(): LastUpdate = LastUpdate(
+fun MetadataEntity.toDomain(): LastUpdate = LastUpdate(
     time = updateTimestamp,
     airports = airportsCount,
 )
