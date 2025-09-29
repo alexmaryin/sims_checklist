@@ -9,11 +9,14 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun AdaptiveLayout(children: @Composable (width: Dp, height: Dp) -> Unit) {
+fun AdaptiveLayout(
+    padding: PaddingValues,
+    children: @Composable (width: Dp, height: Dp) -> Unit
+) {
     val scrollState = rememberScrollState()
     val layoutModifier = Modifier.fillMaxWidth().padding(8.dp).verticalScroll(scrollState)
     BoxWithConstraints(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().padding(padding),
     ) {
         val width = maxWidth
         val height = maxHeight

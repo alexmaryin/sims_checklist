@@ -72,15 +72,18 @@ class Root(
         onBack = { navigation.pop() }
     )
 
-    private fun metarScanner() = MetarScanner(
+    private fun metarScanner(context: ComponentContext) = MetarScanner(
+        componentContext = context,
         onBack = { navigation.pop() }
     )
 
-    private fun airportsBase() = AirportsBase(
+    private fun airportsBase(context: ComponentContext) = AirportsBase(
+        componentContext = context,
         onBack = { navigation.pop() }
     )
 
-    private fun qfeHelper() = QFEHelper(
+    private fun qfeHelper(context: ComponentContext) = QFEHelper(
+        componentContext = context,
         onBack = { navigation.pop() }
     )
 
@@ -95,11 +98,11 @@ class Root(
 
             is Configuration.FuelCalculator -> FuelCalculatorChild(fuelCalculator(configuration.aircraftId))
 
-            is Configuration.MetarScanner -> MetarScannerChild(metarScanner())
+            is Configuration.MetarScanner -> MetarScannerChild(metarScanner(context))
 
-            is Configuration.AirportsBase -> AirportsBaseChild(airportsBase())
+            is Configuration.AirportsBase -> AirportsBaseChild(airportsBase(context))
 
-            is Configuration.QFEHelper -> QFEHelperChild(qfeHelper())
+            is Configuration.QFEHelper -> QFEHelperChild(qfeHelper(context))
         }
 }
 

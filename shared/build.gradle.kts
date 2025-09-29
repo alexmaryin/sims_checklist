@@ -29,12 +29,14 @@ kotlin {
                 implementation(compose.material)
                 implementation(compose.components.resources)
                 implementation(libs.material.icons)
+                implementation(libs.kotlinx.coroutines.core)
 //                implementation(compose.materialIconsExtended)
                 // Needed only for preview.
                 implementation(compose.preview)
                 // Decompose navigation library
                 implementation(libs.decompose)
                 implementation(libs.decompose.extensions)
+                implementation(libs.decompose.essenity)
                 // Serialization
                 implementation(libs.kotlinx.serialization.json)
                 // Koin-DI
@@ -73,6 +75,7 @@ kotlin {
                 api(libs.appcompat)
                 api(libs.core.ktx)
                 implementation(compose.foundation)
+                implementation(libs.kotlinx.coroutines.android)
                 // Koin DI
                 implementation(libs.koin.android)
                 // Room for version > 2.8.0
@@ -82,6 +85,7 @@ kotlin {
         }
         val desktopMain by getting {
             dependencies {
+                implementation(libs.kotlinx.coroutines.swing)
                 implementation(compose.desktop.common)
                 implementation(compose.foundation)
             }
