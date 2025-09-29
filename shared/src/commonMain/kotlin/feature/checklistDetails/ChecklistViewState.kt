@@ -1,9 +1,12 @@
 package feature.checklistDetails
 
-import feature.checklistDetails.model.Checklist
+import feature.checklistDetails.model.Item
 
-class ChecklistViewState(
-    val checklist: Checklist,
+data class ChecklistViewState(
+    val checklistId: Int,
+    val caption: String,
+    val items: List<Item>,
+    val isCompleted: Boolean = false,
     val snackBar: SnackBarState? = null
 )
 

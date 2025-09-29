@@ -5,12 +5,13 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name="AppAndroid"
+        android:name="ru.alexmaryin.simschecklist.AppAndroid"
         android:allowBackup="true"
         android:icon="@mipmap/main_icon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/main_icon_round"
         android:supportsRtl="true"
+        android:windowSoftInputMode="adjustResize"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
             android:name=".MainActivity"

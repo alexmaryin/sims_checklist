@@ -1,32 +1,16 @@
 package feature.metarscreen.ui
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -53,7 +37,6 @@ fun MetarScreen(component: MetarScanner) {
     val state: WindViewState by component.state.subscribeAsState()
 
     val scaffoldState = rememberScaffoldState()
-    val scope = rememberCoroutineScope()
 
     state.error?.let {
         LaunchedEffect(key1 = scaffoldState.snackbarHostState) {
@@ -65,7 +48,7 @@ fun MetarScreen(component: MetarScanner) {
     }
 
     LaunchedEffect(state.isLoading) {
-        component.onEvent(MetarUiEvent.LoadTopLatest(scope))
+        component.onEvent(MetarUiEvent.LoadTopLatest)
     }
 
     if (state.showInfo) {
@@ -84,6 +67,7 @@ fun MetarScreen(component: MetarScanner) {
     }
 
     Scaffold(
+        modifier = Modifier.safeDrawingPadding(),
         scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
@@ -103,8 +87,8 @@ fun MetarScreen(component: MetarScanner) {
                 }
             )
         }
-    ) {
-        AdaptiveLayout { width, height ->
+    ) { paddingValues ->
+        AdaptiveLayout(paddingValues) { width, height ->
             WindSegment(
                 min(width, height),
                 WindComponent(
@@ -164,7 +148,7 @@ fun MetarScreen(component: MetarScanner) {
                     }
 
                     IcaoInput(Modifier.weight(0.5f), state.isLoading.not()) { icao ->
-                        component.onEvent(MetarUiEvent.SubmitICAO(icao.uppercase(), scope))
+                        component.onEvent(MetarUiEvent.SubmitICAO(icao.uppercase()))
                     }
                 }
 
@@ -231,7 +215,7 @@ fun MetarScreen(component: MetarScanner) {
                                 fontSize = 18.sp,
                                 color = MaterialTheme.colors.primary,
                                 modifier = Modifier.fillMaxWidth().background(background).padding(5.dp).clickable {
-                                    component.onEvent(MetarUiEvent.SubmitICAO(airport.icao, scope))
+                                    component.onEvent(MetarUiEvent.SubmitICAO(airport.icao))
                                 }
                             )
                         }

@@ -1,20 +1,16 @@
 package ui
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusEvent
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -23,26 +19,10 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.vectorResource
+import sims_checklist.shared.generated.resources.Res
+import sims_checklist.shared.generated.resources.allDrawableResources
 import ui.utils.MyIcons
-
-@Composable
-fun <T> AsyncImage(
-    loader: suspend () -> T,
-    painterFor: @Composable (T) -> Painter,
-    contentDescription: String,
-    modifier: Modifier = Modifier
-) {
-    val image: T? by produceState<T?>(null) {
-        value = loader()
-    }
-    image?.let {
-        Image(
-            painter = painterFor(it),
-            contentDescription = contentDescription,
-            modifier = modifier
-        )
-    }
-}
 
 @Composable
 fun ToggleableText(
@@ -79,15 +59,14 @@ fun ValidatorIcon(term: Boolean) {
 }
 
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun RelativeOutlineInput(
+    modifier: Modifier = Modifier,
     value: String,
     labelText: String,
     relocationRequester: BringIntoViewRequester,
     scope: CoroutineScope,
     isErrorToggle: Boolean = false,
-    modifier: Modifier = Modifier,
     onValueChange: (String) -> Unit
 ) = OutlinedTextField(
     value = value,
@@ -105,10 +84,10 @@ fun RelativeOutlineInput(
 
 @Composable
 fun ValidatedOutlineInput(
+    modifier: Modifier = Modifier,
     value: String,
     labelText: String,
     isErrorToggle: Boolean = false,
-    modifier: Modifier = Modifier,
     onValueChange: (String) -> Unit
 ) = OutlinedTextField(
     value = value,
@@ -120,7 +99,7 @@ fun ValidatedOutlineInput(
 )
 
 @Composable
-expect fun loadXmlPicture(name: String): ImageVector
+fun loadXmlPicture(name: String): ImageVector = vectorResource(Res.allDrawableResources[name]!!)
 
 @Composable
 expect fun Dialog(onDismissRequest: () -> Unit, title: String, text: String)

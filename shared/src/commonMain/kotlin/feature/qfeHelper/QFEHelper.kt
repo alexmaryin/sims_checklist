@@ -1,9 +1,12 @@
 package feature.qfeHelper
 
+import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
-import kotlinx.coroutines.CoroutineScope
+import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import services.airportService.AirportService
@@ -12,17 +15,20 @@ import services.commonApi.forSuccess
 import kotlin.math.roundToInt
 
 class QFEHelper(
+    private val componentContext: ComponentContext,
     val onBack: () -> Unit
-) : KoinComponent {
+) : KoinComponent, ComponentContext by componentContext {
 
     private val airportService: AirportService by inject()
 
     val state = MutableValue(QFEHelperState())
 
+    private val scope = componentContext.coroutineScope() + SupervisorJob()
+
     fun onEvent(event: QFEEvent) = when (event) {
         is QFEEvent.SubmitElevationMeters -> submitElevation(event.elevation)
         is QFEEvent.SubmitHeightPlusMeters -> submitHeight(event.meters)
-        is QFEEvent.SubmitICAO -> submitICAO(event.icao, event.scope)
+        is QFEEvent.SubmitICAO -> submitICAO(event.icao)
         is QFEEvent.SubmitQFEmmHg -> submitQFE(event.mmHg)
     }
 
@@ -45,7 +51,7 @@ class QFEHelper(
         state.update { it.copy(qfeMmHg = mmHg) }
     }
 
-    private fun submitICAO(icao: String, scope: CoroutineScope) {
+    private fun submitICAO(icao: String) {
         state.update { it.copy(isLoading = true) }
         scope.launch {
             val response = airportService.getAirportByICAO(icao)

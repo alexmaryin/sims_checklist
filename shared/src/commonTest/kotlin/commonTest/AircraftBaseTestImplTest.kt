@@ -5,6 +5,8 @@ import feature.checklists.model.Aircraft
 import kotlinx.serialization.json.Json
 import repository.AircraftRepository
 import repository.AircraftRepositoryImpl
+import kotlin.collections.indices
+import kotlin.random.Random
 import kotlin.test.*
 
 const val TEST_DATA = """
@@ -85,8 +87,9 @@ internal class AircraftBaseTestImplTest {
     @BeforeTest
     fun startup() {
         aircraftBaseTestImpl = object  : AircraftBase {
-            override fun getAircraft(): List<Aircraft>? =
-                try { listOf(Json.decodeFromString(TEST_DATA)) } catch (E: IllegalArgumentException) { null }
+            override suspend fun getAircraft(): List<Aircraft>? =
+                try { listOf(Json.decodeFromString(TEST_DATA)) }
+                catch (_: IllegalArgumentException) { null }
 
         }
         repository = AircraftRepositoryImpl(aircraftBaseTestImpl)
@@ -109,16 +112,16 @@ internal class AircraftBaseTestImplTest {
 
     @Test
     fun `update all items of checklist to true should change isCompleted`() {
-        repository.getChecklist(0, 0).items.forEach {
-            it.checked = true
+        repository.getChecklist(0, 0).items.indices.forEach { index ->
+            repository.toggleChecklistItem(0, 0, index)
         }
         assertTrue { repository.getChecklist(0, 0).isCompleted }
     }
 
     @Test
     fun `clearing checklist should update isCompleted`() {
-        repository.getChecklist(0, 0).items.forEach {
-            it.checked = listOf(false, true).random()
+        repository.getChecklist(0, 0).items.indices.forEach { index ->
+            if (Random.nextBoolean()) repository.toggleChecklistItem(0, 0, index)
         }
         repository.clearBaseChecklists(0)
         assertTrue { repository.getChecklist(0, 0).isCompleted.not() }

@@ -2,9 +2,8 @@ package services.metarService
 
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
-import io.ktor.client.features.logging.*
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.runBlocking
 import services.commonApi.forError
 import services.commonApi.forSuccess
@@ -14,11 +13,8 @@ import kotlin.test.assertTrue
 internal class CheckWxMetarServiceTest {
 
     private val httpClient = HttpClient(CIO) {
-        install(Logging) {
-            level = LogLevel.ALL
-        }
-        install(JsonFeature) {
-            serializer = KotlinxSerializer()
+        install(ContentNegotiation) {
+            json()
         }
     }
 

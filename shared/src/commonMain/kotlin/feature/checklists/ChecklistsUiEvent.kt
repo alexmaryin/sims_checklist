@@ -5,4 +5,5 @@ sealed class ChecklistsUiEvent {
     data object ConfirmClear : ChecklistsUiEvent()
     data object ClearAll : ChecklistsUiEvent()
     data object Back : ChecklistsUiEvent()
+    data object Refresh : ChecklistsUiEvent()
 }

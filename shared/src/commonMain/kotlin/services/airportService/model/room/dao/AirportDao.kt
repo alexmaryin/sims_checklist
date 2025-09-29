@@ -39,11 +39,11 @@ interface AirportDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRunways(runways: List<RunwayEntity>)
     
-    @Query("DELETE FROM frequencies WHERE airportIcao = :icao")
-    suspend fun deleteFrequenciesByIcao(icao: String)
+    @Query("DELETE FROM frequencies")
+    suspend fun deleteFrequencies()
     
-    @Query("DELETE FROM runways WHERE airportIcao = :icao")
-    suspend fun deleteRunwaysByIcao(icao: String)
+    @Query("DELETE FROM runways")
+    suspend fun deleteRunways()
     
     @Query("SELECT COUNT(*) FROM airports")
     suspend fun getAirportCount(): Long

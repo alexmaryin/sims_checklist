@@ -22,19 +22,21 @@ kotlin {
 
     sourceSets {
         val commonMain by getting {
-            resources.srcDirs("resources")
             dependencies {
                 implementation(compose.ui)
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material)
+                implementation(compose.components.resources)
                 implementation(libs.material.icons)
+                implementation(libs.kotlinx.coroutines.core)
 //                implementation(compose.materialIconsExtended)
                 // Needed only for preview.
                 implementation(compose.preview)
                 // Decompose navigation library
                 implementation(libs.decompose)
                 implementation(libs.decompose.extensions)
+                implementation(libs.decompose.essenity)
                 // Serialization
                 implementation(libs.kotlinx.serialization.json)
                 // Koin-DI
@@ -44,7 +46,6 @@ kotlin {
                 implementation(libs.ktor.client.cio)
                 implementation(libs.ktor.negotiation)
                 implementation(libs.ktor.client.serialization)
-//                implementation(libs.ktor.client.logging)
                 implementation(libs.ktor.client.serialization)
                 // Date-time
                 implementation(libs.kotlinx.datetime)
@@ -74,6 +75,7 @@ kotlin {
                 api(libs.appcompat)
                 api(libs.core.ktx)
                 implementation(compose.foundation)
+                implementation(libs.kotlinx.coroutines.android)
                 // Koin DI
                 implementation(libs.koin.android)
                 // Room for version > 2.8.0
@@ -83,19 +85,22 @@ kotlin {
         }
         val desktopMain by getting {
             dependencies {
+                implementation(libs.kotlinx.coroutines.swing)
                 implementation(compose.desktop.common)
                 implementation(compose.foundation)
             }
         }
     }
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
 }
 
 android {
     namespace = "ru.alexmaryin.simschecklist"
-    compileSdk = 35
+    compileSdk = 36
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    sourceSets["main"].res.srcDirs("resources")
 
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()

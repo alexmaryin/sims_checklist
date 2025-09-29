@@ -12,15 +12,13 @@ import feature.qfeHelper.QFEHelper
 interface RootComponent {
     val stack: Value<ChildStack<*, Child>>
 
-    fun onBackClicked(toIndex: Int)
-
     sealed class Child {
-        class AircraftListChild(val component: AircraftList): Child()
-        class ChecklistsChild(val component: Checklists): Child()
-        class ChecklistDetailsChild(val component: ChecklistDetails): Child()
-        class FuelCalculatorChild(val component: FuelCalculator): Child()
-        class MetarScannerChild(val component: MetarScanner): Child()
-        class AirportsBaseChild(val component: AirportsBase): Child()
-        class QFEHelperChild(val component: QFEHelper): Child()
+        data class AircraftListChild(val component: AircraftList): Child()
+        data class ChecklistsChild(val component: Checklists): Child()
+        data class ChecklistDetailsChild(val component: ChecklistDetails): Child()
+        data class FuelCalculatorChild(val component: FuelCalculator): Child()
+        data class MetarScannerChild(val component: MetarScanner): Child()
+        data class AirportsBaseChild(val component: AirportsBase): Child()
+        data class QFEHelperChild(val component: QFEHelper): Child()
     }
 }

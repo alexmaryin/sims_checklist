@@ -1,10 +1,14 @@
 package feature.airportsBase
 
+import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
+import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import services.airportService.LocalBaseConverter
@@ -14,20 +18,23 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class AirportsBase(
+    private val componentContext: ComponentContext,
     private val onBack: () -> Unit
-) : KoinComponent, AirportEventExecutor {
+) : KoinComponent, AirportEventExecutor, ComponentContext by componentContext {
 
     private val updateService: AirportUpdateService by inject()
     private val csvConverter: LocalBaseConverter by inject()
 
     override val state = MutableValue(AirportsBaseViewState())
 
+    private val scope = componentContext.coroutineScope() + SupervisorJob()
+
     override fun invoke(event: AirportsUiEvent) {
         when (event) {
             AirportsUiEvent.Back -> onBack()
             AirportsUiEvent.SnackBarClose -> state.update { it.copy(snackbar = null) }
-            is AirportsUiEvent.StartUpdate -> event.scope.onStartUpdate()
-            is AirportsUiEvent.GetLastUpdate -> event.scope.onLastUpdate()
+            is AirportsUiEvent.StartUpdate -> scope.onStartUpdate()
+            is AirportsUiEvent.GetLastUpdate -> scope.onLastUpdate()
         }
     }
 

@@ -22,6 +22,7 @@ class Checklists(
             is ChecklistsUiEvent.ClearAll -> repository.clearBaseChecklists(aircraftId)
             is ChecklistsUiEvent.Back -> onBack()
             is ChecklistsUiEvent.SelectChecklist -> onSelected(event.checklistId)
+            is ChecklistsUiEvent.Refresh -> Unit // just triggering for state update below
         }
         state.update {
             ChecklistsViewState(

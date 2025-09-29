@@ -2,14 +2,14 @@ package feature.qfeHelper.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
@@ -23,7 +23,6 @@ fun QFEHelperScreen(component: QFEHelper) {
     val state: State<QFEHelperState> = component.state.subscribeAsState()
 
     val scaffoldState = rememberScaffoldState()
-    val scope = rememberCoroutineScope()
 
     state.value.error?.let {
         LaunchedEffect(scaffoldState.snackbarHostState) {
@@ -35,6 +34,7 @@ fun QFEHelperScreen(component: QFEHelper) {
     }
 
     Scaffold(
+        modifier = Modifier.safeDrawingPadding(),
         scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
@@ -46,16 +46,16 @@ fun QFEHelperScreen(component: QFEHelper) {
                 }
             )
         }
-    ) {
+    ) { paddingValues ->
         Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(paddingValues),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
             AirportBlock(
                 icao = state.value.airportICAO,
                 airportName = state.value.airportName,
-            ) { new -> component.onEvent(QFEEvent.SubmitICAO(new, scope)) }
+            ) { new -> component.onEvent(QFEEvent.SubmitICAO(new)) }
 
             ElevationBlock(
                 meters = state.value.elevationMeters,

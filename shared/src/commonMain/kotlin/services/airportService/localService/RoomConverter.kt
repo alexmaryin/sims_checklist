@@ -62,6 +62,7 @@ class RoomConverter(private val database: AirportDatabase) : LocalBaseConverter 
 
         // Process runways
         emit(UpdateResult.Progress("Processing runways", count))
+        airportDao.deleteRunways()
         getLinesAsSequence(Files.RUNWAYS.filename) { row ->
             val airportCode = row["airport_ident"] ?: return@getLinesAsSequence
             val runway = RunwayEntity(
@@ -83,6 +84,7 @@ class RoomConverter(private val database: AirportDatabase) : LocalBaseConverter 
 
         // Process frequencies
         emit(UpdateResult.Progress("Processing frequencies", count))
+        airportDao.deleteFrequencies()
         getLinesAsSequence(Files.FREQUENCIES.filename) { row ->
             val airportCode = row["airport_ident"] ?: return@getLinesAsSequence
             val frequency = FrequencyEntity(

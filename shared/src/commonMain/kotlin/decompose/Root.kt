@@ -42,15 +42,13 @@ class Root(
         childFactory = ::createChild
     )
 
-    override fun onBackClicked(toIndex: Int) = navigation.popTo(toIndex)
-
     private fun aircraftList() = AircraftList(
         aircraftList = aircraftRepository.getAll(),
-        onSelected = { id -> navigation.push(Configuration.Checklists(id)) },
-        onCalculatorSelect = { id -> navigation.push(Configuration.FuelCalculator(id)) },
-        onMetarSelect = { navigation.push(Configuration.MetarScanner) },
-        onAirportsBaseSelect = { navigation.push(Configuration.AirportsBase) },
-        onQFEHelperSelect = { navigation.push(Configuration.QFEHelper) }
+        onSelected = { id -> navigation.pushNew(Configuration.Checklists(id)) },
+        onCalculatorSelect = { id -> navigation.pushNew(Configuration.FuelCalculator(id)) },
+        onMetarSelect = { navigation.pushNew(Configuration.MetarScanner) },
+        onAirportsBaseSelect = { navigation.pushNew(Configuration.AirportsBase) },
+        onQFEHelperSelect = { navigation.pushNew(Configuration.QFEHelper) }
     )
 
     private fun checklists(aircraftId: Int) = Checklists(
@@ -58,7 +56,7 @@ class Root(
         repository = aircraftRepository,
         onBack = { navigation.pop() },
         onSelected = { checklistId ->
-            navigation.push(Configuration.Checklist(aircraftId, checklistId))
+            navigation.pushNew(Configuration.Checklist(aircraftId, checklistId))
         }
     )
 
@@ -74,15 +72,18 @@ class Root(
         onBack = { navigation.pop() }
     )
 
-    private fun metarScanner() = MetarScanner(
+    private fun metarScanner(context: ComponentContext) = MetarScanner(
+        componentContext = context,
         onBack = { navigation.pop() }
     )
 
-    private fun airportsBase() = AirportsBase(
+    private fun airportsBase(context: ComponentContext) = AirportsBase(
+        componentContext = context,
         onBack = { navigation.pop() }
     )
 
-    private fun qfeHelper() = QFEHelper(
+    private fun qfeHelper(context: ComponentContext) = QFEHelper(
+        componentContext = context,
         onBack = { navigation.pop() }
     )
 
@@ -97,11 +98,11 @@ class Root(
 
             is Configuration.FuelCalculator -> FuelCalculatorChild(fuelCalculator(configuration.aircraftId))
 
-            is Configuration.MetarScanner -> MetarScannerChild(metarScanner())
+            is Configuration.MetarScanner -> MetarScannerChild(metarScanner(context))
 
-            is Configuration.AirportsBase -> AirportsBaseChild(airportsBase())
+            is Configuration.AirportsBase -> AirportsBaseChild(airportsBase(context))
 
-            is Configuration.QFEHelper -> QFEHelperChild(qfeHelper())
+            is Configuration.QFEHelper -> QFEHelperChild(qfeHelper(context))
         }
 }
 

@@ -1,14 +1,16 @@
 package repository
 
 import database.AircraftBase
-import feature.checklists.model.Aircraft
+import feature.checklistDetails.model.CHECKLIST_LINE
 import feature.checklistDetails.model.Checklist
+import feature.checklists.model.Aircraft
+import kotlinx.coroutines.runBlocking
 
 class AircraftRepositoryImpl(
     database: AircraftBase
 ) : AircraftRepository {
 
-    private var base: List<Aircraft>? = database.getAircraft()
+    private var base: List<Aircraft>? = runBlocking { database.getAircraft() }
 
     private var previousChecklistState: List<Boolean>? = null
 
@@ -23,37 +25,50 @@ class AircraftRepositoryImpl(
         getById(aircraftId).checklists.firstOrNull { it.id == checklistId }
             ?: throw IllegalArgumentException("Wrong checklist id!")
 
+    private fun updateChecklist(aircraftId: Int, checklistId: Int, transform: (Checklist) -> Checklist) {
+        val aircraft = getById(aircraftId)
+        val newChecklists = aircraft.checklists.map { if (it.id == checklistId) transform(it) else it }
+        val newAircraft = aircraft.copy(checklists = newChecklists)
+        base = base?.map { if (it.id == aircraftId) newAircraft else it }
+    }
+
     override fun toggleChecklistItem(aircraftId: Int, checklistId: Int, itemId: Int) {
-        with(getChecklist(aircraftId, checklistId)) {
-            items[itemId].checked = !items[itemId].checked
+        updateChecklist(aircraftId, checklistId) { checklist ->
+            val newItems = checklist.items.mapIndexed { index, item ->
+                if (index == itemId) item.copy(checked = !item.checked) else item
+            }
+            checklist.copy(items = newItems, isCompleted = newItems
+                .filterNot { it.caption == CHECKLIST_LINE }
+                .all { it.checked })
         }
     }
 
     override fun clearChecklist(aircraftId: Int, checklistId: Int) {
-        previousChecklistState = getChecklist(aircraftId, checklistId).items.map { it.checked }
-        with(getChecklist(aircraftId, checklistId)) {
-            items.forEach { it.checked = false }
+        updateChecklist(aircraftId, checklistId) { checklist ->
+            previousChecklistState = checklist.items.map { it.checked }
+            val newItems = checklist.items.map { it.copy(checked = false) }
+            checklist.copy(items = newItems, isCompleted = false)
         }
     }
 
     override fun clearBaseChecklists(aircraftId: Int) {
-        with(getById(aircraftId)) {
-            checklists.forEach { checklist ->
-                checklist.items.forEach { item ->
-                    item.checked = false
-                }
-            }
+        val aircraft = getById(aircraftId)
+        val newChecklists = aircraft.checklists.map { checklist ->
+            val newItems = checklist.items.map { item -> item.copy(checked = false) }
+            checklist.copy(items = newItems, isCompleted = false)
         }
+        val newAircraft = aircraft.copy(checklists = newChecklists)
+        base = base?.map { if (it.id == aircraftId) newAircraft else it }
     }
 
     override fun undoChecklistChanges(aircraftId: Int, checklistId: Int) {
         previousChecklistState?.let { old ->
-            with(getChecklist(aircraftId, checklistId)) {
-                items.zip(old) { item, oldValue ->
-                    item.checked = oldValue
-                }
+            updateChecklist(aircraftId, checklistId) { checklist ->
+                val newItems = checklist.items.mapIndexed { index, item -> item.copy(checked = old[index]) }
+                checklist.copy(items = newItems, isCompleted = newItems
+                    .filterNot { it.caption == CHECKLIST_LINE }
+                    .all { it.checked })
             }
         }
     }
 }
-

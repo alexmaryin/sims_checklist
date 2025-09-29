@@ -14,26 +14,25 @@ androidx-room = { id = "androidx.room", version.ref = "room" }
 
 [versions]
 
-activityCompose="1.10.1"
-app-version="1.5.0"
-app-release="21"
-app-group="ru.alexmaryin.simschecklist"
+activityCompose="1.11.0"
+app-release="22"
 appcompat="1.7.1"
 coreKtx="1.17.0"
-kotlin="2.2.10"
-agp="8.11.1"
-compose-plugin="1.8.2"
+kotlin="2.2.20"
+agp= "8.12.3"
+compose-plugin="1.9.0"
 kotlinxCoroutinesCore="1.10.2"
 kotlinxDatetime="0.7.1"
 kotlinxSerializationJson="1.9.0"
 parser="1.0.3"
 build-konfig="0.17.1"
-decompose="3.3.0"
-koin="4.1.0"
-ktor="3.2.3"
-room = "2.7.2"
-sqlite = "2.5.2"
-ksp = "2.2.10-2.0.2"
+decompose="3.4.0"
+essenity="2.5.0"
+koin="4.1.1"
+ktor="3.3.0"
+room = "2.8.1"
+sqlite = "2.6.1"
+ksp = "2.2.20-2.0.2" # build issues with -2.0.3
 android-compileSdk = "36"
 android-minSdk = "26"
 icons = "1.7.3"
@@ -45,7 +44,10 @@ appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat"
 core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
 decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
 decompose-extensions = { module = "com.arkivanov.decompose:extensions-compose", version.ref = "decompose" }
+decompose-essenity = { module = "com.arkivanov.essenty:lifecycle-coroutines", version.ref = "essenity" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesCore" }
+kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinxCoroutinesCore" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 koin = { module = "io.insert-koin:koin-core", version.ref = "koin" }

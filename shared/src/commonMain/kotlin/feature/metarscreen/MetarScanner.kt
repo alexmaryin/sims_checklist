@@ -1,11 +1,14 @@
 package feature.metarscreen
 
+import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
+import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import feature.metarscreen.model.*
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import services.airportService.AirportService
@@ -15,8 +18,9 @@ import services.commonApi.forSuccess
 import services.metarService.MetarService
 
 class MetarScanner(
+    val componentContext: ComponentContext,
     val onBack: () -> Unit
-) : KoinComponent {
+) : KoinComponent, ComponentContext by componentContext {
 
     data class Loading(var loadMetar: Boolean = false, var loadAirport: Boolean = false) {
         val state get() = loadMetar || loadAirport
@@ -30,17 +34,19 @@ class MetarScanner(
     private var metarJob: Job? = null
     private var airportJob: Job? = null
 
+    private val scope = componentContext.coroutineScope() + SupervisorJob()
+
     private val combineLoading = Loading()
 
     fun onEvent(event: MetarUiEvent) = when (event) {
         is MetarUiEvent.SubmitWindAngle -> submitWindAngle(event.new)
-        is MetarUiEvent.SubmitICAO -> submitICAO(event.station, event.scope)
+        is MetarUiEvent.SubmitICAO -> submitICAO(event.station)
         is MetarUiEvent.SubmitRunway -> submitRunway(event.new)
         is MetarUiEvent.ShowInfoDialog -> showInfoDialog(true)
         is MetarUiEvent.DismissInfoDialog -> showInfoDialog(false)
         is MetarUiEvent.SubmitRunwayAngle -> submitRunwayAngle(event.new)
         is MetarUiEvent.SubmitWindSpeed -> submitWindSpeed(event.new)
-        is MetarUiEvent.LoadTopLatest -> fetchHistoryAirports(event.scope)
+        is MetarUiEvent.LoadTopLatest -> fetchHistoryAirports()
     }
 
     private fun WindViewState.updateRunwayWind(new: RunwayUi = state.value.runway): WindViewState = copy(
@@ -128,7 +134,7 @@ class MetarScanner(
         response.forError { error -> setErrorState(error) }
     }
 
-    private fun fetchHistoryAirports(scope: CoroutineScope) {
+    private fun fetchHistoryAirports() {
         scope.launch {
             val response = airportService.getAirportsHistory()
             response.forSuccess { airports ->
@@ -141,7 +147,7 @@ class MetarScanner(
         }
     }
 
-    private fun submitICAO(station: String, scope: CoroutineScope) {
+    private fun submitICAO(station: String) {
         // Say to Ui that loading has started
         combineLoading.loadMetar = true
         combineLoading.loadAirport = true
@@ -149,7 +155,7 @@ class MetarScanner(
         // Start requests to METAR and Airport API in parallel
         metarJob = scope.launch { fetchMetar(station) }
         airportJob = scope.launch { fetchAirport(station) }
-        fetchHistoryAirports(scope)
+        fetchHistoryAirports()
     }
 
     private fun showInfoDialog(show: Boolean = true) {

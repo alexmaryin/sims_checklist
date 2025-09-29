@@ -1,6 +1,7 @@
 package feature.checklistDetails
 
 import com.arkivanov.decompose.value.MutableValue
+import com.arkivanov.decompose.value.update
 import repository.AircraftRepository
 
 class ChecklistDetails(
@@ -9,7 +10,13 @@ class ChecklistDetails(
     private val repository: AircraftRepository,
     private val onFinished: () -> Unit,
 ) {
-    val state = MutableValue(ChecklistViewState(repository.getChecklist(aircraftId, checklistId)))
+    val state = with(repository.getChecklist(aircraftId, checklistId)) {
+        MutableValue(ChecklistViewState(
+            checklistId = id,
+            caption = caption,
+            items = items
+        ))
+    }
 
     fun onEvent(event: ChecklistUiEvent) {
         var showUndo = false
@@ -28,15 +35,20 @@ class ChecklistDetails(
             is ChecklistUiEvent.Back -> onFinished()
         }
 
-        state.value = ChecklistViewState(
-            checklist = repository.getChecklist(aircraftId, checklistId),
-            snackBar = when {
-                showUndo -> SnackBarState.Undo(state.value.checklist.caption)
-                state.value.checklist.isCompleted && event != ChecklistUiEvent.Back ->
-                    SnackBarState.Back(state.value.checklist.caption)
-                else -> null
-            }
-        )
+        state.update {
+            val checklist = repository.getChecklist(aircraftId, checklistId)
+            it.copy(
+                items = checklist.items,
+                isCompleted = checklist.isCompleted,
+                snackBar = when {
+                    showUndo -> SnackBarState.Undo(state.value.caption)
+                    checklist.isCompleted && event != ChecklistUiEvent.Back ->
+                        SnackBarState.Back(state.value.caption)
+                    else -> null
+                }
+            )
+        }
+        println("CHECKLIST: ${state.value.items}")
     }
 }
 

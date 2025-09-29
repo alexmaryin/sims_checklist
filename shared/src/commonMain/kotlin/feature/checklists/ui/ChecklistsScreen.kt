@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -28,6 +29,10 @@ fun ChecklistsScreen(component: Checklists) {
 
     val scaffoldState = rememberScaffoldState()
 
+    LaunchedEffect(Unit) {
+        component.onEvent(ChecklistsUiEvent.Refresh)
+    }
+
     state.value.snackBar?.let {
         LaunchedEffect(scaffoldState.snackbarHostState) {
             val result = scaffoldState.snackbarHostState.showSnackbar(it.message, it.button, SnackbarDuration.Short)
@@ -36,6 +41,7 @@ fun ChecklistsScreen(component: Checklists) {
     }
 
     Scaffold(
+        modifier = Modifier.safeDrawingPadding(),
         scaffoldState = scaffoldState,
         topBar = {
             TopBarWithClearAction(
@@ -44,23 +50,26 @@ fun ChecklistsScreen(component: Checklists) {
                 onClear = { component.onEvent(ChecklistsUiEvent.ConfirmClear) }
             )
         }
-    ) {
+    ) { paddingValues ->
 
         val lazyState = rememberLazyListState()
-        LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp), lazyState) {
+        LazyColumn(modifier = Modifier.fillMaxSize().padding(paddingValues), lazyState) {
 
-            items(state.value.list) { item ->
+            items(
+                items = state.value.list,
+                key = { checklist -> checklist.id }
+            ) { checklist ->
                 Card(
                     modifier = Modifier.padding(vertical = 1.dp),
                     elevation = 12.dp,
-                    backgroundColor = if (item.isCompleted) MaterialTheme.colors.secondaryVariant else MaterialTheme.colors.surface
+                    backgroundColor = if (checklist.isCompleted) MaterialTheme.colors.secondaryVariant else MaterialTheme.colors.surface
                 ) {
                     Text(
-                        text = item.caption.uppercase(),
-                        modifier = Modifier.clickable { component.onEvent(ChecklistsUiEvent.SelectChecklist(item.id)) }
+                        text = checklist.caption.uppercase(),
+                        modifier = Modifier.clickable { component.onEvent(ChecklistsUiEvent.SelectChecklist(checklist.id)) }
                             .fillMaxWidth()
                             .padding(16.dp),
-                        color = if (item.isCompleted) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface,
+                        color = if (checklist.isCompleted) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface,
                         textAlign = TextAlign.Center,
                         style = LargeWithShadow()
                     )
