@@ -1,6 +1,5 @@
 package feature.fuelcalculator.ui
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,7 +10,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -28,7 +26,6 @@ import ui.RelativeOutlineInput
 import ui.ValidatedOutlineInput
 import ui.ValidatorIcon
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun FuelCalculatorScreen(component: FuelCalculator) {
 
@@ -54,7 +51,7 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
                 }
             )
         }
-    ) {
+    ) { paddingValues ->
 
         var tripDistance by rememberSaveable { mutableStateOf(state.value.tripDistance.toString()) }
         var alterDistance by rememberSaveable { mutableStateOf(state.value.alterDistance.toString()) }
@@ -69,7 +66,9 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
         val scrollState = rememberScrollState()
 
         Column(
-            modifier = Modifier.fillMaxSize().verticalScroll(scrollState),
+            modifier = Modifier.fillMaxSize()
+                .padding(paddingValues)
+                .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
@@ -83,21 +82,26 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
             )
             Row {
                 ValidatedOutlineInput(
-                    tripDistance, "Trip distance, sm",
-                    component.isFloatIncorrect(tripDistance, false), Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    value = tripDistance,
+                    labelText = "Trip distance, sm",
+                    isErrorToggle = component.isFloatIncorrect(tripDistance, false)
                 ) { new -> tripDistance = new; component.onEvent(FuelUiEvent.TripDistanceChange(new)) }
 
                 ValidatedOutlineInput(
-                    alterDistance, "Alter. distance, sm",
-                    component.isFloatIncorrect(alterDistance), Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    value = alterDistance,
+                    labelText = "Alter. distance, sm",
+                    isErrorToggle = component.isFloatIncorrect(alterDistance)
                 ) { new -> alterDistance = new; component.onEvent(FuelUiEvent.AlterDistanceChange(new)) }
 
             }
 
             Row {
                 ValidatedOutlineInput(
+                    Modifier.weight(1f),
                     headWind, "Headwind component, kt",
-                    component.isIntIncorrect(headWind), Modifier.weight(1f)
+                    component.isIntIncorrect(headWind),
                 ) { new -> headWind = new; component.onEvent(FuelUiEvent.HeadwindChange(new)) }
 
                 OutlinedTextField(
@@ -117,13 +121,15 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
             }
             Row {
                 ValidatedOutlineInput(
+                    Modifier.weight(1f),
                     taxiFuel, "Taxi fuel, g",
-                    component.isFloatIncorrect(taxiFuel), Modifier.weight(1f)
+                    component.isFloatIncorrect(taxiFuel),
                 ) { new -> taxiFuel = new; component.onEvent(FuelUiEvent.TaxiChange(new)) }
 
                 ValidatedOutlineInput(
+                    Modifier.weight(1f),
                     "$contingency%", "Contingency fuel, % of trip",
-                    component.isFloatIncorrect(contingency), Modifier.weight(1f)
+                    component.isFloatIncorrect(contingency),
                 ) { new ->
                     contingency = new.substringBefore("%")
                     component.onEvent(FuelUiEvent.ContingencyChange(new.substringBefore("%")))
@@ -137,13 +143,15 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
             )
             Row {
                 RelativeOutlineInput(
+                    Modifier.weight(1f),
                     avgCruiseSpeed, "Average cruise speed, kt", relocationRequester, scope,
-                    component.isFloatIncorrect(avgCruiseSpeed, false), Modifier.weight(1f)
+                    component.isFloatIncorrect(avgCruiseSpeed, false),
                 ) { new -> avgCruiseSpeed = new; component.onEvent(FuelUiEvent.CruiseSpeedChange(new)) }
 
                 RelativeOutlineInput(
+                    Modifier.weight(1f),
                     avgFuelFlow, "Average fuel flow, gph", relocationRequester, scope,
-                    component.isFloatIncorrect(avgFuelFlow, false), Modifier.weight(1f)
+                    component.isFloatIncorrect(avgFuelFlow, false),
                 ) { new -> avgFuelFlow = new; component.onEvent(FuelUiEvent.FuelFlowChange(new)) }
 
             }
@@ -154,13 +162,15 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
             )
             Row {
                 RelativeOutlineInput(
+                    Modifier.weight(1f),
                     reserveTime, "Reserve time, min", relocationRequester, scope,
-                    component.isIntIncorrect(reserveTime), Modifier.weight(1f)
+                    component.isIntIncorrect(reserveTime),
                 ) { new -> reserveTime = new; component.onEvent(FuelUiEvent.ReserveTimeChange(new)) }
 
                 RelativeOutlineInput(
+                    Modifier.weight(1f),
                     fuelCapacity, "Fuel capacity, g", relocationRequester, scope,
-                    component.isFloatIncorrect(fuelCapacity, false), Modifier.weight(1f)
+                    component.isFloatIncorrect(fuelCapacity, false),
                 ) { new -> fuelCapacity = new; component.onEvent(FuelUiEvent.FuelCapacityChange(new)) }
 
             }

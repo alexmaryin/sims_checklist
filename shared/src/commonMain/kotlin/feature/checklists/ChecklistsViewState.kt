@@ -2,7 +2,7 @@ package feature.checklists
 
 import feature.checklistDetails.model.Checklist
 
-class ChecklistsViewState(
+data class ChecklistsViewState(
     val caption: String,
     val list: List<Checklist>,
     val snackBar: ListSnackBarState? = null

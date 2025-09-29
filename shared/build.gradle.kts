@@ -22,12 +22,12 @@ kotlin {
 
     sourceSets {
         val commonMain by getting {
-            resources.srcDirs("resources")
             dependencies {
                 implementation(compose.ui)
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material)
+                implementation(compose.components.resources)
                 implementation(libs.material.icons)
 //                implementation(compose.materialIconsExtended)
                 // Needed only for preview.
@@ -44,7 +44,6 @@ kotlin {
                 implementation(libs.ktor.client.cio)
                 implementation(libs.ktor.negotiation)
                 implementation(libs.ktor.client.serialization)
-//                implementation(libs.ktor.client.logging)
                 implementation(libs.ktor.client.serialization)
                 // Date-time
                 implementation(libs.kotlinx.datetime)
@@ -88,14 +87,16 @@ kotlin {
             }
         }
     }
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
 }
 
 android {
     namespace = "ru.alexmaryin.simschecklist"
-    compileSdk = 35
+    compileSdk = 36
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    sourceSets["main"].res.srcDirs("resources")
 
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()

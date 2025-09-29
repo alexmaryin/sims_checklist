@@ -1,5 +1,6 @@
 package ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,10 +16,14 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import decompose.AircraftList
+import org.jetbrains.compose.resources.painterResource
+import sims_checklist.shared.generated.resources.Res
+import sims_checklist.shared.generated.resources.allDrawableResources
 import ui.utils.LargeWithShadow
 import ui.utils.MyIcons
 
-expect suspend fun loadAircraftJpgPhoto(name: String): Painter
+@Composable
+fun loadAircraftJpgPhoto(name: String): Painter = painterResource(Res.allDrawableResources[name]!!)
 
 @Composable
 fun AircraftListScreen(component: AircraftList) {
@@ -40,16 +45,14 @@ fun AircraftListScreen(component: AircraftList) {
                 }
             )
         }
-    ) {
+    ) { padding ->
         val state = rememberLazyListState()
-        LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp), state) {
+        LazyColumn(modifier = Modifier.fillMaxSize().padding(padding), state) {
             items(component.aircraftList) { item ->
                 Card(elevation = 12.dp, modifier = Modifier.clickable { component.onSelected(item.id) }) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-
-                        AsyncImage(
-                            loader = { loadAircraftJpgPhoto(item.photo) },
-                            painterFor = { it },
+                        Image(
+                            painter = loadAircraftJpgPhoto(item.photo),
                             contentDescription = "Photo of ${item.name}",
                             modifier = Modifier
                                 .padding(8.dp)

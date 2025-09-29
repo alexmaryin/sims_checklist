@@ -9,9 +9,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
@@ -38,10 +36,10 @@ fun ChecklistDetailsScreen(component: ChecklistDetails) {
         scaffoldState = scaffoldState,
         topBar = {
             TopBarWithClearAction(
-                caption = state.value.checklist.caption,
+                caption = state.value.caption,
                 onBack = { component.onEvent(ChecklistUiEvent.Back) },
                 onClear = { component.onEvent(ChecklistUiEvent.Clear) })
-        }) {
+        }) { paddingValues ->
 
         state.value.snackBar?.let {
             scope.launch {
@@ -53,12 +51,12 @@ fun ChecklistDetailsScreen(component: ChecklistDetails) {
 
         val listState = rememberLazyListState()
 
-        Box {
+        Box(Modifier.padding(paddingValues)) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize().padding(end = offsetForScrollBar()),
                 state = listState,
             ) {
-                itemsIndexed(state.value.checklist.items) { index, item ->
+                itemsIndexed(items = state.value.items) { index, item ->
 
                     if (item.caption == CHECKLIST_LINE) {
                         Divider()

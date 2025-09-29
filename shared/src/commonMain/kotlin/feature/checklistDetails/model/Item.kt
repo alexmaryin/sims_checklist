@@ -7,5 +7,5 @@ data class Item(
     val caption: String,
     val action: String = "",
     val details: String = "",
-    var checked: Boolean = false
+    val checked: Boolean = false
 )

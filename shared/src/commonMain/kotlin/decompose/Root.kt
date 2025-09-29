@@ -42,15 +42,13 @@ class Root(
         childFactory = ::createChild
     )
 
-    override fun onBackClicked(toIndex: Int) = navigation.popTo(toIndex)
-
     private fun aircraftList() = AircraftList(
         aircraftList = aircraftRepository.getAll(),
-        onSelected = { id -> navigation.push(Configuration.Checklists(id)) },
-        onCalculatorSelect = { id -> navigation.push(Configuration.FuelCalculator(id)) },
-        onMetarSelect = { navigation.push(Configuration.MetarScanner) },
-        onAirportsBaseSelect = { navigation.push(Configuration.AirportsBase) },
-        onQFEHelperSelect = { navigation.push(Configuration.QFEHelper) }
+        onSelected = { id -> navigation.pushNew(Configuration.Checklists(id)) },
+        onCalculatorSelect = { id -> navigation.pushNew(Configuration.FuelCalculator(id)) },
+        onMetarSelect = { navigation.pushNew(Configuration.MetarScanner) },
+        onAirportsBaseSelect = { navigation.pushNew(Configuration.AirportsBase) },
+        onQFEHelperSelect = { navigation.pushNew(Configuration.QFEHelper) }
     )
 
     private fun checklists(aircraftId: Int) = Checklists(
@@ -58,7 +56,7 @@ class Root(
         repository = aircraftRepository,
         onBack = { navigation.pop() },
         onSelected = { checklistId ->
-            navigation.push(Configuration.Checklist(aircraftId, checklistId))
+            navigation.pushNew(Configuration.Checklist(aircraftId, checklistId))
         }
     )
 
