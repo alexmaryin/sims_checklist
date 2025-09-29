@@ -67,6 +67,7 @@ fun MetarScreen(component: MetarScanner) {
     }
 
     Scaffold(
+        modifier = Modifier.safeDrawingPadding(),
         scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(

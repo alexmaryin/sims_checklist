@@ -32,7 +32,6 @@ kotlin {
 android {
     namespace = "ru.alexmaryin.simschecklist"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
-    sourceSets["main"].res.srcDirs("resources")
 
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()

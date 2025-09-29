@@ -1,3 +1,5 @@
+package ru.alexmaryin.simschecklist
+
 import android.app.Application
 import di.apiModule
 import di.dbModule

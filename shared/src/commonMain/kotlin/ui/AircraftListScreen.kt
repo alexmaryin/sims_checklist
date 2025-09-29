@@ -29,6 +29,7 @@ fun loadAircraftJpgPhoto(name: String): Painter = painterResource(Res.allDrawabl
 fun AircraftListScreen(component: AircraftList) {
 
     Scaffold(
+        modifier = Modifier.safeDrawingPadding(),
         topBar = {
             TopAppBar(
                 title = { Text("Select your aircraft") },

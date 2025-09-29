@@ -24,6 +24,7 @@ fun AirportsBaseScreen(component: AirportEventExecutor) {
     val state = component.state.subscribeAsState()
 
     Scaffold(
+        modifier = Modifier.safeDrawingPadding(),
         scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
