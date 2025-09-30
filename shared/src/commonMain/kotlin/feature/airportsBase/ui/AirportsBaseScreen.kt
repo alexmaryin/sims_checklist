@@ -74,7 +74,7 @@ fun AirportsBaseScreen(component: AirportEventExecutor) {
             }
             if (state.value.updating) {
                 val item = state.value.processingLabel.ifEmpty { state.value.processingFile }
-                Text("Processing $item", Modifier.padding(8.dp))
+                Text(item, Modifier.padding(8.dp))
                 LinearProgressIndicator(
                     progress = state.value.progress / 100f,
                     Modifier.fillMaxWidth().padding(8.dp)

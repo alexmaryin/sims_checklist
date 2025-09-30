@@ -17,32 +17,29 @@ import java.util.UUID
 
 class RoomConverter(private val database: AirportDatabase) : LocalBaseConverter {
 
-    private suspend fun getLinesAsSequence(filename: String, process: suspend (Map<String, String>) -> Unit) {
+    private fun getCsvAsListOfMaps(filename: String): List<Map<String, String>> {
         println("try to open ${getFilePath(filename)}")
-        val headers = File(getFilePath(filename)).useLines {
-            it.firstOrNull()?.replace("\"", "")?.split(",")
-        } ?: throw RuntimeException("File $filename has not valid headers")
+        val file = File(getFilePath(filename))
+        val lines = file.readLines()
+        val headers = lines.firstOrNull()?.replace("\"", "")?.split(",")
+            ?: throw RuntimeException("File $filename has not valid headers")
 
-        File(getFilePath(filename)).useLines { file ->
-            file.drop(1)
-                .map { it.replace("\"", "").split(",") }
-                .map { headers.zip(it).toMap() }
-                .forEach { process(it) }
-        }
+        return lines.drop(1)
+            .map { it.replace("\"", "").split(",") }
+            .map { headers.zip(it).toMap() }
     }
 
     override suspend fun convertFiles(scope: CoroutineScope) = flow {
         val startTick = System.currentTimeMillis()
-        var count = 0L
 
         val airportDao = database.airportDao()
         val metadataDao = database.metadataDao()
 
         // Process airports
-        getLinesAsSequence(Files.AIRPORTS.filename) { row ->
+        emit(UpdateResult.Progress("Processing airports", 0))
+        val airports = getCsvAsListOfMaps(Files.AIRPORTS.filename).map { row ->
             val code = row["ident"] ?: throw NullPointerException("Row with empty ICAO code: $row")
-            // Insert new or update existing airport
-            val newAirport = AirportEntity(
+            AirportEntity(
                 icao = code,
                 type = row["type"] ?: "",
                 name = row["name"] ?: "",
@@ -52,20 +49,15 @@ class RoomConverter(private val database: AirportDatabase) : LocalBaseConverter 
                 webSite = row["home_link"]?.takeIf { it.isNotBlank() },
                 wiki = row["wikipedia_link"]?.takeIf { it.isNotBlank() }
             )
-            airportDao.insertOrUpdateAirport(newAirport)
-
-            count++
-            if (count % 1000 == 0L) {
-                emit(UpdateResult.Progress("Processing airports", count))
-            }
         }
+        airportDao.insertOrUpdateAirports(airports)
+        emit(UpdateResult.Progress("Processing airports", airports.size.toLong()))
 
         // Process runways
-        emit(UpdateResult.Progress("Processing runways", count))
-        airportDao.deleteRunways()
-        getLinesAsSequence(Files.RUNWAYS.filename) { row ->
-            val airportCode = row["airport_ident"] ?: return@getLinesAsSequence
-            val runway = RunwayEntity(
+        emit(UpdateResult.Progress("Processing runways", 0))
+        val runways = getCsvAsListOfMaps(Files.RUNWAYS.filename).mapNotNull { row ->
+            val airportCode = row["airport_ident"] ?: return@mapNotNull null
+            RunwayEntity(
                 id = UUID.randomUUID().toString(),
                 airportIcao = airportCode,
                 lengthFeet = row["length_ft"]?.toIntOrNull(),
@@ -79,23 +71,26 @@ class RoomConverter(private val database: AirportDatabase) : LocalBaseConverter 
                 highElevationFeet = row["he_elevation_ft"]?.toIntOrNull(),
                 highHeading = row["he_heading_degT"]?.toIntOrNull() ?: 0
             )
-            airportDao.insertRunways(listOf(runway))
         }
+        airportDao.deleteRunways()
+        airportDao.insertRunways(runways)
+        emit(UpdateResult.Progress("Processing runways", runways.size.toLong()))
 
         // Process frequencies
-        emit(UpdateResult.Progress("Processing frequencies", count))
-        airportDao.deleteFrequencies()
-        getLinesAsSequence(Files.FREQUENCIES.filename) { row ->
-            val airportCode = row["airport_ident"] ?: return@getLinesAsSequence
-            val frequency = FrequencyEntity(
+        emit(UpdateResult.Progress("Processing frequencies", 0))
+        val frequencies = getCsvAsListOfMaps(Files.FREQUENCIES.filename).mapNotNull { row ->
+            val airportCode = row["airport_ident"] ?: return@mapNotNull null
+            FrequencyEntity(
                 id = UUID.randomUUID().toString(),
                 airportIcao = airportCode,
                 type = row["type"] ?: "",
                 description = row["description"]?.takeIf { it.isNotBlank() },
                 valueMhz = row["frequency_mhz"]?.toFloatOrNull() ?: 0f
             )
-            airportDao.insertFrequencies(listOf(frequency))
         }
+        airportDao.deleteFrequencies()
+        airportDao.insertFrequencies(frequencies)
+        emit(UpdateResult.Progress("Processing frequencies", frequencies.size.toLong()))
 
         val finish = System.currentTimeMillis()
         println("Totally finished in ${finish - startTick} ms")

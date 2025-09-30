@@ -12,16 +12,16 @@ import services.airportService.model.room.RunwayEntity
 
 @Dao
 interface AirportDao {
-    
+
     @Query("SELECT * FROM airports WHERE icao = :icao")
     suspend fun getAirportByIcao(icao: String): AirportEntity?
-    
+
     @Query("SELECT * FROM frequencies WHERE airportIcao = :icao")
     suspend fun getFrequenciesByIcao(icao: String): List<FrequencyEntity>
-    
+
     @Query("SELECT * FROM runways WHERE airportIcao = :icao")
     suspend fun getRunwaysByIcao(icao: String): List<RunwayEntity>
-    
+
     @Transaction
     suspend fun getAirportWithDetails(icao: String): Triple<AirportEntity?, List<FrequencyEntity>, List<RunwayEntity>> {
         val airport = getAirportByIcao(icao)
@@ -29,22 +29,22 @@ interface AirportDao {
         val runways = getRunwaysByIcao(icao)
         return Triple(airport, frequencies, runways)
     }
-    
+
     @Upsert
-    suspend fun insertOrUpdateAirport(airport: AirportEntity)
-    
+    suspend fun insertOrUpdateAirports(airports: List<AirportEntity>)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFrequencies(frequencies: List<FrequencyEntity>)
-    
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRunways(runways: List<RunwayEntity>)
-    
+
     @Query("DELETE FROM frequencies")
     suspend fun deleteFrequencies()
-    
+
     @Query("DELETE FROM runways")
     suspend fun deleteRunways()
-    
+
     @Query("SELECT COUNT(*) FROM airports")
     suspend fun getAirportCount(): Long
 }
