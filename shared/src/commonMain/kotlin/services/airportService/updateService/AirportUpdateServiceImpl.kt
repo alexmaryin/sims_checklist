@@ -16,6 +16,7 @@ class AirportUpdateServiceImpl(
 ) : AirportUpdateService {
 
     override suspend fun updateFlow(scope: CoroutineScope): Flow<UpdateResult> = channelFlow {
+        send(UpdateResult.Progress("Downloading files...", 0))
         FilesLinks.files.forEachIndexed { idx, file ->
             scope.launch(Dispatchers.IO) {
                 httpClient.downloadFile(getFilePath(file), "${FilesLinks.BASE_URL}/$file")

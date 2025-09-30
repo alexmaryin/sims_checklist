@@ -34,12 +34,12 @@ compose.desktop {
         }
 
         nativeDistributions {
-            targetFormats(TargetFormat.Msi, TargetFormat.Deb)
+            targetFormats(TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Dmg)
             packageName = "Sims checklists"
             copyright = "© 2025 Alex Maryin. All rights reserved."
             modules("java.instrument", "java.management", "java.naming", "java.sql", "jdk.unsupported")
-            appResourcesRootDir.set(project.layout.projectDirectory.dir("../common/resources"))
             windows {
+                version = "1.6.1"
                 console = false
                 vendor = "Alex Maryin"
                 dirChooser = true
@@ -50,11 +50,18 @@ compose.desktop {
 
             linux {
                 // a version for all Linux distributable
-                debPackageVersion = "1:5.0"
+                debPackageVersion = "1:6.1"
                 debMaintainer = "java.ul@gmail.com"
                 menuGroup = "Sims checklists"
                 appRelease = libs.versions.app.release.toString()
                 iconFile.set(project.file("sims_checklist.ico"))
+            }
+
+            macOS {
+                bundleID = "ru.alexmaryin.simschecklist"
+                packageVersion = "1.6.1"
+                appCategory = "public.app-category.utilities"
+                iconFile.set(project.file("sims_checklist.icns"))
             }
         }
     }
