@@ -3,10 +3,11 @@ package services.airportService
 import java.nio.file.Files
 import java.nio.file.Path
 
-@Suppress("NewApi")
 actual fun getFilePath(filename: String): String {
-    if (Files.notExists(Path.of("../files"))) {
-        Files.createDirectory(Path.of("../files"))
+    val tempDir = System.getProperty("java.io.tmpdir")
+    val dir = Path.of(tempDir)
+    if (Files.notExists(dir)) {
+        Files.createDirectory(dir)
     }
-    return "../files/$filename"
+    return dir.resolve(filename).toString()
 }
