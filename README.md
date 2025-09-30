@@ -10,10 +10,10 @@ QFE Helper! You can easily convert QFE air pressure given you by ATC to QNH for 
 Top list of recent airports on METAR screen for faster access.
 
 *Some develop details:*
-- Compose Multiplatform project in Kotlin 2.0
-- Custom Canvas view for wind director
+- Compose Multiplatform project in Kotlin 2.20
+- Custom drawing for wind director
 - METAR/TAF info is fetching from https://checkwx.com/
-- Airports information fetches from CSV files (https://davidmegginson.github.io/ourairports-data) and maps to local Realm database.
+- Airports information fetches from CSV files (https://davidmegginson.github.io/ourairports-data) and maps to local multiplatform sqlite database (incredibly fast performance).
 - METAR parser from my own library [metarKt](https://github.com/alexmaryin/metarKt) published on MavenCentral.
 - Awesome library [Decompose](https://github.com/arkivanov/Decompose) for navigation and lifecycle management, thanks to @arkivanov
 - Google Material library for UI with dark and light theme support.
@@ -22,8 +22,8 @@ Top list of recent airports on METAR screen for faster access.
 Glad to see you soon in virtual skies!
 
 **License**
-```
-Copyright 2023 Alex Maryin
+
+Copyright 2023-2025 Alex Maryin
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -36,4 +36,4 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-```
+
