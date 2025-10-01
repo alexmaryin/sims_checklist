@@ -1,5 +1,5 @@
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
@@ -29,7 +29,7 @@ fun main() {
             onCloseRequest = ::exitApplication
         ) {
             val isDark = isSystemInDarkTheme()
-            MaterialTheme(colors = if (isDark) Themes.dark else Themes.light) {
+            MaterialTheme(colorScheme = if (isDark) Themes.dark else Themes.light) {
                 App(root)
             }
         }

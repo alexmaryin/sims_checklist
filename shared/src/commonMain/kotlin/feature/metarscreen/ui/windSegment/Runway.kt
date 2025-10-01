@@ -12,8 +12,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraintsScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,7 +38,7 @@ expect fun deltaScroll(delta: Float): Float
 @Composable
 fun Runway(boxScope: BoxWithConstraintsScope, data: RunwayUi, userAngleEnter: (Int) -> Unit) {
 
-    var offset by remember { mutableStateOf(data.lowHeading.toFloat()) }
+    var offset by remember { mutableFloatStateOf(data.lowHeading.toFloat()) }
 
     val animatedAngle = animateFloatAsState(
         targetValue = data.lowHeading.toFloat(),
@@ -90,7 +90,7 @@ fun Runway(boxScope: BoxWithConstraintsScope, data: RunwayUi, userAngleEnter: (I
 
         Text(
             text = data.low,
-            color = MaterialTheme.colors.onSurface,
+            color = MaterialTheme.colorScheme.onSurface,
             fontWeight = FontWeight.Bold,
             fontSize = 18.sp,
             modifier = Modifier
@@ -99,7 +99,7 @@ fun Runway(boxScope: BoxWithConstraintsScope, data: RunwayUi, userAngleEnter: (I
 
         Text(
             text = data.high,
-            color = MaterialTheme.colors.onSurface,
+            color = MaterialTheme.colorScheme.onSurface,
             fontWeight = FontWeight.Bold,
             fontSize = 18.sp,
             modifier = Modifier

@@ -4,13 +4,15 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,16 +33,17 @@ import ui.AdaptiveLayout
 import ui.Dialog
 import ui.ScrollableDigitField
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MetarScreen(component: MetarScanner) {
 
     val state: WindViewState by component.state.subscribeAsState()
 
-    val scaffoldState = rememberScaffoldState()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     state.error?.let {
-        LaunchedEffect(key1 = scaffoldState.snackbarHostState) {
-            scaffoldState.snackbarHostState.showSnackbar(
+        LaunchedEffect(key1 = snackbarHostState) {
+            snackbarHostState.showSnackbar(
                 message = it,
                 actionLabel = "Close"
             )
@@ -68,7 +71,7 @@ fun MetarScreen(component: MetarScanner) {
 
     Scaffold(
         modifier = Modifier.safeDrawingPadding(),
-        scaffoldState = scaffoldState,
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = { Text("Metar scan") },
@@ -206,14 +209,14 @@ fun MetarScreen(component: MetarScanner) {
                             text = "Top latest airports:",
                             modifier = Modifier.padding(5.dp),
                             fontSize = 14.sp,
-                            color = MaterialTheme.colors.secondary
+                            color = MaterialTheme.colorScheme.secondary
                         )
                         state.historyAirports.forEachIndexed { index, airport ->
-                            val background = if (index % 2 == 0) MaterialTheme.colors.surface else Color.Transparent
+                            val background = if (index % 2 == 0) MaterialTheme.colorScheme.surface else Color.Transparent
                             Text(
                                 text = "${airport.icao} : ${airport.name}",
                                 fontSize = 18.sp,
-                                color = MaterialTheme.colors.primary,
+                                color = MaterialTheme.colorScheme.primary,
                                 modifier = Modifier.fillMaxWidth().background(background).padding(5.dp).clickable {
                                     component.onEvent(MetarUiEvent.SubmitICAO(airport.icao))
                                 }

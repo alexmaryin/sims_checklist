@@ -1,11 +1,13 @@
 package feature.airportsBase.ui
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,16 +18,16 @@ import feature.airportsBase.AirportsUiEvent
 import kotlinx.coroutines.launch
 import ui.utils.MyIcons
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AirportsBaseScreen(component: AirportEventExecutor) {
 
-    val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val state = component.state.subscribeAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
         modifier = Modifier.safeDrawingPadding(),
-        scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
                 title = { Text("Airports base") },
@@ -35,7 +37,8 @@ fun AirportsBaseScreen(component: AirportEventExecutor) {
                     }
                 }
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { paddingValues ->
 
         LaunchedEffect(true) {
@@ -44,8 +47,8 @@ fun AirportsBaseScreen(component: AirportEventExecutor) {
 
         state.value.snackbar?.let {
             scope.launch {
-                scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
-                val result = scaffoldState.snackbarHostState.showSnackbar(it.message, it.button, SnackbarDuration.Short)
+                snackbarHostState.currentSnackbarData?.dismiss()
+                val result = snackbarHostState.showSnackbar(it.message, it.button, false, SnackbarDuration.Short)
                 if (result == SnackbarResult.ActionPerformed) component(it.event)
             }
         }
@@ -76,7 +79,7 @@ fun AirportsBaseScreen(component: AirportEventExecutor) {
                 val item = state.value.processingLabel.ifEmpty { state.value.processingFile }
                 Text(item, Modifier.padding(8.dp))
                 LinearProgressIndicator(
-                    progress = state.value.progress / 100f,
+                    progress = { state.value.progress / 100f },
                     Modifier.fillMaxWidth().padding(8.dp)
                 )
             }

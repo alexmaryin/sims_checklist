@@ -1,16 +1,15 @@
 package feature.checklistDetails.ui
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
@@ -29,13 +28,13 @@ expect fun offsetForScrollBar(): Dp
 @Composable
 fun ChecklistDetailsScreen(component: ChecklistDetails) {
 
-    val scaffoldState = rememberScaffoldState()
+    val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val state: State<ChecklistViewState> = component.state.subscribeAsState()
 
     Scaffold(
         modifier = Modifier.safeDrawingPadding(),
-        scaffoldState = scaffoldState,
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopBarWithClearAction(
                 caption = state.value.caption,
@@ -45,8 +44,8 @@ fun ChecklistDetailsScreen(component: ChecklistDetails) {
 
         state.value.snackBar?.let {
             scope.launch {
-                scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
-                val result = scaffoldState.snackbarHostState.showSnackbar(it.message, it.button, SnackbarDuration.Short)
+                snackbarHostState.currentSnackbarData?.dismiss()
+                val result = snackbarHostState.showSnackbar(it.message, it.button, false, SnackbarDuration.Short)
                 if (result == SnackbarResult.ActionPerformed) component.onEvent(it.event)
             }
         }
@@ -61,7 +60,7 @@ fun ChecklistDetailsScreen(component: ChecklistDetails) {
                 itemsIndexed(items = state.value.items) { index, item ->
 
                     if (item.caption == CHECKLIST_LINE) {
-                        Divider()
+                        HorizontalDivider()
                     } else {
                         ChecklistItem(item) { component.onEvent(ChecklistUiEvent.Toggle(index)) }
                     }

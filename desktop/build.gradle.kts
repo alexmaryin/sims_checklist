@@ -13,6 +13,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(compose.desktop.currentOs)
+                implementation(compose.material3)
                 implementation(project(":shared"))
                 // Decompose navigation library
                 implementation(libs.decompose)

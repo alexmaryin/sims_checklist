@@ -1,25 +1,25 @@
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import ui.utils.SimColors
 
 object Themes {
-    val light = lightColors(
+    val light = lightColorScheme(
         primary = SimColors.backgroundBrown,
-        primaryVariant = SimColors.accentBrown,
+        primaryContainer = SimColors.accentBrown,
         surface = SimColors.lightSurface,
         secondary = SimColors.textDark,
-        secondaryVariant = SimColors.accentGreen,
+        secondaryContainer = SimColors.accentGreen,
         onPrimary = SimColors.textLight,
         onSecondary = SimColors.textDark,
         onSurface = SimColors.textBlack
     )
 
-    val dark = darkColors(
+    val dark = darkColorScheme(
         primary = SimColors.backgroundLight,
-        primaryVariant = SimColors.backgroundBrown,
+        primaryContainer = SimColors.backgroundBrown,
         surface = SimColors.textDark,
         secondary = SimColors.backgroundGray,
-        secondaryVariant = SimColors.accentGreen,
+        secondaryContainer = SimColors.accentGreen,
         onPrimary = SimColors.textBlack,
         onSecondary = SimColors.textBrown,
         onSurface = SimColors.textUltraLight

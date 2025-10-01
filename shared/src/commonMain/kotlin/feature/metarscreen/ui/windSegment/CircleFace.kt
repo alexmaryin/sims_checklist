@@ -2,9 +2,9 @@ package feature.metarscreen.ui.windSegment
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.LocalTextStyle
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,7 +24,7 @@ val LONG_STROKE = 20.dp
 val SHORT_STROKE = 10.dp
 
 @Composable
-fun CircleFace(boxScope: BoxWithConstraintsScope, color: Color, surface: Color = MaterialTheme.colors.surface) {
+fun CircleFace(boxScope: BoxWithConstraintsScope, color: Color, surface: Color = MaterialTheme.colorScheme.surface) {
     boxScope.apply {
         val sizeDp = min(maxWidth, maxHeight)
         val radius = (sizeDp - CIRCLE_PADDING) / 2

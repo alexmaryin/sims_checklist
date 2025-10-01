@@ -2,7 +2,7 @@ package feature.metarscreen.ui.windSegment
 
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
@@ -20,10 +20,10 @@ fun WindSegment(
     BoxWithConstraints(
         modifier = Modifier.size(min(400.dp, minSide)),
     ) {
-        CircleFace(boxScope = this, color = MaterialTheme.colors.onSurface)
+        CircleFace(boxScope = this, color = MaterialTheme.colorScheme.onSurface)
         Runway(boxScope = this, runway, userAngleEnter)
         if (wind.speedKt > 0) {
-            WindPointer(boxScope = this, wind.heading, color = MaterialTheme.colors.onSurface)
+            WindPointer(boxScope = this, wind.heading, color = MaterialTheme.colorScheme.onSurface)
         }
     }
 }
