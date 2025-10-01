@@ -1,13 +1,9 @@
 package feature.qfeHelper.ui
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
@@ -18,6 +14,8 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import feature.qfeHelper.QFEEvent
 import feature.qfeHelper.QFEHelper
 import feature.qfeHelper.QFEHelperState
+import ui.utils.SimColors
+import ui.utils.mySnackbarHost
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,8 +35,7 @@ fun QFEHelperScreen(component: QFEHelper) {
     }
 
     Scaffold(
-        modifier = Modifier.safeDrawingPadding(),
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = mySnackbarHost(snackbarHostState),
         topBar = {
             TopAppBar(
                 title = { Text("QFE Helper") },
@@ -46,9 +43,11 @@ fun QFEHelperScreen(component: QFEHelper) {
                     IconButton(onClick = component.onBack) {
                         Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back button")
                     }
-                }
+                },
+                colors = SimColors.topBarColors()
             )
-        }
+        },
+        contentWindowInsets = WindowInsets.safeDrawing
     ) { paddingValues ->
         Column(
             modifier = Modifier.fillMaxWidth().padding(paddingValues),

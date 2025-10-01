@@ -24,6 +24,7 @@ import org.jetbrains.compose.resources.vectorResource
 import sims_checklist.shared.generated.resources.Res
 import sims_checklist.shared.generated.resources.allDrawableResources
 import ui.utils.MyIcons
+import ui.utils.SimColors
 
 @Composable
 fun ToggleableText(
@@ -34,7 +35,7 @@ fun ToggleableText(
 ) = Text(
     text = text,
     modifier = modifier,
-    color = if (isToggled) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSurface,
+    color = if (isToggled) MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.onSurface,
     style = LocalTextStyle.current.merge(textStyle ?: TextStyle(fontWeight = FontWeight.Normal, fontSize = 18.sp))
 )
 
@@ -51,7 +52,8 @@ fun TopBarWithClearAction(caption: String, onBack: () -> Unit, onClear: () -> Un
         IconButton(onClick = onClear) {
             Icon(imageVector = MyIcons.CheckBoxOutlineBlank, contentDescription = "Uncheck all")
         }
-    }
+    },
+    colors = SimColors.topBarColors()
 )
 
 @Composable

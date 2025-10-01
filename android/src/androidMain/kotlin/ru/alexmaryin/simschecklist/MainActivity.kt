@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import com.arkivanov.decompose.defaultComponentContext
 import decompose.Root
 
@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         val root = Root(defaultComponentContext())
         setContent {
             val isDark = isSystemInDarkTheme()
-            MaterialTheme(colors = if (isDark) Themes.dark else Themes.light) {
+            MaterialTheme(colorScheme = if (isDark) Themes.dark else Themes.light) {
                 App(root)
             }
         }

@@ -22,6 +22,8 @@ import feature.fuelcalculator.FuelUiEvent
 import ui.RelativeOutlineInput
 import ui.ValidatedOutlineInput
 import ui.ValidatorIcon
+import ui.utils.SimColors
+import ui.utils.mySnackbarHost
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,8 +40,7 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
     }
 
     Scaffold(
-        modifier = Modifier.safeDrawingPadding(),
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = mySnackbarHost(snackbarHostState),
         topBar = {
             TopAppBar(
                 title = { Text("Block fuel calculator") },
@@ -47,9 +48,11 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
                     IconButton(onClick = { component.onEvent(FuelUiEvent.Back) }) {
                         Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back button")
                     }
-                }
+                },
+                colors = SimColors.topBarColors()
             )
-        }
+        },
+        contentWindowInsets = WindowInsets.safeDrawing
     ) { paddingValues ->
 
         var tripDistance by rememberSaveable { mutableStateOf(state.value.tripDistance.toString()) }

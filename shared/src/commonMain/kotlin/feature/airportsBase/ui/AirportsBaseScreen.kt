@@ -17,6 +17,8 @@ import feature.airportsBase.AirportEventExecutor
 import feature.airportsBase.AirportsUiEvent
 import kotlinx.coroutines.launch
 import ui.utils.MyIcons
+import ui.utils.SimColors
+import ui.utils.mySnackbarHost
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,7 +29,6 @@ fun AirportsBaseScreen(component: AirportEventExecutor) {
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
-        modifier = Modifier.safeDrawingPadding(),
         topBar = {
             TopAppBar(
                 title = { Text("Airports base") },
@@ -35,10 +36,12 @@ fun AirportsBaseScreen(component: AirportEventExecutor) {
                     IconButton(onClick = { component(AirportsUiEvent.Back) }) {
                         Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back button")
                     }
-                }
+                },
+                colors = SimColors.topBarColors()
             )
         },
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+        snackbarHost = mySnackbarHost(snackbarHostState),
+        contentWindowInsets = WindowInsets.safeDrawing
     ) { paddingValues ->
 
         LaunchedEffect(true) {

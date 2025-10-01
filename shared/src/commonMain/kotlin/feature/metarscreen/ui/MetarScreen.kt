@@ -32,6 +32,8 @@ import feature.metarscreen.ui.windSegment.WindSegment
 import ui.AdaptiveLayout
 import ui.Dialog
 import ui.ScrollableDigitField
+import ui.utils.SimColors
+import ui.utils.mySnackbarHost
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -70,8 +72,7 @@ fun MetarScreen(component: MetarScanner) {
     }
 
     Scaffold(
-        modifier = Modifier.safeDrawingPadding(),
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = mySnackbarHost(snackbarHostState),
         topBar = {
             TopAppBar(
                 title = { Text("Metar scan") },
@@ -87,9 +88,11 @@ fun MetarScreen(component: MetarScanner) {
                     IconButton(onClick = { component.onEvent(MetarUiEvent.ShowInfoDialog) }) {
                         Icon(imageVector = Icons.Default.Info, contentDescription = "Information")
                     }
-                }
+                },
+                colors = SimColors.topBarColors()
             )
-        }
+        },
+        contentWindowInsets = WindowInsets.safeDrawing
     ) { paddingValues ->
         AdaptiveLayout(paddingValues) { width, height ->
             WindSegment(
@@ -209,14 +212,14 @@ fun MetarScreen(component: MetarScanner) {
                             text = "Top latest airports:",
                             modifier = Modifier.padding(5.dp),
                             fontSize = 14.sp,
-                            color = MaterialTheme.colorScheme.secondary
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                         state.historyAirports.forEachIndexed { index, airport ->
-                            val background = if (index % 2 == 0) MaterialTheme.colorScheme.surface else Color.Transparent
+                            val background = if (index % 2 == 0) MaterialTheme.colorScheme.surfaceVariant else Color.Unspecified
                             Text(
                                 text = "${airport.icao} : ${airport.name}",
                                 fontSize = 18.sp,
-                                color = MaterialTheme.colorScheme.primary,
+                                color = MaterialTheme.colorScheme.onSurface,
                                 modifier = Modifier.fillMaxWidth().background(background).padding(5.dp).clickable {
                                     component.onEvent(MetarUiEvent.SubmitICAO(airport.icao))
                                 }

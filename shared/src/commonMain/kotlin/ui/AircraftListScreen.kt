@@ -20,6 +20,7 @@ import org.jetbrains.compose.resources.painterResource
 import sims_checklist.shared.generated.resources.Res
 import sims_checklist.shared.generated.resources.allDrawableResources
 import ui.utils.MyIcons
+import ui.utils.SimColors
 import ui.utils.largeWithShadow
 
 @Composable
@@ -30,7 +31,6 @@ fun loadAircraftJpgPhoto(name: String): Painter = painterResource(Res.allDrawabl
 fun AircraftListScreen(component: AircraftList) {
 
     Scaffold(
-        modifier = Modifier.safeDrawingPadding(),
         topBar = {
             TopAppBar(
                 title = { Text("Select your aircraft") },
@@ -44,15 +44,20 @@ fun AircraftListScreen(component: AircraftList) {
                     IconButton(onClick = { component.onQFEHelperSelect() }) {
                         Icon(imageVector = MyIcons.Compress, contentDescription = "QFE helper")
                     }
-                }
+                },
+                colors = SimColors.topBarColors()
             )
         },
-        contentWindowInsets = WindowInsets.safeContent
+        contentWindowInsets = WindowInsets.safeDrawing
     ) { padding ->
         val state = rememberLazyListState()
         LazyColumn(modifier = Modifier.fillMaxSize().padding(padding), state) {
             items(component.aircraftList) { item ->
-                Card(elevation = CardDefaults.elevatedCardElevation(12.dp), modifier = Modifier.clickable { component.onSelected(item.id) }) {
+                Card(
+                    elevation = CardDefaults.elevatedCardElevation(12.dp),
+                    modifier = Modifier.clickable { component.onSelected(item.id) }
+                        .padding(1.dp)
+                ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Image(
                             painter = loadAircraftJpgPhoto(item.photo),
@@ -66,7 +71,7 @@ fun AircraftListScreen(component: AircraftList) {
                                     clip = true
                                 )
                         )
-                        Row (
+                        Row(
                             modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally)
                         ) {
                             Text(
@@ -88,5 +93,3 @@ fun AircraftListScreen(component: AircraftList) {
         }
     }
 }
-
-

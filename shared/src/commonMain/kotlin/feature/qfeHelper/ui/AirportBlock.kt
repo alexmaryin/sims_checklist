@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -62,7 +63,7 @@ fun AirportBlock(
         Text(
             text = "$icao $airportName",
             fontSize = 16.sp,
-            color = Color.DarkGray,
+            color = MaterialTheme.colorScheme.onSurface,
             fontStyle = FontStyle.Italic,
             fontWeight = FontWeight.SemiBold
         )

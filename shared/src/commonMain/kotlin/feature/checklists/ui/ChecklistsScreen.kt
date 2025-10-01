@@ -1,10 +1,7 @@
 package feature.checklists.ui
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -14,6 +11,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
@@ -22,6 +20,7 @@ import feature.checklists.ChecklistsUiEvent
 import feature.checklists.ChecklistsViewState
 import ui.TopBarWithClearAction
 import ui.utils.largeWithShadow
+import ui.utils.mySnackbarHost
 
 @Composable
 fun ChecklistsScreen(component: Checklists) {
@@ -41,15 +40,15 @@ fun ChecklistsScreen(component: Checklists) {
     }
 
     Scaffold(
-        modifier = Modifier.safeDrawingPadding(),
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = mySnackbarHost(snackbarHostState),
         topBar = {
             TopBarWithClearAction(
                 caption = state.value.caption,
                 onBack = { component.onEvent(ChecklistsUiEvent.Back) },
                 onClear = { component.onEvent(ChecklistsUiEvent.ConfirmClear) }
             )
-        }
+        },
+        contentWindowInsets = WindowInsets.safeDrawing
     ) { paddingValues ->
 
         val lazyState = rememberLazyListState()
@@ -63,8 +62,8 @@ fun ChecklistsScreen(component: Checklists) {
                     modifier = Modifier.padding(vertical = 1.dp),
                     elevation = CardDefaults.elevatedCardElevation(12.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = if (checklist.isCompleted) MaterialTheme.colorScheme.secondary
-                        else MaterialTheme.colorScheme.surface
+                        containerColor = if (checklist.isCompleted) MaterialTheme.colorScheme.inversePrimary
+                        else Color.Unspecified
                     )
                 ) {
                     Text(
@@ -72,7 +71,7 @@ fun ChecklistsScreen(component: Checklists) {
                         modifier = Modifier.clickable { component.onEvent(ChecklistsUiEvent.SelectChecklist(checklist.id)) }
                             .fillMaxWidth()
                             .padding(16.dp),
-                        color = if (checklist.isCompleted) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSurface,
+                        color = if (checklist.isCompleted) MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.onSurface,
                         textAlign = TextAlign.Center,
                         style = largeWithShadow()
                     )

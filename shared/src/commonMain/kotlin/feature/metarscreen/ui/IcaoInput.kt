@@ -21,6 +21,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ui.utils.SimColors
 
 @Composable
 fun IcaoInput(
@@ -46,7 +47,7 @@ fun IcaoInput(
         OutlinedTextField(
             value = icaoInput,
             onValueChange = { new -> icaoInput = new },
-            label = { Text("enter ICAO") },
+            label = { Text("ICAO") },
             singleLine = true,
             enabled = enabled,
             keyboardActions = KeyboardActions(onDone = { submitICAO() }),
@@ -66,7 +67,8 @@ fun IcaoInput(
 
         Button(
             onClick = { submitICAO() },
-            enabled = enabled
+            enabled = enabled,
+            colors = SimColors.buttonColors()
         ) {
             if (enabled.not()) {
                 CircularProgressIndicator()

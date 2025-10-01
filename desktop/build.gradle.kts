@@ -40,7 +40,7 @@ compose.desktop {
             copyright = "© 2025 Alex Maryin. All rights reserved."
             modules("java.instrument", "java.management", "java.naming", "java.sql", "jdk.unsupported")
             windows {
-                version = "1.6.1"
+                version = "1.6.2"
                 console = false
                 vendor = "Alex Maryin"
                 dirChooser = true
@@ -51,7 +51,7 @@ compose.desktop {
 
             linux {
                 // a version for all Linux distributable
-                debPackageVersion = "1:6.1"
+                debPackageVersion = "1:6.2"
                 debMaintainer = "java.ul@gmail.com"
                 menuGroup = "Sims checklists"
                 appRelease = libs.versions.app.release.toString()
@@ -60,7 +60,7 @@ compose.desktop {
 
             macOS {
                 bundleID = "ru.alexmaryin.simschecklist"
-                packageVersion = "1.6.1"
+                packageVersion = "1.6.2"
                 appCategory = "public.app-category.utilities"
                 iconFile.set(project.file("sims_checklist.icns"))
             }

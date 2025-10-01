@@ -21,7 +21,8 @@ fun ChecklistItem(item: Item, onClick: () -> Unit) = Row(
     modifier = Modifier
         .clickable { onClick() }
         .fillMaxWidth()
-        .background(if (item.checked) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.surface)
+        .background(if (item.checked) MaterialTheme.colorScheme.inversePrimary
+        else MaterialTheme.colorScheme.surface)
         .padding(10.dp)
 ) {
 

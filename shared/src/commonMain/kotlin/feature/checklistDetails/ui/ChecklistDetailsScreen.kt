@@ -20,6 +20,7 @@ import feature.checklistDetails.ChecklistViewState
 import feature.checklistDetails.model.CHECKLIST_LINE
 import kotlinx.coroutines.launch
 import ui.TopBarWithClearAction
+import ui.utils.mySnackbarHost
 
 @Composable
 expect fun ScrollBarForList(modifier: Modifier, state: LazyListState)
@@ -33,14 +34,15 @@ fun ChecklistDetailsScreen(component: ChecklistDetails) {
     val state: State<ChecklistViewState> = component.state.subscribeAsState()
 
     Scaffold(
-        modifier = Modifier.safeDrawingPadding(),
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = mySnackbarHost(snackbarHostState),
         topBar = {
             TopBarWithClearAction(
                 caption = state.value.caption,
                 onBack = { component.onEvent(ChecklistUiEvent.Back) },
                 onClear = { component.onEvent(ChecklistUiEvent.Clear) })
-        }) { paddingValues ->
+        },
+        contentWindowInsets = WindowInsets.safeDrawing
+    ) { paddingValues ->
 
         state.value.snackBar?.let {
             scope.launch {
