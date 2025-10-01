@@ -18,7 +18,7 @@ kotlin {
             dependencies {
                 implementation(project(":shared"))
                 implementation(compose.foundation)
-                implementation(compose.material)
+                implementation(compose.material3)
                 implementation(libs.activity.compose)
                 implementation(libs.core.ktx)
                 // Decompose
@@ -38,7 +38,7 @@ android {
         targetSdk = libs.versions.android.compileSdk.get().toInt()
         applicationId = "ru.alexmaryin.simschecklist"
         versionCode = libs.versions.app.release.get().toInt()
-        versionName = "1.6.1"
+        versionName = "1.6.2"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21

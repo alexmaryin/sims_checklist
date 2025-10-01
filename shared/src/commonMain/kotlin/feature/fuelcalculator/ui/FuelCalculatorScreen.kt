@@ -1,16 +1,12 @@
 package feature.fuelcalculator.ui
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -26,23 +22,25 @@ import feature.fuelcalculator.FuelUiEvent
 import ui.RelativeOutlineInput
 import ui.ValidatedOutlineInput
 import ui.ValidatorIcon
+import ui.utils.SimColors
+import ui.utils.mySnackbarHost
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FuelCalculatorScreen(component: FuelCalculator) {
 
-    val scaffoldState = rememberScaffoldState()
+    val snackbarHostState = remember { SnackbarHostState() }
     val state: State<FuelCalcViewState> = component.state.subscribeAsState()
 
     state.value.snackBar?.let {
-        LaunchedEffect(scaffoldState.snackbarHostState) {
-            val result = scaffoldState.snackbarHostState.showSnackbar(it.message, it.button, SnackbarDuration.Short)
+        LaunchedEffect(snackbarHostState) {
+            val result = snackbarHostState.showSnackbar(it.message, it.button, false, SnackbarDuration.Short)
             if (result == SnackbarResult.ActionPerformed) component.onEvent(it.event)
         }
     }
 
     Scaffold(
-        modifier = Modifier.safeDrawingPadding(),
-        scaffoldState = scaffoldState,
+        snackbarHost = mySnackbarHost(snackbarHostState),
         topBar = {
             TopAppBar(
                 title = { Text("Block fuel calculator") },
@@ -50,9 +48,11 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
                     IconButton(onClick = { component.onEvent(FuelUiEvent.Back) }) {
                         Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back button")
                     }
-                }
+                },
+                colors = SimColors.topBarColors()
             )
-        }
+        },
+        contentWindowInsets = WindowInsets.safeDrawing
     ) { paddingValues ->
 
         var tripDistance by rememberSaveable { mutableStateOf(state.value.tripDistance.toString()) }
@@ -80,7 +80,7 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
             Text(
                 text = "Calculate fuel quantity for your trip on ${state.value.name}",
                 modifier = Modifier.padding(8.dp),
-                color = MaterialTheme.colors.onSurface
+                color = MaterialTheme.colorScheme.onSurface
             )
             Row {
                 ValidatedOutlineInput(
@@ -112,7 +112,7 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
                     textStyle = LocalTextStyle.current.copy(
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.ExtraBold,
-                        color = if (state.value.fuelExceed) MaterialTheme.colors.error else Color.Unspecified
+                        color = if (state.value.fuelExceed) MaterialTheme.colorScheme.error else Color.Unspecified
                     ),
                     modifier = Modifier.padding(8.dp).weight(1f),
                     readOnly = true,
@@ -137,11 +137,11 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
                     component.onEvent(FuelUiEvent.ContingencyChange(new.substringBefore("%")))
                 }
             }
-            Divider(modifier = Modifier.padding(8.dp))
+            HorizontalDivider(modifier = Modifier.padding(8.dp))
             Text(
                 text = "You may change params below according to the performance table",
                 modifier = Modifier.padding(8.dp).align(Alignment.CenterHorizontally),
-                color = MaterialTheme.colors.onSurface
+                color = MaterialTheme.colorScheme.onSurface
             )
             Row {
                 RelativeOutlineInput(
@@ -160,7 +160,7 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
             Text(
                 text = "You should not change params below, but you may on your own risk",
                 modifier = Modifier.padding(8.dp).align(Alignment.CenterHorizontally),
-                color = MaterialTheme.colors.onSurface
+                color = MaterialTheme.colorScheme.onSurface
             )
             Row {
                 RelativeOutlineInput(

@@ -3,11 +3,12 @@ package ui
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.*
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusEvent
@@ -23,6 +24,7 @@ import org.jetbrains.compose.resources.vectorResource
 import sims_checklist.shared.generated.resources.Res
 import sims_checklist.shared.generated.resources.allDrawableResources
 import ui.utils.MyIcons
+import ui.utils.SimColors
 
 @Composable
 fun ToggleableText(
@@ -33,10 +35,11 @@ fun ToggleableText(
 ) = Text(
     text = text,
     modifier = modifier,
-    color = if (isToggled) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface,
+    color = if (isToggled) MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.onSurface,
     style = LocalTextStyle.current.merge(textStyle ?: TextStyle(fontWeight = FontWeight.Normal, fontSize = 18.sp))
 )
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBarWithClearAction(caption: String, onBack: () -> Unit, onClear: () -> Unit) = TopAppBar(
     title = { Text(caption) },
@@ -49,7 +52,8 @@ fun TopBarWithClearAction(caption: String, onBack: () -> Unit, onClear: () -> Un
         IconButton(onClick = onClear) {
             Icon(imageVector = MyIcons.CheckBoxOutlineBlank, contentDescription = "Uncheck all")
         }
-    }
+    },
+    colors = SimColors.topBarColors()
 )
 
 @Composable
