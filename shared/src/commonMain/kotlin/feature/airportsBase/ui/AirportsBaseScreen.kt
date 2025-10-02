@@ -1,5 +1,6 @@
 package feature.airportsBase.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
@@ -45,7 +46,7 @@ fun AirportsBaseScreen(component: AirportEventExecutor) {
     ) { paddingValues ->
 
         LaunchedEffect(true) {
-            component(AirportsUiEvent.GetLastUpdate(scope))
+            component(AirportsUiEvent.GetLastUpdate)
         }
 
         state.value.snackbar?.let {
@@ -68,7 +69,7 @@ fun AirportsBaseScreen(component: AirportEventExecutor) {
                 Text("Have not updated yet", Modifier.padding(8.dp))
             }
             IconButton(
-                onClick = { component(AirportsUiEvent.StartUpdate(scope)) },
+                onClick = { component(AirportsUiEvent.StartUpdate) },
                 modifier = Modifier.padding(8.dp),
                 enabled = !state.value.updating,
             ) {
@@ -86,7 +87,13 @@ fun AirportsBaseScreen(component: AirportEventExecutor) {
                     Modifier.fillMaxWidth().padding(8.dp)
                 )
             }
+            AnimatedVisibility(visible = state.value.airportsCount > 0) {
+                AirportsList(
+                    searchString = state.value.searchString,
+                    searchResult = state.value.searchResult,
+                    onChange = { component(AirportsUiEvent.SendSearch(it)) },
+                )
+            }
         }
-
     }
 }
