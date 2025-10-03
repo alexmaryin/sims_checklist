@@ -1,22 +1,25 @@
 package feature.airportsBase.ui
 
+import RunwayInfo
 import androidx.compose.desktop.ui.tooling.preview.Preview
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import services.airportService.model.Airport
+import services.airportService.model.Runway
 import services.airportService.model.enums.AirportType
+import services.airportService.model.enums.RunwaySurface
+import ui.CaptionedDivider
+import ui.LinkText
 import ui.utils.largeWithShadow
 import kotlin.math.abs
 
@@ -42,10 +45,37 @@ fun ExpandedAirport(airport: Airport, onClick: () -> Unit) {
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 Text(text = "elevation: ${airport.elevation} ft")
-                val latitudeStr = airport.latitude.toDMS(true)
-                val longtitudeStr = airport.longitude.toDMS(false)
-                Text(text = "LAT: $latitudeStr")
-                Text(text = "LON: $longtitudeStr")
+                FlowRow(
+                    modifier = Modifier.weight(1f).padding(horizontal = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    val latitudeStr = airport.latitude.toDMS(true)
+                    val longtitudeStr = airport.longitude.toDMS(false)
+                    Text(text = "LAT: $latitudeStr")
+                    Text(text = "LON: $longtitudeStr")
+                }
+            }
+            airport.webSite?.let {
+                LinkText(
+                    text = "Airport website: $it",
+                    url = it,
+                    modifier = Modifier.fillMaxWidth().padding(8.dp)
+                )
+            }
+            airport.wiki?.let {
+                LinkText(
+                    text = "Airport wiki: $it",
+                    url = it,
+                    modifier = Modifier.fillMaxWidth().padding(8.dp)
+                )
+            }
+            if (airport.runways.isNotEmpty()) {
+                CaptionedDivider("Runways:")
+                airport.runways.forEach { RunwayInfo(it, Modifier.fillMaxWidth()) }
+            }
+            if (airport.frequencies.isNotEmpty()) {
+                CaptionedDivider("Frequencies:")
+                airport.frequencies.forEach { FrequencyInfo(it, Modifier.fillMaxWidth()) }
             }
         }
     }
@@ -58,7 +88,7 @@ fun ExpandedAirport(airport: Airport, onClick: () -> Unit) {
  * This determines the cardinal direction (N/S for latitude, E/W for longitude).
  * @return A formatted DMS string, e.g., "55° 35' 57.12" N".
  */
-fun Float.toDMS(isLatitude: Boolean): String {
+private fun Float.toDMS(isLatitude: Boolean): String {
     val absolute = abs(this)
     val degrees = absolute.toInt()
     val minutesNotTruncated = (absolute - degrees) * 60
@@ -79,11 +109,28 @@ fun Float.toDMS(isLatitude: Boolean): String {
 fun ExpandedAirportPreview() {
     ExpandedAirport(
         Airport(
-        icao = "UUWW",
-        type = AirportType.LARGE,
-        name = "Vnukovo International airport",
-        latitude = 55.5992f,
-        longitude = 37.2731f,
-        elevation = 685,
-    )) {}
+            icao = "UUWW",
+            type = AirportType.LARGE,
+            name = "Vnukovo International airport",
+            latitude = 55.5992f,
+            longitude = 37.2731f,
+            elevation = 685,
+            webSite = "www.vnukovo.com",
+            wiki = "www.wikipedia.com/vnukovo",
+            runways = listOf(
+                Runway(
+                    lengthFeet = 8500,
+                    widthFeet = 400,
+                    surface = RunwaySurface.CONCRETE,
+                    closed = true,
+                    lowNumber = "02",
+                    lowElevationFeet = 450,
+                    lowHeading = 19,
+                    highNumber = "20",
+                    highElevationFeet = 433,
+                    highHeading = 199
+                )
+            )
+        )
+    ) {}
 }

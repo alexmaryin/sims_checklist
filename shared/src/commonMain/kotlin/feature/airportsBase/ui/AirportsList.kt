@@ -34,7 +34,7 @@ fun AirportsList(
         LazyColumn(state = lazyState, modifier = Modifier.fillMaxWidth().padding(16.dp)) {
             items(searchResult) { item ->
                 if (expandedAirport?.icao == item.icao) {
-                    ExpandedAirport(item) { onAirportClick(item.icao) }
+                    ExpandedAirport(expandedAirport) { onAirportClick(item.icao) }
                 } else {
                     CollapsedAirport(item) { onAirportClick(item.icao) }
                 }

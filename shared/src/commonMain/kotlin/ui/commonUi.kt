@@ -1,5 +1,6 @@
 package ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
@@ -13,8 +14,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.CoroutineScope
@@ -104,6 +107,26 @@ fun ValidatedOutlineInput(
 
 @Composable
 fun loadXmlPicture(name: String): ImageVector = vectorResource(Res.allDrawableResources[name]!!)
+
+/**
+ * A composable that displays text styled as a hyperlink and opens the given [url] when clicked.
+ *
+ * @param text The text to display.
+ * @param url The URL to open in the browser when the text is clicked.
+ * @param modifier The modifier to be applied to the text.
+ */
+@Composable
+fun LinkText(text: String, url: String, modifier: Modifier = Modifier) {
+    val uriHandler = LocalUriHandler.current
+    Text(
+        text = text,
+        modifier = modifier.clickable {
+            uriHandler.openUri(url)
+        },
+        color = MaterialTheme.colorScheme.primary,
+        textDecoration = TextDecoration.Underline
+    )
+}
 
 @Composable
 expect fun Dialog(onDismissRequest: () -> Unit, title: String, text: String)

@@ -5,7 +5,7 @@ import kotlin.math.*
 
 fun Int.ifZero(value: () -> Int): Int = if (this != 0) this else value()
 
-fun String.filterDigitsToInt(): Int = filter { it.isDigit() }.toInt()
+fun String.filterDigitsToInt(): Int? = filter { it.isDigit() }.toIntOrNull()
 
 fun angleBetweenHeadings(heading1: Int, heading2: Int): Int {
     val h1rad = (90 - heading1).toRadians()
