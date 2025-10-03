@@ -1,5 +1,7 @@
-import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
@@ -11,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import services.airportService.model.Runway
-import services.airportService.model.enums.RunwaySurface
 import ui.utils.largeWithShadow
 
 @Composable
@@ -44,24 +45,4 @@ fun RunwayInfo(runway: Runway, modifier: Modifier = Modifier) {
 
         Text(text = "HDG: ${runway.lowHeading}°/${runway.highHeading}°", style = MaterialTheme.typography.bodyMedium)
     }
-}
-
-@Preview
-@Composable
-fun RunwayInfoPreview() {
-    RunwayInfo(
-        Runway(
-            lengthFeet = 8500,
-            widthFeet = 400,
-            surface = RunwaySurface.CONCRETE,
-            closed = true,
-            lowNumber = "02",
-            lowElevationFeet = 450,
-            lowHeading = 19,
-            highNumber = "20",
-            highElevationFeet = 433,
-            highHeading = 199
-        ),
-        Modifier.fillMaxWidth()
-    )
 }

@@ -1,23 +1,16 @@
 package feature.airportsBase.ui
 
 import RunwayInfo
-import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import services.airportService.model.Airport
-import services.airportService.model.Runway
-import services.airportService.model.enums.AirportType
-import services.airportService.model.enums.RunwaySurface
 import ui.CaptionedDivider
 import ui.LinkText
 import ui.utils.largeWithShadow
@@ -102,35 +95,4 @@ private fun Float.toDMS(isLatitude: Boolean): String {
     }
 
     return "%d°%d'%.2f\"%s".format(degrees, minutes, seconds, direction)
-}
-
-@Preview
-@Composable
-fun ExpandedAirportPreview() {
-    ExpandedAirport(
-        Airport(
-            icao = "UUWW",
-            type = AirportType.LARGE,
-            name = "Vnukovo International airport",
-            latitude = 55.5992f,
-            longitude = 37.2731f,
-            elevation = 685,
-            webSite = "www.vnukovo.com",
-            wiki = "www.wikipedia.com/vnukovo",
-            runways = listOf(
-                Runway(
-                    lengthFeet = 8500,
-                    widthFeet = 400,
-                    surface = RunwaySurface.CONCRETE,
-                    closed = true,
-                    lowNumber = "02",
-                    lowElevationFeet = 450,
-                    lowHeading = 19,
-                    highNumber = "20",
-                    highElevationFeet = 433,
-                    highHeading = 199
-                )
-            )
-        )
-    ) {}
 }

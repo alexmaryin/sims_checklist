@@ -1,6 +1,5 @@
 package feature.airportsBase.ui
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +12,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import services.airportService.model.Airport
-import services.airportService.model.enums.AirportType
 import ui.utils.largeWithShadow
 
 @Composable
@@ -29,18 +27,4 @@ fun CollapsedAirport(airport: Airport, onClick: () -> Unit) {
             Text(text = airport.name)
         }
     }
-}
-
-@Preview
-@Composable
-fun CollapsedAirportPreview() {
-    CollapsedAirport(
-        Airport(
-        icao = "UUWW",
-        type = AirportType.LARGE,
-        name = "Vnukovo International airport",
-        latitude = 0f,
-        longitude = 0f,
-        elevation = 0,
-    )) {}
 }
