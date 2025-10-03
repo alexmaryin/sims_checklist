@@ -11,7 +11,7 @@ data class AirportsBaseViewState(
     val progress: Int = 0,
     val searchString: String = "",
     val searchResult: List<Airport> = emptyList(),
-    val selectedAirport: Airport? = null,
+    val expandedAirport: Airport? = null,
     val snackbar: AirportsSnackBarState? = null
 )
 

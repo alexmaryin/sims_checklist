@@ -17,7 +17,9 @@ import services.airportService.model.Airport
 fun AirportsList(
     searchString: String,
     searchResult: List<Airport>,
+    expandedAirport: Airport? = null,
     onChange: (String) -> Unit,
+    onAirportClick: (String) -> Unit
 ) {
     val lazyState = rememberLazyListState()
 
@@ -31,8 +33,11 @@ fun AirportsList(
         )
         LazyColumn(state = lazyState, modifier = Modifier.fillMaxWidth().padding(16.dp)) {
             items(searchResult) { item ->
-                Text(item.icao)
-                Text(item.name)
+                if (expandedAirport?.icao == item.icao) {
+                    ExpandedAirport(item) { onAirportClick(item.icao) }
+                } else {
+                    CollapsedAirport(item) { onAirportClick(item.icao) }
+                }
             }
         }
     }

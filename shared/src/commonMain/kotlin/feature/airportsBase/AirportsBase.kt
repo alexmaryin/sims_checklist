@@ -43,9 +43,10 @@ class AirportsBase(
         when (event) {
             AirportsUiEvent.Back -> onBack()
             AirportsUiEvent.SnackBarClose -> state.update { it.copy(snackbar = null) }
-            is AirportsUiEvent.StartUpdate -> scope.onStartUpdate()
-            is AirportsUiEvent.GetLastUpdate -> scope.onLastUpdate()
+            AirportsUiEvent.StartUpdate -> scope.onStartUpdate()
+            AirportsUiEvent.GetLastUpdate -> scope.onLastUpdate()
             is AirportsUiEvent.SendSearch -> scope.searchAirports(event.search)
+            is AirportsUiEvent.ExpandAirport -> scope.expandAirport(event.icao)
         }
     }
 
@@ -118,6 +119,20 @@ class AirportsBase(
         val result = airportService.searchAirports(search)
         result.forSuccess { airports ->
             state.update { it.copy(searchResult = airports, snackbar = null) }
+        }
+        result.forError { type, message ->
+            state.update { it.copy(snackbar = AirportsSnackBarState.ErrorHint(message ?: type.name)) }
+        }
+    }
+
+    private fun CoroutineScope.expandAirport(icao: String) = launch {
+        if (state.value.expandedAirport?.icao == icao) {
+            state.update { it.copy(expandedAirport = null) }
+            return@launch
+        }
+        val result = airportService.getAirportByICAO(icao)
+        result.forSuccess { airport ->
+            state.update { it.copy(expandedAirport = airport, snackbar = null) }
         }
         result.forError { type, message ->
             state.update { it.copy(snackbar = AirportsSnackBarState.ErrorHint(message ?: type.name)) }

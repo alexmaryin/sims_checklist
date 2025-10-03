@@ -91,7 +91,9 @@ fun AirportsBaseScreen(component: AirportEventExecutor) {
                 AirportsList(
                     searchString = state.value.searchString,
                     searchResult = state.value.searchResult,
+                    expandedAirport = state.value.expandedAirport,
                     onChange = { component(AirportsUiEvent.SendSearch(it)) },
+                    onAirportClick = { component(AirportsUiEvent.ExpandAirport(it)) }
                 )
             }
         }

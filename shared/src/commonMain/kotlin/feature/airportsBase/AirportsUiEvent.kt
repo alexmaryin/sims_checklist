@@ -8,4 +8,5 @@ sealed class AirportsUiEvent {
     data object Back : AirportsUiEvent()
     data object GetLastUpdate : AirportsUiEvent()
     data class SendSearch(val search: String) : AirportsUiEvent()
+    data class ExpandAirport(val icao: String) : AirportsUiEvent()
 }
