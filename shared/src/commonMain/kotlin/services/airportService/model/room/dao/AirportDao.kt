@@ -16,6 +16,12 @@ interface AirportDao {
     @Query("SELECT * FROM airports WHERE icao = :icao")
     suspend fun getAirportByIcao(icao: String): AirportEntity?
 
+    @Query("SELECT * FROM airports LIMIT :limit")
+    suspend fun getFirstBatchOfAirports(limit: Int): List<AirportEntity>
+
+    @Query("SELECT * FROM airports WHERE icao LIKE '%' || :search || '%' OR name LIKE '%' || :search || '%' LIMIT :limit")
+    suspend fun searchAirportsByIcaoOrName(search: String, limit: Int): List<AirportEntity>
+
     @Query("SELECT * FROM frequencies WHERE airportIcao = :icao")
     suspend fun getFrequenciesByIcao(icao: String): List<FrequencyEntity>
 

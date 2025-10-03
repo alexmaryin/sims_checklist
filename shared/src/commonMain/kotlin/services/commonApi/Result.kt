@@ -11,6 +11,7 @@ enum class ErrorType {
     OTHER_CLIENT_ERROR,
     SERVER_UNAVAILABLE,
     OTHER_SERVER_ERROR,
+    EMPTY_RESULT,
     UNKNOWN
 }
 

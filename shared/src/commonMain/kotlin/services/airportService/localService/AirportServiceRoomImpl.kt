@@ -79,4 +79,15 @@ class AirportServiceRoomImpl(
             Result.Error(ErrorType.OTHER_CLIENT_ERROR, "Empty history list")
         }
     }
+
+    override suspend fun searchAirports(search: String, limit: Int): Result<List<Airport>> {
+        val dao = database.airportDao()
+        val searchResult = if (search.isNotBlank()) dao.searchAirportsByIcaoOrName(search, limit)
+            else dao.getFirstBatchOfAirports(limit)
+        return if (searchResult.isNotEmpty()) {
+            Result.Success(searchResult.map { it.toDomain() })
+        } else {
+            Result.Error(ErrorType.EMPTY_RESULT, "Nothing was found")
+        }
+    }
 }

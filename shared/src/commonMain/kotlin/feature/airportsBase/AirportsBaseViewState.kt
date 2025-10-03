@@ -1,5 +1,7 @@
 package feature.airportsBase
 
+import services.airportService.model.Airport
+
 data class AirportsBaseViewState(
     val lastUpdate: String? = null,
     val airportsCount: Long = 0L,
@@ -7,6 +9,9 @@ data class AirportsBaseViewState(
     val processingFile: String = "",
     val processingLabel: String = "",
     val progress: Int = 0,
+    val searchString: String = "",
+    val searchResult: List<Airport> = emptyList(),
+    val expandedAirport: Airport? = null,
     val snackbar: AirportsSnackBarState? = null
 )
 
@@ -17,6 +22,5 @@ sealed class AirportsSnackBarState(
 ) {
     data class ErrorHint(val error: String) : AirportsSnackBarState(
         message = error, button = "Close", event = AirportsUiEvent.SnackBarClose
-
     )
 }

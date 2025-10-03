@@ -40,10 +40,10 @@ fun RunwayEntity.toDomain(): Runway = Runway(
     closed = closed,
     lowNumber = lowNumber,
     lowElevationFeet = lowElevationFeet,
-    lowHeading = lowHeading.ifZero { lowNumber.filterDigitsToInt() * 10 },
+    lowHeading = lowHeading.ifZero { lowNumber.filterDigitsToInt()?.times(10) ?: 360 },
     highNumber = highNumber,
     highElevationFeet = highElevationFeet,
-    highHeading = highHeading.ifZero { highNumber.filterDigitsToInt() * 10 }
+    highHeading = highHeading.ifZero { highNumber.filterDigitsToInt()?.times(10) ?: (360 - lowHeading) }
 )
 
 fun HistoryAirportEntity.toDomain(): HistoryAirport = HistoryAirport(
