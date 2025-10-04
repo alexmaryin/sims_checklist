@@ -15,9 +15,12 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import services.airportService.AirportService
 import services.airportService.LocalBaseConverter
+import services.airportService.model.Airport
 import services.airportService.updateService.AirportUpdateService
 import services.commonApi.forError
 import services.commonApi.forSuccess
+import services.commonApi.mapIfSuccess
+import services.commonApi.mapListIfSuccess
 import java.nio.file.Paths
 import java.text.SimpleDateFormat
 import java.util.*
@@ -36,7 +39,10 @@ class AirportsBase(
     private val scope = componentContext.coroutineScope() + SupervisorJob()
 
     init {
-        lifecycle.doOnStart { scope.searchAirports("") }
+        lifecycle.doOnStart {
+            scope.onLastUpdate()
+            scope.searchAirports("")
+        }
     }
 
     override fun invoke(event: AirportsUiEvent) {
@@ -116,7 +122,12 @@ class AirportsBase(
 
     private fun CoroutineScope.searchAirports(search: String) = launch {
         state.update { it.copy(searchString = search) }
-        val result = airportService.searchAirports(search)
+        val result = if (search.isBlank()) {
+            airportService.getAirportsHistory().mapListIfSuccess { Airport(icao = it.icao, name = it.name) }
+        } else {
+            airportService.searchAirports(search)
+        }
+
         result.forSuccess { airports ->
             state.update { it.copy(searchResult = airports, snackbar = null) }
         }

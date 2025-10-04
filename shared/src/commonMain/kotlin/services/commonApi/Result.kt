@@ -19,6 +19,16 @@ inline fun <reified T> Result<T>.forSuccess(callback: (value: T) -> Unit) {
     if (this is Result.Success) callback(value)
 }
 
+inline fun <reified T, R> Result<T>.mapIfSuccess(callback: (value: T) -> R): Result<R> {
+    return if (this is Result.Success) Result.Success(callback(value))
+    else this as Result.Error
+}
+
+inline fun <reified T, R> Result<List<T>>.mapListIfSuccess(callback: (value: T) -> R): Result<List<R>> {
+    return if (this is Result.Success) Result.Success(this.value.map { callback(it) })
+    else this as Result.Error
+}
+
 inline fun <reified T> Result<T>.forError(callback: (type: ErrorType, message: String?) -> Unit) {
     if (this is Result.Error) callback(type, message)
 }

@@ -14,6 +14,7 @@ import services.airportService.model.Airport
 import ui.CaptionedDivider
 import ui.LinkText
 import ui.utils.largeWithShadow
+import utils.toDMS
 import kotlin.math.abs
 
 @Composable
@@ -72,27 +73,4 @@ fun ExpandedAirport(airport: Airport, onClick: () -> Unit) {
             }
         }
     }
-}
-
-/**
- * Converts a decimal degree value into a Degrees, Minutes, Seconds (DMS) string.
- *
- * @param isLatitude `true` if the coordinate is latitude, `false` for longitude.
- * This determines the cardinal direction (N/S for latitude, E/W for longitude).
- * @return A formatted DMS string, e.g., "55° 35' 57.12" N".
- */
-private fun Float.toDMS(isLatitude: Boolean): String {
-    val absolute = abs(this)
-    val degrees = absolute.toInt()
-    val minutesNotTruncated = (absolute - degrees) * 60
-    val minutes = minutesNotTruncated.toInt()
-    val seconds = (minutesNotTruncated - minutes) * 60
-
-    val direction = if (isLatitude) {
-        if (this >= 0) "N" else "S"
-    } else {
-        if (this >= 0) "E" else "W"
-    }
-
-    return "%d°%d'%.2f\"%s".format(degrees, minutes, seconds, direction)
 }
