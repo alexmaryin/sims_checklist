@@ -6,11 +6,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Airport(
     val icao: String,
-    val type: AirportType,
+    val type: AirportType = AirportType.MEDIUM,
     val name: String,
-    val latitude: Float,
-    val longitude: Float,
-    val elevation: Int,
+    val latitude: Float = 0f,
+    val longitude: Float = 0f,
+    val elevation: Int = 0,
     val webSite: String? = null,
     val wiki: String? = null,
     val frequencies: List<Frequency> = emptyList(),

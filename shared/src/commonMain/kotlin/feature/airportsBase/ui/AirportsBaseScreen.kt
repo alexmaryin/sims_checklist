@@ -2,12 +2,10 @@ package feature.airportsBase.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -44,10 +42,6 @@ fun AirportsBaseScreen(component: AirportEventExecutor) {
         snackbarHost = mySnackbarHost(snackbarHostState),
         contentWindowInsets = WindowInsets.safeDrawing
     ) { paddingValues ->
-
-        LaunchedEffect(true) {
-            component(AirportsUiEvent.GetLastUpdate)
-        }
 
         state.value.snackbar?.let {
             scope.launch {
