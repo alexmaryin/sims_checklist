@@ -3,12 +3,48 @@
 
 *My first multiplatform App in Kotlin for Desktop & Android*
 
-### Application helps to control, proceed and complete checklists of virtual airplanes as far as calculate fuel quantity for your trip and get METAR/TAF with visualized wind director.
+#### Application helps to control, proceed and complete checklists of virtual airplanes as far as calculate fuel quantity for your trip and get METAR/TAF with visualized wind director.
 
-At present checklists are implemented for Cessna 172 Skyhawk, the most popular general aviation in any simulator, Cirrus SR-22, the luxury one, and ultimate Cessna Citation X.
-QFE Helper! You can easily convert QFE air pressure given you by ATC to QNH for modern aircrafts which do not support QFE. Also feature allows you to convert Height given in meters AGL (above ground level) to feet ASL (above sea level). 
-Top list of recent airports on METAR screen for faster access.
-*New feature* Airports database search engine and details view. Looking for any airport details from the recent list or search by ICAO or name of the airport. Provided runways and frequencies details.
+## Features
+
+### Checklists
+
+- the most popular Cessna 172 Skyhawk 
+- luxury one Cirrus SR-22
+- Cessna Citation X (X-plane 12 default edition)
+
+### Fuel calculator
+
+Easy plan your fuel for the trip regarding the distance, wind, distance to alternate using
+the predefined data for saved aircraft.
+
+### Avia weather helper
+
+Check the wind and other meteorological conditions for the airport of your destination.
+
+Select preferable runway to land for headwind.
+
+Save your own top list of recent airports on METAR screen for faster access.
+
+#### NOTICE
+To serve the main purpose of the provided airport information—visualizing headwind and crosswind components —
+the runway headings are given in **true courses**, not magnetic.
+
+Since the wind information in METAR reports is always referenced to **true north**, 
+we use the true course of each runway to accurately display crosswind and headwind components 
+relative to the aircraft’s track.
+
+### Airports database
+
+Download for offline using the whole airports database provided by ourairports.com
+Explore the airport details, runways properties and necessary frequencies.
+Look for any airport details from the recent list or search by ICAO or name of the airport.
+
+### QFE Helper
+
+You can easily convert QFE air pressure given you by ATC to QNH for modern aircraft which do not support QFE. 
+Also, the feature allows you to convert Height given in meters AGL (above ground level) to feet ASL (above sea level). 
+
 
 *Some develop details:*
 - Compose Multiplatform project in Kotlin 2.20
@@ -21,14 +57,10 @@ Top list of recent airports on METAR screen for faster access.
 - MVI architecture.
 
 
-## NOTICE
-
-To serve the main purpose of the provided airport information—visualizing headwind and crosswind components—the runway headings are given in *true courses*, not magnetic.
-Since the wind information in METAR reports is always referenced to *true north*, we use the true course of each runway to accurately display crosswind and headwind components relative to the aircraft’s track.
 
 Glad to see you soon in virtual skies!
 
-**License**
+## License
 
 Copyright 2023-2025 Alex Maryin
 
