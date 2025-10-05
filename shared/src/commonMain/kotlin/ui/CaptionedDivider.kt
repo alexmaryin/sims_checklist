@@ -12,17 +12,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun CaptionedDivider(text: String, modifier: Modifier = Modifier) {
+fun CaptionedDivider(modifier: Modifier = Modifier, body: @Composable () -> Unit) {
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        HorizontalDivider(Modifier.weight(1f))
-        Text(
-            text = text,
-            modifier = Modifier.padding(horizontal = 8.dp)
-        )
-        HorizontalDivider(Modifier.weight(1f))
+        HorizontalDivider(Modifier.weight(1f).padding(horizontal = 4.dp))
+        body()
+        HorizontalDivider(Modifier.weight(1f).padding(horizontal = 4.dp))
     }
 }

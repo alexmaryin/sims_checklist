@@ -3,8 +3,11 @@ package feature.airportsBase.ui
 import RunwayInfo
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,9 +16,9 @@ import androidx.compose.ui.unit.dp
 import services.airportService.model.Airport
 import ui.CaptionedDivider
 import ui.LinkText
+import ui.utils.RunwayTooltip
 import ui.utils.largeWithShadow
 import utils.toDMS
-import kotlin.math.abs
 
 @Composable
 fun ExpandedAirport(airport: Airport, onClick: () -> Unit) {
@@ -64,11 +67,19 @@ fun ExpandedAirport(airport: Airport, onClick: () -> Unit) {
                 )
             }
             if (airport.runways.isNotEmpty()) {
-                CaptionedDivider("Runways:")
+                CaptionedDivider {
+                    Text("Runways: ")
+                    RunwayTooltip {
+                        Icon(
+                            imageVector = Icons.Outlined.Info,
+                            contentDescription = "Show notice about runway course"
+                        )
+                    }
+                }
                 airport.runways.forEach { RunwayInfo(it, Modifier.fillMaxWidth()) }
             }
             if (airport.frequencies.isNotEmpty()) {
-                CaptionedDivider("Frequencies:")
+                CaptionedDivider { Text("Frequencies: ") }
                 airport.frequencies.forEach { FrequencyInfo(it, Modifier.fillMaxWidth()) }
             }
         }
