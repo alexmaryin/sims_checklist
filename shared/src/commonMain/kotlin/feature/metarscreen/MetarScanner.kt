@@ -12,6 +12,7 @@ import kotlinx.coroutines.plus
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import services.airportService.AirportService
+import services.airportService.model.dropClosedRunways
 import services.commonApi.Result
 import services.commonApi.forError
 import services.commonApi.forSuccess
@@ -125,7 +126,7 @@ class MetarScanner(
         response.forSuccess { airport ->
             state.update {
                 it.copy(
-                    airport = airport,
+                    airport = airport.dropClosedRunways(),
                     isLoading = combineLoading.state,
                     runway = airport.runways.firstOrNull()?.toUi() ?: RunwayUi()
                 )

@@ -16,3 +16,7 @@ data class Airport(
     val frequencies: List<Frequency> = emptyList(),
     val runways: List<Runway> = emptyList()
 )
+
+fun Airport.dropClosedRunways() = copy(
+    runways = runways.filterNot { it.closed }
+)
