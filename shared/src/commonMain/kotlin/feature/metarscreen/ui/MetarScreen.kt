@@ -4,11 +4,10 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -105,7 +104,6 @@ fun MetarScreen(component: MetarScanner) {
             ) { value ->
                 component.onEvent(MetarUiEvent.SubmitRunwayAngle(value))
             }
-
             Column {
                 Row(Modifier.fillMaxWidth().padding(6.dp)) {
                     Column(
@@ -116,7 +114,7 @@ fun MetarScreen(component: MetarScanner) {
                         ScrollableDigitField(
                             state.data.metarAngle ?: state.data.userAngle,
                             1..360,
-                            fontSize = 16.sp
+                            fontSize = 24.sp
                         ) {
                             component.onEvent(MetarUiEvent.SubmitWindAngle(it))
                         }
@@ -129,8 +127,7 @@ fun MetarScreen(component: MetarScanner) {
                         ScrollableDigitField(
                             state.runway.lowHeading,
                             1..180,
-                            speed = 0.5f,
-                            fontSize = 16.sp
+                            fontSize = 24.sp
                         ) {
                             component.onEvent(MetarUiEvent.SubmitRunwayAngle(it))
                         }
@@ -146,8 +143,7 @@ fun MetarScreen(component: MetarScanner) {
                         ScrollableDigitField(
                             state.data.metarSpeedKt ?: state.data.userSpeed,
                             0..30,
-                            speed = 0.5f,
-                            fontSize = 16.sp
+                            fontSize = 24.sp
                         ) {
                             component.onEvent(MetarUiEvent.SubmitWindSpeed(it))
                         }

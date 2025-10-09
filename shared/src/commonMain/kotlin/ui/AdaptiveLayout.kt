@@ -13,10 +13,10 @@ fun AdaptiveLayout(
     padding: PaddingValues,
     children: @Composable (width: Dp, height: Dp) -> Unit
 ) {
+    val layoutModifier = Modifier.fillMaxWidth().padding(8.dp)
     val scrollState = rememberScrollState()
-    val layoutModifier = Modifier.fillMaxWidth().padding(8.dp).verticalScroll(scrollState)
     BoxWithConstraints(
-        modifier = Modifier.fillMaxSize().padding(padding),
+        modifier = Modifier.fillMaxSize().padding(padding).verticalScroll(scrollState),
     ) {
         val width = maxWidth
         val height = maxHeight
