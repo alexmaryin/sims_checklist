@@ -5,12 +5,7 @@ import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.arkivanov.essenty.lifecycle.doOnStart
-import com.arkivanov.essenty.lifecycle.subscribe
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.plus
+import kotlinx.coroutines.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import services.airportService.AirportService
@@ -19,7 +14,6 @@ import services.airportService.model.Airport
 import services.airportService.updateService.AirportUpdateService
 import services.commonApi.forError
 import services.commonApi.forSuccess
-import services.commonApi.mapIfSuccess
 import services.commonApi.mapListIfSuccess
 import java.nio.file.Paths
 import java.text.SimpleDateFormat
@@ -106,7 +100,7 @@ class AirportsBase(
     }
 
     private fun CoroutineScope.onLastUpdate() = launch {
-        csvConverter.getLastUpdate()?.let { result ->
+        airportService.getLastUpdate()?.let { result ->
             val timeString = Calendar.getInstance(Locale.getDefault()).let {
                 it.timeInMillis = result.time
                 SimpleDateFormat("dd MMMM yyyy, HH:mm:ss", Locale.getDefault()).format(it.time)

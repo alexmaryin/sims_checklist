@@ -47,6 +47,7 @@ class Root(
             is MainScreenEvent.SelectFuelCalculator -> navigation.pushNew(Configuration.FuelCalculator(event.aircraftId))
             MainScreenEvent.SelectMetar -> navigation.pushNew(Configuration.MetarScanner)
             MainScreenEvent.SelectQFEHelper -> navigation.pushNew(Configuration.QFEHelper)
+            else -> Unit
         }
     }
 

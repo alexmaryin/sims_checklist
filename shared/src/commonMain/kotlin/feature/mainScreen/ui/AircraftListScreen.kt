@@ -1,5 +1,6 @@
 package feature.mainScreen.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -9,6 +10,8 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -16,7 +19,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import feature.mainScreen.AircraftList
+import feature.mainScreen.MainEventExecutor
 import feature.mainScreen.MainScreenEvent
 import org.jetbrains.compose.resources.painterResource
 import sims_checklist.shared.generated.resources.Res
@@ -24,43 +27,75 @@ import sims_checklist.shared.generated.resources.allDrawableResources
 import ui.utils.MyIcons
 import ui.utils.SimColors
 import ui.utils.largeWithShadow
+import ui.utils.mySnackbarHost
 
 @Composable
 fun loadAircraftJpgPhoto(name: String): Painter = painterResource(Res.allDrawableResources[name]!!)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AircraftListScreen(component: AircraftList) {
+fun AircraftListScreen(component: MainEventExecutor) {
 
     val state = component.state.subscribeAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    state.value.snack?.let {
+        LaunchedEffect(key1 = state.value.snack) {
+            val action = snackbarHostState.showSnackbar(
+                message = it.message,
+                actionLabel = it.label,
+                duration = SnackbarDuration.Long
+            )
+            if (action == SnackbarResult.ActionPerformed) component(it.event)
+        }
+    }
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Select your aircraft") },
                 actions = {
-                    IconButton(onClick = { component.onEvent(MainScreenEvent.SelectMetar) }) {
+                    IconButton(onClick = { component(MainScreenEvent.SelectMetar) }) {
                         Icon(imageVector = MyIcons.Air, contentDescription = "Weather and airport")
                     }
-                    IconButton(onClick = { component.onEvent(MainScreenEvent.SelectAirportsBase) }) {
+                    IconButton(onClick = { component(MainScreenEvent.SelectAirportsBase) }) {
                         Icon(imageVector = MyIcons.Update, contentDescription = "Airports database")
                     }
-                    IconButton(onClick = { component.onEvent(MainScreenEvent.SelectQFEHelper) }) {
+                    IconButton(onClick = { component(MainScreenEvent.SelectQFEHelper) }) {
                         Icon(imageVector = MyIcons.Compress, contentDescription = "QFE helper")
                     }
                 },
                 colors = SimColors.topBarColors()
             )
         },
+        snackbarHost = mySnackbarHost(snackbarHostState),
+        bottomBar = {
+            AnimatedVisibility(visible = state.value.updateMessage != null) {
+                BottomAppBar() {
+                    Text(
+                        text = state.value.updateMessage ?: "",
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.fillMaxWidth().padding(16.dp),
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+
+        },
         contentWindowInsets = WindowInsets.safeDrawing
     ) { padding ->
 
+
         val listState = rememberLazyListState()
-        LazyColumn(modifier = Modifier.fillMaxSize().padding(padding), listState) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize().padding(padding),
+            state = listState,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             items(state.value.aircraftList) { item ->
                 Card(
                     elevation = CardDefaults.elevatedCardElevation(12.dp),
-                    modifier = Modifier.clickable { component.onEvent(MainScreenEvent.SelectAircraft(item.id)) }
+                    modifier = Modifier.clickable { component(MainScreenEvent.SelectAircraft(item.id)) }
                         .padding(1.dp)
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -87,12 +122,20 @@ fun AircraftListScreen(component: AircraftList) {
                                 style = largeWithShadow()
                             )
                             IconButton(
-                                onClick = { component.onEvent(MainScreenEvent.SelectFuelCalculator(item.id)) }
+                                onClick = { component(MainScreenEvent.SelectFuelCalculator(item.id)) }
                             ) {
                                 Icon(imageVector = MyIcons.GasStation, contentDescription = "Open fuel calculator")
                             }
                         }
                     }
+                }
+            }
+            item {
+                Button(
+                    onClick = { component(MainScreenEvent.DropBase) },
+                    colors = SimColors.buttonColors()
+                ) {
+                    Text("Drop database")
                 }
             }
         }

@@ -54,6 +54,9 @@ interface AirportDao {
     @Query("DELETE FROM runways")
     suspend fun deleteRunways()
 
+    @Query("DELETE FROM airports")
+    suspend fun deleteAirports()
+
     @Query("SELECT COUNT(*) FROM airports")
     suspend fun getAirportCount(): Long
 }

@@ -4,6 +4,7 @@ import services.airportService.AirportService
 import services.airportService.model.Airport
 import services.airportService.model.Frequency
 import services.airportService.model.HistoryAirport
+import services.airportService.model.LastUpdate
 import services.airportService.model.Runway
 import services.airportService.model.room.AirportDatabase
 import services.airportService.model.room.HistoryAirportEntity
@@ -16,6 +17,18 @@ class AirportServiceRoomImpl(
 ) : AirportService {
 
     override suspend fun isEmpty() = database.airportDao().isEmpty()
+
+    override suspend fun dropAll() {
+        val dao = database.airportDao()
+        dao.deleteFrequencies()
+        dao.deleteRunways()
+        dao.deleteAirports()
+    }
+
+    override suspend fun getLastUpdate(): LastUpdate? {
+        val metadata = database.metadataDao().getMetadata()
+        return metadata?.toDomain()
+    }
 
     private suspend fun addAirportToHistory(airport: Airport) {
         val historyDao = database.historyDao()

@@ -5,15 +5,9 @@ import kotlinx.coroutines.flow.flow
 import services.airportService.LocalBaseConverter
 import services.airportService.LocalBaseConverter.UpdateResult
 import services.airportService.getFilePath
-import services.airportService.model.LastUpdate
-import services.airportService.model.room.AirportDatabase
-import services.airportService.model.room.AirportEntity
-import services.airportService.model.room.FrequencyEntity
-import services.airportService.model.room.RunwayEntity
-import services.airportService.model.room.MetadataEntity
-import services.airportService.model.room.toDomain
+import services.airportService.model.room.*
 import java.io.File
-import java.util.UUID
+import java.util.*
 
 class RoomConverter(private val database: AirportDatabase) : LocalBaseConverter {
 
@@ -105,10 +99,5 @@ class RoomConverter(private val database: AirportDatabase) : LocalBaseConverter 
         metadataDao.insertOrUpdateMetadata(metadata)
 
         emit(UpdateResult.Success(finalCount))
-    }
-
-    override suspend fun getLastUpdate(): LastUpdate? {
-        val metadata = database.metadataDao().getMetadata()
-        return metadata?.toDomain()
     }
 }
