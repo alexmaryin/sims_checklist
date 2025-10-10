@@ -51,10 +51,6 @@ fun MetarScreen(component: MetarScanner) {
         }
     }
 
-    LaunchedEffect(state.isLoading) {
-        component.onEvent(MetarUiEvent.LoadTopLatest)
-    }
-
     if (state.showInfo) {
         Dialog(
             onDismissRequest = { component.onEvent(MetarUiEvent.DismissInfoDialog) },
