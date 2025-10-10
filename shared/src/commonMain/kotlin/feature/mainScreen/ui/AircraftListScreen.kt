@@ -1,4 +1,4 @@
-package ui
+package feature.mainScreen.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -15,7 +15,9 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import decompose.AircraftList
+import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import feature.mainScreen.AircraftList
+import feature.mainScreen.MainScreenEvent
 import org.jetbrains.compose.resources.painterResource
 import sims_checklist.shared.generated.resources.Res
 import sims_checklist.shared.generated.resources.allDrawableResources
@@ -30,18 +32,20 @@ fun loadAircraftJpgPhoto(name: String): Painter = painterResource(Res.allDrawabl
 @Composable
 fun AircraftListScreen(component: AircraftList) {
 
+    val state = component.state.subscribeAsState()
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Select your aircraft") },
                 actions = {
-                    IconButton(onClick = { component.onMetarSelect() }) {
+                    IconButton(onClick = { component.onEvent(MainScreenEvent.SelectMetar) }) {
                         Icon(imageVector = MyIcons.Air, contentDescription = "Weather and airport")
                     }
-                    IconButton(onClick = { component.onAirportsBaseSelect() }) {
+                    IconButton(onClick = { component.onEvent(MainScreenEvent.SelectAirportsBase) }) {
                         Icon(imageVector = MyIcons.Update, contentDescription = "Airports database")
                     }
-                    IconButton(onClick = { component.onQFEHelperSelect() }) {
+                    IconButton(onClick = { component.onEvent(MainScreenEvent.SelectQFEHelper) }) {
                         Icon(imageVector = MyIcons.Compress, contentDescription = "QFE helper")
                     }
                 },
@@ -50,12 +54,13 @@ fun AircraftListScreen(component: AircraftList) {
         },
         contentWindowInsets = WindowInsets.safeDrawing
     ) { padding ->
-        val state = rememberLazyListState()
-        LazyColumn(modifier = Modifier.fillMaxSize().padding(padding), state) {
-            items(component.aircraftList) { item ->
+
+        val listState = rememberLazyListState()
+        LazyColumn(modifier = Modifier.fillMaxSize().padding(padding), listState) {
+            items(state.value.aircraftList) { item ->
                 Card(
                     elevation = CardDefaults.elevatedCardElevation(12.dp),
-                    modifier = Modifier.clickable { component.onSelected(item.id) }
+                    modifier = Modifier.clickable { component.onEvent(MainScreenEvent.SelectAircraft(item.id)) }
                         .padding(1.dp)
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -82,7 +87,7 @@ fun AircraftListScreen(component: AircraftList) {
                                 style = largeWithShadow()
                             )
                             IconButton(
-                                onClick = { component.onCalculatorSelect(item.id) }
+                                onClick = { component.onEvent(MainScreenEvent.SelectFuelCalculator(item.id)) }
                             ) {
                                 Icon(imageVector = MyIcons.GasStation, contentDescription = "Open fuel calculator")
                             }

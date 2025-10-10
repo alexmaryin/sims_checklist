@@ -18,20 +18,17 @@ import feature.checklists.Checklists
 import feature.checklists.ui.ChecklistsScreen
 import feature.fuelcalculator.FuelCalculator
 import feature.fuelcalculator.ui.FuelCalculatorScreen
+import feature.mainScreen.AircraftList
+import feature.mainScreen.MainScreenEvent
+import feature.mainScreen.ui.AircraftListScreen
 import feature.metarscreen.MetarScanner
 import feature.metarscreen.ui.MetarScreen
 import feature.qfeHelper.QFEHelper
 import feature.qfeHelper.ui.QFEHelperScreen
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
-import repository.AircraftRepository
-import ui.AircraftListScreen
 
 class Root(
     componentContext: ComponentContext,
-) : RootComponent, KoinComponent, ComponentContext by componentContext {
-
-    private val aircraftRepository: AircraftRepository by inject()
+) : RootComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<Configuration>()
     override val stack: Value<ChildStack<*, RootComponent.Child>> = childStack(
@@ -42,18 +39,19 @@ class Root(
         childFactory = ::createChild
     )
 
-    private fun aircraftList() = AircraftList(
-        aircraftList = aircraftRepository.getAll(),
-        onSelected = { id -> navigation.pushNew(Configuration.Checklists(id)) },
-        onCalculatorSelect = { id -> navigation.pushNew(Configuration.FuelCalculator(id)) },
-        onMetarSelect = { navigation.pushNew(Configuration.MetarScanner) },
-        onAirportsBaseSelect = { navigation.pushNew(Configuration.AirportsBase) },
-        onQFEHelperSelect = { navigation.pushNew(Configuration.QFEHelper) }
-    )
+    private fun aircraftList(context: ComponentContext) = AircraftList(
+        componentContext = context) { event ->
+        when (event) {
+            is MainScreenEvent.SelectAircraft -> navigation.pushNew(Configuration.Checklists(event.aircraftId))
+            MainScreenEvent.SelectAirportsBase -> navigation.pushNew(Configuration.AirportsBase)
+            is MainScreenEvent.SelectFuelCalculator -> navigation.pushNew(Configuration.FuelCalculator(event.aircraftId))
+            MainScreenEvent.SelectMetar -> navigation.pushNew(Configuration.MetarScanner)
+            MainScreenEvent.SelectQFEHelper -> navigation.pushNew(Configuration.QFEHelper)
+        }
+    }
 
     private fun checklists(aircraftId: Int) = Checklists(
         aircraftId = aircraftId,
-        repository = aircraftRepository,
         onBack = { navigation.pop() },
         onSelected = { checklistId ->
             navigation.pushNew(Configuration.Checklist(aircraftId, checklistId))
@@ -63,12 +61,11 @@ class Root(
     private fun checklist(aircraftId: Int, checklistId: Int) = ChecklistDetails(
         aircraftId = aircraftId,
         checklistId = checklistId,
-        repository = aircraftRepository,
         onFinished = { navigation.pop() }
     )
 
     private fun fuelCalculator(aircraftId: Int) = FuelCalculator(
-        aircraft = aircraftRepository.getById(aircraftId),
+        aircraftId = aircraftId,
         onBack = { navigation.pop() }
     )
 
@@ -90,7 +87,7 @@ class Root(
     private fun createChild(configuration: Configuration, context: ComponentContext): RootComponent.Child =
         when (configuration) {
 
-            Configuration.AircraftList -> AircraftListChild(aircraftList())
+            Configuration.AircraftList -> AircraftListChild(aircraftList(context))
 
             is Configuration.Checklists -> ChecklistsChild(checklists(configuration.aircraftId))
 

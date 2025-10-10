@@ -7,6 +7,7 @@ import services.airportService.model.HistoryAirport
 import services.airportService.model.Runway
 
 interface AirportService {
+    suspend fun isEmpty(): Boolean
     suspend fun getAirportByICAO(icao: String): Result<Airport>
     suspend fun getRunwaysByICAO(icao: String): Result<List<Runway>>
     suspend fun getFrequenciesByICAO(icao: String): Result<List<Frequency>>

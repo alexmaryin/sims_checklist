@@ -15,6 +15,8 @@ class AirportServiceRoomImpl(
     private val database: AirportDatabase
 ) : AirportService {
 
+    override suspend fun isEmpty() = database.airportDao().isEmpty()
+
     private suspend fun addAirportToHistory(airport: Airport) {
         val historyDao = database.historyDao()
         

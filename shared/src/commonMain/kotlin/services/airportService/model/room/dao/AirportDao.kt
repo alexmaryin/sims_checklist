@@ -13,6 +13,9 @@ import services.airportService.model.room.RunwayEntity
 @Dao
 interface AirportDao {
 
+    @Query("SELECT NOT EXISTS(SELECT 1 FROM airports)")
+    suspend fun isEmpty(): Boolean
+
     @Query("SELECT * FROM airports WHERE icao = :icao")
     suspend fun getAirportByIcao(icao: String): AirportEntity?
 

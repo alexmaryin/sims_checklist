@@ -6,6 +6,7 @@ import feature.airportsBase.AirportsBase
 import feature.checklistDetails.ChecklistDetails
 import feature.checklists.Checklists
 import feature.fuelcalculator.FuelCalculator
+import feature.mainScreen.AircraftList
 import feature.metarscreen.MetarScanner
 import feature.qfeHelper.QFEHelper
 

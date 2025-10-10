@@ -2,12 +2,17 @@ package feature.fuelcalculator
 
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
-import feature.checklists.model.Aircraft
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import repository.AircraftRepository
 
 class FuelCalculator(
-    aircraft: Aircraft,
+    aircraftId: Int,
     private val onBack: () -> Unit
-) {
+) : KoinComponent {
+
+    private val repository: AircraftRepository by inject()
+    private val aircraft = repository.getById(aircraftId)
 
     val state = MutableValue(FuelCalcViewState(aircraft.name, aircraft.performance))
 

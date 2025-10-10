@@ -1,4 +1,4 @@
-package database
+package feature.mainScreen.database
 
 import feature.checklists.model.Aircraft
 

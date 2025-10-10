@@ -4,6 +4,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 
 interface AirportUpdateService {
+
     suspend fun updateFlow(scope: CoroutineScope): Flow<UpdateResult>
 
     suspend fun clearAfterUpdate()
