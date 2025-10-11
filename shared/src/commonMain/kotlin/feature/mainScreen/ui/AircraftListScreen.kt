@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -19,8 +20,10 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import common.BuildKonfig
 import feature.mainScreen.MainEventExecutor
 import feature.mainScreen.MainScreenEvent
+import org.jetbrains.annotations.Debug
 import org.jetbrains.compose.resources.painterResource
 import sims_checklist.shared.generated.resources.Res
 import sims_checklist.shared.generated.resources.allDrawableResources
@@ -44,7 +47,7 @@ fun AircraftListScreen(component: MainEventExecutor) {
             val action = snackbarHostState.showSnackbar(
                 message = it.message,
                 actionLabel = it.label,
-                duration = SnackbarDuration.Long
+                duration = SnackbarDuration.Short
             )
             if (action == SnackbarResult.ActionPerformed) component(it.event)
         }
@@ -75,9 +78,10 @@ fun AircraftListScreen(component: MainEventExecutor) {
                     Text(
                         text = state.value.updateMessage ?: "",
                         style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth().padding(16.dp),
+                        modifier = Modifier.padding(16.dp).weight(1f),
                         textAlign = TextAlign.Center
                     )
+                    CircularProgressIndicator(progress = { state.value.progress / 100f })
                 }
             }
 
@@ -130,12 +134,13 @@ fun AircraftListScreen(component: MainEventExecutor) {
                     }
                 }
             }
-            item {
+            if (BuildKonfig.DEBUG) item {
                 Button(
-                    onClick = { component(MainScreenEvent.DropBase) },
+                    onClick = { component(MainScreenEvent.DropBaseConfirm) },
+                    modifier = Modifier.padding(6.dp),
                     colors = SimColors.buttonColors()
                 ) {
-                    Text("Drop database")
+                    Text("Drop airports database")
                 }
             }
         }

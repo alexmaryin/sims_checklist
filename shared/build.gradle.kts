@@ -1,3 +1,4 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.BOOLEAN
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.jetbrains.compose.internal.utils.getLocalProperty
 
@@ -122,6 +123,7 @@ buildkonfig {
     packageName = "common"
     defaultConfigs {
         buildConfigField(STRING, "WXAPI_KEY", project.getLocalProperty("WXAPI_KEY"))
+        buildConfigField(BOOLEAN, "DEBUG", "false")
     }
 }
 

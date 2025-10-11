@@ -6,6 +6,7 @@ import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.arkivanov.essenty.lifecycle.doOnCreate
 import com.arkivanov.essenty.lifecycle.doOnStart
+import com.arkivanov.essenty.lifecycle.doOnStop
 import feature.mainScreen.database.AircraftBase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -51,12 +52,14 @@ class AircraftList(
             }
         }
 
+        lifecycle.doOnStop { state.update { it.copy(snack = null, updateMessage = null, progress = 0f) } }
     }
 
     override fun invoke(event: MainScreenEvent) {
         when (event) {
             MainScreenEvent.ClearSnack -> state.update { it.copy(snack = null) }
             MainScreenEvent.StartUpdate -> scope.onStartUpdate()
+            MainScreenEvent.DropBaseConfirm -> scope.onConfirmDropBase()
             MainScreenEvent.DropBase -> scope.onDropBase()
             else -> onUiCommand(event)
         }
@@ -66,11 +69,17 @@ class AircraftList(
         updateService.updateFlow(this).collect {
             when (it) {
                 is AirportUpdateService.UpdateResult.Progress -> {
-                    state.update { old -> old.copy(updateMessage = "Downloading ${it.file}") }
+                    state.update { old -> old.copy(
+                        updateMessage = "Downloading ${it.file}",
+                        progress = it.count.toFloat()
+                    ) }
                 }
 
                 is AirportUpdateService.UpdateResult.Error -> {
-                    state.update { old -> old.copy(updateMessage = it.message) }
+                    state.update { old -> old.copy(
+                        updateMessage = null,
+                        snack = MainScreenSnack.Close(it.message)
+                    ) }
                 }
 
                 is AirportUpdateService.UpdateResult.Success -> Unit
@@ -86,6 +95,7 @@ class AircraftList(
                     state.update { old ->
                         old.copy(
                             updateMessage = null,
+                            progress = 0f,
                             snack = MainScreenSnack.Close("Updated successfully. ${it.count} airports in database.")
                         )
                     }
@@ -95,8 +105,11 @@ class AircraftList(
         updateService.clearAfterUpdate()
     }
 
+    private fun CoroutineScope.onConfirmDropBase() = launch {
+        state.update { it.copy(snack = MainScreenSnack.DropBase("Are you sure?")) }
+    }
     private fun CoroutineScope.onDropBase() = launch {
         airportService.dropAll()
-        state.update { it.copy(snack = MainScreenSnack.StartUpdate("Database dropped.")) }
+        state.update { it.copy(snack = MainScreenSnack.StartUpdate("Database dropped. Download again?")) }
     }
 }

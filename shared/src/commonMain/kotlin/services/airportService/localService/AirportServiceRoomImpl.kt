@@ -23,6 +23,7 @@ class AirportServiceRoomImpl(
         dao.deleteFrequencies()
         dao.deleteRunways()
         dao.deleteAirports()
+        database.metadataDao().deleteAll()
     }
 
     override suspend fun getLastUpdate(): LastUpdate? {
