@@ -138,7 +138,7 @@ fun MetarScreen(component: MetarScanner) {
                         Text("wind speed, Kt", fontWeight = FontWeight.Bold)
                         ScrollableDigitField(
                             state.data.metarSpeedKt ?: state.data.userSpeed,
-                            0..30,
+                            0..50,
                             fontSize = 24.sp
                         ) {
                             component.onEvent(MetarUiEvent.SubmitWindSpeed(it))
