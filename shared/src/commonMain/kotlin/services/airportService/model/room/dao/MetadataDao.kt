@@ -8,6 +8,8 @@ import services.airportService.model.room.MetadataEntity
 
 @Dao
 interface MetadataDao {
+    @Query("DELETE FROM metadata")
+    suspend fun deleteAll()
     
     @Query("SELECT * FROM metadata LIMIT 1")
     suspend fun getMetadata(): MetadataEntity?

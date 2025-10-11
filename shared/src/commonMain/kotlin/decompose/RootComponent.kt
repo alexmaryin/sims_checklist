@@ -6,6 +6,7 @@ import feature.airportsBase.AirportsBase
 import feature.checklistDetails.ChecklistDetails
 import feature.checklists.Checklists
 import feature.fuelcalculator.FuelCalculator
+import feature.mainScreen.MainEventExecutor
 import feature.metarscreen.MetarScanner
 import feature.qfeHelper.QFEHelper
 
@@ -13,7 +14,7 @@ interface RootComponent {
     val stack: Value<ChildStack<*, Child>>
 
     sealed class Child {
-        data class AircraftListChild(val component: AircraftList): Child()
+        data class AircraftListChild(val component: MainEventExecutor): Child()
         data class ChecklistsChild(val component: Checklists): Child()
         data class ChecklistDetailsChild(val component: ChecklistDetails): Child()
         data class FuelCalculatorChild(val component: FuelCalculator): Child()

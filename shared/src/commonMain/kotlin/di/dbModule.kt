@@ -1,7 +1,7 @@
 package di
 
-import database.AircraftBase
-import database.AircraftBaseImpl
+import feature.mainScreen.database.AircraftBase
+import feature.mainScreen.database.AircraftBaseImpl
 import org.koin.dsl.module
 import repository.AircraftRepository
 import repository.AircraftRepositoryImpl

@@ -2,14 +2,18 @@ package feature.checklistDetails
 
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import repository.AircraftRepository
 
 class ChecklistDetails(
     private val aircraftId: Int,
     private val checklistId: Int,
-    private val repository: AircraftRepository,
     private val onFinished: () -> Unit,
-) {
+) : KoinComponent {
+
+    private val repository: AircraftRepository by inject()
+
     val state = with(repository.getChecklist(aircraftId, checklistId)) {
         MutableValue(ChecklistViewState(
             checklistId = id,

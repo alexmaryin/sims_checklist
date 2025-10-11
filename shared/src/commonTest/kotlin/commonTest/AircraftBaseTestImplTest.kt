@@ -1,6 +1,6 @@
 package commonTest
 
-import database.AircraftBase
+import feature.mainScreen.database.AircraftBase
 import feature.checklists.model.Aircraft
 import kotlinx.serialization.json.Json
 import repository.AircraftRepository

@@ -1,6 +1,6 @@
 package repository
 
-import database.AircraftBase
+import feature.mainScreen.database.AircraftBase
 import feature.checklistDetails.model.CHECKLIST_LINE
 import feature.checklistDetails.model.Checklist
 import feature.checklists.model.Aircraft
