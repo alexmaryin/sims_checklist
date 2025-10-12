@@ -1,6 +1,8 @@
 package feature.qfeHelper.ui
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
@@ -50,7 +52,7 @@ fun QFEHelperScreen(component: QFEHelper) {
         contentWindowInsets = WindowInsets.safeDrawing
     ) { paddingValues ->
         Column(
-            modifier = Modifier.fillMaxWidth().padding(paddingValues),
+            modifier = Modifier.fillMaxWidth().padding(paddingValues).verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
@@ -63,6 +65,10 @@ fun QFEHelperScreen(component: QFEHelper) {
                 meters = state.value.elevationMeters,
                 feet = state.value.elevationFeet
             ) { new -> component.onEvent(QFEEvent.SubmitElevationMeters(new)) }
+
+            TemperatureBlock(celsius = state.value.temperature){
+                component.onEvent(QFEEvent.SubmitTemperature(it))
+            }
 
             QFEBlock(
                 mmHg = state.value.qfeMmHg,

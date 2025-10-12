@@ -24,5 +24,5 @@ sealed interface Configuration {
     data object AirportsBase : Configuration
 
     @Serializable
-    data class QFEHelper(val icao: String? = null, val qfe: Int? = null) : Configuration
+    data class QFEHelper(val icao: String? = null, val qfe: Int? = null, val celsius: Int? = null) : Configuration
 }

@@ -23,7 +23,7 @@ import services.metarService.MetarService
 class MetarScanner(
     val componentContext: ComponentContext,
     val icao: String? = null,
-    val onOpenQfeHelper: (icao: String, qfe: Int?) -> Unit,
+    val onOpenQfeHelper: (icao: String, qfe: Int?, celsius: Int?) -> Unit,
     val onBack: () -> Unit
 ) : KoinComponent, ComponentContext by componentContext {
 
@@ -180,7 +180,11 @@ class MetarScanner(
 
     private fun openQfeHelper() {
         state.value.airport?.let {
-            onOpenQfeHelper(it.icao, state.value.metar?.pressureQFE?.mmHg)
+            onOpenQfeHelper(
+                it.icao,
+                state.value.metar?.pressureQFE?.mmHg,
+                state.value.metar?.temperature?.air
+            )
         }
     }
 }

@@ -19,6 +19,7 @@ class QFEHelper(
     private val componentContext: ComponentContext,
     private val icao: String? = null,
     private val qfe: Int? = null,
+    private val temperature: Int? = null,
     val onBack: () -> Unit
 ) : KoinComponent, ComponentContext by componentContext {
 
@@ -26,6 +27,7 @@ class QFEHelper(
         lifecycle.doOnStart {
             icao?.let { submitICAO(it) }
             qfe?.let { submitQFE(it) }
+            temperature?.let { submitTemperature(it) }
         }
     }
 
@@ -40,6 +42,7 @@ class QFEHelper(
         is QFEEvent.SubmitHeightPlusMeters -> submitHeight(event.meters)
         is QFEEvent.SubmitICAO -> submitICAO(event.icao)
         is QFEEvent.SubmitQFEmmHg -> submitQFE(event.mmHg)
+        is QFEEvent.SubmitTemperature -> submitTemperature(event.celsius)
     }
 
     private fun submitElevation(meters: Int) {
@@ -59,6 +62,10 @@ class QFEHelper(
 
     private fun submitQFE(mmHg: Int) {
         state.update { it.copy(qfeMmHg = mmHg) }
+    }
+
+    private fun submitTemperature(celsius: Int) {
+        state.update { it.copy(temperature = celsius) }
     }
 
     private fun submitICAO(icao: String) {

@@ -73,7 +73,8 @@ class Root(
     private fun metarScanner(context: ComponentContext, icao: String? = null) = MetarScanner(
         componentContext = context,
         icao = icao,
-        onOpenQfeHelper = { icao, qfe -> navigation.pushNew(Configuration.QFEHelper(icao, qfe)) },
+        onOpenQfeHelper = { icao, qfe, celsius ->
+            navigation.pushNew(Configuration.QFEHelper(icao, qfe, celsius)) },
         onBack = { navigation.pop() }
     )
 
@@ -84,10 +85,16 @@ class Root(
         onBack = { navigation.pop() }
     )
 
-    private fun qfeHelper(context: ComponentContext, icao: String? = null, qfe: Int? = null) = QFEHelper(
+    private fun qfeHelper(
+        context: ComponentContext,
+        icao: String? = null,
+        qfe: Int? = null,
+        celsius: Int? = null
+    ) = QFEHelper(
         componentContext = context,
         icao = icao,
         qfe = qfe,
+        temperature = celsius,
         onBack = { navigation.pop() }
     )
 
@@ -98,7 +105,10 @@ class Root(
 
             is Configuration.Checklists -> ChecklistsChild(checklists(configuration.aircraftId))
 
-            is Configuration.Checklist -> ChecklistDetailsChild(checklist(configuration.aircraftId, configuration.checklistId))
+            is Configuration.Checklist -> ChecklistDetailsChild(checklist(
+                configuration.aircraftId,
+                configuration.checklistId
+            ))
 
             is Configuration.FuelCalculator -> FuelCalculatorChild(fuelCalculator(configuration.aircraftId))
 
@@ -106,7 +116,12 @@ class Root(
 
             is Configuration.AirportsBase -> AirportsBaseChild(airportsBase(context))
 
-            is Configuration.QFEHelper -> QFEHelperChild(qfeHelper(context, configuration.icao, configuration.qfe))
+            is Configuration.QFEHelper -> QFEHelperChild(qfeHelper(
+                context,
+                configuration.icao,
+                configuration.qfe,
+                configuration.celsius
+            ))
         }
 }
 
