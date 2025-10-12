@@ -22,6 +22,7 @@ import java.util.*
 class AirportsBase(
     private val componentContext: ComponentContext,
     private val onSelectAirport: (String) -> Unit,
+    private val onSelectQfeHelper: (String) -> Unit,
     private val onBack: () -> Unit
 ) : KoinComponent, AirportEventExecutor, ComponentContext by componentContext {
 
@@ -49,6 +50,7 @@ class AirportsBase(
             is AirportsUiEvent.SendSearch -> scope.searchAirports(event.search)
             is AirportsUiEvent.ExpandAirport -> scope.expandAirport(event.icao)
             is AirportsUiEvent.OpenAirportMetar -> onSelectAirport(event.icao)
+            is AirportsUiEvent.OpenQfeHelper -> onSelectQfeHelper(event.icao)
         }
     }
 

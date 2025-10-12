@@ -31,6 +31,7 @@ import feature.metarscreen.ui.windSegment.WindSegment
 import ui.AdaptiveLayout
 import ui.Dialog
 import ui.ScrollableDigitField
+import ui.utils.MyIcons
 import ui.utils.SimColors
 import ui.utils.mySnackbarHost
 
@@ -80,6 +81,11 @@ fun MetarScreen(component: MetarScanner) {
                     }
                 },
                 actions = {
+                    state.metar?.let {
+                        IconButton(onClick = { component.onEvent(MetarUiEvent.OpenQfeHelper) }) {
+                            Icon(imageVector = MyIcons.Compress, contentDescription = "open QFE helper for airport")
+                        }
+                    }
                     IconButton(onClick = { component.onEvent(MetarUiEvent.ShowInfoDialog) }) {
                         Icon(imageVector = Icons.Default.Info, contentDescription = "Information")
                     }

@@ -17,7 +17,8 @@ fun AirportHeader(
     modifier: Modifier = Modifier,
     icao: String,
     name: String,
-    onMetarClick: () -> Unit
+    onMetarClick: () -> Unit,
+    onQfeClick: () -> Unit
 ) {
     Row(
         modifier = modifier,
@@ -28,7 +29,7 @@ fun AirportHeader(
         IconButton(onClick = onMetarClick) {
             Icon(imageVector = MyIcons.Air, contentDescription = "Open Metar for airport")
         }
-        IconButton(onClick = {}) {
+        IconButton(onClick = onQfeClick) {
             Icon(imageVector = MyIcons.Compress, contentDescription = "Open QFE helper for airport")
         }
     }

@@ -86,9 +86,7 @@ fun AirportsBaseScreen(component: AirportEventExecutor) {
                     searchString = state.value.searchString,
                     searchResult = state.value.searchResult,
                     expandedAirport = state.value.expandedAirport,
-                    onChange = { component(AirportsUiEvent.SendSearch(it)) },
-                    onAirportClick = { component(AirportsUiEvent.ExpandAirport(it)) },
-                    onOpenMetar = { component(AirportsUiEvent.OpenAirportMetar(it)) }
+                    eventsExecutor = component
                 )
             }
         }

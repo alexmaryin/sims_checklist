@@ -4,6 +4,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
+import com.arkivanov.essenty.lifecycle.doOnStart
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
@@ -16,8 +17,17 @@ import kotlin.math.roundToInt
 
 class QFEHelper(
     private val componentContext: ComponentContext,
+    private val icao: String? = null,
+    private val qfe: Int? = null,
     val onBack: () -> Unit
 ) : KoinComponent, ComponentContext by componentContext {
+
+    init {
+        lifecycle.doOnStart {
+            icao?.let { submitICAO(it) }
+            qfe?.let { submitQFE(it) }
+        }
+    }
 
     private val airportService: AirportService by inject()
 

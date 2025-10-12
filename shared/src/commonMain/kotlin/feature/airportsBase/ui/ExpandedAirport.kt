@@ -13,6 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import feature.airportsBase.AirportEventExecutor
+import feature.airportsBase.AirportsUiEvent
 import services.airportService.model.Airport
 import ui.CaptionedDivider
 import ui.LinkText
@@ -20,7 +22,10 @@ import ui.utils.RunwayTooltip
 import utils.toDMS
 
 @Composable
-fun ExpandedAirport(airport: Airport, onClick: () -> Unit, onMetarClick: () -> Unit) {
+fun ExpandedAirport(
+    airport: Airport,
+    eventsExecutor: AirportEventExecutor
+) {
     Card(
         Modifier.fillMaxWidth().padding(horizontal = 4.dp, vertical = 2.dp)
     ) {
@@ -28,10 +33,12 @@ fun ExpandedAirport(airport: Airport, onClick: () -> Unit, onMetarClick: () -> U
             modifier = Modifier.fillMaxWidth(),
         ) {
             AirportHeader(
-                modifier = Modifier.fillMaxWidth().padding(8.dp).clickable(onClick = onClick),
+                modifier = Modifier.fillMaxWidth().padding(8.dp)
+                    .clickable(onClick = { eventsExecutor(AirportsUiEvent.ExpandAirport(airport.icao)) }),
                 icao = airport.icao,
                 name = airport.name,
-                onMetarClick = onMetarClick
+                onMetarClick = { eventsExecutor(AirportsUiEvent.OpenAirportMetar(airport.icao)) },
+                onQfeClick = { eventsExecutor(AirportsUiEvent.OpenQfeHelper(airport.icao)) }
             )
             HorizontalDivider()
             Row(

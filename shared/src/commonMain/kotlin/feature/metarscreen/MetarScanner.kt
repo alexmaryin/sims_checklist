@@ -23,6 +23,7 @@ import services.metarService.MetarService
 class MetarScanner(
     val componentContext: ComponentContext,
     val icao: String? = null,
+    val onOpenQfeHelper: (icao: String, qfe: Int?) -> Unit,
     val onBack: () -> Unit
 ) : KoinComponent, ComponentContext by componentContext {
 
@@ -58,6 +59,7 @@ class MetarScanner(
         is MetarUiEvent.SubmitRunwayAngle -> submitRunwayAngle(event.new)
         is MetarUiEvent.SubmitWindSpeed -> submitWindSpeed(event.new)
         is MetarUiEvent.LoadTopLatest -> fetchHistoryAirports()
+        is MetarUiEvent.OpenQfeHelper -> openQfeHelper()
     }
 
     private fun MetarScreenViewState.updateRunwayWind(new: RunwayUi = state.value.runway): MetarScreenViewState = copy(
@@ -173,6 +175,12 @@ class MetarScanner(
     private fun showInfoDialog(show: Boolean = true) {
         state.update {
             it.copy(showInfo = show)
+        }
+    }
+
+    private fun openQfeHelper() {
+        state.value.airport?.let {
+            onOpenQfeHelper(it.icao, state.value.metar?.pressureQFE?.mmHg)
         }
     }
 }

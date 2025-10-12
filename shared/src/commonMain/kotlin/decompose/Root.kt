@@ -73,17 +73,21 @@ class Root(
     private fun metarScanner(context: ComponentContext, icao: String? = null) = MetarScanner(
         componentContext = context,
         icao = icao,
+        onOpenQfeHelper = { icao, qfe -> navigation.pushNew(Configuration.QFEHelper(icao, qfe)) },
         onBack = { navigation.pop() }
     )
 
     private fun airportsBase(context: ComponentContext) = AirportsBase(
         componentContext = context,
         onSelectAirport = { icao -> navigation.pushNew(Configuration.MetarScanner(icao)) },
+        onSelectQfeHelper = { icao -> navigation.pushNew(Configuration.QFEHelper(icao = icao)) },
         onBack = { navigation.pop() }
     )
 
-    private fun qfeHelper(context: ComponentContext) = QFEHelper(
+    private fun qfeHelper(context: ComponentContext, icao: String? = null, qfe: Int? = null) = QFEHelper(
         componentContext = context,
+        icao = icao,
+        qfe = qfe,
         onBack = { navigation.pop() }
     )
 
@@ -102,7 +106,7 @@ class Root(
 
             is Configuration.AirportsBase -> AirportsBaseChild(airportsBase(context))
 
-            is Configuration.QFEHelper -> QFEHelperChild(qfeHelper(context))
+            is Configuration.QFEHelper -> QFEHelperChild(qfeHelper(context, configuration.icao, configuration.qfe))
         }
 }
 
