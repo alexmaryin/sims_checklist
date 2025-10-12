@@ -82,9 +82,9 @@ internal class RunwayUiKtTest {
         val result = RunwayUi("18", "36", 180, 360)
             .withCalculatedWind(5, 150)
         val reference = RunwayUi("18", "36", 180, 360,
-            RunwayWind(
-                lowRunway = Wind.LeftCrossHeadWind(2, 4),
-                highRunway = Wind.RightCrossTailWind(2, 4)
+            RunwayWindUi(
+                lowRunway = WindUi.LeftCrossHeadWindUi(2, 4),
+                highRunway = WindUi.RightCrossTailWindUi(2, 4)
             )
         )
         assertEquals(expected = reference, actual = result)
@@ -95,9 +95,9 @@ internal class RunwayUiKtTest {
         val result = RunwayUi("22", "04", 35, 215)
             .withCalculatedWind(12, 30)
         val reference = RunwayUi("22", "04", 35, 215,
-            RunwayWind(
-                lowRunway = Wind.LeftCrossHeadWind(1, 12),
-                highRunway = Wind.RightCrossTailWind(1, 12)
+            RunwayWindUi(
+                lowRunway = WindUi.LeftCrossHeadWindUi(1, 12),
+                highRunway = WindUi.RightCrossTailWindUi(1, 12)
             )
         )
         assertEquals(expected = reference, actual = result)
@@ -108,9 +108,9 @@ internal class RunwayUiKtTest {
         val result = RunwayUi("10", "28", 100, 280)
             .withCalculatedWind(3, 150)
         val reference = RunwayUi("10", "28", 100, 280,
-            RunwayWind(
-                lowRunway = Wind.RightCrossHeadWind(2, 2),
-                highRunway = Wind.LeftCrossTailWind(2, 2)
+            RunwayWindUi(
+                lowRunway = WindUi.RightCrossHeadWindUi(2, 2),
+                highRunway = WindUi.LeftCrossTailWindUi(2, 2)
             )
         )
         assertEquals(expected = reference, actual = result)

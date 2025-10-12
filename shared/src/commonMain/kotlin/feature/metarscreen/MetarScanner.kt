@@ -1,5 +1,6 @@
 package feature.metarscreen
 
+import alexmaryin.metarkt.models.Wind
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
@@ -37,7 +38,7 @@ class MetarScanner(
     private val metarService: MetarService by inject()
     private val airportService: AirportService by inject()
 
-    val state = MutableValue(WindViewState())
+    val state = MutableValue(MetarScreenViewState())
 
     private var metarJob: Job? = null
     private var airportJob: Job? = null
@@ -57,10 +58,10 @@ class MetarScanner(
         is MetarUiEvent.LoadTopLatest -> fetchHistoryAirports()
     }
 
-    private fun WindViewState.updateRunwayWind(new: RunwayUi = state.value.runway): WindViewState = copy(
+    private fun MetarScreenViewState.updateRunwayWind(new: RunwayUi = state.value.runway): MetarScreenViewState = copy(
         runway = new.withCalculatedWind(
-            speedKt = state.value.data.metarSpeedKt ?: state.value.data.userSpeed,
-            windAngle = state.value.data.metarAngle ?: state.value.data.userAngle
+            state.value.metar?.wind
+                ?: Wind(state.value.data.userAngle, speed = state.value.data.userSpeed)
         )
     )
 
@@ -84,21 +85,21 @@ class MetarScanner(
 
     private fun submitRunwayAngle(new: Int) {
         val runwayUi = new.toRunwayUi()
-        state.update { it.copy(airport = null) }
+        state.update { it.copy(airport = null, metar = null) }
         submitRunway(runwayUi)
     }
 
     private fun submitRunway(new: RunwayUi) {
-        state.update {
-            it.updateRunwayWind(new)
-        }
+        state.update { it.updateRunwayWind(new) }
     }
 
     private fun setErrorState(error: Result.Error) {
         state.update {
             it.copy(
                 isLoading = combineLoading.state,
-                error = error.message
+                error = error.message,
+                metar = null,
+                data = MetarUi()
             )
         }
     }
@@ -110,6 +111,7 @@ class MetarScanner(
             state.update {
                 val metar = metarApi.parseMetar()
                 it.copy(
+                    metar = metar,
                     data = MetarUi(
                         metarAngle = metar.wind?.direction ?: it.data.metarAngle,
                         metarSpeedKt = metar.wind?.speedKt ?: it.data.metarSpeedKt,
@@ -119,7 +121,7 @@ class MetarScanner(
                     ),
                     isLoading = combineLoading.state,
                     error = if (metar.wind == null) {
-                        "METAR has incorrect wind information"
+                        "METAR has no correct wind information"
                     } else null
                 )
             }

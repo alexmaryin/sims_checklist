@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import feature.metarscreen.MetarScanner
 import feature.metarscreen.MetarUiEvent
-import feature.metarscreen.WindViewState
+import feature.metarscreen.MetarScreenViewState
 import feature.metarscreen.model.WindComponent
 import feature.metarscreen.model.toUi
 import feature.metarscreen.ui.airportSegment.AirportInfo
@@ -38,7 +38,7 @@ import ui.utils.mySnackbarHost
 @Composable
 fun MetarScreen(component: MetarScanner) {
 
-    val state: WindViewState by component.state.subscribeAsState()
+    val state: MetarScreenViewState by component.state.subscribeAsState()
 
     val snackbarHostState = remember { SnackbarHostState() }
 

@@ -13,11 +13,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import feature.metarscreen.model.Wind
+import feature.metarscreen.model.WindUi
 import ui.loadXmlPicture
 
 @Composable
-fun RunwayTailwindBubble(name: String, wind: Wind) {
+fun RunwayTailwindBubble(name: String, windUi: WindUi) {
 
     Box(
         modifier = Modifier
@@ -25,10 +25,10 @@ fun RunwayTailwindBubble(name: String, wind: Wind) {
             .size(100.dp)
     ) {
 
-        val cornersForLabel = if(wind is Wind.LeftCrossTailWind) Bubble.cornersForLeftTail else Bubble.cornersForRightTail
-        val alignForLabel = if(wind is Wind.LeftCrossTailWind) Alignment.BottomStart else Alignment.BottomEnd
-        val alignForTail = if(wind is Wind.LeftCrossTailWind) Alignment.BottomEnd else Alignment.BottomStart
-        val alignForPlane = if(wind is Wind.LeftCrossTailWind) Alignment.TopEnd else Alignment.TopStart
+        val cornersForLabel = if(windUi is WindUi.LeftCrossTailWindUi) Bubble.cornersForLeftTail else Bubble.cornersForRightTail
+        val alignForLabel = if(windUi is WindUi.LeftCrossTailWindUi) Alignment.BottomStart else Alignment.BottomEnd
+        val alignForTail = if(windUi is WindUi.LeftCrossTailWindUi) Alignment.BottomEnd else Alignment.BottomStart
+        val alignForPlane = if(windUi is WindUi.LeftCrossTailWindUi) Alignment.TopEnd else Alignment.TopStart
 
         Box(
             modifier = Modifier
@@ -49,21 +49,21 @@ fun RunwayTailwindBubble(name: String, wind: Wind) {
                     .size(20.dp).align(Alignment.CenterHorizontally),
                 colorFilter = ColorFilter.tint(Color.DarkGray)
             )
-            Text(text = "${wind.straight} Kt", textAlign = TextAlign.Center)
+            Text(text = "${windUi.straight} Kt", textAlign = TextAlign.Center)
         }
 
         Bubble.AirplaneIcon(Modifier.align(alignForPlane))
 
         Row(
             modifier = Modifier
-                .align(if(wind is Wind.LeftCrossTailWind) Alignment.TopStart else Alignment.TopEnd)
+                .align(if(windUi is WindUi.LeftCrossTailWindUi) Alignment.TopStart else Alignment.TopEnd)
                 .padding(10.dp),
             horizontalArrangement = Arrangement.Center
         ) {
-            if(wind is Wind.LeftCrossTailWind) {
-                Bubble.CrossWindLeftText(wind.cross)
+            if(windUi is WindUi.LeftCrossTailWindUi) {
+                Bubble.CrossWindLeftText(windUi.cross)
             } else {
-                Bubble.CrossWindRightText(wind.cross)
+                Bubble.CrossWindRightText(windUi.cross)
             }
         }
     }
