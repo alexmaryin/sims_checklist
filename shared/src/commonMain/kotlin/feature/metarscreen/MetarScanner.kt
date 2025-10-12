@@ -5,7 +5,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
-import com.arkivanov.essenty.lifecycle.doOnCreate
+import com.arkivanov.essenty.lifecycle.doOnStart
 import feature.metarscreen.model.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
@@ -22,12 +22,14 @@ import services.metarService.MetarService
 
 class MetarScanner(
     val componentContext: ComponentContext,
+    val icao: String? = null,
     val onBack: () -> Unit
 ) : KoinComponent, ComponentContext by componentContext {
 
     init {
-        lifecycle.doOnCreate {
+        lifecycle.doOnStart {
             fetchHistoryAirports()
+            icao?.let { submitICAO(it) }
         }
     }
 

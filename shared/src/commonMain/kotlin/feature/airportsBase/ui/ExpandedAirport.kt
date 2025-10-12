@@ -17,24 +17,22 @@ import services.airportService.model.Airport
 import ui.CaptionedDivider
 import ui.LinkText
 import ui.utils.RunwayTooltip
-import ui.utils.largeWithShadow
 import utils.toDMS
 
 @Composable
-fun ExpandedAirport(airport: Airport, onClick: () -> Unit) {
+fun ExpandedAirport(airport: Airport, onClick: () -> Unit, onMetarClick: () -> Unit) {
     Card(
         Modifier.fillMaxWidth().padding(horizontal = 4.dp, vertical = 2.dp)
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth().padding(8.dp).clickable(onClick = onClick),
+            modifier = Modifier.fillMaxWidth(),
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(text = airport.icao, modifier = Modifier.requiredWidth(90.dp), style = largeWithShadow())
-                Text(text = airport.name)
-            }
+            AirportHeader(
+                modifier = Modifier.fillMaxWidth().padding(8.dp).clickable(onClick = onClick),
+                icao = airport.icao,
+                name = airport.name,
+                onMetarClick = onMetarClick
+            )
             HorizontalDivider()
             Row(
                 modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),

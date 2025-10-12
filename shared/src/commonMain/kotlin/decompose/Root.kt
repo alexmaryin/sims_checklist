@@ -45,8 +45,8 @@ class Root(
             is MainScreenEvent.SelectAircraft -> navigation.pushNew(Configuration.Checklists(event.aircraftId))
             MainScreenEvent.SelectAirportsBase -> navigation.pushNew(Configuration.AirportsBase)
             is MainScreenEvent.SelectFuelCalculator -> navigation.pushNew(Configuration.FuelCalculator(event.aircraftId))
-            MainScreenEvent.SelectMetar -> navigation.pushNew(Configuration.MetarScanner)
-            MainScreenEvent.SelectQFEHelper -> navigation.pushNew(Configuration.QFEHelper)
+            MainScreenEvent.SelectMetar -> navigation.pushNew(Configuration.MetarScanner())
+            MainScreenEvent.SelectQFEHelper -> navigation.pushNew(Configuration.QFEHelper())
             else -> Unit
         }
     }
@@ -70,13 +70,15 @@ class Root(
         onBack = { navigation.pop() }
     )
 
-    private fun metarScanner(context: ComponentContext) = MetarScanner(
+    private fun metarScanner(context: ComponentContext, icao: String? = null) = MetarScanner(
         componentContext = context,
+        icao = icao,
         onBack = { navigation.pop() }
     )
 
     private fun airportsBase(context: ComponentContext) = AirportsBase(
         componentContext = context,
+        onSelectAirport = { icao -> navigation.pushNew(Configuration.MetarScanner(icao)) },
         onBack = { navigation.pop() }
     )
 
@@ -96,7 +98,7 @@ class Root(
 
             is Configuration.FuelCalculator -> FuelCalculatorChild(fuelCalculator(configuration.aircraftId))
 
-            is Configuration.MetarScanner -> MetarScannerChild(metarScanner(context))
+            is Configuration.MetarScanner -> MetarScannerChild(metarScanner(context, configuration.icao))
 
             is Configuration.AirportsBase -> AirportsBaseChild(airportsBase(context))
 

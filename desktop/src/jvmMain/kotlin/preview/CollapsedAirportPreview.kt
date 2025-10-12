@@ -17,5 +17,7 @@ fun CollapsedAirportPreview() {
             latitude = 0f,
             longitude = 0f,
             elevation = 0,
-        )) {}
+        ),
+        onClick = {}
+    ) {}
 }

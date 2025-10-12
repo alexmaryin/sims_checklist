@@ -35,6 +35,7 @@ fun ExpandedAirportPreview() {
                     highHeading = 199
                 )
             )
-        )
+        ),
+        onClick = {}
     ) {}
 }

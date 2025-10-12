@@ -25,7 +25,8 @@ fun AirportsList(
     searchResult: List<Airport>,
     expandedAirport: Airport? = null,
     onChange: (String) -> Unit,
-    onAirportClick: (String) -> Unit
+    onAirportClick: (String) -> Unit,
+    onOpenMetar: (String) -> Unit
 ) {
     val lazyState = rememberLazyListState()
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -47,9 +48,17 @@ fun AirportsList(
         LazyColumn(state = lazyState, modifier = Modifier.fillMaxWidth().padding(16.dp)) {
             items(searchResult) { item ->
                 if (expandedAirport?.icao == item.icao) {
-                    ExpandedAirport(expandedAirport) { onAirportClick(item.icao) }
+                    ExpandedAirport(
+                        airport = expandedAirport,
+                        onClick = { onAirportClick(item.icao) },
+                        onMetarClick = { onOpenMetar(item.icao) }
+                    )
                 } else {
-                    CollapsedAirport(item) { onAirportClick(item.icao) }
+                    CollapsedAirport(
+                        airport = item,
+                        onClick = { onAirportClick(item.icao) },
+                        onMetarClick = { onOpenMetar(item.icao) }
+                    )
                 }
             }
         }
