@@ -28,12 +28,12 @@ import feature.metarscreen.model.WindComponent
 import feature.metarscreen.model.toUi
 import feature.metarscreen.ui.airportSegment.AirportInfo
 import feature.metarscreen.ui.windSegment.WindSegment
-import ui.AdaptiveLayout
-import ui.Dialog
-import ui.ScrollableDigitField
-import ui.utils.MyIcons
-import ui.utils.SimColors
-import ui.utils.mySnackbarHost
+import commonUi.AdaptiveLayout
+import commonUi.Dialog
+import commonUi.ScrollableDigitField
+import commonUi.utils.MyIcons
+import commonUi.utils.SimColors
+import commonUi.utils.mySnackbarHost
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -21,7 +21,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import ui.utils.SimColors
+import commonUi.utils.SimColors
 
 @Composable
 fun IcaoInput(

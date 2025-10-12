@@ -1,13 +1,6 @@
 package feature.metarscreen.ui.airportSegment
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Icon
@@ -21,8 +14,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import services.airportService.model.Airport
 import services.airportService.model.Runway
-import ui.FlowRow
-import ui.utils.RunwayTooltip
+import commonUi.ChipSelector
+import commonUi.RunwayChip
+import commonUi.utils.RunwayTooltip
 
 @Composable
 fun AirportInfo(airport: Airport, onSelectRunway: (Runway) -> Unit) {
@@ -56,11 +50,17 @@ fun AirportInfo(airport: Airport, onSelectRunway: (Runway) -> Unit) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Box {
+        Box(modifier = Modifier.fillMaxWidth()) {
 
-            FlowRow(spacing = 8.dp) {
+            FlowRow(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
                 airport.runways.forEach { runway ->
-                    RunwayChip("${runway.lowNumber}/${runway.highNumber}") { rect ->
+                    RunwayChip(
+                        text = "${runway.lowNumber}/${runway.highNumber}",
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                    ) { rect ->
                         selectorRect = rect
                         onSelectRunway(runway)
                     }

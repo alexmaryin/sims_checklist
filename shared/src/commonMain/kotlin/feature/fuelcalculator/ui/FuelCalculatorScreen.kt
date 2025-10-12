@@ -19,11 +19,11 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import feature.fuelcalculator.FuelCalcViewState
 import feature.fuelcalculator.FuelCalculator
 import feature.fuelcalculator.FuelUiEvent
-import ui.RelativeOutlineInput
-import ui.ValidatedOutlineInput
-import ui.ValidatorIcon
-import ui.utils.SimColors
-import ui.utils.mySnackbarHost
+import commonUi.RelativeOutlineInput
+import commonUi.ValidatedOutlineInput
+import commonUi.ValidatorIcon
+import commonUi.utils.SimColors
+import commonUi.utils.mySnackbarHost
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -9,8 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import ui.utils.MyIcons
-import ui.utils.largeWithShadow
+import commonUi.utils.MyIcons
+import commonUi.utils.largeWithShadow
 
 @Composable
 fun AirportHeader(

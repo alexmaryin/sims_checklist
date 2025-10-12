@@ -1,5 +1,6 @@
 package decompose
 
+import alexmaryin.metarkt.models.PressureQFE
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.extensions.compose.stack.Children
@@ -88,7 +89,7 @@ class Root(
     private fun qfeHelper(
         context: ComponentContext,
         icao: String? = null,
-        qfe: Int? = null,
+        qfe: PressureQFE? = null,
         celsius: Int? = null
     ) = QFEHelper(
         componentContext = context,
@@ -119,7 +120,7 @@ class Root(
             is Configuration.QFEHelper -> QFEHelperChild(qfeHelper(
                 context,
                 configuration.icao,
-                configuration.qfe,
+                configuration.qfe?.let { PressureQFE(it) },
                 configuration.celsius
             ))
         }

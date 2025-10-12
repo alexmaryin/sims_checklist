@@ -16,9 +16,9 @@ import androidx.compose.ui.unit.dp
 import feature.airportsBase.AirportEventExecutor
 import feature.airportsBase.AirportsUiEvent
 import services.airportService.model.Airport
-import ui.CaptionedDivider
-import ui.LinkText
-import ui.utils.RunwayTooltip
+import commonUi.CaptionedDivider
+import commonUi.LinkText
+import commonUi.utils.RunwayTooltip
 import utils.toDMS
 
 @Composable

@@ -15,9 +15,9 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import feature.airportsBase.AirportEventExecutor
 import feature.airportsBase.AirportsUiEvent
 import kotlinx.coroutines.launch
-import ui.utils.MyIcons
-import ui.utils.SimColors
-import ui.utils.mySnackbarHost
+import commonUi.utils.MyIcons
+import commonUi.utils.SimColors
+import commonUi.utils.mySnackbarHost
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

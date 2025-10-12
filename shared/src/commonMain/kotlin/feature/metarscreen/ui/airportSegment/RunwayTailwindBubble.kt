@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import feature.metarscreen.model.WindUi
-import ui.loadXmlPicture
+import commonUi.loadXmlPicture
 
 @Composable
 fun RunwayTailwindBubble(name: String, windUi: WindUi) {

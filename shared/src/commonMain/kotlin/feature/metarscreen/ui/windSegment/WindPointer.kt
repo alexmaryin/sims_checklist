@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
-import ui.loadXmlPicture
+import commonUi.loadXmlPicture
 
 val ARROW_PADDING = CIRCLE_PADDING + LONG_STROKE + 60.dp
 

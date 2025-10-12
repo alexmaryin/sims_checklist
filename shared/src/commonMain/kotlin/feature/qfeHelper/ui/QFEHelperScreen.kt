@@ -1,5 +1,7 @@
 package feature.qfeHelper.ui
 
+import alexmaryin.metarkt.helpers.toCorrectedQnh
+import alexmaryin.metarkt.helpers.toIsaQnh
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -16,8 +18,8 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import feature.qfeHelper.QFEEvent
 import feature.qfeHelper.QFEHelper
 import feature.qfeHelper.QFEHelperState
-import ui.utils.SimColors
-import ui.utils.mySnackbarHost
+import commonUi.utils.SimColors
+import commonUi.utils.mySnackbarHost
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -61,6 +63,10 @@ fun QFEHelperScreen(component: QFEHelper) {
                 airportName = state.value.airportName,
             ) { new -> component.onEvent(QFEEvent.SubmitICAO(new)) }
 
+            RunwaysBlock(state.value.runways) { runwayUi ->
+                component.onEvent(QFEEvent.SelectRunway(runwayUi))
+            }
+
             ElevationBlock(
                 meters = state.value.elevationMeters,
                 feet = state.value.elevationFeet
@@ -71,9 +77,9 @@ fun QFEHelperScreen(component: QFEHelper) {
             }
 
             QFEBlock(
-                mmHg = state.value.qfeMmHg,
-                mBar = state.value.qfeMilliBar,
-                qnh = state.value.qnh
+                qfe = state.value.qfe,
+                qfeIsa = state.value.qfe.toIsaQnh(state.value.elevationMeters),
+                qfeCorrected = state.value.qfe.toCorrectedQnh(state.value.elevationMeters, state.value.temperature),
             ) { new -> component.onEvent(QFEEvent.SubmitQFEmmHg(new)) }
 
             HeightBlock(

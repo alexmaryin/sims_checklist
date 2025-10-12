@@ -19,8 +19,8 @@ import feature.checklistDetails.ChecklistUiEvent
 import feature.checklistDetails.ChecklistViewState
 import feature.checklistDetails.model.CHECKLIST_LINE
 import kotlinx.coroutines.launch
-import ui.TopBarWithClearAction
-import ui.utils.mySnackbarHost
+import commonUi.TopBarWithClearAction
+import commonUi.utils.mySnackbarHost
 
 @Composable
 expect fun ScrollBarForList(modifier: Modifier, state: LazyListState)

@@ -1,34 +1,32 @@
 package feature.qfeHelper.ui
 
+import alexmaryin.metarkt.models.PressureQFE
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ui.ScrollableDigitField
+import commonUi.ScrollableDigitField
 
 @Composable
 fun QFEBlock(
-    mmHg: Int,
-    mBar: Int,
-    qnh: Int,
+    qfe: PressureQFE,
+    qfeIsa: Int,
+    qfeCorrected: Int,
     onSubmit: (Int) -> Unit
 ) {
-    Text("QFE in mmHg ($mBar mBar)")
+    Text("QFE in mmHg (${qfe.milliBar} mBar)")
     ScrollableDigitField(
-        value = mmHg,
+        value = qfe.mmHg,
         range = 400..1000
     ) { onSubmit(it) }
 
     Text(
         modifier = Modifier.padding(6.dp),
-        text = "QNH: $qnh hPa",
+        text = "QNH (ISA) $qfeIsa hPa (t° corrected) $qfeCorrected hPa",
         fontSize = 16.sp,
         color = MaterialTheme.colorScheme.onSurface,
-        fontStyle = FontStyle.Italic
     )
 }

@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
 import feature.metarscreen.model.RunwayUi
-import ui.loadXmlPicture
+import commonUi.loadXmlPicture
 import kotlin.math.roundToInt
 
 expect fun runwayScrollOrientation(): Orientation

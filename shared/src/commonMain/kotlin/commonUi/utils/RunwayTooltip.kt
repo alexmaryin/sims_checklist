@@ -1,4 +1,4 @@
-package ui.utils
+package commonUi.utils
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.RichTooltip

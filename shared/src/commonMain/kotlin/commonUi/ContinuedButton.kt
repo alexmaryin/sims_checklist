@@ -1,4 +1,4 @@
-package ui
+package commonUi
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.interaction.MutableInteractionSource

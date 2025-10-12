@@ -2,7 +2,7 @@ package feature.qfeHelper.ui
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import ui.ScrollableDigitField
+import commonUi.ScrollableDigitField
 
 @Composable
 fun TemperatureBlock(
