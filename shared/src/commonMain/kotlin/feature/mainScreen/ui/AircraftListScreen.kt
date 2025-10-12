@@ -23,14 +23,13 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import common.BuildKonfig
 import feature.mainScreen.MainEventExecutor
 import feature.mainScreen.MainScreenEvent
-import org.jetbrains.annotations.Debug
 import org.jetbrains.compose.resources.painterResource
 import sims_checklist.shared.generated.resources.Res
 import sims_checklist.shared.generated.resources.allDrawableResources
-import ui.utils.MyIcons
-import ui.utils.SimColors
-import ui.utils.largeWithShadow
-import ui.utils.mySnackbarHost
+import commonUi.utils.MyIcons
+import commonUi.utils.SimColors
+import commonUi.utils.largeWithShadow
+import commonUi.utils.mySnackbarHost
 
 @Composable
 fun loadAircraftJpgPhoto(name: String): Painter = painterResource(Res.allDrawableResources[name]!!)

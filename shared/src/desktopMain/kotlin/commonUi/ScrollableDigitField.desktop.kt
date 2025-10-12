@@ -1,4 +1,4 @@
-package ui
+package commonUi
 
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier

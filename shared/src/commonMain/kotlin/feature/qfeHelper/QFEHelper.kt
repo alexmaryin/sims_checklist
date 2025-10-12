@@ -1,9 +1,13 @@
 package feature.qfeHelper
 
+import alexmaryin.metarkt.models.PressureQFE
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
+import com.arkivanov.essenty.lifecycle.doOnStart
+import feature.qfeHelper.ui.models.QFERunwayUi
+import feature.qfeHelper.ui.models.toUi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
@@ -16,8 +20,19 @@ import kotlin.math.roundToInt
 
 class QFEHelper(
     private val componentContext: ComponentContext,
+    private val icao: String? = null,
+    private val qfe: PressureQFE? = null,
+    private val temperature: Int? = null,
     val onBack: () -> Unit
 ) : KoinComponent, ComponentContext by componentContext {
+
+    init {
+        lifecycle.doOnStart {
+            icao?.let { submitICAO(it) }
+            qfe?.let { submitQFE(it) }
+            temperature?.let { submitTemperature(it) }
+        }
+    }
 
     private val airportService: AirportService by inject()
 
@@ -29,7 +44,9 @@ class QFEHelper(
         is QFEEvent.SubmitElevationMeters -> submitElevation(event.elevation)
         is QFEEvent.SubmitHeightPlusMeters -> submitHeight(event.meters)
         is QFEEvent.SubmitICAO -> submitICAO(event.icao)
-        is QFEEvent.SubmitQFEmmHg -> submitQFE(event.mmHg)
+        is QFEEvent.SubmitQFEmmHg -> submitQFE(PressureQFE(event.mmHg))
+        is QFEEvent.SubmitTemperature -> submitTemperature(event.celsius)
+        is QFEEvent.SelectRunway -> selectRunway(event.runway)
     }
 
     private fun submitElevation(meters: Int) {
@@ -47,8 +64,12 @@ class QFEHelper(
         state.update { it.copy(heightPlusMeters = meters) }
     }
 
-    private fun submitQFE(mmHg: Int) {
-        state.update { it.copy(qfeMmHg = mmHg) }
+    private fun submitQFE(qfe: PressureQFE) {
+        state.update { it.copy(qfe = qfe) }
+    }
+
+    private fun submitTemperature(celsius: Int) {
+        state.update { it.copy(temperature = celsius) }
     }
 
     private fun submitICAO(icao: String) {
@@ -56,10 +77,16 @@ class QFEHelper(
         scope.launch {
             val response = airportService.getAirportByICAO(icao)
             response.forSuccess { airport ->
-                state.update {
+                state.update { it ->
+
+                    val runwaysUi = airport.runways.filterNot { it.closed }
+                        .map { runway -> runway.toUi(airport.elevation)  }
+                        .flatten()
+
                     it.copy(
                         airportICAO = icao,
                         airportName = airport.name,
+                        runways = runwaysUi,
                         elevationMeters = (airport.elevation / METER_FEET).roundToInt(),
                         isLoading = false,
                         error = null
@@ -69,6 +96,12 @@ class QFEHelper(
             response.forError { error ->
                 state.update { it.copy(isLoading = false, error = error.message) }
             }
+        }
+    }
+
+    private fun selectRunway(runway: QFERunwayUi) {
+        state.update {
+            it.copy(selectedRunway = runway, elevationMeters = runway.elevationMeters)
         }
     }
 }

@@ -23,22 +23,23 @@ import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import feature.metarscreen.MetarScanner
 import feature.metarscreen.MetarUiEvent
-import feature.metarscreen.WindViewState
+import feature.metarscreen.MetarScreenViewState
 import feature.metarscreen.model.WindComponent
 import feature.metarscreen.model.toUi
 import feature.metarscreen.ui.airportSegment.AirportInfo
 import feature.metarscreen.ui.windSegment.WindSegment
-import ui.AdaptiveLayout
-import ui.Dialog
-import ui.ScrollableDigitField
-import ui.utils.SimColors
-import ui.utils.mySnackbarHost
+import commonUi.AdaptiveLayout
+import commonUi.Dialog
+import commonUi.ScrollableDigitField
+import commonUi.utils.MyIcons
+import commonUi.utils.SimColors
+import commonUi.utils.mySnackbarHost
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MetarScreen(component: MetarScanner) {
 
-    val state: WindViewState by component.state.subscribeAsState()
+    val state: MetarScreenViewState by component.state.subscribeAsState()
 
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -80,6 +81,11 @@ fun MetarScreen(component: MetarScanner) {
                     }
                 },
                 actions = {
+                    state.metar?.let {
+                        IconButton(onClick = { component.onEvent(MetarUiEvent.OpenQfeHelper) }) {
+                            Icon(imageVector = MyIcons.Compress, contentDescription = "open QFE helper for airport")
+                        }
+                    }
                     IconButton(onClick = { component.onEvent(MetarUiEvent.ShowInfoDialog) }) {
                         Icon(imageVector = Icons.Default.Info, contentDescription = "Information")
                     }

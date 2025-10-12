@@ -1,4 +1,4 @@
-package ui
+package commonUi
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
@@ -26,8 +26,8 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.vectorResource
 import sims_checklist.shared.generated.resources.Res
 import sims_checklist.shared.generated.resources.allDrawableResources
-import ui.utils.MyIcons
-import ui.utils.SimColors
+import commonUi.utils.MyIcons
+import commonUi.utils.SimColors
 
 @Composable
 fun ToggleableText(

@@ -1,10 +1,10 @@
-package ui
+package commonUi
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import ui.utils.SimColors.buttonColors
+import commonUi.utils.SimColors.buttonColors
 
 @Composable
 actual fun Dialog(onDismissRequest: () -> Unit, title: String, text: String) = AlertDialog(

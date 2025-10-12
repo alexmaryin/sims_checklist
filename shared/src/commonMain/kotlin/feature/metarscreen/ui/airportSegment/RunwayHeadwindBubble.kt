@@ -12,11 +12,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import feature.metarscreen.model.Wind
-import ui.loadXmlPicture
+import feature.metarscreen.model.WindUi
+import commonUi.loadXmlPicture
 
 @Composable
-fun RunwayHeadwindBubble(name: String, wind: Wind) {
+fun RunwayHeadwindBubble(name: String, windUi: WindUi) {
 
     Box(
         modifier = Modifier
@@ -24,10 +24,10 @@ fun RunwayHeadwindBubble(name: String, wind: Wind) {
             .size(100.dp)
     ) {
 
-        val cornersForLabel = if(wind is Wind.LeftCrossHeadWind) Bubble.cornersForLeftHead else Bubble.cornersForRightHead
-        val alignForLabel = if(wind is Wind.LeftCrossHeadWind) Alignment.TopStart else Alignment.TopEnd
-        val alignForHead = if(wind is Wind.LeftCrossHeadWind) Alignment.TopEnd else Alignment.TopStart
-        val alignForPlane = if(wind is Wind.LeftCrossHeadWind) Alignment.BottomEnd else Alignment.BottomStart
+        val cornersForLabel = if(windUi is WindUi.LeftCrossHeadWindUi) Bubble.cornersForLeftHead else Bubble.cornersForRightHead
+        val alignForLabel = if(windUi is WindUi.LeftCrossHeadWindUi) Alignment.TopStart else Alignment.TopEnd
+        val alignForHead = if(windUi is WindUi.LeftCrossHeadWindUi) Alignment.TopEnd else Alignment.TopStart
+        val alignForPlane = if(windUi is WindUi.LeftCrossHeadWindUi) Alignment.BottomEnd else Alignment.BottomStart
 
         Box(
             modifier = Modifier
@@ -41,7 +41,7 @@ fun RunwayHeadwindBubble(name: String, wind: Wind) {
         Column(
             modifier = Modifier.align(alignForHead).padding(10.dp),
         ) {
-            Text(text = "${wind.straight} Kt", textAlign = TextAlign.Center)
+            Text(text = "${windUi.straight} Kt", textAlign = TextAlign.Center)
             Image(
                 imageVector = loadXmlPicture("arrow_down"),
                 contentDescription = "Headwind speed",
@@ -55,14 +55,14 @@ fun RunwayHeadwindBubble(name: String, wind: Wind) {
 
         Row(
             modifier = Modifier
-                .align(if(wind is Wind.LeftCrossHeadWind) Alignment.BottomStart else Alignment.BottomEnd)
+                .align(if(windUi is WindUi.LeftCrossHeadWindUi) Alignment.BottomStart else Alignment.BottomEnd)
                 .padding(10.dp),
             horizontalArrangement = Arrangement.Center
         ) {
-            if(wind is Wind.LeftCrossHeadWind) {
-                Bubble.CrossWindLeftText(wind.cross)
+            if(windUi is WindUi.LeftCrossHeadWindUi) {
+                Bubble.CrossWindLeftText(windUi.cross)
             } else {
-                Bubble.CrossWindRightText(wind.cross)
+                Bubble.CrossWindRightText(windUi.cross)
             }
         }
     }

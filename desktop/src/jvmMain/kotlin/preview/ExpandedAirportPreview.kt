@@ -2,6 +2,10 @@ package preview
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.runtime.Composable
+import com.arkivanov.decompose.value.MutableValue
+import feature.airportsBase.AirportEventExecutor
+import feature.airportsBase.AirportsBaseViewState
+import feature.airportsBase.AirportsUiEvent
 import feature.airportsBase.ui.ExpandedAirport
 import services.airportService.model.Airport
 import services.airportService.model.Runway
@@ -35,6 +39,10 @@ fun ExpandedAirportPreview() {
                     highHeading = 199
                 )
             )
-        )
-    ) {}
+        ),
+        eventsExecutor = object : AirportEventExecutor {
+            override val state = MutableValue(AirportsBaseViewState())
+            override fun invoke(event: AirportsUiEvent) {}
+        }
+    )
 }

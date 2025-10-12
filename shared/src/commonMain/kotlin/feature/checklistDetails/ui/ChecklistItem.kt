@@ -14,7 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import feature.checklistDetails.model.Item
-import ui.ToggleableText
+import commonUi.ToggleableText
 
 @Composable
 fun ChecklistItem(item: Item, onClick: () -> Unit) = Row(

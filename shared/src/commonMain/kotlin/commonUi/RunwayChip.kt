@@ -1,4 +1,4 @@
-package feature.metarscreen.ui.airportSegment
+package commonUi
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -19,12 +19,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun RunwayChip(text: String, onClick: (Rect) -> Unit) {
+fun RunwayChip(text: String, modifier: Modifier = Modifier, onClick: (Rect) -> Unit) {
 
     var chipRect by remember { mutableStateOf(Rect.Zero) }
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .background(MaterialTheme.colorScheme.background, RoundedCornerShape(30.dp))
             .border(4.dp, color = Color(0xFF888888), RoundedCornerShape(30.dp))
             .onGloballyPositioned {

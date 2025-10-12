@@ -1,5 +1,6 @@
 package decompose
 
+import alexmaryin.metarkt.models.PressureQFE
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.extensions.compose.stack.Children
@@ -45,8 +46,8 @@ class Root(
             is MainScreenEvent.SelectAircraft -> navigation.pushNew(Configuration.Checklists(event.aircraftId))
             MainScreenEvent.SelectAirportsBase -> navigation.pushNew(Configuration.AirportsBase)
             is MainScreenEvent.SelectFuelCalculator -> navigation.pushNew(Configuration.FuelCalculator(event.aircraftId))
-            MainScreenEvent.SelectMetar -> navigation.pushNew(Configuration.MetarScanner)
-            MainScreenEvent.SelectQFEHelper -> navigation.pushNew(Configuration.QFEHelper)
+            MainScreenEvent.SelectMetar -> navigation.pushNew(Configuration.MetarScanner())
+            MainScreenEvent.SelectQFEHelper -> navigation.pushNew(Configuration.QFEHelper())
             else -> Unit
         }
     }
@@ -70,18 +71,31 @@ class Root(
         onBack = { navigation.pop() }
     )
 
-    private fun metarScanner(context: ComponentContext) = MetarScanner(
+    private fun metarScanner(context: ComponentContext, icao: String? = null) = MetarScanner(
         componentContext = context,
+        icao = icao,
+        onOpenQfeHelper = { icao, qfe, celsius ->
+            navigation.pushNew(Configuration.QFEHelper(icao, qfe, celsius)) },
         onBack = { navigation.pop() }
     )
 
     private fun airportsBase(context: ComponentContext) = AirportsBase(
         componentContext = context,
+        onSelectAirport = { icao -> navigation.pushNew(Configuration.MetarScanner(icao)) },
+        onSelectQfeHelper = { icao -> navigation.pushNew(Configuration.QFEHelper(icao = icao)) },
         onBack = { navigation.pop() }
     )
 
-    private fun qfeHelper(context: ComponentContext) = QFEHelper(
+    private fun qfeHelper(
+        context: ComponentContext,
+        icao: String? = null,
+        qfe: PressureQFE? = null,
+        celsius: Int? = null
+    ) = QFEHelper(
         componentContext = context,
+        icao = icao,
+        qfe = qfe,
+        temperature = celsius,
         onBack = { navigation.pop() }
     )
 
@@ -92,15 +106,23 @@ class Root(
 
             is Configuration.Checklists -> ChecklistsChild(checklists(configuration.aircraftId))
 
-            is Configuration.Checklist -> ChecklistDetailsChild(checklist(configuration.aircraftId, configuration.checklistId))
+            is Configuration.Checklist -> ChecklistDetailsChild(checklist(
+                configuration.aircraftId,
+                configuration.checklistId
+            ))
 
             is Configuration.FuelCalculator -> FuelCalculatorChild(fuelCalculator(configuration.aircraftId))
 
-            is Configuration.MetarScanner -> MetarScannerChild(metarScanner(context))
+            is Configuration.MetarScanner -> MetarScannerChild(metarScanner(context, configuration.icao))
 
             is Configuration.AirportsBase -> AirportsBaseChild(airportsBase(context))
 
-            is Configuration.QFEHelper -> QFEHelperChild(qfeHelper(context))
+            is Configuration.QFEHelper -> QFEHelperChild(qfeHelper(
+                context,
+                configuration.icao,
+                configuration.qfe?.let { PressureQFE(it) },
+                configuration.celsius
+            ))
         }
 }
 

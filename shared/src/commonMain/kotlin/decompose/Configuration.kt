@@ -18,11 +18,15 @@ sealed interface Configuration {
     data class FuelCalculator(val aircraftId: Int) : Configuration
 
     @Serializable
-    data object MetarScanner : Configuration
+    data class MetarScanner(val icao: String? = null) : Configuration
 
     @Serializable
     data object AirportsBase : Configuration
 
     @Serializable
-    data object QFEHelper : Configuration
+    data class QFEHelper(
+        val icao: String? = null,
+        val qfe: Int? = null,
+        val celsius: Int? = null
+    ) : Configuration
 }

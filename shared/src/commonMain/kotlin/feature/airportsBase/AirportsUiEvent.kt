@@ -1,7 +1,5 @@
 package feature.airportsBase
 
-import kotlinx.coroutines.CoroutineScope
-
 sealed class AirportsUiEvent {
     data object StartUpdate : AirportsUiEvent()
     data object SnackBarClose : AirportsUiEvent()
@@ -9,4 +7,6 @@ sealed class AirportsUiEvent {
     data object GetLastUpdate : AirportsUiEvent()
     data class SendSearch(val search: String) : AirportsUiEvent()
     data class ExpandAirport(val icao: String) : AirportsUiEvent()
+    data class OpenAirportMetar(val icao: String) : AirportsUiEvent()
+    data class OpenQfeHelper(val icao: String) : AirportsUiEvent()
 }

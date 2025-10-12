@@ -18,9 +18,9 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import feature.checklists.Checklists
 import feature.checklists.ChecklistsUiEvent
 import feature.checklists.ChecklistsViewState
-import ui.TopBarWithClearAction
-import ui.utils.largeWithShadow
-import ui.utils.mySnackbarHost
+import commonUi.TopBarWithClearAction
+import commonUi.utils.largeWithShadow
+import commonUi.utils.mySnackbarHost
 
 @Composable
 fun ChecklistsScreen(component: Checklists) {

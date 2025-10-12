@@ -1,4 +1,4 @@
-package ui.utils
+package commonUi.utils
 
 import androidx.compose.material.icons.materialIcon
 import androidx.compose.material.icons.materialPath

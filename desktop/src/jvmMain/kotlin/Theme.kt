@@ -1,7 +1,6 @@
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
-import androidx.compose.ui.graphics.Color
-import ui.utils.SimColors
+import commonUi.utils.SimColors
 
 object Themes {
     val light = lightColorScheme(

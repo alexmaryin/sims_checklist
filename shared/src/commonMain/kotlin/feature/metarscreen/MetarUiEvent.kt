@@ -11,4 +11,5 @@ sealed class MetarUiEvent {
     data object ShowInfoDialog : MetarUiEvent()
     data object DismissInfoDialog : MetarUiEvent()
     data object LoadTopLatest : MetarUiEvent()
+    data object OpenQfeHelper : MetarUiEvent()
 }

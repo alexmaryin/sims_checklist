@@ -1,25 +1,29 @@
 package feature.qfeHelper
 
+import alexmaryin.metarkt.models.PressureQFE
+import feature.qfeHelper.ui.models.QFERunwayUi
 import kotlin.math.ceil
 import kotlin.math.roundToInt
 
 const val METER_FEET = 3.280839895
-const val ONE_BAR = 750.06157584566
 
 data class QFEHelperState(
     val airportICAO: String? = null,
     val airportName: String? = null,
+    val runways: List<QFERunwayUi> = emptyList(),
+    val selectedRunway: QFERunwayUi? = null,
     val isLoading: Boolean = false,
     val error: String? = null,
     val elevationMeters: Int = 0,
-    val qfeMmHg: Int = 760,
+    val qfe: PressureQFE = PressureQFE.standard(),
+    val temperature: Int = 15,
     val heightPlusMeters: Int = 0
 ) {
-    val elevationFeet get() = (elevationMeters * METER_FEET).roundToInt()
+    val elevationFeet: Int get() = (elevationMeters * METER_FEET).roundToInt()
 
-    val qfeMilliBar get() = ceil(qfeMmHg / ONE_BAR * 1000).roundToInt()
-
-    val qnh get() = elevationFeet / 30 + qfeMilliBar
-
-    val heightAboveSea get() = elevationFeet + (heightPlusMeters * METER_FEET).roundToInt()
+    val heightAboveSea: Int
+        get() {
+            val totalMeters = elevationMeters + heightPlusMeters
+            return (ceil(totalMeters * METER_FEET / 10) * 10).roundToInt()
+        }
 }

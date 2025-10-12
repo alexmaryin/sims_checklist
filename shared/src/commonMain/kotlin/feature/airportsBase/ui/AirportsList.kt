@@ -17,6 +17,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import feature.airportsBase.AirportEventExecutor
+import feature.airportsBase.AirportsUiEvent
 import services.airportService.model.Airport
 
 @Composable
@@ -24,8 +26,7 @@ fun AirportsList(
     searchString: String,
     searchResult: List<Airport>,
     expandedAirport: Airport? = null,
-    onChange: (String) -> Unit,
-    onAirportClick: (String) -> Unit
+    eventsExecutor: AirportEventExecutor
 ) {
     val lazyState = rememberLazyListState()
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -33,7 +34,7 @@ fun AirportsList(
     Column(Modifier.fillMaxWidth()) {
         OutlinedTextField(
             value = searchString,
-            onValueChange = onChange,
+            onValueChange = { new -> eventsExecutor(AirportsUiEvent.SendSearch(new)) },
             keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Done,
@@ -47,9 +48,9 @@ fun AirportsList(
         LazyColumn(state = lazyState, modifier = Modifier.fillMaxWidth().padding(16.dp)) {
             items(searchResult) { item ->
                 if (expandedAirport?.icao == item.icao) {
-                    ExpandedAirport(expandedAirport) { onAirportClick(item.icao) }
+                    ExpandedAirport(expandedAirport, eventsExecutor)
                 } else {
-                    CollapsedAirport(item) { onAirportClick(item.icao) }
+                    CollapsedAirport(item, eventsExecutor)
                 }
             }
         }

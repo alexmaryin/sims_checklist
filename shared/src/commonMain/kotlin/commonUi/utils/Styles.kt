@@ -1,4 +1,4 @@
-package ui.utils
+package commonUi.utils
 
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
