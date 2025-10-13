@@ -15,7 +15,6 @@ androidx-room = { id = "androidx.room", version.ref = "room" }
 [versions]
 
 activityCompose="1.11.0"
-app-release="29"
 appcompat="1.7.1"
 coreKtx="1.17.0"
 kotlin="2.2.20"

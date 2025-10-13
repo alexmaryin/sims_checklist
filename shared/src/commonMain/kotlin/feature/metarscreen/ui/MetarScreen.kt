@@ -60,9 +60,13 @@ fun MetarScreen(component: MetarScanner) {
         This feature shows wind direction selected manually or fetched from METAR service.
         This may help you to choice preferred runway at airport for landing or take-off 
         (as you know, you should landing or taking-off with headwind).
+        
         To change direction manually move the slider to needed wind direction.
+        
         To fetch METAR info enter an ICAO of station or airport and press Submit or Done button on keyboard.
-        Someday feature will show you other METAR info in visual form.
+        
+        If available for airport the icon Pressure will move you into QFE Helper for selected airport
+        among with weather info.
             """.trimIndent()
         )
     }
@@ -81,7 +85,7 @@ fun MetarScreen(component: MetarScanner) {
                     }
                 },
                 actions = {
-                    state.metar?.let {
+                    state.metar?.pressureQFE?.let {
                         IconButton(onClick = { component.onEvent(MetarUiEvent.OpenQfeHelper) }) {
                             Icon(imageVector = MyIcons.Compress, contentDescription = "open QFE helper for airport")
                         }

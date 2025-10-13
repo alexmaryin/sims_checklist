@@ -37,8 +37,8 @@ android {
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.compileSdk.get().toInt()
         applicationId = "ru.alexmaryin.simschecklist"
-        versionCode = libs.versions.app.release.get().toInt()
-        versionName = "1.7.0"
+        versionCode = 30
+        versionName = "1.7.1"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21

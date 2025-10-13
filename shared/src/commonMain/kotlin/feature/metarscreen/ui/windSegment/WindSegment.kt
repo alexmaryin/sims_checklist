@@ -20,8 +20,7 @@ fun WindSegment(
     BoxWithConstraints(
         modifier = Modifier.size(min(400.dp, minSide)),
     ) {
-        CircleFace(boxScope = this, color = MaterialTheme.colorScheme.onSurface)
-        Runway(boxScope = this, runway, userAngleEnter)
+        CircleFaceWithRunway(runway, userAngleEnter, color = MaterialTheme.colorScheme.onSurface)
         if (wind.speedKt > 0) {
             WindPointer(boxScope = this, wind.heading, color = MaterialTheme.colorScheme.onSurface)
         }

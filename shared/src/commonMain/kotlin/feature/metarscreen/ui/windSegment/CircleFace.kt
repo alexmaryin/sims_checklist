@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.*
+import feature.metarscreen.model.RunwayUi
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
@@ -24,8 +25,13 @@ val LONG_STROKE = 20.dp
 val SHORT_STROKE = 10.dp
 
 @Composable
-fun CircleFace(boxScope: BoxWithConstraintsScope, color: Color, surface: Color = MaterialTheme.colorScheme.surface) {
-    boxScope.apply {
+fun BoxWithConstraintsScope.CircleFaceWithRunway(
+    runway: RunwayUi,
+    userAngleEnter: (Int) -> Unit,
+    color: Color,
+    surface: Color = MaterialTheme.colorScheme.surfaceDim
+) {
+    apply {
         val sizeDp = min(maxWidth, maxHeight)
         val radius = (sizeDp - CIRCLE_PADDING) / 2
         val center = sizeDp / 2
@@ -62,13 +68,15 @@ fun CircleFace(boxScope: BoxWithConstraintsScope, color: Color, surface: Color =
             }
         }
 
-        DegreesLabels(this, radius, color)
+        Runway(runway, userAngleEnter)
+
+        DegreesLabels(radius, color)
     }
 }
 
 @Composable
-fun DegreesLabels(boxScope: BoxScope, radius: Dp, color: Color) {
-    boxScope.apply {
+fun BoxWithConstraintsScope.DegreesLabels(radius: Dp, color: Color) {
+    apply {
         for (angle in 30..360 step 30) {
             Text(
                 text = "$angle",

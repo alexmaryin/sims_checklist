@@ -36,7 +36,7 @@ expect fun runwayScrollOrientation(): Orientation
 expect fun deltaScroll(delta: Float): Float
 
 @Composable
-fun Runway(boxScope: BoxWithConstraintsScope, data: RunwayUi, userAngleEnter: (Int) -> Unit) {
+fun BoxWithConstraintsScope.Runway(data: RunwayUi, userAngleEnter: (Int) -> Unit) {
 
     var offset by remember { mutableFloatStateOf(data.lowHeading.toFloat()) }
 
@@ -65,7 +65,7 @@ fun Runway(boxScope: BoxWithConstraintsScope, data: RunwayUi, userAngleEnter: (I
             imageVector = loadXmlPicture(filename),
             contentDescription = "runway",
             modifier = Modifier
-                .size(min(boxScope.maxWidth, boxScope.maxHeight))
+                .size(min(this@Runway.maxWidth, this@Runway.maxHeight))
                 .graphicsLayer { alpha = 0.99f }
                 .drawWithContent {
                     val gradientHeight = size.height / 5

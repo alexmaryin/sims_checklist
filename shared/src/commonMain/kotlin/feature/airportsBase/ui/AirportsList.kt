@@ -1,16 +1,13 @@
 package feature.airportsBase.ui
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
@@ -21,20 +18,21 @@ import feature.airportsBase.AirportEventExecutor
 import feature.airportsBase.AirportsUiEvent
 import services.airportService.model.Airport
 
-@Composable
-fun AirportsList(
+
+fun LazyListScope.airportsList(
     searchString: String,
     searchResult: List<Airport>,
     expandedAirport: Airport? = null,
-    eventsExecutor: AirportEventExecutor
+    isVisible: Boolean = false,
+    eventsExecutor: AirportEventExecutor,
 ) {
-    val lazyState = rememberLazyListState()
-    val keyboardController = LocalSoftwareKeyboardController.current
 
-    Column(Modifier.fillMaxWidth()) {
+    item {
+        val keyboardController = LocalSoftwareKeyboardController.current
         OutlinedTextField(
             value = searchString,
             onValueChange = { new -> eventsExecutor(AirportsUiEvent.SendSearch(new)) },
+            enabled = isVisible,
             keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Done,
@@ -45,14 +43,13 @@ fun AirportsList(
             label = { Text("Search airport by ICAO or name") },
             singleLine = true
         )
-        LazyColumn(state = lazyState, modifier = Modifier.fillMaxWidth().padding(16.dp)) {
-            items(searchResult) { item ->
-                if (expandedAirport?.icao == item.icao) {
-                    ExpandedAirport(expandedAirport, eventsExecutor)
-                } else {
-                    CollapsedAirport(item, eventsExecutor)
-                }
-            }
+    }
+
+    items(searchResult) { item ->
+        if (expandedAirport?.icao == item.icao) {
+            ExpandedAirport(expandedAirport, eventsExecutor)
+        } else {
+            CollapsedAirport(item, eventsExecutor)
         }
     }
 }
