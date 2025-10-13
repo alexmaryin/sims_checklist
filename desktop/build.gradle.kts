@@ -51,11 +51,10 @@ compose.desktop {
 
             linux {
                 // a version for all Linux distributable
-                debPackageVersion = "1:7.0"
+                debPackageVersion = "1.7.0"
                 debMaintainer = "java.ul@gmail.com"
                 menuGroup = "Sims checklists"
-                appRelease = libs.versions.app.release.toString()
-                iconFile.set(project.file("sims_checklist.ico"))
+                iconFile.set(project.file("sims_checklist.png"))
             }
 
             macOS {
