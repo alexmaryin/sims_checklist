@@ -1,5 +1,8 @@
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
@@ -23,12 +26,13 @@ fun main() {
         val windowState = rememberWindowState()
         LifecycleController(lifecycle, windowState)
 
+        val isDark = isSystemInDarkTheme()
+
         Window(
             state = windowState,
             title = "Sims checklists",
             onCloseRequest = ::exitApplication
         ) {
-            val isDark = isSystemInDarkTheme()
             MaterialTheme(colorScheme = if (isDark) Themes.dark else Themes.light) {
                 App(root)
             }

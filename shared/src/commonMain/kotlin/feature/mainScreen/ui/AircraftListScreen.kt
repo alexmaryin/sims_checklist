@@ -32,7 +32,8 @@ import commonUi.utils.largeWithShadow
 import commonUi.utils.mySnackbarHost
 
 @Composable
-fun loadAircraftJpgPhoto(name: String): Painter = painterResource(Res.allDrawableResources[name]!!)
+fun loadAircraftJpgPhoto(name: String): Painter =
+    painterResource(Res.allDrawableResources[name] ?: error("App resources are broken!"))
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,6 +58,7 @@ fun AircraftListScreen(component: MainEventExecutor) {
             TopAppBar(
                 title = { Text("Select your aircraft") },
                 actions = {
+                    VersionBadge()
                     IconButton(onClick = { component(MainScreenEvent.SelectMetar) }) {
                         Icon(imageVector = MyIcons.Air, contentDescription = "Weather and airport")
                     }

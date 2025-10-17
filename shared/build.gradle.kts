@@ -126,6 +126,7 @@ buildkonfig {
     defaultConfigs {
         buildConfigField(STRING, "WXAPI_KEY", project.getLocalProperty("WXAPI_KEY"))
         buildConfigField(BOOLEAN, "DEBUG", "false")
+        buildConfigField(STRING, "VER", libs.versions.mainVersion.get())
     }
 }
 

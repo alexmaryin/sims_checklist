@@ -30,7 +30,6 @@ compose.desktop {
         mainClass = "MainKt"
 
         buildTypes.release.proguard {
-//            isEnabled.set(false)
             configurationFiles.from(project.file("compose-desktop.pro"))
         }
 
@@ -40,7 +39,7 @@ compose.desktop {
             copyright = "© 2025 Alex Maryin. All rights reserved."
             modules("java.instrument", "java.management", "java.naming", "java.sql", "jdk.unsupported")
             windows {
-                version = "1.7.1"
+                version = libs.versions.mainVersion.get()
                 console = false
                 vendor = "Alex Maryin"
                 dirChooser = true
@@ -51,7 +50,7 @@ compose.desktop {
 
             linux {
                 // a version for all Linux distributable
-                debPackageVersion = "1.7.1"
+                debPackageVersion = libs.versions.mainVersion.get()
                 debMaintainer = "java.ul@gmail.com"
                 menuGroup = "Sims checklists"
                 iconFile.set(project.file("sims_checklist.png"))
@@ -59,7 +58,7 @@ compose.desktop {
 
             macOS {
                 bundleID = "ru.alexmaryin.simschecklist"
-                packageVersion = "1.7.1"
+                packageVersion = libs.versions.mainVersion.get()
                 appCategory = "public.app-category.utilities"
                 iconFile.set(project.file("sims_checklist.icns"))
             }
