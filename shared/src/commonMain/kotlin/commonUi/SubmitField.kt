@@ -24,11 +24,13 @@ fun SubmitField(
     placeholder: String = "",
     uppercase: Boolean = true,
     isLoading: Boolean = false,
+    enabled: Boolean = true,
     focusManager: FocusManager = LocalFocusManager.current,
     onSubmit: () -> Unit
 ) = OutlinedTextField(
     state = fieldState,
     modifier = modifier.padding(6.dp),
+    enabled = enabled,
     label = { Text(label) },
     placeholder = { Text(placeholder) },
     // TODO: replace CircularProgressIndicator with LoadingIndicator after m3 version 1.5.0
