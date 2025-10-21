@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -24,6 +22,9 @@ import commonUi.ValidatedOutlineInput
 import commonUi.ValidatorIcon
 import commonUi.utils.SimColors
 import commonUi.utils.mySnackbarHost
+import org.jetbrains.compose.resources.painterResource
+import sims_checklist.shared.generated.resources.Res
+import sims_checklist.shared.generated.resources.arrow_back
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,7 +47,7 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
                 title = { Text("Block fuel calculator") },
                 navigationIcon = {
                     IconButton(onClick = { component.onEvent(FuelUiEvent.Back) }) {
-                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back button")
+                        Icon(painter = painterResource(Res.drawable.arrow_back), contentDescription = "Back button")
                     }
                 },
                 colors = SimColors.topBarColors()

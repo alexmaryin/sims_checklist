@@ -4,9 +4,6 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,9 +28,13 @@ import feature.metarscreen.ui.windSegment.WindSegment
 import commonUi.AdaptiveLayout
 import commonUi.Dialog
 import commonUi.ScrollableDigitField
-import commonUi.utils.MyIcons
 import commonUi.utils.SimColors
 import commonUi.utils.mySnackbarHost
+import org.jetbrains.compose.resources.painterResource
+import sims_checklist.shared.generated.resources.Res
+import sims_checklist.shared.generated.resources.arrow_back
+import sims_checklist.shared.generated.resources.compress
+import sims_checklist.shared.generated.resources.info
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -79,7 +80,7 @@ fun MetarScreen(component: MetarScanner) {
                 navigationIcon = {
                     IconButton(onClick = component.onBack) {
                         Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            painter = painterResource(Res.drawable.arrow_back),
                             contentDescription = "Back button"
                         )
                     }
@@ -87,11 +88,11 @@ fun MetarScreen(component: MetarScanner) {
                 actions = {
                     state.metar?.pressureQFE?.let {
                         IconButton(onClick = { component.onEvent(MetarUiEvent.OpenQfeHelper) }) {
-                            Icon(imageVector = MyIcons.Compress, contentDescription = "open QFE helper for airport")
+                            Icon(painter = painterResource(Res.drawable.compress), contentDescription = "open QFE helper for airport")
                         }
                     }
                     IconButton(onClick = { component.onEvent(MetarUiEvent.ShowInfoDialog) }) {
-                        Icon(imageVector = Icons.Default.Info, contentDescription = "Information")
+                        Icon(painter = painterResource(Res.drawable.info), contentDescription = "Information")
                     }
                 },
                 colors = SimColors.topBarColors()
@@ -155,8 +156,8 @@ fun MetarScreen(component: MetarScanner) {
                         }
                     }
 
-                    IcaoInput(Modifier.weight(0.5f), state.isLoading.not()) { icao ->
-                        component.onEvent(MetarUiEvent.SubmitICAO(icao.uppercase()))
+                    IcaoInput(Modifier.weight(0.5f), state.isLoading) { icao ->
+                        component.onEvent(MetarUiEvent.SubmitICAO(icao))
                     }
                 }
 

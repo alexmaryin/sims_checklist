@@ -14,7 +14,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
-import commonUi.loadXmlPicture
+import org.jetbrains.compose.resources.painterResource
+import sims_checklist.shared.generated.resources.Res
+import sims_checklist.shared.generated.resources.ic_wind_vane
 
 val ARROW_PADDING = CIRCLE_PADDING + LONG_STROKE + 60.dp
 
@@ -44,7 +46,7 @@ fun WindPointer(boxScope: BoxWithConstraintsScope, angle: Int, color: Color) {
         val drawAngle = animated + 180f
 
         Image(
-            imageVector = loadXmlPicture("ic_wind_vane"),
+            painter = painterResource(Res.drawable.ic_wind_vane),
             contentDescription = "Wind vane",
             modifier = Modifier
                 .align(Alignment.Center)

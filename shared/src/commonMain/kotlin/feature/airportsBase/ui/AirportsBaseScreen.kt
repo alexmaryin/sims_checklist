@@ -3,8 +3,6 @@ package feature.airportsBase.ui
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -13,12 +11,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import commonUi.utils.MyIcons
 import commonUi.utils.SimColors
 import commonUi.utils.mySnackbarHost
 import feature.airportsBase.AirportEventExecutor
 import feature.airportsBase.AirportsUiEvent
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.painterResource
+import sims_checklist.shared.generated.resources.Res
+import sims_checklist.shared.generated.resources.arrow_back
+import sims_checklist.shared.generated.resources.update_sync
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,7 +38,7 @@ fun AirportsBaseScreen(component: AirportEventExecutor) {
                 title = { Text("Airports base ($titlePart)") },
                 navigationIcon = {
                     IconButton(onClick = { component(AirportsUiEvent.Back) }) {
-                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back button")
+                        Icon(painter = painterResource(Res.drawable.arrow_back), contentDescription = "Back button")
                     }
                 },
                 actions = {
@@ -49,7 +50,7 @@ fun AirportsBaseScreen(component: AirportEventExecutor) {
                         if (state.value.updating) {
                             CircularProgressIndicator()
                         } else {
-                            Icon(imageVector = MyIcons.Update, "update database", Modifier.padding(8.dp))
+                            Icon(painter = painterResource(Res.drawable.update_sync), "update database", Modifier.padding(8.dp))
                         }
                     }
                 },

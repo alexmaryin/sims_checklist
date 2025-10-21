@@ -3,8 +3,6 @@ package feature.checklistDetails.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -15,6 +13,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import feature.checklistDetails.model.Item
 import commonUi.ToggleableText
+import org.jetbrains.compose.resources.painterResource
+import sims_checklist.shared.generated.resources.Res
+import sims_checklist.shared.generated.resources.done
 
 @Composable
 fun ChecklistItem(item: Item, onClick: () -> Unit) = Row(
@@ -42,7 +43,7 @@ fun ChecklistItem(item: Item, onClick: () -> Unit) = Row(
         ToggleableText(item.action, item.checked)
 
     if (item.checked) Icon(
-        imageVector = Icons.Default.Done,
+        painter = painterResource(Res.drawable.done),
         modifier = Modifier.size(24.dp),
         contentDescription = "item checked"
     )

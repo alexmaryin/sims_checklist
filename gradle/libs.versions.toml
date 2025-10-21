@@ -19,7 +19,7 @@ appcompat="1.7.1"
 coreKtx="1.17.0"
 kotlin="2.2.20"
 agp= "8.12.3"
-compose-plugin="1.9.0"
+compose-plugin="1.9.1"
 kotlinxCoroutinesCore="1.10.2"
 kotlinxDatetime="0.7.1"
 kotlinxSerializationJson="1.9.0"
@@ -35,8 +35,8 @@ ksp = "2.2.20-2.0.2" # build issues with -2.0.3
 android-compileSdk = "36"
 android-minSdk = "26"
 icons = "1.7.3"
-mainVersion = "1.7.2"
-mainVersionCode = "31"
+mainVersion = "1.7.3"
+mainVersionCode = "32"
 
 [libraries]
 

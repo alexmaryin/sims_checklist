@@ -1,10 +1,7 @@
 package feature.airportsBase.ui
 
-import RunwayInfo
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -19,6 +16,9 @@ import services.airportService.model.Airport
 import commonUi.CaptionedDivider
 import commonUi.LinkText
 import commonUi.utils.RunwayTooltip
+import org.jetbrains.compose.resources.painterResource
+import sims_checklist.shared.generated.resources.Res
+import sims_checklist.shared.generated.resources.info
 import utils.toDMS
 
 @Composable
@@ -76,7 +76,7 @@ fun ExpandedAirport(
                     Text("Runways: ")
                     RunwayTooltip {
                         Icon(
-                            imageVector = Icons.Outlined.Info,
+                            painter = painterResource(Res.drawable.info),
                             contentDescription = "Show notice about runway course"
                         )
                     }

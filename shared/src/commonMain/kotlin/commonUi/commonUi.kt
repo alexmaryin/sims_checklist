@@ -4,30 +4,22 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusEvent
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import commonUi.utils.SimColors
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.vectorResource
-import sims_checklist.shared.generated.resources.Res
-import sims_checklist.shared.generated.resources.allDrawableResources
-import commonUi.utils.MyIcons
-import commonUi.utils.SimColors
+import org.jetbrains.compose.resources.painterResource
+import sims_checklist.shared.generated.resources.*
 
 @Composable
 fun ToggleableText(
@@ -48,12 +40,12 @@ fun TopBarWithClearAction(caption: String, onBack: () -> Unit, onClear: () -> Un
     title = { Text(caption) },
     navigationIcon = {
         IconButton(onClick = onBack) {
-            Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back button")
+            Icon(painter = painterResource(Res.drawable.arrow_back), contentDescription = "Back button")
         }
     },
     actions = {
         IconButton(onClick = onClear) {
-            Icon(imageVector = MyIcons.CheckBoxOutlineBlank, contentDescription = "Uncheck all")
+            Icon(painter = painterResource(Res.drawable.remove_done), contentDescription = "Uncheck all")
         }
     },
     colors = SimColors.topBarColors()
@@ -61,8 +53,8 @@ fun TopBarWithClearAction(caption: String, onBack: () -> Unit, onClear: () -> Un
 
 @Composable
 fun ValidatorIcon(term: Boolean) {
-    if (term) Icon(Icons.Default.Warning, "Incorrect")
-    else Icon(Icons.Default.Done, "Correct")
+    if (term) Icon(painter = painterResource(Res.drawable.warning), "Incorrect")
+    else Icon(painter = painterResource(Res.drawable.done), "Correct")
 }
 
 
@@ -104,9 +96,6 @@ fun ValidatedOutlineInput(
     isError = isErrorToggle,
     trailingIcon = { ValidatorIcon(isErrorToggle) }
 )
-
-@Composable
-fun loadXmlPicture(name: String): ImageVector = vectorResource(Res.allDrawableResources[name]!!)
 
 /**
  * A composable that displays text styled as a hyperlink and opens the given [url] when clicked.

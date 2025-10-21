@@ -30,7 +30,7 @@ kotlin {
                 implementation(compose.foundation)
                 implementation(compose.material3)
                 implementation(compose.components.resources)
-                implementation(libs.material.icons)
+//                implementation(libs.material.icons)
                 implementation(libs.kotlinx.coroutines.core)
 //                implementation(compose.materialIconsExtended)
                 // Needed only for preview.
