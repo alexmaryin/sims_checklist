@@ -1,4 +1,4 @@
-package commonUi
+package commonUi.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions

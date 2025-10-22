@@ -66,8 +66,9 @@ class Root(
         onFinished = { navigation.pop() }
     )
 
-    private fun fuelCalculator(aircraftId: Int) = FuelCalculator(
+    private fun fuelCalculator(context: ComponentContext, aircraftId: Int) = FuelCalculator(
         aircraftId = aircraftId,
+        componentContext = context,
         onBack = { navigation.pop() }
     )
 
@@ -111,7 +112,7 @@ class Root(
                 configuration.checklistId
             ))
 
-            is Configuration.FuelCalculator -> FuelCalculatorChild(fuelCalculator(configuration.aircraftId))
+            is Configuration.FuelCalculator -> FuelCalculatorChild(fuelCalculator(context, configuration.aircraftId))
 
             is Configuration.MetarScanner -> MetarScannerChild(metarScanner(context, configuration.icao))
 

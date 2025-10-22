@@ -6,7 +6,7 @@ import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import commonUi.SubmitField
+import commonUi.components.SubmitField
 
 @Composable
 fun IcaoInput(

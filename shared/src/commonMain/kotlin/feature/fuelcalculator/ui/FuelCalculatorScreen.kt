@@ -1,12 +1,13 @@
 package feature.fuelcalculator.ui
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -14,14 +15,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import commonUi.components.ValidatedFiled
+import commonUi.components.ValidatorIcon
+import commonUi.utils.ObserveEvents
+import commonUi.utils.SimColors
+import commonUi.utils.mySnackbarHost
 import feature.fuelcalculator.FuelCalcViewState
 import feature.fuelcalculator.FuelCalculator
 import feature.fuelcalculator.FuelUiEvent
-import commonUi.RelativeOutlineInput
-import commonUi.ValidatedOutlineInput
-import commonUi.ValidatorIcon
-import commonUi.utils.SimColors
-import commonUi.utils.mySnackbarHost
 import org.jetbrains.compose.resources.painterResource
 import sims_checklist.shared.generated.resources.Res
 import sims_checklist.shared.generated.resources.arrow_back
@@ -33,11 +34,12 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
     val snackbarHostState = remember { SnackbarHostState() }
     val state: State<FuelCalcViewState> = component.state.subscribeAsState()
 
-    state.value.snackBar?.let {
-        LaunchedEffect(snackbarHostState) {
-            val result = snackbarHostState.showSnackbar(it.message, it.button, false, SnackbarDuration.Short)
-            if (result == SnackbarResult.ActionPerformed) component.onEvent(it.event)
-        }
+    ObserveEvents(component.events) { event ->
+        snackbarHostState.showSnackbar(
+            message = event.message,
+            actionLabel = event.button,
+            duration = SnackbarDuration.Short
+        )
     }
 
     Scaffold(
@@ -56,15 +58,15 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
         contentWindowInsets = WindowInsets.safeDrawing
     ) { paddingValues ->
 
-        var tripDistance by rememberSaveable { mutableStateOf(state.value.tripDistance.toString()) }
-        var alterDistance by rememberSaveable { mutableStateOf(state.value.alterDistance.toString()) }
-        var headWind by rememberSaveable { mutableStateOf(state.value.headWindComponent.toString()) }
-        var avgCruiseSpeed by rememberSaveable { mutableStateOf(state.value.performance.averageCruiseSpeed.toString()) }
-        var avgFuelFlow by rememberSaveable { mutableStateOf(state.value.performance.averageFuelFlow.toString()) }
-        var taxiFuel by rememberSaveable { mutableStateOf(state.value.performance.taxiFuel.toString()) }
-        var contingency by rememberSaveable { mutableStateOf(state.value.performance.contingency.toString()) }
-        var reserveTime by rememberSaveable { mutableStateOf(state.value.performance.reservesMinutes.toString()) }
-        var fuelCapacity by rememberSaveable { mutableStateOf(state.value.performance.fuelCapacity.toString()) }
+        val tripDistance = rememberTextFieldState(state.value.tripDistance.toString())
+        val alterDistance = rememberTextFieldState(state.value.alterDistance.toString())
+        val headWind = rememberTextFieldState(state.value.headWindComponent.toString())
+        val avgCruiseSpeed = rememberTextFieldState(state.value.performance.averageCruiseSpeed.toString())
+        val avgFuelFlow = rememberTextFieldState(state.value.performance.averageFuelFlow.toString())
+        val taxiFuel = rememberTextFieldState(state.value.performance.taxiFuel.toString())
+        val contingency = rememberTextFieldState(state.value.performance.contingency.toString())
+        val reserveTime = rememberTextFieldState(state.value.performance.reservesMinutes.toString())
+        val fuelCapacity = rememberTextFieldState(state.value.performance.fuelCapacity.toString())
 
         val scrollState = rememberScrollState()
 
@@ -75,37 +77,34 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            val scope = rememberCoroutineScope()
-            val relocationRequester = remember { BringIntoViewRequester() }
-
             Text(
                 text = "Calculate fuel quantity for your trip on ${state.value.name}",
                 modifier = Modifier.padding(8.dp),
                 color = MaterialTheme.colorScheme.onSurface
             )
             Row {
-                ValidatedOutlineInput(
+                ValidatedFiled(
+                    fieldState = tripDistance,
                     modifier = Modifier.weight(1f),
-                    value = tripDistance,
-                    labelText = "Trip distance, sm",
-                    isErrorToggle = component.isFloatIncorrect(tripDistance, false)
-                ) { new -> tripDistance = new; component.onEvent(FuelUiEvent.TripDistanceChange(new)) }
+                    label = "Trip distance, sm",
+                    isError = component.isFloatIncorrect(tripDistance.text.toString(), false)
+                ) { component.onEvent(FuelUiEvent.TripDistanceChange(tripDistance.text.toString())) }
 
-                ValidatedOutlineInput(
+                ValidatedFiled(
+                    fieldState = alterDistance,
                     modifier = Modifier.weight(1f),
-                    value = alterDistance,
-                    labelText = "Alter. distance, sm",
-                    isErrorToggle = component.isFloatIncorrect(alterDistance)
-                ) { new -> alterDistance = new; component.onEvent(FuelUiEvent.AlterDistanceChange(new)) }
+                    label = "Alter. distance, sm",
+                    isError = component.isFloatIncorrect(alterDistance.text.toString())
+                ) { component.onEvent(FuelUiEvent.AlterDistanceChange(alterDistance.text.toString())) }
 
             }
-
             Row {
-                ValidatedOutlineInput(
-                    Modifier.weight(1f),
-                    headWind, "Headwind component, kt",
-                    component.isIntIncorrect(headWind),
-                ) { new -> headWind = new; component.onEvent(FuelUiEvent.HeadwindChange(new)) }
+                ValidatedFiled(
+                    fieldState = headWind,
+                    modifier = Modifier.weight(1f),
+                    label = "Headwind component, kt",
+                    isError = component.isIntIncorrect(headWind.text.toString()),
+                ) { component.onEvent(FuelUiEvent.HeadwindChange(headWind.text.toString())) }
 
                 OutlinedTextField(
                     value = state.value.blockFuel().toString(),
@@ -123,20 +122,19 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
                 )
             }
             Row {
-                ValidatedOutlineInput(
-                    Modifier.weight(1f),
-                    taxiFuel, "Taxi fuel, g",
-                    component.isFloatIncorrect(taxiFuel),
-                ) { new -> taxiFuel = new; component.onEvent(FuelUiEvent.TaxiChange(new)) }
+                ValidatedFiled(
+                    fieldState = taxiFuel,
+                    modifier = Modifier.weight(1f),
+                    label = "Taxi fuel, g",
+                    isError = component.isFloatIncorrect(taxiFuel.text.toString()),
+                ) { component.onEvent(FuelUiEvent.TaxiChange(taxiFuel.text.toString())) }
 
-                ValidatedOutlineInput(
-                    Modifier.weight(1f),
-                    "$contingency%", "Contingency fuel, % of trip",
-                    component.isFloatIncorrect(contingency),
-                ) { new ->
-                    contingency = new.substringBefore("%")
-                    component.onEvent(FuelUiEvent.ContingencyChange(new.substringBefore("%")))
-                }
+                ValidatedFiled(
+                    fieldState = contingency,
+                    modifier = Modifier.weight(1f),
+                    label = "Contingency fuel, % of trip",
+                    isError = component.isFloatIncorrect(contingency.text.toString()),
+                ) { component.onEvent(FuelUiEvent.ContingencyChange(contingency.text.toString())) }
             }
             HorizontalDivider(modifier = Modifier.padding(8.dp))
             Text(
@@ -145,17 +143,19 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
                 color = MaterialTheme.colorScheme.onSurface
             )
             Row {
-                RelativeOutlineInput(
-                    Modifier.weight(1f),
-                    avgCruiseSpeed, "Average cruise speed, kt", relocationRequester, scope,
-                    component.isFloatIncorrect(avgCruiseSpeed, false),
-                ) { new -> avgCruiseSpeed = new; component.onEvent(FuelUiEvent.CruiseSpeedChange(new)) }
+                ValidatedFiled(
+                    fieldState = avgCruiseSpeed,
+                    modifier = Modifier.weight(1f),
+                    label = "Average cruise speed, kt",
+                    isError = component.isFloatIncorrect(avgCruiseSpeed.text.toString(), false),
+                ) { component.onEvent(FuelUiEvent.CruiseSpeedChange(avgCruiseSpeed.text.toString())) }
 
-                RelativeOutlineInput(
-                    Modifier.weight(1f),
-                    avgFuelFlow, "Average fuel flow, gph", relocationRequester, scope,
-                    component.isFloatIncorrect(avgFuelFlow, false),
-                ) { new -> avgFuelFlow = new; component.onEvent(FuelUiEvent.FuelFlowChange(new)) }
+                ValidatedFiled(
+                    fieldState = avgFuelFlow,
+                    modifier = Modifier.weight(1f),
+                    label = "Average fuel flow, gph",
+                    isError = component.isFloatIncorrect(avgFuelFlow.text.toString(), false),
+                ) { component.onEvent(FuelUiEvent.FuelFlowChange(avgFuelFlow.text.toString())) }
 
             }
             Text(
@@ -164,18 +164,19 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
                 color = MaterialTheme.colorScheme.onSurface
             )
             Row {
-                RelativeOutlineInput(
-                    Modifier.weight(1f),
-                    reserveTime, "Reserve time, min", relocationRequester, scope,
-                    component.isIntIncorrect(reserveTime),
-                ) { new -> reserveTime = new; component.onEvent(FuelUiEvent.ReserveTimeChange(new)) }
+                ValidatedFiled(
+                    fieldState = reserveTime,
+                    modifier = Modifier.weight(1f),
+                    label = "Reserve time, min",
+                    isError = component.isIntIncorrect(reserveTime.text.toString()),
+                ) { component.onEvent(FuelUiEvent.ReserveTimeChange(reserveTime.text.toString())) }
 
-                RelativeOutlineInput(
-                    Modifier.weight(1f),
-                    fuelCapacity, "Fuel capacity, g", relocationRequester, scope,
-                    component.isFloatIncorrect(fuelCapacity, false),
-                ) { new -> fuelCapacity = new; component.onEvent(FuelUiEvent.FuelCapacityChange(new)) }
-
+                ValidatedFiled(
+                    fieldState = fuelCapacity,
+                    modifier = Modifier.weight(1f),
+                    label = "Fuel capacity, g",
+                    isError = component.isFloatIncorrect(fuelCapacity.text.toString(), false),
+                ) { component.onEvent(FuelUiEvent.FuelCapacityChange(fuelCapacity.text.toString())) }
             }
         }
     }

@@ -56,6 +56,9 @@ kotlin {
                 // Room
                 implementation(libs.androidx.room.runtime)
                 implementation(libs.androidx.sqlite.bundled)
+                // Lifecycle
+                implementation(libs.androidx.lifecycle.runtimeCompose)
+                implementation(libs.androidx.lifecycle.viewmodelCompose)
             }
         }
         val commonTest by getting {

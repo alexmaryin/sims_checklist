@@ -9,8 +9,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import commonUi.SubmitField
-import feature.airportsBase.AirportEventExecutor
+import commonUi.components.SubmitField
 import feature.airportsBase.AirportsUiEvent
 import kotlinx.coroutines.flow.collectLatest
 import services.airportService.model.Airport
@@ -21,14 +20,14 @@ fun LazyListScope.airportsList(
     searchResult: List<Airport>,
     expandedAirport: Airport? = null,
     isVisible: Boolean = false,
-    eventsExecutor: AirportEventExecutor,
+    onAction: (AirportsUiEvent) -> Unit,
 ) {
     item {
         val search = rememberTextFieldState(searchString)
 
         LaunchedEffect(search) {
             snapshotFlow { search.text.toString() }.collectLatest {
-                eventsExecutor(AirportsUiEvent.SendSearch(it))
+                onAction(AirportsUiEvent.SendSearch(it))
             }
         }
 
@@ -43,9 +42,9 @@ fun LazyListScope.airportsList(
 
     items(searchResult) { item ->
         if (expandedAirport?.icao == item.icao) {
-            ExpandedAirport(expandedAirport, eventsExecutor)
+            ExpandedAirport(expandedAirport, onAction)
         } else {
-            CollapsedAirport(item, eventsExecutor)
+            CollapsedAirport(item, onAction)
         }
     }
 }

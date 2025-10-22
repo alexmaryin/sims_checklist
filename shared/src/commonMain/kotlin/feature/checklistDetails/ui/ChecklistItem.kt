@@ -12,7 +12,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import feature.checklistDetails.model.Item
-import commonUi.ToggleableText
+import commonUi.components.ToggleableText
 import org.jetbrains.compose.resources.painterResource
 import sims_checklist.shared.generated.resources.Res
 import sims_checklist.shared.generated.resources.done

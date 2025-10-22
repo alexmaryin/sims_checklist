@@ -27,7 +27,7 @@ import feature.metarscreen.ui.airportSegment.AirportInfo
 import feature.metarscreen.ui.windSegment.WindSegment
 import commonUi.AdaptiveLayout
 import commonUi.Dialog
-import commonUi.ScrollableDigitField
+import commonUi.components.ScrollableDigitField
 import commonUi.utils.SimColors
 import commonUi.utils.mySnackbarHost
 import org.jetbrains.compose.resources.painterResource

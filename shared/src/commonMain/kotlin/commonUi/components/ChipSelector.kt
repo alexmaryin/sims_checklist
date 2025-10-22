@@ -1,4 +1,4 @@
-package commonUi
+package commonUi.components
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateRectAsState

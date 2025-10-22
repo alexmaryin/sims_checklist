@@ -12,8 +12,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import services.airportService.model.Airport
 import services.airportService.model.Runway
-import commonUi.ChipSelector
-import commonUi.RunwayChip
+import commonUi.components.ChipSelector
+import commonUi.components.RunwayChip
 import commonUi.utils.RunwayTooltip
 import org.jetbrains.compose.resources.painterResource
 import sims_checklist.shared.generated.resources.Res

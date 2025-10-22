@@ -95,7 +95,7 @@ fun AirportsBaseScreen(component: AirportEventExecutor) {
                 searchResult = state.value.searchResult,
                 expandedAirport = state.value.expandedAirport,
                 isVisible = state.value.airportsCount > 0,
-                eventsExecutor = component
+                onAction = { component(it) }
             )
         }
     }

@@ -9,7 +9,6 @@ data class FuelCalcViewState(
     val tripDistance: Float = 100f,
     val alterDistance: Float = 0f,
     val headWindComponent: Int = 0,
-    val snackBar: FuelSnackBarState? = null
 ) {
     private fun fuelInGallons(distance: Float) = with(performance) {
         distance / (averageCruiseSpeed - headWindComponent) * averageFuelFlow
@@ -24,14 +23,12 @@ data class FuelCalcViewState(
     val fuelExceed get() = blockFuel() > performance.fuelCapacity
 }
 
-sealed class FuelSnackBarState(
+sealed class FuelSnackBarEvent(
     val message: String,
     val button: String,
-    val event: FuelUiEvent
 ) {
-    data class ErrorHint(val error: String) : FuelSnackBarState(
+    data class Error(val error: String) : FuelSnackBarEvent(
         message = error,
         button = "Close",
-        event = FuelUiEvent.SnackBarClose
     )
 }
