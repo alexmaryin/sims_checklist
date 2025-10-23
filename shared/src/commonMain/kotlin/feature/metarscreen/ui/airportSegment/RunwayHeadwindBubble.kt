@@ -13,7 +13,9 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import feature.metarscreen.model.WindUi
-import commonUi.loadXmlPicture
+import org.jetbrains.compose.resources.painterResource
+import sims_checklist.shared.generated.resources.Res
+import sims_checklist.shared.generated.resources.arrow_down
 
 @Composable
 fun RunwayHeadwindBubble(name: String, windUi: WindUi) {
@@ -43,7 +45,7 @@ fun RunwayHeadwindBubble(name: String, windUi: WindUi) {
         ) {
             Text(text = "${windUi.straight} Kt", textAlign = TextAlign.Center)
             Image(
-                imageVector = loadXmlPicture("arrow_down"),
+                painter = painterResource(Res.drawable.arrow_down),
                 contentDescription = "Headwind speed",
                 modifier = Modifier
                     .size(20.dp).align(Alignment.CenterHorizontally),

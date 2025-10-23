@@ -9,8 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import commonUi.utils.MyIcons
 import commonUi.utils.largeWithShadow
+import org.jetbrains.compose.resources.painterResource
+import sims_checklist.shared.generated.resources.Res
+import sims_checklist.shared.generated.resources.air
+import sims_checklist.shared.generated.resources.compress
 
 @Composable
 fun AirportHeader(
@@ -27,10 +30,10 @@ fun AirportHeader(
         Text(text = icao, modifier = Modifier.requiredWidth(90.dp), style = largeWithShadow())
         Text(text = name, modifier = Modifier.weight(1f))
         IconButton(onClick = onMetarClick) {
-            Icon(imageVector = MyIcons.Air, contentDescription = "Open Metar for airport")
+            Icon(painter = painterResource(Res.drawable.air), contentDescription = "Open Metar for airport")
         }
         IconButton(onClick = onQfeClick) {
-            Icon(imageVector = MyIcons.Compress, contentDescription = "Open QFE helper for airport")
+            Icon(painter = painterResource(Res.drawable.compress), contentDescription = "Open QFE helper for airport")
         }
     }
 }

@@ -29,7 +29,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
 import feature.metarscreen.model.RunwayUi
-import commonUi.loadXmlPicture
+import org.jetbrains.compose.resources.painterResource
+import sims_checklist.shared.generated.resources.Res
+import sims_checklist.shared.generated.resources.runway_dark
+import sims_checklist.shared.generated.resources.runway_light
 import kotlin.math.roundToInt
 
 expect fun runwayScrollOrientation(): Orientation
@@ -60,9 +63,9 @@ fun BoxWithConstraintsScope.Runway(data: RunwayUi, userAngleEnter: (Int) -> Unit
                     delta
                 })
     ) {
-        val filename = if(isSystemInDarkTheme()) "runway_dark" else "runway_light"
+        val runwayResource = if(isSystemInDarkTheme()) Res.drawable.runway_dark else Res.drawable.runway_light
         Image(
-            imageVector = loadXmlPicture(filename),
+            painter = painterResource(runwayResource),
             contentDescription = "runway",
             modifier = Modifier
                 .size(min(this@Runway.maxWidth, this@Runway.maxHeight))

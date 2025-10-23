@@ -30,7 +30,8 @@ kotlin {
                 implementation(compose.foundation)
                 implementation(compose.material3)
                 implementation(compose.components.resources)
-                implementation(libs.material.icons)
+                implementation(libs.material3.adaptive)
+//                implementation(libs.material.icons)
                 implementation(libs.kotlinx.coroutines.core)
 //                implementation(compose.materialIconsExtended)
                 // Needed only for preview.
@@ -56,6 +57,9 @@ kotlin {
                 // Room
                 implementation(libs.androidx.room.runtime)
                 implementation(libs.androidx.sqlite.bundled)
+                // Lifecycle
+                implementation(libs.androidx.lifecycle.runtimeCompose)
+                implementation(libs.androidx.lifecycle.viewmodelCompose)
             }
         }
         val commonTest by getting {

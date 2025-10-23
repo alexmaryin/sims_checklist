@@ -1,8 +1,6 @@
 package feature.metarscreen.ui.airportSegment
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -14,9 +12,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import services.airportService.model.Airport
 import services.airportService.model.Runway
-import commonUi.ChipSelector
-import commonUi.RunwayChip
+import commonUi.components.ChipSelector
+import commonUi.components.RunwayChip
 import commonUi.utils.RunwayTooltip
+import org.jetbrains.compose.resources.painterResource
+import sims_checklist.shared.generated.resources.Res
+import sims_checklist.shared.generated.resources.info
 
 @Composable
 fun AirportInfo(airport: Airport, onSelectRunway: (Runway) -> Unit) {
@@ -41,7 +42,7 @@ fun AirportInfo(airport: Airport, onSelectRunway: (Runway) -> Unit) {
             Spacer(modifier = Modifier.width(8.dp))
             RunwayTooltip {
                 Icon(
-                    imageVector = Icons.Outlined.Info,
+                    painter = painterResource(Res.drawable.info),
                     contentDescription = "Show notice about runway course",
                     tint = MaterialTheme.colorScheme.secondary
                 )

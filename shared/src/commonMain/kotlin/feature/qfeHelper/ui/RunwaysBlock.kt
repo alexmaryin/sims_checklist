@@ -15,8 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.unit.dp
 import feature.qfeHelper.ui.models.QFERunwayUi
-import commonUi.ChipSelector
-import commonUi.RunwayChip
+import commonUi.components.ChipSelector
+import commonUi.components.RunwayChip
 
 @Composable
 fun RunwaysBlock(

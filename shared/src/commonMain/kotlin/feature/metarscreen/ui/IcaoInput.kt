@@ -1,80 +1,28 @@
 package feature.metarscreen.ui
 
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.relocation.BringIntoViewRequester
-import androidx.compose.foundation.relocation.bringIntoViewRequester
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.text.input.clearText
+import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusEvent
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import commonUi.utils.SimColors
+import commonUi.components.SubmitField
 
 @Composable
 fun IcaoInput(
-    modifier: Modifier,
-    enabled: Boolean,
+    isLoading: Boolean,
     onClick: (String) -> Unit
 ) {
-    val relocationRequester = remember { BringIntoViewRequester() }
-    val keyboardController = LocalSoftwareKeyboardController.current
-    val scope = rememberCoroutineScope()
-    var icaoInput by remember { mutableStateOf("") }
+    val icaoInput = rememberTextFieldState("")
 
-    fun submitICAO() {
-        keyboardController?.hide()
-        onClick(icaoInput)
-        icaoInput = ""
-    }
-
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically
+    SubmitField(
+        fieldState = icaoInput,
+        modifier = Modifier.widthIn(max = 180.dp),
+        label = "ICAO",
+        uppercase = true,
+        isLoading = isLoading
     ) {
-        OutlinedTextField(
-            value = icaoInput,
-            onValueChange = { new -> icaoInput = new },
-            label = { Text("ICAO") },
-            singleLine = true,
-            enabled = enabled,
-            keyboardActions = KeyboardActions(onDone = { submitICAO() }),
-            keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Done,
-                capitalization = KeyboardCapitalization.Characters,
-                keyboardType = KeyboardType.Ascii
-            ),
-            modifier = Modifier.padding(8.dp).weight(1f)
-                .bringIntoViewRequester(relocationRequester)
-                .onFocusEvent {
-                    if (it.isFocused) {
-                        scope.launch { delay(300); relocationRequester.bringIntoView() }
-                    }
-                }
-        )
-
-        Button(
-            onClick = { submitICAO() },
-            enabled = enabled,
-            colors = SimColors.buttonColors()
-        ) {
-            if (enabled.not()) {
-                CircularProgressIndicator()
-            } else {
-                Text("Submit")
-            }
-        }
+        onClick(icaoInput.text.toString())
+        icaoInput.clearText()
     }
 }

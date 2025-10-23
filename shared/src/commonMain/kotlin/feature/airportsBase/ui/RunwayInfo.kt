@@ -1,9 +1,9 @@
+package feature.airportsBase.ui
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -14,6 +14,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import services.airportService.model.Runway
 import commonUi.utils.largeWithShadow
+import org.jetbrains.compose.resources.painterResource
+import sims_checklist.shared.generated.resources.Res
+import sims_checklist.shared.generated.resources.close
 
 @Composable
 fun RunwayInfo(runway: Runway, modifier: Modifier = Modifier) {
@@ -24,7 +27,7 @@ fun RunwayInfo(runway: Runway, modifier: Modifier = Modifier) {
     ) {
         if (runway.closed) {
             Icon(
-                imageVector = Icons.Default.Close,
+                painter = painterResource(Res.drawable.close),
                 contentDescription = "Runway Closed",
                 tint = Color.Red
             )

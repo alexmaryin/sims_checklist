@@ -26,10 +26,13 @@ import feature.mainScreen.MainScreenEvent
 import org.jetbrains.compose.resources.painterResource
 import sims_checklist.shared.generated.resources.Res
 import sims_checklist.shared.generated.resources.allDrawableResources
-import commonUi.utils.MyIcons
 import commonUi.utils.SimColors
 import commonUi.utils.largeWithShadow
 import commonUi.utils.mySnackbarHost
+import sims_checklist.shared.generated.resources.air
+import sims_checklist.shared.generated.resources.cloud_download
+import sims_checklist.shared.generated.resources.compress
+import sims_checklist.shared.generated.resources.gas_station
 
 @Composable
 fun loadAircraftJpgPhoto(name: String): Painter =
@@ -60,13 +63,13 @@ fun AircraftListScreen(component: MainEventExecutor) {
                 actions = {
                     VersionBadge()
                     IconButton(onClick = { component(MainScreenEvent.SelectMetar) }) {
-                        Icon(imageVector = MyIcons.Air, contentDescription = "Weather and airport")
+                        Icon(painter = painterResource(Res.drawable.air), contentDescription = "Weather and airport")
                     }
                     IconButton(onClick = { component(MainScreenEvent.SelectAirportsBase) }) {
-                        Icon(imageVector = MyIcons.Update, contentDescription = "Airports database")
+                        Icon(painter = painterResource(Res.drawable.cloud_download), contentDescription = "Airports database")
                     }
                     IconButton(onClick = { component(MainScreenEvent.SelectQFEHelper) }) {
-                        Icon(imageVector = MyIcons.Compress, contentDescription = "QFE helper")
+                        Icon(painter = painterResource(Res.drawable.compress), contentDescription = "QFE helper")
                     }
                 },
                 colors = SimColors.topBarColors()
@@ -75,7 +78,7 @@ fun AircraftListScreen(component: MainEventExecutor) {
         snackbarHost = mySnackbarHost(snackbarHostState),
         bottomBar = {
             AnimatedVisibility(visible = state.value.updateMessage != null) {
-                BottomAppBar() {
+                BottomAppBar {
                     Text(
                         text = state.value.updateMessage ?: "",
                         style = MaterialTheme.typography.bodyLarge,
@@ -129,7 +132,7 @@ fun AircraftListScreen(component: MainEventExecutor) {
                             IconButton(
                                 onClick = { component(MainScreenEvent.SelectFuelCalculator(item.id)) }
                             ) {
-                                Icon(imageVector = MyIcons.GasStation, contentDescription = "Open fuel calculator")
+                                Icon(painter = painterResource(Res.drawable.gas_station), contentDescription = "Open fuel calculator")
                             }
                         }
                     }

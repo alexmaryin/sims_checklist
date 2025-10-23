@@ -1,4 +1,4 @@
-package commonUi
+package commonUi.components
 
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.ui.Modifier

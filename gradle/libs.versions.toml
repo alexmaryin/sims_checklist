@@ -19,7 +19,8 @@ appcompat="1.7.1"
 coreKtx="1.17.0"
 kotlin="2.2.20"
 agp= "8.12.3"
-compose-plugin="1.9.0"
+compose-plugin="1.9.1"
+androidx-lifecycle = "2.9.5"
 kotlinxCoroutinesCore="1.10.2"
 kotlinxDatetime="0.7.1"
 kotlinxSerializationJson="1.9.0"
@@ -29,14 +30,15 @@ decompose="3.4.0"
 essenity="2.5.0"
 koin="4.1.1"
 ktor="3.3.1"
-room = "2.8.2"
+room = "2.8.3"
 sqlite = "2.6.1"
 ksp = "2.2.20-2.0.2" # build issues with -2.0.3
+adaptive = "1.1.2"
 android-compileSdk = "36"
 android-minSdk = "26"
 icons = "1.7.3"
-mainVersion = "1.7.2"
-mainVersionCode = "31"
+mainVersion = "1.7.3"
+mainVersionCode = "32"
 
 [libraries]
 
@@ -62,4 +64,6 @@ androidx-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.r
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 androidx-room-sqlite-wrapper = { module = "androidx.room:room-sqlite-wrapper", version.ref = "room" }
-material-icons = { module = "org.jetbrains.compose.material:material-icons-core", version.ref = "icons" }
+androidx-lifecycle-viewmodelCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-runtimeCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
+material3-adaptive = { module = "org.jetbrains.compose.material3.adaptive:adaptive", version.ref = "adaptive" }

@@ -13,7 +13,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import commonUi.loadXmlPicture
+import org.jetbrains.compose.resources.painterResource
+import sims_checklist.shared.generated.resources.Res
+import sims_checklist.shared.generated.resources.arrow_left
+import sims_checklist.shared.generated.resources.arrow_right
+import sims_checklist.shared.generated.resources.ic_airplane
 
 object Bubble {
 
@@ -49,7 +53,7 @@ object Bubble {
     fun CrossWindLeftText(value: Int) {
         Text(text = "$value Kt")
         Image(
-            imageVector = loadXmlPicture("arrow_right"),
+            painter = painterResource(Res.drawable.arrow_right),
             contentDescription = "Left crosswind",
             modifier = Modifier
                 .size(20.dp),
@@ -60,7 +64,7 @@ object Bubble {
     @Composable
     fun CrossWindRightText(value: Int) {
         Image(
-            imageVector = loadXmlPicture("arrow_left"),
+            painter = painterResource(Res.drawable.arrow_left),
             contentDescription = "Right crosswind",
             modifier = Modifier
                 .size(20.dp),
@@ -71,7 +75,7 @@ object Bubble {
 
     @Composable
     fun AirplaneIcon(modifier: Modifier) = Image(
-        imageVector = loadXmlPicture("ic_airplane"),
+        painter = painterResource(Res.drawable.ic_airplane),
         contentDescription = "Airplane",
         modifier = modifier
             .padding(10.dp)

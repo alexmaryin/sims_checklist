@@ -4,18 +4,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
+import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import feature.airportsBase.AirportEventExecutor
+import commonUi.components.SubmitField
 import feature.airportsBase.AirportsUiEvent
+import kotlinx.coroutines.flow.collectLatest
 import services.airportService.model.Airport
 
 
@@ -24,32 +20,31 @@ fun LazyListScope.airportsList(
     searchResult: List<Airport>,
     expandedAirport: Airport? = null,
     isVisible: Boolean = false,
-    eventsExecutor: AirportEventExecutor,
+    onAction: (AirportsUiEvent) -> Unit,
 ) {
-
     item {
-        val keyboardController = LocalSoftwareKeyboardController.current
-        OutlinedTextField(
-            value = searchString,
-            onValueChange = { new -> eventsExecutor(AirportsUiEvent.SendSearch(new)) },
-            enabled = isVisible,
-            keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
-            keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Done,
-                capitalization = KeyboardCapitalization.Characters,
-                keyboardType = KeyboardType.Ascii
-            ),
+        val search = rememberTextFieldState(searchString)
+
+        LaunchedEffect(search) {
+            snapshotFlow { search.text.toString() }.collectLatest {
+                onAction(AirportsUiEvent.SendSearch(it))
+            }
+        }
+
+        SubmitField(
+            fieldState = search,
             modifier = Modifier.fillMaxWidth().padding(16.dp),
-            label = { Text("Search airport by ICAO or name") },
-            singleLine = true
-        )
+            enabled = isVisible,
+            label = "Search airport by ICAO or name",
+            uppercase = false
+        ) {}
     }
 
     items(searchResult) { item ->
         if (expandedAirport?.icao == item.icao) {
-            ExpandedAirport(expandedAirport, eventsExecutor)
+            ExpandedAirport(expandedAirport, onAction)
         } else {
-            CollapsedAirport(item, eventsExecutor)
+            CollapsedAirport(item, onAction)
         }
     }
 }

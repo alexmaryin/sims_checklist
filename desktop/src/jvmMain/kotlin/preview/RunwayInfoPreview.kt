@@ -1,6 +1,6 @@
 package preview
 
-import RunwayInfo
+import feature.airportsBase.ui.RunwayInfo
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable

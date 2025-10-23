@@ -3,6 +3,7 @@ package commonUi.utils
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.RichTooltip
 import androidx.compose.material3.Text
+import androidx.compose.material3.TooltipAnchorPosition
 import androidx.compose.material3.TooltipBox
 import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.rememberTooltipState
@@ -11,6 +12,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.dp
 
 private val hintString = buildAnnotatedString {
     append(
@@ -29,7 +31,9 @@ private val hintString = buildAnnotatedString {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RunwayTooltip(body: @Composable () -> Unit) = TooltipBox(
-    positionProvider = TooltipDefaults.rememberRichTooltipPositionProvider(),
+    positionProvider = TooltipDefaults.rememberTooltipPositionProvider(TooltipAnchorPosition.Above,
+        spacingBetweenTooltipAndAnchor = 12.dp
+    ),
     tooltip = {
         RichTooltip(title = { Text("NOTICE") }) { Text(hintString) }
     },

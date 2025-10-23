@@ -1,20 +1,33 @@
 package feature.fuelcalculator
 
+import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
+import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import repository.AircraftRepository
 
 class FuelCalculator(
     aircraftId: Int,
+    private val componentContext: ComponentContext,
     private val onBack: () -> Unit
-) : KoinComponent {
+) : KoinComponent, ComponentContext by componentContext {
 
     private val repository: AircraftRepository by inject()
     private val aircraft = repository.getById(aircraftId)
 
     val state = MutableValue(FuelCalcViewState(aircraft.name, aircraft.performance))
+
+    private val eventChannel = Channel<FuelSnackBarEvent>()
+    val events = eventChannel.receiveAsFlow()
+
+    val scope = componentContext.coroutineScope() + SupervisorJob()
 
     fun isFloatIncorrect(value: String, canBeZero: Boolean = true) = with(value.toFloatOrNull()) {
         this == null || (canBeZero && this < 0f) || (canBeZero.not() && this <= 0f)
@@ -34,7 +47,6 @@ class FuelCalculator(
             is FuelUiEvent.ContingencyChange -> onContingencyChange(event.new)
             is FuelUiEvent.ReserveTimeChange -> onReserveTimeChange(event.new)
             is FuelUiEvent.FuelCapacityChange -> onFuelCapacityChange(event.new)
-            is FuelUiEvent.SnackBarClose -> state.update { it.copy(snackBar = null) }
             is FuelUiEvent.Back -> onBack()
         }
     }
@@ -42,32 +54,28 @@ class FuelCalculator(
 
     private fun onTripDistanceChange(new: String) {
         if (isFloatIncorrect(new).not()) state.update {
-            it.copy(tripDistance = new.toFloat(), snackBar = null)
-        } else {
-            state.update {
-                it.copy(snackBar = FuelSnackBarState.ErrorHint("Only digits are allowed in trip distance"))
-            }
+            it.copy(tripDistance = new.toFloat())
+        } else scope.launch {
+            eventChannel.send(FuelSnackBarEvent.Error("Only digits are allowed in trip distance"))
         }
     }
 
 
     private fun onAlterDistanceChange(new: String) {
         if (isFloatIncorrect(new).not()) state.update {
-            it.copy(alterDistance = new.toFloat(), snackBar = null)
-        } else {
-            state.update {
-                it.copy(snackBar = FuelSnackBarState.ErrorHint("Only digits are allowed in alter. distance"))
-            }
+            it.copy(alterDistance = new.toFloat())
+        } else scope.launch {
+            eventChannel.send(FuelSnackBarEvent.Error("Only digits are allowed in alter. distance"))
         }
     }
 
     private fun onHeadwindChange(new: String) {
         if (isIntIncorrect(new, state.value.performance.averageCruiseSpeed.toInt()).not()) state.update {
-            it.copy(headWindComponent = new.toInt(), snackBar = null)
-        } else {
-            state.update {
-                it.copy(snackBar = FuelSnackBarState.ErrorHint("Only digits are allowed in headwind and not exceed the speed of aircraft"))
-            }
+            it.copy(headWindComponent = new.toInt())
+        } else scope.launch {
+            eventChannel.send(
+                FuelSnackBarEvent.Error("Only digits are allowed in headwind and not exceed the speed of aircraft")
+            )
         }
     }
 
@@ -75,12 +83,11 @@ class FuelCalculator(
         if (isFloatIncorrect(new, false).not()) state.update {
             it.copy(
                 performance = it.performance.copy(averageCruiseSpeed = new.toFloat()),
-                snackBar = null
             )
-        } else {
-            state.update {
-                it.copy(snackBar = FuelSnackBarState.ErrorHint("Only digits are allowed in cruise speed"))
-            }
+        } else scope.launch {
+            eventChannel.send(
+                FuelSnackBarEvent.Error("Only digits are allowed in cruise speed")
+            )
         }
     }
 
@@ -88,12 +95,11 @@ class FuelCalculator(
         if (isFloatIncorrect(new, false).not()) state.update {
             it.copy(
                 performance = it.performance.copy(averageFuelFlow = new.toFloat()),
-                snackBar = null
             )
-        } else {
-            state.update {
-                it.copy(snackBar = FuelSnackBarState.ErrorHint("Only digits are allowed in fuel flow"))
-            }
+        } else scope.launch {
+            eventChannel.send(
+                FuelSnackBarEvent.Error("Only digits are allowed in fuel flow")
+            )
         }
     }
 
@@ -101,12 +107,11 @@ class FuelCalculator(
         if (isFloatIncorrect(new).not()) state.update {
             it.copy(
                 performance = it.performance.copy(taxiFuel = new.toFloat()),
-                snackBar = null
             )
-        } else {
-            state.update {
-                it.copy(snackBar = FuelSnackBarState.ErrorHint("Only digits are allowed in taxi"))
-            }
+        } else scope.launch {
+            eventChannel.send(
+                FuelSnackBarEvent.Error("Only digits are allowed in taxi")
+            )
         }
     }
 
@@ -114,12 +119,11 @@ class FuelCalculator(
         if (isIntIncorrect(new, 100).not()) state.update {
             it.copy(
                 performance = it.performance.copy(contingency = new.toInt()),
-                snackBar = null
             )
-        } else {
-            state.update {
-                it.copy(snackBar = FuelSnackBarState.ErrorHint("Only digits are allowed in contingency and not exceed 100%"))
-            }
+        } else scope.launch {
+            eventChannel.send(
+                FuelSnackBarEvent.Error("Only digits are allowed in contingency and not exceed 100%")
+            )
         }
     }
 
@@ -127,12 +131,11 @@ class FuelCalculator(
         if (isIntIncorrect(new, 90).not()) state.update {
             it.copy(
                 performance = it.performance.copy(reservesMinutes = new.toInt()),
-                snackBar = null
             )
-        } else {
-            state.update {
-                it.copy(snackBar = FuelSnackBarState.ErrorHint("Only digits are allowed in reserve time and not exceed 90 min"))
-            }
+        } else scope.launch {
+            eventChannel.send(
+                FuelSnackBarEvent.Error("Only digits are allowed in reserve time and not exceed 90 min")
+            )
         }
     }
 
@@ -140,12 +143,11 @@ class FuelCalculator(
         if (isFloatIncorrect(new).not()) state.update {
             it.copy(
                 performance = it.performance.copy(fuelCapacity = new.toFloat()),
-                snackBar = null
             )
-        } else {
-            state.update {
-                it.copy(snackBar = FuelSnackBarState.ErrorHint("Only digits are allowed in fuel capacity"))
-            }
+        } else scope.launch {
+            eventChannel.send(
+                FuelSnackBarEvent.Error("Only digits are allowed in fuel capacity")
+            )
         }
     }
 }

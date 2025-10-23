@@ -15,7 +15,8 @@ object Themes {
         onPrimary = SimColors.textLight,
         onSurface = SimColors.textBlack,
         inverseOnSurface = SimColors.textBlack,
-        surfaceVariant = SimColors.backgroundLight
+        surfaceVariant = SimColors.backgroundLight,
+        surfaceDim = SimColors.lightSurface
     )
 
     val dark = darkColorScheme(
@@ -28,6 +29,7 @@ object Themes {
         onPrimary = SimColors.textLight,
         onSurface = SimColors.textUltraLight,
         inverseOnSurface = SimColors.textBlack,
-        surfaceVariant = SimColors.textDark
+        surfaceVariant = SimColors.textDark,
+        surfaceDim = SimColors.textDark
     )
 }

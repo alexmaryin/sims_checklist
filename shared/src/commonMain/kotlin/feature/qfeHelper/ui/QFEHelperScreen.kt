@@ -5,8 +5,6 @@ import alexmaryin.metarkt.helpers.toIsaQnh
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,6 +18,9 @@ import feature.qfeHelper.QFEHelper
 import feature.qfeHelper.QFEHelperState
 import commonUi.utils.SimColors
 import commonUi.utils.mySnackbarHost
+import org.jetbrains.compose.resources.painterResource
+import sims_checklist.shared.generated.resources.Res
+import sims_checklist.shared.generated.resources.arrow_back
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,7 +46,7 @@ fun QFEHelperScreen(component: QFEHelper) {
                 title = { Text("QFE Helper") },
                 navigationIcon = {
                     IconButton(onClick = component.onBack) {
-                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back button")
+                        Icon(painter = painterResource(Res.drawable.arrow_back), contentDescription = "Back button")
                     }
                 },
                 colors = SimColors.topBarColors()

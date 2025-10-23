@@ -1,10 +1,7 @@
 package feature.airportsBase.ui
 
-import RunwayInfo
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -13,18 +10,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import feature.airportsBase.AirportEventExecutor
-import feature.airportsBase.AirportsUiEvent
-import services.airportService.model.Airport
-import commonUi.CaptionedDivider
-import commonUi.LinkText
+import commonUi.components.CaptionedDivider
+import commonUi.components.LinkText
 import commonUi.utils.RunwayTooltip
+import feature.airportsBase.AirportsUiEvent
+import org.jetbrains.compose.resources.painterResource
+import services.airportService.model.Airport
+import sims_checklist.shared.generated.resources.Res
+import sims_checklist.shared.generated.resources.info
 import utils.toDMS
 
 @Composable
 fun ExpandedAirport(
     airport: Airport,
-    eventsExecutor: AirportEventExecutor
+    onAction: (AirportsUiEvent) -> Unit
 ) {
     Card(
         Modifier.fillMaxWidth().padding(horizontal = 4.dp, vertical = 2.dp)
@@ -34,11 +33,11 @@ fun ExpandedAirport(
         ) {
             AirportHeader(
                 modifier = Modifier.fillMaxWidth().padding(8.dp)
-                    .clickable(onClick = { eventsExecutor(AirportsUiEvent.ExpandAirport(airport.icao)) }),
+                    .clickable(onClick = { onAction(AirportsUiEvent.ExpandAirport(airport.icao)) }),
                 icao = airport.icao,
                 name = airport.name,
-                onMetarClick = { eventsExecutor(AirportsUiEvent.OpenAirportMetar(airport.icao)) },
-                onQfeClick = { eventsExecutor(AirportsUiEvent.OpenQfeHelper(airport.icao)) }
+                onMetarClick = { onAction(AirportsUiEvent.OpenAirportMetar(airport.icao)) },
+                onQfeClick = { onAction(AirportsUiEvent.OpenQfeHelper(airport.icao)) }
             )
             HorizontalDivider()
             Row(
@@ -76,7 +75,7 @@ fun ExpandedAirport(
                     Text("Runways: ")
                     RunwayTooltip {
                         Icon(
-                            imageVector = Icons.Outlined.Info,
+                            painter = painterResource(Res.drawable.info),
                             contentDescription = "Show notice about runway course"
                         )
                     }

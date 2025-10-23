@@ -14,7 +14,9 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import feature.metarscreen.model.WindUi
-import commonUi.loadXmlPicture
+import org.jetbrains.compose.resources.painterResource
+import sims_checklist.shared.generated.resources.Res
+import sims_checklist.shared.generated.resources.arrow_up
 
 @Composable
 fun RunwayTailwindBubble(name: String, windUi: WindUi) {
@@ -43,7 +45,7 @@ fun RunwayTailwindBubble(name: String, windUi: WindUi) {
             modifier = Modifier.align(alignForTail).padding(10.dp),
         ) {
             Image(
-                imageVector = loadXmlPicture("arrow_up"),
+                painter = painterResource(Res.drawable.arrow_up),
                 contentDescription = "Tailwind speed",
                 modifier = Modifier
                     .size(20.dp).align(Alignment.CenterHorizontally),
