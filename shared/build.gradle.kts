@@ -30,6 +30,7 @@ kotlin {
                 implementation(compose.foundation)
                 implementation(compose.material3)
                 implementation(compose.components.resources)
+                implementation(libs.material3.adaptive)
 //                implementation(libs.material.icons)
                 implementation(libs.kotlinx.coroutines.core)
 //                implementation(compose.materialIconsExtended)

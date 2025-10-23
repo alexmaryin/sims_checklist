@@ -19,6 +19,8 @@ fun main() {
     startKoin {
         modules(dbModule, apiModule, roomModule)
     }
+    System.setProperty("apple.awt.application.appearance", "system")
+
     val lifecycle = LifecycleRegistry()
     val root = runOnUiThread { Root(DefaultComponentContext(lifecycle)) }
 
@@ -26,14 +28,12 @@ fun main() {
         val windowState = rememberWindowState()
         LifecycleController(lifecycle, windowState)
 
-        val isDark = isSystemInDarkTheme()
-
         Window(
             state = windowState,
             title = "Sims checklists",
             onCloseRequest = ::exitApplication
         ) {
-            MaterialTheme(colorScheme = if (isDark) Themes.dark else Themes.light) {
+            MaterialTheme(colorScheme = if (isSystemInDarkTheme()) Themes.dark else Themes.light) {
                 App(root)
             }
         }

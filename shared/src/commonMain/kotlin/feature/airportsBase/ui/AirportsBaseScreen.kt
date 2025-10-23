@@ -58,7 +58,7 @@ fun AirportsBaseScreen(component: AirportEventExecutor) {
             )
         },
         snackbarHost = mySnackbarHost(snackbarHostState),
-        contentWindowInsets = WindowInsets.safeDrawing
+        contentWindowInsets = WindowInsets.statusBars
     ) { paddingValues ->
 
         state.value.snackbar?.let {
@@ -70,7 +70,8 @@ fun AirportsBaseScreen(component: AirportEventExecutor) {
         }
 
         LazyColumn(
-            modifier = Modifier.fillMaxWidth().padding(paddingValues),
+            modifier = Modifier.fillMaxWidth().padding(paddingValues)
+                .consumeWindowInsets(WindowInsets.safeDrawing),
             state = screenScroll,
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally

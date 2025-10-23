@@ -33,6 +33,7 @@ ktor="3.3.1"
 room = "2.8.3"
 sqlite = "2.6.1"
 ksp = "2.2.20-2.0.2" # build issues with -2.0.3
+adaptive = "1.1.2"
 android-compileSdk = "36"
 android-minSdk = "26"
 icons = "1.7.3"
@@ -65,3 +66,4 @@ androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref =
 androidx-room-sqlite-wrapper = { module = "androidx.room:room-sqlite-wrapper", version.ref = "room" }
 androidx-lifecycle-viewmodelCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-runtimeCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
+material3-adaptive = { module = "org.jetbrains.compose.material3.adaptive:adaptive", version.ref = "adaptive" }
