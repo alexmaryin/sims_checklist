@@ -10,11 +10,10 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import services.airportService.AirportService
 import services.airportService.LocalBaseConverter
-import services.airportService.model.Airport
 import services.airportService.updateService.AirportUpdateService
 import services.commonApi.forError
 import services.commonApi.forSuccess
-import services.commonApi.mapListIfSuccess
+import utils.Pager
 import java.nio.file.Paths
 import java.text.SimpleDateFormat
 import java.util.*
@@ -32,6 +31,25 @@ class AirportsBase(
 
     override val state = MutableValue(AirportsBaseViewState())
 
+    private val pager = Pager(
+        initialKey = 0,
+        onLoadUpdated = { isLoading -> state.update { it.copy(loadingPage = isLoading) } },
+        onRequest = { nextKey ->
+            airportService.searchAirports(state.value.searchString, AirportService.SEARCH_LIMIT, nextKey)
+        },
+        getNextKey = { currentKey, _ -> currentKey + 1 },
+        getPreviousKey = { currentKey, _ -> (currentKey - 1).coerceAtLeast(0) },
+        onError = { type, message ->
+            state.update { it.copy(snackbar = AirportsSnackBarState.ErrorHint(message ?: type.name)) }
+        },
+        onSuccess = { airports, _ ->
+            state.update { it.copy(searchResult =  listOf(it.searchResult, airports).flatten(), snackbar = null) }
+        },
+        endReached = { _, airports ->
+            airports.size < AirportService.SEARCH_LIMIT
+        }
+    )
+
     private val scope = componentContext.coroutineScope() + SupervisorJob()
 
     init {
@@ -48,6 +66,8 @@ class AirportsBase(
             AirportsUiEvent.StartUpdate -> scope.onStartUpdate()
             AirportsUiEvent.GetLastUpdate -> scope.onLastUpdate()
             is AirportsUiEvent.SendSearch -> scope.searchAirports(event.search)
+            AirportsUiEvent.SearchNext -> scope.searchNext()
+            AirportsUiEvent.SearchPrevious -> scope.searchPrevious()
             is AirportsUiEvent.ExpandAirport -> scope.expandAirport(event.icao)
             is AirportsUiEvent.OpenAirportMetar -> onSelectAirport(event.icao)
             is AirportsUiEvent.OpenQfeHelper -> onSelectQfeHelper(event.icao)
@@ -119,19 +139,17 @@ class AirportsBase(
     }
 
     private fun CoroutineScope.searchAirports(search: String) = launch {
-        state.update { it.copy(searchString = search) }
-        val result = if (search.isBlank()) {
-            airportService.getAirportsHistory().mapListIfSuccess { Airport(icao = it.icao, name = it.name) }
-        } else {
-            airportService.searchAirports(search)
-        }
+        state.update { it.copy(searchString = search, searchResult = emptyList()) }
+        pager.reset()
+        pager.loadNextItem()
+    }
 
-        result.forSuccess { airports ->
-            state.update { it.copy(searchResult = airports, snackbar = null) }
-        }
-        result.forError { type, message ->
-            state.update { it.copy(snackbar = AirportsSnackBarState.ErrorHint(message ?: type.name)) }
-        }
+    private fun CoroutineScope.searchNext() = launch {
+        pager.loadNextItem()
+    }
+
+    private fun CoroutineScope.searchPrevious() = launch {
+        pager.loadPreviousItem()
     }
 
     private fun CoroutineScope.expandAirport(icao: String) = launch {

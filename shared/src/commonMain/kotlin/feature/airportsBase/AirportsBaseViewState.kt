@@ -10,6 +10,7 @@ data class AirportsBaseViewState(
     val processingLabel: String = "",
     val progress: Int = 0,
     val searchString: String = "",
+    val loadingPage: Boolean = false,
     val searchResult: List<Airport> = emptyList(),
     val expandedAirport: Airport? = null,
     val snackbar: AirportsSnackBarState? = null

@@ -5,8 +5,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -15,6 +17,7 @@ import commonUi.utils.SimColors
 import commonUi.utils.mySnackbarHost
 import feature.airportsBase.AirportEventExecutor
 import feature.airportsBase.AirportsUiEvent
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import sims_checklist.shared.generated.resources.Res
@@ -50,7 +53,11 @@ fun AirportsBaseScreen(component: AirportEventExecutor) {
                         if (state.value.updating) {
                             CircularProgressIndicator()
                         } else {
-                            Icon(painter = painterResource(Res.drawable.update_sync), "update database", Modifier.padding(8.dp))
+                            Icon(
+                                painter = painterResource(Res.drawable.update_sync),
+                                "update database",
+                                Modifier.padding(8.dp)
+                            )
                         }
                     }
                 },
@@ -99,5 +106,15 @@ fun AirportsBaseScreen(component: AirportEventExecutor) {
                 onAction = { component(it) }
             )
         }
+    }
+
+    LaunchedEffect(state.value.searchResult) {
+        snapshotFlow { screenScroll.layoutInfo.visibleItemsInfo.last().index }
+            .distinctUntilChanged()
+            .collect { lastVisible ->
+                if (lastVisible > state.value.searchResult.lastIndex ) {
+                    component(AirportsUiEvent.SearchNext)
+                }
+            }
     }
 }

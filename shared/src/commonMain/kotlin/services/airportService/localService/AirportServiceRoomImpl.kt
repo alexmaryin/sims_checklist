@@ -96,10 +96,10 @@ class AirportServiceRoomImpl(
         }
     }
 
-    override suspend fun searchAirports(search: String, limit: Int): Result<List<Airport>> {
+    override suspend fun searchAirports(search: String, limit: Int, page: Int): Result<List<Airport>> {
         val dao = database.airportDao()
-        val searchResult = if (search.isNotBlank()) dao.searchAirportsByIcaoOrName(search, limit)
-            else dao.getFirstBatchOfAirports(limit)
+        val searchResult = if (search.isNotBlank()) dao.searchAirportsByIcaoOrName(search, limit, page * limit)
+            else dao.getFirstBatchOfAirports(limit, page * limit)
         return if (searchResult.isNotEmpty()) {
             Result.Success(searchResult.map { it.toDomain() })
         } else {
