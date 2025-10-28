@@ -36,7 +36,6 @@ ksp = "2.2.20-2.0.2" # build issues with -2.0.3
 adaptive = "1.1.2"
 android-compileSdk = "36"
 android-minSdk = "26"
-icons = "1.7.3"
 mainVersion = "1.7.3"
 mainVersionCode = "32"
 

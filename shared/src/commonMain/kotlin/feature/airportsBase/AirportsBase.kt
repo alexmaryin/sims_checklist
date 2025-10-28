@@ -10,11 +10,10 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import services.airportService.AirportService
 import services.airportService.LocalBaseConverter
-import services.airportService.model.Airport
 import services.airportService.updateService.AirportUpdateService
 import services.commonApi.forError
 import services.commonApi.forSuccess
-import services.commonApi.mapListIfSuccess
+import utils.pager.Pager
 import java.nio.file.Paths
 import java.text.SimpleDateFormat
 import java.util.*
@@ -32,6 +31,34 @@ class AirportsBase(
 
     override val state = MutableValue(AirportsBaseViewState())
 
+    private val pager = Pager(
+        initialKey = 0,
+        onLoadUpdated = { isLoading -> state.update { it.copy(loadingPage = isLoading) } },
+        onRequest = { nextKey ->
+            airportService.searchAirports(
+                search = state.value.searchString,
+                limit = AirportService.SEARCH_LIMIT,
+                page = nextKey
+            )
+        },
+        getNextKey = { currentKey, _ -> currentKey + 1 },
+        onError = { error ->
+            state.update {
+                it.copy(snackbar = AirportsSnackBarState.ErrorHint(error.message ?: error.type.name))
+            }
+        },
+        onSuccess = { airports, _ ->
+            state.update { currentState ->
+                // When a new search starts, searchResult is cleared.
+                // The first page of results should replace the empty list, not append to it.
+                val newList =
+                    if (currentState.searchResult.isEmpty()) airports else currentState.searchResult + airports
+                currentState.copy(searchResult = newList)
+            }
+        },
+        endReached = { _, airports -> airports.size < AirportService.SEARCH_LIMIT }
+    )
+
     private val scope = componentContext.coroutineScope() + SupervisorJob()
 
     init {
@@ -47,10 +74,17 @@ class AirportsBase(
             AirportsUiEvent.SnackBarClose -> state.update { it.copy(snackbar = null) }
             AirportsUiEvent.StartUpdate -> scope.onStartUpdate()
             AirportsUiEvent.GetLastUpdate -> scope.onLastUpdate()
-            is AirportsUiEvent.SendSearch -> scope.searchAirports(event.search)
+            is AirportsUiEvent.SendSearch ->
+                if (event.search != state.value.searchString)
+                    scope.searchAirports(event.search)
+            AirportsUiEvent.SearchNext -> scope.searchNext()
             is AirportsUiEvent.ExpandAirport -> scope.expandAirport(event.icao)
             is AirportsUiEvent.OpenAirportMetar -> onSelectAirport(event.icao)
             is AirportsUiEvent.OpenQfeHelper -> onSelectQfeHelper(event.icao)
+            AirportsUiEvent.TrimList -> state.update {
+                pager.reset()
+                it.copy(searchResult = state.value.searchResult.take(AirportService.SEARCH_LIMIT))
+            }
         }
     }
 
@@ -119,19 +153,19 @@ class AirportsBase(
     }
 
     private fun CoroutineScope.searchAirports(search: String) = launch {
-        state.update { it.copy(searchString = search) }
-        val result = if (search.isBlank()) {
-            airportService.getAirportsHistory().mapListIfSuccess { Airport(icao = it.icao, name = it.name) }
-        } else {
-            airportService.searchAirports(search)
+        // It's better to clear the list inside the onSuccess callback of the pager
+        // to avoid UI flicker. Here we just set the new search string.
+        state.update {
+            // Clear previous results and set the new search string
+            it.copy(searchString = search, searchResult = emptyList())
         }
+        pager.reset()
+        pager.loadNextItem()
+    }
 
-        result.forSuccess { airports ->
-            state.update { it.copy(searchResult = airports, snackbar = null) }
-        }
-        result.forError { type, message ->
-            state.update { it.copy(snackbar = AirportsSnackBarState.ErrorHint(message ?: type.name)) }
-        }
+    private fun CoroutineScope.searchNext() = launch {
+        pager.loadNextItem()
+        println("LIST CAPACITY: ${state.value.searchResult.size}")
     }
 
     private fun CoroutineScope.expandAirport(icao: String) = launch {

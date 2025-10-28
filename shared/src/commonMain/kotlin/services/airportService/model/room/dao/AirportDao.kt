@@ -19,11 +19,13 @@ interface AirportDao {
     @Query("SELECT * FROM airports WHERE icao = :icao")
     suspend fun getAirportByIcao(icao: String): AirportEntity?
 
-    @Query("SELECT * FROM airports LIMIT :limit")
-    suspend fun getFirstBatchOfAirports(limit: Int): List<AirportEntity>
+    @Query("SELECT * FROM airports LIMIT :limit OFFSET :offset")
+    suspend fun getFirstBatchOfAirports(limit: Int, offset: Int): List<AirportEntity>
 
-    @Query("SELECT * FROM airports WHERE icao LIKE '%' || :search || '%' OR name LIKE '%' || :search || '%' LIMIT :limit")
-    suspend fun searchAirportsByIcaoOrName(search: String, limit: Int): List<AirportEntity>
+    @Query("SELECT * FROM airports WHERE icao " +
+            "LIKE '%' || :search || '%' OR name LIKE '%' || :search || '%' " +
+            "LIMIT :limit OFFSET :offset")
+    suspend fun searchAirportsByIcaoOrName(search: String, limit: Int = PAGE_SIZE, offset: Int = 0): List<AirportEntity>
 
     @Query("SELECT * FROM frequencies WHERE airportIcao = :icao")
     suspend fun getFrequenciesByIcao(icao: String): List<FrequencyEntity>
@@ -59,4 +61,8 @@ interface AirportDao {
 
     @Query("SELECT COUNT(*) FROM airports")
     suspend fun getAirportCount(): Long
+
+    companion object {
+        const val PAGE_SIZE = 10
+    }
 }

@@ -15,9 +15,9 @@ interface AirportService {
     suspend fun getRunwaysByICAO(icao: String): Result<List<Runway>>
     suspend fun getFrequenciesByICAO(icao: String): Result<List<Frequency>>
     suspend fun getAirportsHistory(): Result<List<HistoryAirport>>
-    suspend fun searchAirports(search: String, limit: Int = SEARCH_LIMIT): Result<List<Airport>>
+    suspend fun searchAirports(search: String, limit: Int = SEARCH_LIMIT, page: Int = 0): Result<List<Airport>>
 
     companion object {
-        const val SEARCH_LIMIT = 30
+        const val SEARCH_LIMIT = 10
     }
 }
