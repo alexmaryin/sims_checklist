@@ -7,7 +7,7 @@ sealed class AirportsUiEvent {
     data object GetLastUpdate : AirportsUiEvent()
     data class SendSearch(val search: String) : AirportsUiEvent()
     data object SearchNext : AirportsUiEvent()
-    data object SearchPrevious : AirportsUiEvent()
+    data object TrimList : AirportsUiEvent()
     data class ExpandAirport(val icao: String) : AirportsUiEvent()
     data class OpenAirportMetar(val icao: String) : AirportsUiEvent()
     data class OpenQfeHelper(val icao: String) : AirportsUiEvent()

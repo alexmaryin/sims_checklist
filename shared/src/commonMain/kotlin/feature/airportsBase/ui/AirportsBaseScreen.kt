@@ -1,14 +1,13 @@
 package feature.airportsBase.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -22,6 +21,7 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import sims_checklist.shared.generated.resources.Res
 import sims_checklist.shared.generated.resources.arrow_back
+import sims_checklist.shared.generated.resources.scroll_up
 import sims_checklist.shared.generated.resources.update_sync
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -63,6 +63,22 @@ fun AirportsBaseScreen(component: AirportEventExecutor) {
                 },
                 colors = SimColors.topBarColors()
             )
+        },
+        floatingActionButton = {
+            AnimatedVisibility(
+                visible = !screenScroll.isScrollInProgress && screenScroll.canScrollBackward,
+                enter = scaleIn(),
+                exit = scaleOut()
+            ) {
+                FloatingActionButton(
+                    onClick = { scope.launch { screenScroll.animateScrollToItem(0) } },
+                ) {
+                    Icon(
+                        painter = painterResource(Res.drawable.scroll_up),
+                        contentDescription = "Scroll to top"
+                    )
+                }
+            }
         },
         snackbarHost = mySnackbarHost(snackbarHostState),
         contentWindowInsets = WindowInsets.statusBars
@@ -108,13 +124,18 @@ fun AirportsBaseScreen(component: AirportEventExecutor) {
         }
     }
 
-    LaunchedEffect(state.value.searchResult) {
-        snapshotFlow { screenScroll.layoutInfo.visibleItemsInfo.last().index }
+    // Effect for loading next pages
+    LaunchedEffect(screenScroll) {
+        snapshotFlow {
+            screenScroll.layoutInfo.visibleItemsInfo.lastOrNull()?.index to
+                    screenScroll.layoutInfo.visibleItemsInfo.first().index
+        }
             .distinctUntilChanged()
-            .collect { lastVisible ->
-                if (lastVisible > state.value.searchResult.lastIndex ) {
-                    component(AirportsUiEvent.SearchNext)
-                }
+            .collect { (lastVisible, firstVisible) ->
+                val stateLoading = state.value.loadingPage || state.value.searchResult.isEmpty()
+                val needLoadNext = lastVisible != null && lastVisible >= state.value.searchResult.size + 2
+                if (!stateLoading && needLoadNext) component(AirportsUiEvent.SearchNext)
+                if (firstVisible == 0) component(AirportsUiEvent.TrimList)
             }
     }
 }

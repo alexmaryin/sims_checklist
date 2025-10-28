@@ -13,7 +13,7 @@ import services.airportService.LocalBaseConverter
 import services.airportService.updateService.AirportUpdateService
 import services.commonApi.forError
 import services.commonApi.forSuccess
-import utils.Pager
+import utils.pager.Pager
 import java.nio.file.Paths
 import java.text.SimpleDateFormat
 import java.util.*
@@ -35,19 +35,28 @@ class AirportsBase(
         initialKey = 0,
         onLoadUpdated = { isLoading -> state.update { it.copy(loadingPage = isLoading) } },
         onRequest = { nextKey ->
-            airportService.searchAirports(state.value.searchString, AirportService.SEARCH_LIMIT, nextKey)
+            airportService.searchAirports(
+                search = state.value.searchString,
+                limit = AirportService.SEARCH_LIMIT,
+                page = nextKey
+            )
         },
         getNextKey = { currentKey, _ -> currentKey + 1 },
-        getPreviousKey = { currentKey, _ -> (currentKey - 1).coerceAtLeast(0) },
-        onError = { type, message ->
-            state.update { it.copy(snackbar = AirportsSnackBarState.ErrorHint(message ?: type.name)) }
+        onError = { error ->
+            state.update {
+                it.copy(snackbar = AirportsSnackBarState.ErrorHint(error.message ?: error.type.name))
+            }
         },
         onSuccess = { airports, _ ->
-            state.update { it.copy(searchResult =  listOf(it.searchResult, airports).flatten(), snackbar = null) }
+            state.update { currentState ->
+                // When a new search starts, searchResult is cleared.
+                // The first page of results should replace the empty list, not append to it.
+                val newList =
+                    if (currentState.searchResult.isEmpty()) airports else currentState.searchResult + airports
+                currentState.copy(searchResult = newList)
+            }
         },
-        endReached = { _, airports ->
-            airports.size < AirportService.SEARCH_LIMIT
-        }
+        endReached = { _, airports -> airports.size < AirportService.SEARCH_LIMIT }
     )
 
     private val scope = componentContext.coroutineScope() + SupervisorJob()
@@ -65,12 +74,17 @@ class AirportsBase(
             AirportsUiEvent.SnackBarClose -> state.update { it.copy(snackbar = null) }
             AirportsUiEvent.StartUpdate -> scope.onStartUpdate()
             AirportsUiEvent.GetLastUpdate -> scope.onLastUpdate()
-            is AirportsUiEvent.SendSearch -> scope.searchAirports(event.search)
+            is AirportsUiEvent.SendSearch ->
+                if (event.search != state.value.searchString)
+                    scope.searchAirports(event.search)
             AirportsUiEvent.SearchNext -> scope.searchNext()
-            AirportsUiEvent.SearchPrevious -> scope.searchPrevious()
             is AirportsUiEvent.ExpandAirport -> scope.expandAirport(event.icao)
             is AirportsUiEvent.OpenAirportMetar -> onSelectAirport(event.icao)
             is AirportsUiEvent.OpenQfeHelper -> onSelectQfeHelper(event.icao)
+            AirportsUiEvent.TrimList -> state.update {
+                pager.reset()
+                it.copy(searchResult = state.value.searchResult.take(AirportService.SEARCH_LIMIT))
+            }
         }
     }
 
@@ -139,17 +153,19 @@ class AirportsBase(
     }
 
     private fun CoroutineScope.searchAirports(search: String) = launch {
-        state.update { it.copy(searchString = search, searchResult = emptyList()) }
+        // It's better to clear the list inside the onSuccess callback of the pager
+        // to avoid UI flicker. Here we just set the new search string.
+        state.update {
+            // Clear previous results and set the new search string
+            it.copy(searchString = search, searchResult = emptyList())
+        }
         pager.reset()
         pager.loadNextItem()
     }
 
     private fun CoroutineScope.searchNext() = launch {
         pager.loadNextItem()
-    }
-
-    private fun CoroutineScope.searchPrevious() = launch {
-        pager.loadPreviousItem()
+        println("LIST CAPACITY: ${state.value.searchResult.size}")
     }
 
     private fun CoroutineScope.expandAirport(icao: String) = launch {
