@@ -33,6 +33,7 @@ import sims_checklist.shared.generated.resources.air
 import sims_checklist.shared.generated.resources.cloud_download
 import sims_checklist.shared.generated.resources.compress
 import sims_checklist.shared.generated.resources.gas_station
+import sims_checklist.shared.generated.resources.warning
 
 @Composable
 fun loadAircraftJpgPhoto(name: String): Painter =
@@ -70,6 +71,12 @@ fun AircraftListScreen(component: MainEventExecutor) {
                     }
                     IconButton(onClick = { component(MainScreenEvent.SelectQFEHelper) }) {
                         Icon(painter = painterResource(Res.drawable.compress), contentDescription = "QFE helper")
+                    }
+                    IconButton(onClick = { component(MainScreenEvent.SelectColdTemperature) }) {
+                        Icon(
+                            painter = painterResource(Res.drawable.warning),
+                            contentDescription = "Cold temperature corrector"
+                        )
                     }
                 },
                 colors = SimColors.topBarColors()

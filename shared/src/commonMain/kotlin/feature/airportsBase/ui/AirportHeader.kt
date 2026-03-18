@@ -14,6 +14,7 @@ import org.jetbrains.compose.resources.painterResource
 import sims_checklist.shared.generated.resources.Res
 import sims_checklist.shared.generated.resources.air
 import sims_checklist.shared.generated.resources.compress
+import sims_checklist.shared.generated.resources.warning
 
 @Composable
 fun AirportHeader(
@@ -21,7 +22,8 @@ fun AirportHeader(
     icao: String,
     name: String,
     onMetarClick: () -> Unit,
-    onQfeClick: () -> Unit
+    onQfeClick: () -> Unit,
+    onColdTemperatureClick: () -> Unit
 ) {
     Row(
         modifier = modifier,
@@ -34,6 +36,12 @@ fun AirportHeader(
         }
         IconButton(onClick = onQfeClick) {
             Icon(painter = painterResource(Res.drawable.compress), contentDescription = "Open QFE helper for airport")
+        }
+        IconButton(onClick = onColdTemperatureClick) {
+            Icon(
+                painter = painterResource(Res.drawable.warning),
+                contentDescription = "Open cold temperature corrector for airport"
+            )
         }
     }
 }

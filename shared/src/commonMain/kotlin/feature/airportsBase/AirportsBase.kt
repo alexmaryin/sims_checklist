@@ -22,6 +22,7 @@ class AirportsBase(
     private val componentContext: ComponentContext,
     private val onSelectAirport: (String) -> Unit,
     private val onSelectQfeHelper: (String) -> Unit,
+    private val onSelectColdTemperature: (String) -> Unit,
     private val onBack: () -> Unit
 ) : KoinComponent, AirportEventExecutor, ComponentContext by componentContext {
 
@@ -81,6 +82,7 @@ class AirportsBase(
             is AirportsUiEvent.ExpandAirport -> scope.expandAirport(event.icao)
             is AirportsUiEvent.OpenAirportMetar -> onSelectAirport(event.icao)
             is AirportsUiEvent.OpenQfeHelper -> onSelectQfeHelper(event.icao)
+            is AirportsUiEvent.OpenColdTemperature -> onSelectColdTemperature(event.icao)
             AirportsUiEvent.TrimList -> state.update {
                 pager.reset()
                 it.copy(searchResult = state.value.searchResult.take(AirportService.SEARCH_LIMIT))

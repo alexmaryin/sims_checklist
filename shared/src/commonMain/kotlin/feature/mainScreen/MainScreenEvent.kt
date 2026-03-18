@@ -9,5 +9,6 @@ sealed class MainScreenEvent {
     data object SelectMetar : MainScreenEvent()
     data object SelectAirportsBase : MainScreenEvent()
     data object SelectQFEHelper : MainScreenEvent()
+    data object SelectColdTemperature : MainScreenEvent()
     data class SelectFuelCalculator(val aircraftId: Int) : MainScreenEvent()
 }

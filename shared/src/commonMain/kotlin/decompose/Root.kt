@@ -15,6 +15,8 @@ import feature.airportsBase.AirportsBase
 import feature.airportsBase.ui.AirportsBaseScreen
 import feature.checklistDetails.ChecklistDetails
 import feature.checklistDetails.ui.ChecklistDetailsScreen
+import feature.coldTemperature.ColdTemperatureCorrector
+import feature.coldTemperature.ui.ColdTemperatureScreen
 import feature.checklists.Checklists
 import feature.checklists.ui.ChecklistsScreen
 import feature.fuelcalculator.FuelCalculator
@@ -48,6 +50,7 @@ class Root(
             is MainScreenEvent.SelectFuelCalculator -> navigation.pushNew(Configuration.FuelCalculator(event.aircraftId))
             MainScreenEvent.SelectMetar -> navigation.pushNew(Configuration.MetarScanner())
             MainScreenEvent.SelectQFEHelper -> navigation.pushNew(Configuration.QFEHelper())
+            MainScreenEvent.SelectColdTemperature -> navigation.pushNew(Configuration.ColdTemperature())
             else -> Unit
         }
     }
@@ -84,6 +87,7 @@ class Root(
         componentContext = context,
         onSelectAirport = { icao -> navigation.pushNew(Configuration.MetarScanner(icao)) },
         onSelectQfeHelper = { icao -> navigation.pushNew(Configuration.QFEHelper(icao = icao)) },
+        onSelectColdTemperature = { icao -> navigation.pushNew(Configuration.ColdTemperature(icao = icao)) },
         onBack = { navigation.pop() }
     )
 
@@ -97,6 +101,15 @@ class Root(
         icao = icao,
         qfe = qfe,
         temperature = celsius,
+        onBack = { navigation.pop() }
+    )
+
+    private fun coldTemperature(
+        context: ComponentContext,
+        icao: String? = null
+    ) = ColdTemperatureCorrector(
+        componentContext = context,
+        icao = icao,
         onBack = { navigation.pop() }
     )
 
@@ -124,6 +137,8 @@ class Root(
                 configuration.qfe?.let { PressureQFE(it) },
                 configuration.celsius
             ))
+
+            is Configuration.ColdTemperature -> ColdTemperatureChild(coldTemperature(context, configuration.icao))
         }
 }
 
@@ -141,6 +156,7 @@ fun RootUi(root: RootComponent) {
             is FuelCalculatorChild -> FuelCalculatorScreen(child.component)
             is MetarScannerChild -> MetarScreen(child.component)
             is QFEHelperChild -> QFEHelperScreen(child.component)
+            is ColdTemperatureChild -> ColdTemperatureScreen(child.component)
         }
     }
 }
