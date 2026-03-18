@@ -6,6 +6,7 @@ import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -67,6 +68,11 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
         val contingency = rememberTextFieldState(state.value.performance.contingency.toString())
         val reserveTime = rememberTextFieldState(state.value.performance.reservesMinutes.toString())
         val fuelCapacity = rememberTextFieldState(state.value.performance.fuelCapacity.toString())
+        val blockFuel = rememberTextFieldState(state.value.blockFuel().toString())
+
+        LaunchedEffect(state.value.blockFuel()) {
+            blockFuel.edit { replace(0, blockFuel.text.length, state.value.blockFuel().toString()) }
+        }
 
         val scrollState = rememberScrollState()
 
@@ -107,8 +113,7 @@ fun FuelCalculatorScreen(component: FuelCalculator) {
                 ) { component.onEvent(FuelUiEvent.HeadwindChange(headWind.text.toString())) }
 
                 OutlinedTextField(
-                    value = state.value.blockFuel().toString(),
-                    onValueChange = {},
+                    state = blockFuel,
                     textStyle = LocalTextStyle.current.copy(
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.ExtraBold,

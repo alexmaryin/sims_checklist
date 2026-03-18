@@ -2,10 +2,12 @@ package feature.metarscreen.model
 
 import alexmaryin.metarkt.helpers.componentForRunwayTrue
 import alexmaryin.metarkt.models.Wind
+import kotlinx.serialization.Serializable
 import services.airportService.model.Runway
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
+@Serializable
 data class RunwayUi(
     val low: String = "18",
     val high: String = "36",

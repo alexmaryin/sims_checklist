@@ -1,9 +1,9 @@
 package feature.fuelcalculator
 
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
+import commonUi.saveableMutableValue
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -22,7 +22,8 @@ class FuelCalculator(
     private val repository: AircraftRepository by inject()
     private val aircraft = repository.getById(aircraftId)
 
-    val state = MutableValue(FuelCalcViewState(aircraft.name, aircraft.performance))
+    val state by saveableMutableValue(FuelCalcViewState.serializer(),
+        init = { FuelCalcViewState(aircraft.name, aircraft.performance) })
 
     private val eventChannel = Channel<FuelSnackBarEvent>()
     val events = eventChannel.receiveAsFlow()

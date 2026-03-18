@@ -88,7 +88,7 @@ fun MetarScreen(component: MetarScanner) {
                     }
                 },
                 actions = {
-                    state.metar?.pressureQFE?.let {
+                    state.metar?.pressureQFEmmHg?.let {
                         IconButton(onClick = { component.onEvent(MetarUiEvent.OpenQfeHelper) }) {
                             Icon(
                                 painter = painterResource(Res.drawable.compress),
