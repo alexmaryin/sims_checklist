@@ -1,17 +1,17 @@
-package feature.qfeHelper.ui
+package feature.coldTemperature.ui
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import commonUi.components.ScrollableDigitField
 
 @Composable
-fun TemperatureBlock(
-    celsius: Int,
+fun ElevationBlock(
+    elevation: Int,
     onSubmit: (Int) -> Unit
 ) {
-    Text("Temperature (Celsius)")
+    Text("Airport elev., ft")
     ScrollableDigitField(
-        value = celsius,
-        range = -60..60,
+        value = elevation,
+        range = 0..10000,
     ) { onSubmit(it) }
 }

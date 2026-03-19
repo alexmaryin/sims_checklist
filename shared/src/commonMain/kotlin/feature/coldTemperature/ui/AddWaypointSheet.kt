@@ -1,0 +1,86 @@
+package feature.coldTemperature.ui
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.intl.Locale
+import androidx.compose.ui.unit.dp
+import commonUi.utils.SimColors
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AddWaypointSheet(
+    isVisible: Boolean,
+    defaultAltitude: Int,
+    onSubmit: (String, Int) -> Unit,
+    onDismissRequest: () -> Unit,
+) {
+    if (isVisible) {
+        val waypointName = rememberTextFieldState("")
+        val waypointElevation = rememberTextFieldState(defaultAltitude.toString())
+
+        ModalBottomSheet(onDismissRequest = onDismissRequest) {
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)
+            ) {
+                Text(
+                    text = "Add waypoint",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Spacer(Modifier.height(12.dp))
+
+                OutlinedTextField(
+                    state = waypointName,
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text("Waypoint name") },
+                    lineLimits = TextFieldLineLimits.SingleLine,
+                    inputTransformation = InputTransformation.allCaps(Locale.current),
+                    keyboardOptions = KeyboardOptions(
+                        capitalization = KeyboardCapitalization.Characters,
+                    ),
+                )
+                Spacer(Modifier.height(12.dp))
+
+                OutlinedTextField(
+                    state = waypointElevation,
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text("Altitude, ft") },
+                    lineLimits = TextFieldLineLimits.SingleLine,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                    )
+                )
+                Spacer(Modifier.height(8.dp))
+
+                Text(
+                    text = "Default value follows the previous point altitude or airport elevation if this is the first point.",
+                    style = MaterialTheme.typography.bodySmall
+                )
+                Spacer(Modifier.height(16.dp))
+
+                Button(
+                    onClick = {
+                        val altitude = waypointElevation.text.toString().toInt()
+                        val name = waypointName.text.toString()
+                        onSubmit(name, altitude)
+                        waypointName.clearText()
+                        onDismissRequest()
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = waypointName.text.isNotBlank(),
+                    colors = SimColors.buttonColors()
+                ) {
+                    Text("Add waypoint")
+                }
+                Spacer(Modifier.height(24.dp))
+            }
+        }
+    }
+}

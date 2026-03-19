@@ -1,46 +1,29 @@
 package feature.coldTemperature
 
 import alexmaryin.metarkt.helpers.coldTemperatureCorrectedAltitude
+import feature.coldTemperature.ui.model.ColdTemperatureWaypoint
+import kotlinx.serialization.Serializable
 
-data class ColdTemperatureWaypoint(
-    val number: Int,
-    val name: String,
-    val altitudeFeet: Int,
-    val correctedAltitudeFeet: Int
-)
-
+@Serializable
 data class ColdTemperatureState(
     val airportICAO: String? = null,
     val airportName: String? = null,
     val isLoading: Boolean = false,
     val error: String? = null,
-    val temperatureCelsius: Int = 15,
-    val airportElevationFeet: Int = 0,
+    val temperatureCelsius: Int = -20,
+    val airportElevationFeet: Int = 300,
     val waypoints: List<ColdTemperatureWaypoint> = emptyList()
-) {
-    val nextWaypointAltitudeFeet: Int
-        get() = waypoints.lastOrNull()?.altitudeFeet ?: (airportElevationFeet + 3000)
-}
+)
 
 fun List<ColdTemperatureWaypoint>.recalculate(
-    airportElevationFeet: Int,
+    airportElevation: Int,
     temperatureCelsius: Int
-): List<ColdTemperatureWaypoint> = mapIndexed { index, waypoint ->
+): List<ColdTemperatureWaypoint> = map { waypoint ->
+    val waypointAGL = (waypoint.altitudeFeet - airportElevation).coerceAtLeast(0)
     waypoint.copy(
-        number = index + 1,
-        correctedAltitudeFeet = correctedAltitudeFeet(
-            altitudeFeet = waypoint.altitudeFeet,
-            airportElevationFeet = airportElevationFeet,
-            temperatureCelsius = temperatureCelsius
-        )
+        correctedAltitudeFeet = airportElevation + coldTemperatureCorrectedAltitude(
+            waypointAGL,
+            temperatureCelsius
+        ),
     )
-}
-
-private fun correctedAltitudeFeet(
-    altitudeFeet: Int,
-    airportElevationFeet: Int,
-    temperatureCelsius: Int
-): Int {
-    val heightAboveAirport = (altitudeFeet - airportElevationFeet).coerceAtLeast(0)
-    return airportElevationFeet + coldTemperatureCorrectedAltitude(heightAboveAirport, temperatureCelsius)
 }

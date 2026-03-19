@@ -5,5 +5,6 @@ sealed class ColdTemperatureEvent {
     data class SubmitTemperature(val celsius: Int) : ColdTemperatureEvent()
     data class SubmitAirportElevation(val feet: Int) : ColdTemperatureEvent()
     data class AddWaypoint(val name: String, val altitudeFeet: Int) : ColdTemperatureEvent()
+    data class DeleteWaypoint(val name: String) : ColdTemperatureEvent()
     data object ClearError : ColdTemperatureEvent()
 }

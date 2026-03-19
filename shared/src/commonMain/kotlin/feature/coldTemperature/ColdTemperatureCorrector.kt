@@ -1,10 +1,11 @@
 package feature.coldTemperature
 
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.arkivanov.essenty.lifecycle.doOnStart
+import commonUi.saveableMutableValue
+import feature.coldTemperature.ui.model.ColdTemperatureWaypoint
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
@@ -23,7 +24,7 @@ class ColdTemperatureCorrector(
     private val airportService: AirportService by inject()
     private val scope = componentContext.coroutineScope() + SupervisorJob()
 
-    val state = MutableValue(ColdTemperatureState())
+    val state by saveableMutableValue(ColdTemperatureState.serializer(), init = ::ColdTemperatureState)
 
     init {
         lifecycle.doOnStart {
@@ -36,6 +37,7 @@ class ColdTemperatureCorrector(
         is ColdTemperatureEvent.SubmitTemperature -> submitTemperature(event.celsius)
         is ColdTemperatureEvent.SubmitAirportElevation -> submitAirportElevation(event.feet)
         is ColdTemperatureEvent.AddWaypoint -> addWaypoint(event.name, event.altitudeFeet)
+        is ColdTemperatureEvent.DeleteWaypoint -> deleteWaypoint(event.name)
         ColdTemperatureEvent.ClearError -> clearError()
     }
 
@@ -61,10 +63,7 @@ class ColdTemperatureCorrector(
                         airportElevationFeet = airport.elevation,
                         isLoading = false,
                         error = null,
-                        waypoints = it.waypoints.recalculate(
-                            airportElevationFeet = airport.elevation,
-                            temperatureCelsius = it.temperatureCelsius
-                        )
+                        waypoints = emptyList()
                     )
                 }
             }
@@ -79,7 +78,7 @@ class ColdTemperatureCorrector(
             it.copy(
                 temperatureCelsius = celsius,
                 waypoints = it.waypoints.recalculate(
-                    airportElevationFeet = it.airportElevationFeet,
+                    airportElevation = it.airportElevationFeet,
                     temperatureCelsius = celsius
                 )
             )
@@ -93,7 +92,7 @@ class ColdTemperatureCorrector(
                 airportICAO = null,
                 airportName = null,
                 waypoints = it.waypoints.recalculate(
-                    airportElevationFeet = feet,
+                    airportElevation = feet,
                     temperatureCelsius = it.temperatureCelsius
                 )
             )
@@ -101,25 +100,35 @@ class ColdTemperatureCorrector(
     }
 
     private fun addWaypoint(name: String, altitudeFeet: Int) {
-        if (name.isBlank()) {
+        val upperName = name.trim().uppercase()
+        if (upperName.isBlank()) {
             state.update { it.copy(error = "Waypoint name should not be empty") }
+            return
+        }
+
+        if (upperName in state.value.waypoints.map { it.name }) {
+            state.update { it.copy(error = "Name $upperName already exists") }
             return
         }
 
         state.update {
             val updated = it.waypoints + ColdTemperatureWaypoint(
-                number = it.waypoints.size + 1,
                 name = name.trim(),
-                altitudeFeet = altitudeFeet,
-                correctedAltitudeFeet = altitudeFeet
+                altitudeFeet = altitudeFeet
             )
             it.copy(
                 error = null,
                 waypoints = updated.recalculate(
-                    airportElevationFeet = it.airportElevationFeet,
+                    airportElevation = it.airportElevationFeet,
                     temperatureCelsius = it.temperatureCelsius
                 )
             )
+        }
+    }
+
+    private fun deleteWaypoint(name: String) {
+        state.update {
+            it.copy(waypoints = it.waypoints.filterNot { waypoint -> waypoint.name == name })
         }
     }
 
