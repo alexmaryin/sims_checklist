@@ -8,7 +8,7 @@ fun TemperatureBlock(
     celsius: Int,
     onSubmit: (Int) -> Unit
 ) {
-    Text("Temperature (Celsius)")
+    Text("Temp. ℃")
     ScrollableDigitField(
         value = celsius,
         range = -60..60,

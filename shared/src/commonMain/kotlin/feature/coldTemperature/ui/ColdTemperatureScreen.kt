@@ -104,6 +104,7 @@ fun ColdTemperatureScreen(component: ColdTemperatureCorrector) {
             Button(
                 onClick = { isAddWaypointSheetVisible = true },
                 modifier = Modifier.fillMaxWidth(),
+                enabled = !state.value.airportICAO.isNullOrBlank(),
                 colors = SimColors.buttonColors()
             ) {
                 Text("+ waypoint")
@@ -117,7 +118,7 @@ fun ColdTemperatureScreen(component: ColdTemperatureCorrector) {
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "No waypoints yet. Add the first point to calculate cold temperature correction.",
+                        text = "Enter ICAO to load or add airport waypoints.",
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
