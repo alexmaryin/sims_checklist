@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -21,19 +20,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import common.BuildKonfig
-import feature.mainScreen.MainEventExecutor
-import feature.mainScreen.MainScreenEvent
-import org.jetbrains.compose.resources.painterResource
-import sims_checklist.shared.generated.resources.Res
-import sims_checklist.shared.generated.resources.allDrawableResources
 import commonUi.utils.SimColors
 import commonUi.utils.largeWithShadow
 import commonUi.utils.mySnackbarHost
-import sims_checklist.shared.generated.resources.air
-import sims_checklist.shared.generated.resources.cloud_download
-import sims_checklist.shared.generated.resources.compress
-import sims_checklist.shared.generated.resources.gas_station
-import sims_checklist.shared.generated.resources.warning
+import feature.mainScreen.MainEventExecutor
+import feature.mainScreen.MainScreenEvent
+import org.jetbrains.compose.resources.painterResource
+import sims_checklist.shared.generated.resources.*
 
 @Composable
 fun loadAircraftJpgPhoto(name: String): Painter =
@@ -64,17 +57,26 @@ fun AircraftListScreen(component: MainEventExecutor) {
                 actions = {
                     VersionBadge()
                     IconButton(onClick = { component(MainScreenEvent.SelectMetar) }) {
-                        Icon(painter = painterResource(Res.drawable.air), contentDescription = "Weather and airport")
+                        Icon(
+                            painter = painterResource(Res.drawable.air),
+                            contentDescription = "Weather and airport"
+                        )
                     }
                     IconButton(onClick = { component(MainScreenEvent.SelectAirportsBase) }) {
-                        Icon(painter = painterResource(Res.drawable.cloud_download), contentDescription = "Airports database")
+                        Icon(
+                            painter = painterResource(Res.drawable.cloud_download),
+                            contentDescription = "Airports database"
+                        )
                     }
                     IconButton(onClick = { component(MainScreenEvent.SelectQFEHelper) }) {
-                        Icon(painter = painterResource(Res.drawable.compress), contentDescription = "QFE helper")
+                        Icon(
+                            painter = painterResource(Res.drawable.compress),
+                            contentDescription = "QFE helper"
+                        )
                     }
                     IconButton(onClick = { component(MainScreenEvent.SelectColdTemperature) }) {
                         Icon(
-                            painter = painterResource(Res.drawable.warning),
+                            painter = painterResource(Res.drawable.snowflake),
                             contentDescription = "Cold temperature corrector"
                         )
                     }
@@ -139,7 +141,10 @@ fun AircraftListScreen(component: MainEventExecutor) {
                             IconButton(
                                 onClick = { component(MainScreenEvent.SelectFuelCalculator(item.id)) }
                             ) {
-                                Icon(painter = painterResource(Res.drawable.gas_station), contentDescription = "Open fuel calculator")
+                                Icon(
+                                    painter = painterResource(Res.drawable.gas_station),
+                                    contentDescription = "Open fuel calculator"
+                                )
                             }
                         }
                     }

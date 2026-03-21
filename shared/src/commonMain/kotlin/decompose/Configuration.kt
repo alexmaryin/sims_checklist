@@ -31,5 +31,8 @@ sealed interface Configuration {
     ) : Configuration
 
     @Serializable
-    data class ColdTemperature(val icao: String? = null) : Configuration
+    data class ColdTemperature(
+        val icao: String? = null,
+        val temperature: Int? = null
+    ) : Configuration
 }

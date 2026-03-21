@@ -7,8 +7,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import commonUi.components.AirportBlock
@@ -18,11 +16,9 @@ import commonUi.utils.mySnackbarHost
 import feature.coldTemperature.ColdTemperatureCorrector
 import feature.coldTemperature.ColdTemperatureEvent
 import feature.coldTemperature.ColdTemperatureState
-import feature.coldTemperature.ui.model.ColdTemperatureWaypoint
 import org.jetbrains.compose.resources.painterResource
 import sims_checklist.shared.generated.resources.Res
 import sims_checklist.shared.generated.resources.arrow_back
-import sims_checklist.shared.generated.resources.close
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -137,54 +133,6 @@ fun ColdTemperatureScreen(component: ColdTemperatureCorrector) {
                         )
                     }
                 }
-            }
-        }
-    }
-}
-
-@Composable
-private fun WaypointCard(
-    idx: Int,
-    waypoint: ColdTemperatureWaypoint,
-    onDelete: () -> Unit
-) {
-    Card(modifier = Modifier.fillMaxWidth()) {
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "${idx + 1}.",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold
-            )
-            Spacer(Modifier.width(12.dp))
-            Text(
-                text = waypoint.name,
-                modifier = Modifier.weight(1f),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold
-            )
-            Spacer(Modifier.width(12.dp))
-            Text(
-                text = "${waypoint.altitudeFeet} ft",
-                style = MaterialTheme.typography.bodySmall,
-                maxLines = 1
-            )
-            Spacer(Modifier.width(12.dp))
-            Text(
-                text = "${waypoint.correctedAltitudeFeet} ft",
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.Bold,
-                maxLines = 1
-            )
-            IconButton(onClick = onDelete) {
-                Icon(
-                    painter = painterResource(Res.drawable.close),
-                    contentDescription = "Delete waypoint"
-                )
             }
         }
     }

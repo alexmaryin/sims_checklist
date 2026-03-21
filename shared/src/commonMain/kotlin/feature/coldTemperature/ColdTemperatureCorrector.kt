@@ -21,6 +21,7 @@ import services.commonApi.Result
 class ColdTemperatureCorrector(
     private val componentContext: ComponentContext,
     private val icao: String? = null,
+    temperature: Int? = null,
     val onBack: () -> Unit
 ) : KoinComponent, ComponentContext by componentContext {
 
@@ -29,7 +30,9 @@ class ColdTemperatureCorrector(
     private val scope = componentContext.coroutineScope() + SupervisorJob()
     private var observeWaypointsJob: Job? = null
 
-    val state = MutableValue(ColdTemperatureState())
+    val state = MutableValue(ColdTemperatureState(
+        temperatureCelsius = temperature ?: -20
+    ))
 
     init {
         lifecycle.doOnStart {

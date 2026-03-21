@@ -80,6 +80,8 @@ class Root(
         icao = icao,
         onOpenQfeHelper = { icao, qfe, celsius ->
             navigation.pushNew(Configuration.QFEHelper(icao, qfe, celsius)) },
+        onOpenColdTemperature = { icao, temperature ->
+            navigation.pushNew(Configuration.ColdTemperature(icao, temperature)) },
         onBack = { navigation.pop() }
     )
 
@@ -106,10 +108,12 @@ class Root(
 
     private fun coldTemperature(
         context: ComponentContext,
-        icao: String? = null
+        icao: String? = null,
+        temperature: Int? = null
     ) = ColdTemperatureCorrector(
         componentContext = context,
         icao = icao,
+        temperature = temperature,
         onBack = { navigation.pop() }
     )
 
@@ -138,7 +142,11 @@ class Root(
                 configuration.celsius
             ))
 
-            is Configuration.ColdTemperature -> ColdTemperatureChild(coldTemperature(context, configuration.icao))
+            is Configuration.ColdTemperature -> ColdTemperatureChild(coldTemperature(
+                context,
+                configuration.icao,
+                configuration.temperature
+            ))
         }
 }
 
