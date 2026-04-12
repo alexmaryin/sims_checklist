@@ -11,6 +11,7 @@ The application assists pilots (primarily flight simulation enthusiasts) with:
 - METAR/TAF weather data retrieval with wind direction visualization
 - Airport database exploration with runway information
 - QFE to QNH pressure conversion for modern aircraft
+- Cold temperature altitude correction for instrument approaches
 
 ### Architecture
 - **MVI (Model-View-Intent)** architecture pattern
@@ -48,7 +49,7 @@ sims_checklist/
   - `metarscreen/` - METAR/TAF weather display
   - `airportsBase/` - Airport database browser
   - `qfeHelper/` - Pressure conversion utility
-  - `coldTemperature/` - Cold temperature altitude correction
+  - `coldTemperature/` - Cold temperature altitude correction with FAA segment-based corrections
 - `services/` - Backend services (METAR, airports, cold temperature)
 - `di/` - Dependency injection modules
 - `decompose/` - Navigation configuration
@@ -108,8 +109,10 @@ sims_checklist/
 ### Code Style
 - Kotlin coding conventions
 - Compose Multiplatform for all UI code
-- Material Design 3 components
+- Material Design 3 components with light/dark theme support
 - Adaptive layouts for different screen sizes
+- Use Material3 segmented buttons for multi-option selections
+- Cards use default surface colors for theme adaptation
 
 ### Testing
 - Unit tests in `commonTest` source set
@@ -124,7 +127,7 @@ sims_checklist/
 - **Ktor** - HTTP client
 - **kotlinx.serialization** - JSON serialization
 - **kotlinx.datetime** - Date/time handling
-- **metarKt** - METAR parsing (custom library)
+- **metarKt 1.2.1** - METAR parsing and cold temperature corrections (custom library)
 
 ### Data Sources
 - **METAR/TAF**: https://checkwx.com/
@@ -133,6 +136,7 @@ sims_checklist/
 ### Important Notes
 - Runway headings are in **true courses** (not magnetic)
 - Wind information from METAR is referenced to **true north**
+- Cold Temperature Corrector uses FAA AIM 7-3-6 segment-based correction method
 - The app does not collect any user data (see policy.md)
 
 ## Version Management

@@ -73,7 +73,9 @@ fun AddWaypointSheet(
                     modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.Center
                 ) {
-                    SingleChoiceSegmentedButtonRow {
+                    SingleChoiceSegmentedButtonRow(
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 6.dp),
+                    ) {
                         ApproachSegment.entries.forEachIndexed { index, segment ->
                             SegmentedButton(
                                 shape = SegmentedButtonDefaults.itemShape(index = index, count = ApproachSegment.entries.size),
