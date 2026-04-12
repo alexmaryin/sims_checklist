@@ -17,6 +17,7 @@ import feature.coldTemperature.ColdTemperatureCorrector
 import feature.coldTemperature.ColdTemperatureEvent
 import feature.coldTemperature.ColdTemperatureState
 import org.jetbrains.compose.resources.painterResource
+import services.coldTemperature.ApproachSegment
 import sims_checklist.shared.generated.resources.Res
 import sims_checklist.shared.generated.resources.arrow_back
 
@@ -41,8 +42,8 @@ fun ColdTemperatureScreen(component: ColdTemperatureCorrector) {
     AddWaypointSheet(
         isVisible = isAddWaypointSheetVisible,
         defaultAltitude = state.value.waypoints.lastOrNull()?.altitudeFeet ?: state.value.airportElevationFeet,
-        onSubmit = { name, altitude ->
-            component.onEvent(ColdTemperatureEvent.AddWaypoint(name, altitude))
+        onSubmit = { name, altitude, segment ->
+            component.onEvent(ColdTemperatureEvent.AddWaypoint(name, altitude, segment))
         },
         onDismissRequest = { isAddWaypointSheetVisible = false }
     )
@@ -97,6 +98,15 @@ fun ColdTemperatureScreen(component: ColdTemperatureCorrector) {
 
             Spacer(Modifier.height(12.dp))
 
+            FAFMDABlock(
+                fafAltitude = state.value.fafAltitudeFeet,
+                mdaAltitude = state.value.mdaAltitudeFeet,
+                onSubmitFAF = { faf -> component.onEvent(ColdTemperatureEvent.SubmitFAFAltitude(faf)) },
+                onSubmitMDA = { mda -> component.onEvent(ColdTemperatureEvent.SubmitMDAAltitude(mda)) }
+            )
+
+            Spacer(Modifier.height(12.dp))
+
             Button(
                 onClick = { isAddWaypointSheetVisible = true },
                 modifier = Modifier.fillMaxWidth(),
@@ -114,7 +124,11 @@ fun ColdTemperatureScreen(component: ColdTemperatureCorrector) {
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "Enter ICAO to load or add airport waypoints.",
+                        text = if (state.value.airportICAO.isNullOrBlank()) {
+                            "Enter ICAO to load airport waypoints."
+                        } else {
+                            "No waypoints for ${state.value.airportICAO}.\nClick + waypoint to add."
+                        },
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }

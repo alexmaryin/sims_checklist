@@ -4,7 +4,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -12,18 +13,20 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
 import commonUi.utils.SimColors
+import services.coldTemperature.ApproachSegment
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddWaypointSheet(
     isVisible: Boolean,
     defaultAltitude: Int,
-    onSubmit: (String, Int) -> Unit,
+    onSubmit: (String, Int, ApproachSegment) -> Unit,
     onDismissRequest: () -> Unit,
 ) {
     if (isVisible) {
         val waypointName = rememberTextFieldState("")
         val waypointElevation = rememberTextFieldState(defaultAltitude.toString())
+        var selectedSegment by remember { mutableStateOf(ApproachSegment.INTERMEDIATE) }
 
         ModalBottomSheet(onDismissRequest = onDismissRequest) {
             Column(
@@ -57,6 +60,44 @@ fun AddWaypointSheet(
                         keyboardType = KeyboardType.Number,
                     )
                 )
+                Spacer(Modifier.height(12.dp))
+
+                Text(
+                    text = "Approach Segment",
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.Medium
+                )
+                Spacer(Modifier.height(8.dp))
+
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    SingleChoiceSegmentedButtonRow {
+                        ApproachSegment.entries.forEachIndexed { index, segment ->
+                            SegmentedButton(
+                                shape = SegmentedButtonDefaults.itemShape(index = index, count = ApproachSegment.entries.size),
+                                onClick = { selectedSegment = segment },
+                                selected = selectedSegment == segment,
+                                icon = {},
+                                colors = SegmentedButtonDefaults.colors(
+                                    activeContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                                    activeContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    activeBorderColor = MaterialTheme.colorScheme.outline,
+                                    inactiveContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                                    inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    inactiveBorderColor = MaterialTheme.colorScheme.outline,
+                                )
+                            ) {
+                                Text(
+                                    text = segment.displayName,
+                                    style = MaterialTheme.typography.labelMedium
+                                )
+                            }
+                        }
+                    }
+                }
+
                 Spacer(Modifier.height(8.dp))
 
                 Text(
@@ -69,7 +110,7 @@ fun AddWaypointSheet(
                     onClick = {
                         val altitude = waypointElevation.text.toString().toInt()
                         val name = waypointName.text.toString()
-                        onSubmit(name, altitude)
+                        onSubmit(name, altitude, selectedSegment)
                         waypointName.clearText()
                         onDismissRequest()
                     },

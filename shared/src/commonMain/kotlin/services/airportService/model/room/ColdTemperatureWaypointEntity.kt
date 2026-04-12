@@ -1,5 +1,6 @@
 package services.airportService.model.room
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 
 @Entity(
@@ -10,5 +11,7 @@ data class ColdTemperatureWaypointEntity(
     val icao: String,
     val position: Int,
     val name: String,
-    val altitudeFeet: Int
+    val altitudeFeet: Int,
+    @ColumnInfo(defaultValue = "INTERMEDIATE")
+    val segment: String = "INTERMEDIATE"
 )

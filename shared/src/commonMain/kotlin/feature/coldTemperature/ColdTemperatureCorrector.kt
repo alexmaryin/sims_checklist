@@ -14,6 +14,7 @@ import kotlinx.coroutines.plus
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import services.airportService.AirportService
+import services.coldTemperature.ApproachSegment
 import services.coldTemperature.ColdTemperatureWaypointStore
 import services.coldTemperature.StoredColdTemperatureWaypoint
 import services.commonApi.Result
@@ -30,9 +31,11 @@ class ColdTemperatureCorrector(
     private val scope = componentContext.coroutineScope() + SupervisorJob()
     private var observeWaypointsJob: Job? = null
 
-    val state = MutableValue(ColdTemperatureState(
-        temperatureCelsius = temperature ?: -20
-    ))
+    val state = MutableValue(
+        ColdTemperatureState(
+            temperatureCelsius = temperature ?: -20
+        )
+    )
 
     init {
         lifecycle.doOnStart {
@@ -44,7 +47,9 @@ class ColdTemperatureCorrector(
         is ColdTemperatureEvent.SubmitICAO -> submitICAO(event.icao)
         is ColdTemperatureEvent.SubmitTemperature -> submitTemperature(event.celsius)
         is ColdTemperatureEvent.SubmitAirportElevation -> submitAirportElevation(event.feet)
-        is ColdTemperatureEvent.AddWaypoint -> addWaypoint(event.name, event.altitudeFeet)
+        is ColdTemperatureEvent.SubmitFAFAltitude -> submitFAFAltitude(event.feet)
+        is ColdTemperatureEvent.SubmitMDAAltitude -> submitMDAAltitude(event.feet)
+        is ColdTemperatureEvent.AddWaypoint -> addWaypoint(event.name, event.altitudeFeet, event.segment)
         is ColdTemperatureEvent.DeleteWaypoint -> deleteWaypoint(event.name)
         ColdTemperatureEvent.ClearError -> clearError()
     }
@@ -66,11 +71,15 @@ class ColdTemperatureCorrector(
             when (val response = airportService.getAirportByICAO(normalizedIcao)) {
                 is Result.Success -> {
                     val airport = response.value
+                    val fafDefault = airport.elevation + 3000
+                    val mdaDefault = airport.elevation + 200
                     state.update {
                         it.copy(
                             airportICAO = airport.icao,
                             airportName = airport.name,
                             airportElevationFeet = airport.elevation,
+                            fafAltitudeFeet = fafDefault,
+                            mdaAltitudeFeet = mdaDefault,
                             isLoading = false,
                             error = null
                         )
@@ -86,33 +95,77 @@ class ColdTemperatureCorrector(
     }
 
     private fun submitTemperature(celsius: Int) {
+        val stateValue = state.value
+        val waypoints = stateValue.waypoints.recalculate(
+            airportElevation = stateValue.airportElevationFeet,
+            temperatureCelsius = celsius,
+            fafAltitude = stateValue.fafAltitudeFeet,
+            mdaAltitude = stateValue.mdaAltitudeFeet
+        )
         state.update {
             it.copy(
                 temperatureCelsius = celsius,
-                waypoints = it.waypoints.recalculate(
-                    airportElevation = it.airportElevationFeet,
-                    temperatureCelsius = celsius
-                )
+                waypoints = waypoints
             )
         }
     }
 
     private fun submitAirportElevation(feet: Int) {
         observeWaypointsJob?.cancel()
+//        val fafDefault = feet + 3000
+//        val mdaDefault = feet + 200
+        val stateValue = state.value
+        val waypoints = stateValue.waypoints.recalculate(
+            airportElevation = feet,
+            temperatureCelsius = stateValue.temperatureCelsius,
+            fafAltitude = stateValue.fafAltitudeFeet,
+            mdaAltitude = stateValue.mdaAltitudeFeet
+        )
         state.update {
             it.copy(
                 airportElevationFeet = feet,
                 airportICAO = null,
                 airportName = null,
-                waypoints = it.waypoints.recalculate(
-                    airportElevation = feet,
-                    temperatureCelsius = it.temperatureCelsius
-                )
+//                fafAltitudeFeet = fafDefault,
+//                mdaAltitudeFeet = mdaDefault,
+                waypoints = waypoints
             )
         }
     }
 
-    private fun addWaypoint(name: String, altitudeFeet: Int) {
+    private fun submitFAFAltitude(feet: Int) {
+        val stateValue = state.value
+        val waypoints = stateValue.waypoints.recalculate(
+            airportElevation = stateValue.airportElevationFeet,
+            temperatureCelsius = stateValue.temperatureCelsius,
+            fafAltitude = feet,
+            mdaAltitude = stateValue.mdaAltitudeFeet
+        )
+        state.update {
+            it.copy(
+                fafAltitudeFeet = feet,
+                waypoints = waypoints
+            )
+        }
+    }
+
+    private fun submitMDAAltitude(feet: Int) {
+        val stateValue = state.value
+        val waypoints = stateValue.waypoints.recalculate(
+            airportElevation = stateValue.airportElevationFeet,
+            temperatureCelsius = stateValue.temperatureCelsius,
+            fafAltitude = stateValue.fafAltitudeFeet,
+            mdaAltitude = feet
+        )
+        state.update {
+            it.copy(
+                mdaAltitudeFeet = feet,
+                waypoints = waypoints
+            )
+        }
+    }
+
+    private fun addWaypoint(name: String, altitudeFeet: Int, segment: ApproachSegment = ApproachSegment.INTERMEDIATE) {
         val upperName = name.trim().uppercase()
         if (upperName.isBlank()) {
             state.update { it.copy(error = "Waypoint name should not be empty") }
@@ -132,7 +185,8 @@ class ColdTemperatureCorrector(
             waypointStore.addWaypoint(
                 icao = currentIcao,
                 name = name.trim(),
-                altitudeFeet = altitudeFeet
+                altitudeFeet = altitudeFeet,
+                segment = segment
             )
         }
     }
@@ -152,14 +206,14 @@ class ColdTemperatureCorrector(
         observeWaypointsJob?.cancel()
         observeWaypointsJob = scope.launch {
             waypointStore.observeWaypointsByIcao(icao).collectLatest { storedWaypoints ->
-                state.update {
-                    it.copy(
-                        waypoints = storedWaypoints.toUiWaypoints().recalculate(
-                            airportElevation = it.airportElevationFeet,
-                            temperatureCelsius = it.temperatureCelsius
-                        )
-                    )
-                }
+                val stateValue = state.value
+                val waypoints = storedWaypoints.toUiWaypoints().recalculate(
+                    airportElevation = stateValue.airportElevationFeet,
+                    temperatureCelsius = stateValue.temperatureCelsius,
+                    fafAltitude = stateValue.fafAltitudeFeet,
+                    mdaAltitude = stateValue.mdaAltitudeFeet
+                )
+                state.update { it.copy(waypoints = waypoints) }
             }
         }
     }
@@ -169,6 +223,7 @@ private fun List<StoredColdTemperatureWaypoint>.toUiWaypoints(): List<ColdTemper
     map { waypoint ->
         ColdTemperatureWaypoint(
             name = waypoint.name,
-            altitudeFeet = waypoint.altitudeFeet
+            altitudeFeet = waypoint.altitudeFeet,
+            segment = waypoint.segment
         )
     }
