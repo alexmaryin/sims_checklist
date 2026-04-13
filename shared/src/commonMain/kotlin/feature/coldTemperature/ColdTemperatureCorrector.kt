@@ -14,7 +14,6 @@ import kotlinx.coroutines.plus
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import services.airportService.AirportService
-import services.coldTemperature.ApproachSegment
 import services.coldTemperature.ColdTemperatureWaypointStore
 import services.coldTemperature.StoredColdTemperatureWaypoint
 import services.commonApi.Result
@@ -49,7 +48,7 @@ class ColdTemperatureCorrector(
         is ColdTemperatureEvent.SubmitAirportElevation -> submitAirportElevation(event.feet)
         is ColdTemperatureEvent.SubmitFAFAltitude -> submitFAFAltitude(event.feet)
         is ColdTemperatureEvent.SubmitMDAAltitude -> submitMDAAltitude(event.feet)
-        is ColdTemperatureEvent.AddWaypoint -> addWaypoint(event.name, event.altitudeFeet, event.segment)
+        is ColdTemperatureEvent.AddWaypoint -> addWaypoint(event.name, event.altitudeFeet)
         is ColdTemperatureEvent.DeleteWaypoint -> deleteWaypoint(event.name)
         ColdTemperatureEvent.ClearError -> clearError()
     }
@@ -165,7 +164,7 @@ class ColdTemperatureCorrector(
         }
     }
 
-    private fun addWaypoint(name: String, altitudeFeet: Int, segment: ApproachSegment = ApproachSegment.INTERMEDIATE) {
+    private fun addWaypoint(name: String, altitudeFeet: Int) {
         val upperName = name.trim().uppercase()
         if (upperName.isBlank()) {
             state.update { it.copy(error = "Waypoint name should not be empty") }
@@ -185,8 +184,7 @@ class ColdTemperatureCorrector(
             waypointStore.addWaypoint(
                 icao = currentIcao,
                 name = name.trim(),
-                altitudeFeet = altitudeFeet,
-                segment = segment
+                altitudeFeet = altitudeFeet
             )
         }
     }
@@ -223,7 +221,6 @@ private fun List<StoredColdTemperatureWaypoint>.toUiWaypoints(): List<ColdTemper
     map { waypoint ->
         ColdTemperatureWaypoint(
             name = waypoint.name,
-            altitudeFeet = waypoint.altitudeFeet,
-            segment = waypoint.segment
+            altitudeFeet = waypoint.altitudeFeet
         )
     }

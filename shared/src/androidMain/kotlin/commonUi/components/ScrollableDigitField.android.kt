@@ -5,9 +5,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import kotlin.math.abs
+import kotlin.math.sign
 
 const val dragMargin = 2
-const val speed = 0.4f
 
 actual fun Modifier.digitScrollModifier(onChange: (Int) -> Unit): Modifier = pointerInput(Unit) {
     var dragAccumulator = 0f
@@ -18,9 +18,8 @@ actual fun Modifier.digitScrollModifier(onChange: (Int) -> Unit): Modifier = poi
             dragAccumulator += dragAmount
             val dragThreshold = dragMargin.dp.toPx()
             if (abs(dragAccumulator) > dragThreshold) {
-                val steps = -(dragAccumulator / dragThreshold * speed).toInt()
-                if (steps != 0) onChange(steps)
-                dragAccumulator %= dragThreshold
+                onChange(sign(-dragAccumulator).toInt())
+                dragAccumulator = 0f
             }
         }
     )

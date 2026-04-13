@@ -17,7 +17,6 @@ import feature.coldTemperature.ColdTemperatureCorrector
 import feature.coldTemperature.ColdTemperatureEvent
 import feature.coldTemperature.ColdTemperatureState
 import org.jetbrains.compose.resources.painterResource
-import services.coldTemperature.ApproachSegment
 import sims_checklist.shared.generated.resources.Res
 import sims_checklist.shared.generated.resources.arrow_back
 
@@ -42,8 +41,8 @@ fun ColdTemperatureScreen(component: ColdTemperatureCorrector) {
     AddWaypointSheet(
         isVisible = isAddWaypointSheetVisible,
         defaultAltitude = state.value.waypoints.lastOrNull()?.altitudeFeet ?: state.value.airportElevationFeet,
-        onSubmit = { name, altitude, segment ->
-            component.onEvent(ColdTemperatureEvent.AddWaypoint(name, altitude, segment))
+        onSubmit = { name, altitude ->
+            component.onEvent(ColdTemperatureEvent.AddWaypoint(name, altitude))
         },
         onDismissRequest = { isAddWaypointSheetVisible = false }
     )
@@ -60,6 +59,18 @@ fun ColdTemperatureScreen(component: ColdTemperatureCorrector) {
                 },
                 colors = SimColors.topBarColors()
             )
+        },
+        floatingActionButton = {
+            if (!state.value.airportICAO.isNullOrBlank()) {
+                FloatingActionButton(
+                    onClick = { isAddWaypointSheetVisible = true }
+                ) {
+                    Text(
+                        text = "+",
+                        style = MaterialTheme.typography.headlineMedium
+                    )
+                }
+            }
         }
     ) { paddingValues ->
         Column(
@@ -104,17 +115,6 @@ fun ColdTemperatureScreen(component: ColdTemperatureCorrector) {
                 onSubmitFAF = { faf -> component.onEvent(ColdTemperatureEvent.SubmitFAFAltitude(faf)) },
                 onSubmitMDA = { mda -> component.onEvent(ColdTemperatureEvent.SubmitMDAAltitude(mda)) }
             )
-
-            Spacer(Modifier.height(12.dp))
-
-            Button(
-                onClick = { isAddWaypointSheetVisible = true },
-                modifier = Modifier.fillMaxWidth(),
-                enabled = !state.value.airportICAO.isNullOrBlank(),
-                colors = SimColors.buttonColors()
-            ) {
-                Text("+ waypoint")
-            }
 
             Spacer(Modifier.height(12.dp))
 

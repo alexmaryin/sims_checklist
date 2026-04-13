@@ -15,17 +15,16 @@ interface ColdTemperatureWaypointDao {
 
     @Query(
         """
-        INSERT INTO cold_temperature_waypoints (icao, position, name, altitudeFeet, segment)
+        INSERT INTO cold_temperature_waypoints (icao, position, name, altitudeFeet)
         VALUES (
             :icao,
             COALESCE((SELECT MAX(position) + 1 FROM cold_temperature_waypoints WHERE icao = :icao), 0),
             :name,
-            :altitudeFeet,
-            :segment
+            :altitudeFeet
         )
         """
     )
-    suspend fun insertWaypoint(icao: String, name: String, altitudeFeet: Int, segment: String = "INTERMEDIATE")
+    suspend fun insertWaypoint(icao: String, name: String, altitudeFeet: Int)
 
     @Query("DELETE FROM cold_temperature_waypoints WHERE icao = :icao AND name = :name")
     suspend fun deleteWaypoint(icao: String, name: String)

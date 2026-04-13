@@ -8,7 +8,6 @@ import services.airportService.model.Runway
 import services.airportService.model.enums.AirportType
 import services.airportService.model.enums.FrequencyType
 import services.airportService.model.enums.RunwaySurface
-import services.coldTemperature.ApproachSegment
 import services.coldTemperature.StoredColdTemperatureWaypoint
 import utils.filterDigitsToInt
 import utils.ifZero
@@ -57,8 +56,7 @@ fun HistoryAirportEntity.toDomain(): HistoryAirport = HistoryAirport(
 fun ColdTemperatureWaypointEntity.toDomain(): StoredColdTemperatureWaypoint = StoredColdTemperatureWaypoint(
     name = name,
     altitudeFeet = altitudeFeet,
-    position = position,
-    segment = runCatching { ApproachSegment.valueOf(segment) }.getOrElse { ApproachSegment.INTERMEDIATE }
+    position = position
 )
 
 fun MetadataEntity.toDomain(): LastUpdate = LastUpdate(

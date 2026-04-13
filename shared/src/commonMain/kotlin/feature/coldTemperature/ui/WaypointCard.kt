@@ -21,7 +21,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import feature.coldTemperature.ui.model.ColdTemperatureWaypoint
 import org.jetbrains.compose.resources.painterResource
-import services.coldTemperature.ApproachSegment
+import services.coldTemperature.WaypointSegment
 import sims_checklist.shared.generated.resources.Res
 import sims_checklist.shared.generated.resources.close
 
@@ -54,9 +54,8 @@ fun WaypointCard(
                 Spacer(Modifier.height(2.dp))
                 Surface(
                     color = when (waypoint.segment) {
-                        ApproachSegment.INTERMEDIATE -> MaterialTheme.colorScheme.primaryContainer
-                        ApproachSegment.FINAL -> MaterialTheme.colorScheme.tertiaryContainer
-                        ApproachSegment.MISSED_APPROACH -> MaterialTheme.colorScheme.secondaryContainer
+                        WaypointSegment.ABOVE_FAF -> MaterialTheme.colorScheme.primaryContainer
+                        WaypointSegment.BELOW_FAF -> MaterialTheme.colorScheme.tertiaryContainer
                     },
                     shape = MaterialTheme.shapes.small
                 ) {

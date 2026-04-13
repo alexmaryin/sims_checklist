@@ -13,20 +13,18 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
 import commonUi.utils.SimColors
-import services.coldTemperature.ApproachSegment
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddWaypointSheet(
     isVisible: Boolean,
     defaultAltitude: Int,
-    onSubmit: (String, Int, ApproachSegment) -> Unit,
+    onSubmit: (String, Int) -> Unit,
     onDismissRequest: () -> Unit,
 ) {
     if (isVisible) {
         val waypointName = rememberTextFieldState("")
         val waypointElevation = rememberTextFieldState(defaultAltitude.toString())
-        var selectedSegment by remember { mutableStateOf(ApproachSegment.INTERMEDIATE) }
 
         ModalBottomSheet(onDismissRequest = onDismissRequest) {
             Column(
@@ -63,46 +61,6 @@ fun AddWaypointSheet(
                 Spacer(Modifier.height(12.dp))
 
                 Text(
-                    text = "Approach Segment",
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.Medium
-                )
-                Spacer(Modifier.height(8.dp))
-
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    SingleChoiceSegmentedButtonRow(
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 6.dp),
-                    ) {
-                        ApproachSegment.entries.forEachIndexed { index, segment ->
-                            SegmentedButton(
-                                shape = SegmentedButtonDefaults.itemShape(index = index, count = ApproachSegment.entries.size),
-                                onClick = { selectedSegment = segment },
-                                selected = selectedSegment == segment,
-                                icon = {},
-                                colors = SegmentedButtonDefaults.colors(
-                                    activeContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                                    activeContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                    activeBorderColor = MaterialTheme.colorScheme.outline,
-                                    inactiveContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                                    inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    inactiveBorderColor = MaterialTheme.colorScheme.outline,
-                                )
-                            ) {
-                                Text(
-                                    text = segment.displayName,
-                                    style = MaterialTheme.typography.labelMedium
-                                )
-                            }
-                        }
-                    }
-                }
-
-                Spacer(Modifier.height(8.dp))
-
-                Text(
                     text = "Default value follows the previous point altitude or airport elevation if this is the first point.",
                     style = MaterialTheme.typography.bodySmall
                 )
@@ -112,7 +70,7 @@ fun AddWaypointSheet(
                     onClick = {
                         val altitude = waypointElevation.text.toString().toInt()
                         val name = waypointName.text.toString()
-                        onSubmit(name, altitude, selectedSegment)
+                        onSubmit(name, altitude)
                         waypointName.clearText()
                         onDismissRequest()
                     },

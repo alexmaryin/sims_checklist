@@ -13,20 +13,21 @@ import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.pointerInput
 import kotlinx.coroutines.delay
 
-const val MAX_DELAY_MS = 400L
-const val DELAY_FACTOR = 0.86f
-const val MIN_DELAY_MS = 20L
+// Progressive stepping thresholds
+private const val PHASE_1_DURATION_MS = 3000L  // First 3s: step by 1
+private const val PHASE_2_DURATION_MS = 3000L  // Next 3s (3-6s): step by 10
+// After 6s: step by 100
 
 @Composable
 fun ContinuedButton(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit,
+    onClick: (Int) -> Unit,
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable RowScope.() -> Unit
 ) {
     var pressed by remember { mutableStateOf(false) }
-    val currentClickListener by rememberUpdatedState(onClick)
+    val currentOnClick by rememberUpdatedState(onClick)
 
     val infiniteTransition = rememberInfiniteTransition(label = "pulse")
     val scale by infiniteTransition.animateFloat(
@@ -62,15 +63,26 @@ fun ContinuedButton(
         )
     }
 
-
     LaunchedEffect(pressed, enabled) {
-        var currentDelayMillis = MAX_DELAY_MS
+        if (!pressed || !enabled) return@LaunchedEffect
 
-        while (pressed && enabled) {
-            currentClickListener()
-            delay(currentDelayMillis)
-            currentDelayMillis = (currentDelayMillis * DELAY_FACTOR).toLong()
-                .coerceAtLeast(MIN_DELAY_MS)
+        val pressStartTime = System.currentTimeMillis()
+
+        fun getStepSize(): Int {
+            val elapsed = System.currentTimeMillis() - pressStartTime
+            return when {
+                elapsed < PHASE_1_DURATION_MS -> 1
+                elapsed < PHASE_1_DURATION_MS + PHASE_2_DURATION_MS -> 10
+                else -> 100
+            }
+        }
+
+        val lastDelay = 100L
+
+        while (pressed) {
+            val stepSize = getStepSize()
+            currentOnClick(stepSize)
+            delay(lastDelay)
         }
     }
 }

@@ -3,7 +3,8 @@ package feature.coldTemperature
 import alexmaryin.metarkt.helpers.calculateColdTemperatureCorrections
 import feature.coldTemperature.ui.model.ColdTemperatureWaypoint
 import kotlinx.serialization.Serializable
-import services.coldTemperature.ApproachSegment
+import services.coldTemperature.WaypointSegment
+import services.coldTemperature.determineSegment
 
 @Serializable
 data class ColdTemperatureState(
@@ -32,18 +33,20 @@ fun List<ColdTemperatureWaypoint>.recalculate(
     )
 
     val correctedWaypoints = map { waypoint ->
-        val correction = when (waypoint.segment) {
-            ApproachSegment.INTERMEDIATE,
-            ApproachSegment.MISSED_APPROACH -> corrections.intermediateSegmentCorrection
-            ApproachSegment.FINAL -> corrections.finalSegmentCorrection
+        val segment = determineSegment(waypoint.altitudeFeet, fafAltitude)
+        val correction = when (segment) {
+            WaypointSegment.ABOVE_FAF -> corrections.intermediateSegmentCorrection
+            WaypointSegment.BELOW_FAF -> corrections.finalSegmentCorrection
         }
-        waypoint.copy(correctedAltitudeFeet = waypoint.altitudeFeet + correction)
+        waypoint.copy(
+            segment = segment,
+            correctedAltitudeFeet = waypoint.altitudeFeet + correction
+        )
     }.sortedWith(
         compareBy<ColdTemperatureWaypoint> {
             when (it.segment) {
-                ApproachSegment.INTERMEDIATE -> 0
-                ApproachSegment.FINAL -> 1
-                ApproachSegment.MISSED_APPROACH -> 2
+                WaypointSegment.ABOVE_FAF -> 0
+                WaypointSegment.BELOW_FAF -> 1
             }
         }.thenByDescending { it.altitudeFeet }
     )

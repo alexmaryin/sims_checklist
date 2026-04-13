@@ -137,6 +137,12 @@ sims_checklist/
 - Runway headings are in **true courses** (not magnetic)
 - Wind information from METAR is referenced to **true north**
 - Cold Temperature Corrector uses FAA AIM 7-3-6 segment-based correction method
+  - **Segment types are dynamically calculated** based on waypoint altitude vs FAF altitude:
+    - `ABOVE_FAF` (altitude ≥ FAF): uses intermediate segment correction
+    - `BELOW_FAF` (altitude < FAF): uses final segment correction
+  - Users only provide waypoint name and altitude; segment type is automatic
+  - Waypoints sorted by segment type, then by altitude (descending)
+  - Database version: 2 (schema simplified, segment column removed)
 - The app does not collect any user data (see policy.md)
 
 ## Version Management

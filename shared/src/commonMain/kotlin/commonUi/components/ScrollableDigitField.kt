@@ -28,7 +28,7 @@ fun ScrollableDigitField(
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
 
         ContinuedButton(
-            onClick = { onChange(value - 1) },
+            onClick = { delta -> onChange(value - delta) },
             enabled = value > range.first,
         ) {
             Text(
@@ -66,7 +66,7 @@ fun ScrollableDigitField(
         }
 
         ContinuedButton(
-            onClick = { onChange(value + 1) },
+            onClick = { delta -> onChange(value + delta) },
             enabled = value < range.last,
         ) {
             Text(

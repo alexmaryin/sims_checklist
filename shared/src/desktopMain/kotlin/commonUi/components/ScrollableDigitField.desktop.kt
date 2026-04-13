@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.onPointerEvent
 import kotlin.math.roundToInt
+import kotlin.math.sign
 
 const val scrollSensitivity = 0.7f
 
@@ -14,7 +15,7 @@ actual fun Modifier.digitScrollModifier(onChange: (Int) -> Unit): Modifier =
         val scrollDelta = it.changes.first().scrollDelta.y
         if (scrollDelta != 0f) {
             it.changes.first().consume()
-            val deltaValue = (scrollDelta * scrollSensitivity).roundToInt()
-            if (deltaValue != 0) onChange(deltaValue)
+            val delta = (scrollDelta * scrollSensitivity).roundToInt().coerceIn(-1, 1)
+            onChange(delta)
         }
     }
