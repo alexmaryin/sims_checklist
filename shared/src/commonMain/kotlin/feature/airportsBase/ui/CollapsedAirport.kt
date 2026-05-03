@@ -21,7 +21,8 @@ fun CollapsedAirport(airport: Airport, onAction: (AirportsUiEvent) -> Unit) {
             icao = airport.icao,
             name = airport.name,
             onMetarClick = { onAction(AirportsUiEvent.OpenAirportMetar(airport.icao)) },
-            onQfeClick = { onAction(AirportsUiEvent.OpenQfeHelper(airport.icao)) }
+            onQfeClick = { onAction(AirportsUiEvent.OpenQfeHelper(airport.icao)) },
+            onColdTemperatureClick = { onAction(AirportsUiEvent.OpenColdTemperature(airport.icao)) }
         )
     }
 }

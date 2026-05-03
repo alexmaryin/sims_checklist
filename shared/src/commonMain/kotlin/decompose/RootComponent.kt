@@ -4,6 +4,7 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
 import feature.airportsBase.AirportsBase
 import feature.checklistDetails.ChecklistDetails
+import feature.coldTemperature.ColdTemperatureCorrector
 import feature.checklists.Checklists
 import feature.fuelcalculator.FuelCalculator
 import feature.mainScreen.MainEventExecutor
@@ -21,5 +22,6 @@ interface RootComponent {
         data class MetarScannerChild(val component: MetarScanner): Child()
         data class AirportsBaseChild(val component: AirportsBase): Child()
         data class QFEHelperChild(val component: QFEHelper): Child()
+        data class ColdTemperatureChild(val component: ColdTemperatureCorrector): Child()
     }
 }

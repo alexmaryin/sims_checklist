@@ -1,4 +1,4 @@
-package feature.qfeHelper.ui
+package commonUi.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
@@ -14,7 +14,6 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import commonUi.components.SubmitField
 
 @Composable
 fun AirportBlock(

@@ -9,6 +9,8 @@ import services.airportService.LocalBaseConverter
 import services.airportService.localService.AirportServiceRoomImpl
 import services.airportService.localService.RoomConverter
 import services.airportService.model.room.AirportDatabase
+import services.coldTemperature.ColdTemperatureWaypointStore
+import services.coldTemperature.localService.ColdTemperatureWaypointStoreRoomImpl
 
 expect fun getRoomBuilder(): RoomDatabase.Builder<AirportDatabase>
 
@@ -25,4 +27,5 @@ val roomModule = module {
 
     single<AirportService> { AirportServiceRoomImpl(roomDb) }
     single<LocalBaseConverter> { RoomConverter(roomDb) }
+    single<ColdTemperatureWaypointStore> { ColdTemperatureWaypointStoreRoomImpl(roomDb) }
 }

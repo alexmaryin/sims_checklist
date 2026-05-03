@@ -37,6 +37,7 @@ import sims_checklist.shared.generated.resources.Res
 import sims_checklist.shared.generated.resources.arrow_back
 import sims_checklist.shared.generated.resources.compress
 import sims_checklist.shared.generated.resources.info
+import sims_checklist.shared.generated.resources.snowflake
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -88,11 +89,19 @@ fun MetarScreen(component: MetarScanner) {
                     }
                 },
                 actions = {
-                    state.metar?.pressureQFE?.let {
+                    state.metar?.pressureQFEmmHg?.let {
                         IconButton(onClick = { component.onEvent(MetarUiEvent.OpenQfeHelper) }) {
                             Icon(
                                 painter = painterResource(Res.drawable.compress),
                                 contentDescription = "open QFE helper for airport"
+                            )
+                        }
+                    }
+                    if (state.airport != null && state.metar?.temperature != null) {
+                        IconButton(onClick = { component.onEvent(MetarUiEvent.OpenColdTemperature) }) {
+                            Icon(
+                                painter = painterResource(Res.drawable.snowflake),
+                                contentDescription = "open Cold Temperature corrector"
                             )
                         }
                     }

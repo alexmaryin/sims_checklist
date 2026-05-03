@@ -2,10 +2,10 @@ package feature.metarscreen
 
 import alexmaryin.metarkt.models.Wind
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.arkivanov.essenty.lifecycle.doOnStart
+import commonUi.saveableMutableValue
 import feature.metarscreen.model.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
@@ -24,6 +24,7 @@ class MetarScanner(
     val componentContext: ComponentContext,
     val icao: String? = null,
     val onOpenQfeHelper: (icao: String, qfe: Int?, celsius: Int?) -> Unit,
+    val onOpenColdTemperature: (icao: String, temperature: Int?) -> Unit,
     val onBack: () -> Unit
 ) : KoinComponent, ComponentContext by componentContext {
 
@@ -41,7 +42,7 @@ class MetarScanner(
     private val metarService: MetarService by inject()
     private val airportService: AirportService by inject()
 
-    val state = MutableValue(MetarScreenViewState())
+    val state by saveableMutableValue(MetarScreenViewState.serializer(), init = ::MetarScreenViewState)
 
     private var metarJob: Job? = null
     private var airportJob: Job? = null
@@ -60,11 +61,12 @@ class MetarScanner(
         is MetarUiEvent.SubmitWindSpeed -> submitWindSpeed(event.new)
         is MetarUiEvent.LoadTopLatest -> fetchHistoryAirports()
         is MetarUiEvent.OpenQfeHelper -> openQfeHelper()
+        is MetarUiEvent.OpenColdTemperature -> openColdTemperature()
     }
 
     private fun MetarScreenViewState.updateRunwayWind(new: RunwayUi = state.value.runway): MetarScreenViewState = copy(
         runway = new.withCalculatedWind(
-            state.value.metar?.wind
+            state.value.metar?.toWind()
                 ?: Wind(state.value.data.userAngle, speed = state.value.data.userSpeed)
         )
     )
@@ -115,7 +117,7 @@ class MetarScanner(
             state.update {
                 val metar = metarApi.parseMetar()
                 it.copy(
-                    metar = metar,
+                    metar = metar.toMetarData(),
                     data = MetarUi(
                         metarAngle = metar.wind?.direction ?: it.data.metarAngle,
                         metarSpeedKt = metar.wind?.speedKt ?: it.data.metarSpeedKt,
@@ -182,9 +184,20 @@ class MetarScanner(
         state.value.airport?.let {
             onOpenQfeHelper(
                 it.icao,
-                state.value.metar?.pressureQFE?.mmHg,
-                state.value.metar?.temperature?.air
+                state.value.metar?.pressureQFEmmHg,
+                state.value.metar?.temperature
             )
+        }
+    }
+
+    private fun openColdTemperature() {
+        state.value.airport?.let { airport ->
+            state.value.metar?.temperature?.let { temperature ->
+                onOpenColdTemperature(
+                    airport.icao,
+                    temperature
+                )
+            }
         }
     }
 }

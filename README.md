@@ -42,8 +42,23 @@ Look for any airport details from the recent list or search by ICAO or name of t
 
 ### QFE Helper
 
-You can easily convert QFE air pressure given you by ATC to QNH for modern aircraft which do not support QFE. 
-Also, the feature allows you to convert Height given in meters AGL (above ground level) to feet ASL (above sea level). 
+You can easily convert QFE air pressure given you by ATC to QNH for modern aircraft which do not support QFE.
+Also, the feature allows you to convert Height given in meters AGL (above ground level) to feet ASL (above sea level).
+
+### Cold Temperature Corrector
+
+When flying in cold weather conditions (below standard temperature), altimeter readings can be significantly higher than the actual altitude.
+This feature helps you calculate the corrected altitude for your waypoints based on the airport elevation and current temperature from METAR.
+
+- Automatically loads airport elevation from the database
+- Fetches current temperature from METAR weather data
+- Calculates corrected altitudes for all waypoints using FAA segment-based correction method (AIM 7-3-6)
+- Supports different correction values for intermediate, final, and missed approach segments
+- Default FAF/MDA altitudes automatically calculated from airport elevation (+3000 ft and +200 ft)
+- Accessible from the METAR screen via the snowflake icon (❄️) when weather data is available
+- Modern Material3 UI with segmented button controls for approach segment selection
+
+**Why it matters:** In cold temperatures, your true altitude is lower than what your altimeter indicates. This correction is essential for safe obstacle clearance during approaches in winter conditions.
 
 
 *Some develop details:*

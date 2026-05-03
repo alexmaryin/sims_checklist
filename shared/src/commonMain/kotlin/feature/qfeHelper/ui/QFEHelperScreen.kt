@@ -13,6 +13,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import commonUi.components.AirportBlock
+import commonUi.components.TemperatureBlock
 import feature.qfeHelper.QFEEvent
 import feature.qfeHelper.QFEHelper
 import feature.qfeHelper.QFEHelperState
@@ -73,7 +75,7 @@ fun QFEHelperScreen(component: QFEHelper) {
                 feet = state.value.elevationFeet
             ) { new -> component.onEvent(QFEEvent.SubmitElevationMeters(new)) }
 
-            TemperatureBlock(celsius = state.value.temperature){
+            TemperatureBlock(celsius = state.value.temperature) {
                 component.onEvent(QFEEvent.SubmitTemperature(it))
             }
 

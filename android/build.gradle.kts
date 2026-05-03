@@ -17,8 +17,8 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(project(":shared"))
-                implementation(compose.foundation)
-                implementation(compose.material3)
+                implementation(libs.compose.foundation)
+                implementation(libs.compose.material3)
                 implementation(libs.activity.compose)
                 implementation(libs.core.ktx)
                 // Decompose
@@ -48,6 +48,6 @@ android {
         compose = true
     }
     dependencies {
-        debugImplementation(compose.uiTooling)
+        debugImplementation(libs.compose.tooling)
     }
 }

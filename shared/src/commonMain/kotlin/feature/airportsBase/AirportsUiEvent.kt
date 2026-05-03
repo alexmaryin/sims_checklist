@@ -11,4 +11,5 @@ sealed class AirportsUiEvent {
     data class ExpandAirport(val icao: String) : AirportsUiEvent()
     data class OpenAirportMetar(val icao: String) : AirportsUiEvent()
     data class OpenQfeHelper(val icao: String) : AirportsUiEvent()
+    data class OpenColdTemperature(val icao: String) : AirportsUiEvent()
 }

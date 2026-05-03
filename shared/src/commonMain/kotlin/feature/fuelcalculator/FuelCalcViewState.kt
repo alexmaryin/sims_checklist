@@ -1,8 +1,10 @@
 package feature.fuelcalculator
 
 import feature.fuelcalculator.model.Performance
+import kotlinx.serialization.Serializable
 import kotlin.math.roundToInt
 
+@Serializable
 data class FuelCalcViewState(
     val name: String,
     val performance: Performance,
