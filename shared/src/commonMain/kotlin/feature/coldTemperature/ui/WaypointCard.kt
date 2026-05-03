@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -31,7 +32,16 @@ fun WaypointCard(
     waypoint: ColdTemperatureWaypoint,
     onDelete: () -> Unit
 ) {
-    Card(modifier = Modifier.fillMaxWidth()) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = if (waypoint.isTemporary) {
+                MaterialTheme.colorScheme.surfaceVariant
+            } else {
+                MaterialTheme.colorScheme.surface
+            }
+        )
+    ) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -83,11 +93,13 @@ fun WaypointCard(
                 )
             }
             
-            IconButton(onClick = onDelete) {
-                Icon(
-                    painter = painterResource(Res.drawable.close),
-                    contentDescription = "Delete waypoint"
-                )
+            if (!waypoint.isTemporary) {
+                IconButton(onClick = onDelete) {
+                    Icon(
+                        painter = painterResource(Res.drawable.close),
+                        contentDescription = "Delete waypoint"
+                    )
+                }
             }
         }
     }

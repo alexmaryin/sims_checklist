@@ -8,5 +8,6 @@ data class ColdTemperatureWaypoint(
     val name: String,
     val altitudeFeet: Int,
     val segment: WaypointSegment = WaypointSegment.ABOVE_FAF,
-    val correctedAltitudeFeet: Int = 0
+    val correctedAltitudeFeet: Int = 0,
+    val isTemporary: Boolean = false
 )

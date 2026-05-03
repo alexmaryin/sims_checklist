@@ -19,6 +19,22 @@ data class ColdTemperatureState(
     val waypoints: List<ColdTemperatureWaypoint> = emptyList()
 )
 
+fun createTempWaypoints(fafAltitudeFeet: Int, mdaAltitudeFeet: Int): List<ColdTemperatureWaypoint> =
+    listOf(
+        ColdTemperatureWaypoint(
+            "FAF",
+            fafAltitudeFeet,
+            segment = WaypointSegment.ABOVE_FAF,
+            isTemporary = true
+        ),
+        ColdTemperatureWaypoint(
+            "MDA/DA",
+            mdaAltitudeFeet,
+            segment = WaypointSegment.BELOW_FAF,
+            isTemporary = true
+        )
+    )
+
 fun List<ColdTemperatureWaypoint>.recalculate(
     airportElevation: Int,
     temperatureCelsius: Int,
