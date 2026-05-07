@@ -3,175 +3,251 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Privacy Policy for Sims Checklist — We don't collect any personal data. No tracking, no ads, no telemetry.">
   <title>Privacy Policy — Sims Checklist</title>
+  
+  <link rel="icon" type="image/png" href="logo.png">
+  
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
   <style>
     :root {
-      --sims-primary: #f59e0b;
-      --sims-bg-dark: #0b1120;
-      --sims-bg-card: #1e293b;
-      --sims-text-light: #f1f5f9;
-      --sims-text-muted: #94a3b8;
-      --sims-accent-teal: #2dd4bf;
-      --sims-accent-blue: #3b82f6;
-      --sims-radius: 12px;
-      --sims-max-width: 720px;
+      --color-primary: #f59e0b;
+      --color-primary-hover: #d97706;
+      --color-primary-subtle: rgba(245, 158, 11, 0.1);
+      --color-accent: #2dd4bf;
+      --color-accent-hover: #14b8a6;
+      --color-accent-subtle: rgba(45, 212, 191, 0.1);
+      --bg-base: #0b1120;
+      --bg-surface: #111827;
+      --text-heading: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border-dark: rgba(255, 255, 255, 0.08);
+      --border-primary: rgba(245, 158, 11, 0.3);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-full: 9999px;
+      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-
+    
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
+    
+    html { scroll-behavior: smooth; }
+    
     body {
-      font-family: 'Source Sans 3', sans-serif;
-      background: var(--sims-bg-dark);
-      color: var(--sims-text-light);
+      font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg-base);
+      color: var(--text-heading);
       line-height: 1.7;
-      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
-
-    .sims-privacy {
-      max-width: var(--sims-max-width);
+    
+    h1, h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+    }
+    
+    a {
+      color: var(--color-accent-hover);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      transition: color var(--transition);
+    }
+    
+    a:hover { color: var(--color-primary); }
+    
+    /* Nav (simplified) */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1rem 1.5rem;
+      background: rgba(11, 17, 32, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-dark);
+    }
+    
+    .nav-inner {
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 3rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
     }
-
-    .sims-privacy-header {
+    
+    .nav-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+    }
+    
+    .nav-link {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+    
+    .nav-link:hover { color: var(--text-heading); }
+    
+    /* Main */
+    .privacy {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 6rem 1.5rem 3rem;
+    }
+    
+    @media (min-width: 768px) {
+      .privacy {
+        padding: 7rem 2rem 4rem;
+      }
+    }
+    
+    .privacy-header {
       text-align: center;
       margin-bottom: 3rem;
       padding-bottom: 2rem;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+      border-bottom: 1px solid var(--border-dark);
     }
-
-    .sims-privacy-logo {
+    
+    .privacy-logo {
       width: 56px;
       height: 56px;
-      border-radius: 14px;
-      margin-bottom: 1rem;
+      border-radius: var(--radius-md);
+      margin: 0 auto 1rem;
+      box-shadow: 0 0 40px rgba(245, 158, 11, 0.25);
     }
-
-    .sims-privacy-header h1 {
-      font-family: 'Chakra Petch', sans-serif;
-      font-size: clamp(1.75rem, 4vw, 2.5rem);
-      font-weight: 700;
-      color: var(--sims-text-light);
+    
+    .privacy-header h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      color: var(--text-heading);
       margin-bottom: 0.5rem;
     }
-
-    .sims-privacy-header p {
-      color: var(--sims-text-muted);
+    
+    .privacy-header h1 span { color: var(--color-primary); }
+    
+    .privacy-header p {
+      color: var(--text-muted);
       font-size: 1rem;
     }
-
-    .sims-privacy-section {
-      margin-bottom: 2.5rem;
-    }
-
-    .sims-privacy-section h2 {
-      font-family: 'Chakra Petch', sans-serif;
-      font-size: 1.375rem;
-      font-weight: 700;
-      color: var(--sims-text-light);
-      margin-bottom: 1rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 2px solid rgba(245, 158, 11, 0.3);
-      display: inline-block;
-    }
-
-    .sims-privacy-section p,
-    .sims-privacy-section ul {
-      color: var(--sims-text-muted);
-      font-size: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .sims-privacy-section ul {
-      padding-left: 1.5rem;
-    }
-
-    .sims-privacy-section ul li {
-      margin-bottom: 0.5rem;
-    }
-
-    .sims-privacy-section ul li::marker {
-      color: var(--sims-accent-teal);
-    }
-
-    .sims-privacy-section a {
-      color: var(--sims-accent-blue);
-      text-decoration: underline;
-      text-underline-offset: 2px;
-    }
-
-    .sims-privacy-section a:hover {
-      color: var(--sims-accent-teal);
-    }
-
-    .sims-privacy-badge {
+    
+    .privacy-badge {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      background: rgba(45, 212, 191, 0.1);
+      background: var(--color-accent-subtle);
       border: 1px solid rgba(45, 212, 191, 0.25);
-      border-radius: 50px;
+      border-radius: var(--radius-full);
       padding: 0.5rem 1.25rem;
-      font-family: 'Chakra Petch', sans-serif;
+      font-family: 'Source Sans 3', sans-serif;
       font-weight: 600;
       font-size: 0.875rem;
-      color: var(--sims-accent-teal);
-      margin-bottom: 1.5rem;
+      color: var(--color-accent);
+      margin-top: 1rem;
     }
-
-    .sims-privacy-footer {
+    
+    .privacy-section {
+      margin-bottom: 2.5rem;
+    }
+    
+    .privacy-section h2 {
+      font-size: 1.75rem;
+      color: var(--text-heading);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--border-primary);
+      display: inline-block;
+    }
+    
+    .privacy-section p,
+    .privacy-section ul {
+      color: var(--text-muted);
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .privacy-section ul {
+      padding-left: 1.5rem;
+    }
+    
+    .privacy-section ul li {
+      margin-bottom: 0.5rem;
+      list-style-type: disc;
+    }
+    
+    .privacy-section ul li::marker {
+      color: var(--color-accent);
+    }
+    
+    .privacy-section strong {
+      color: var(--text-heading);
+    }
+    
+    .privacy-footer {
       text-align: center;
       padding-top: 2rem;
-      border-top: 1px solid rgba(255,255,255,0.08);
+      border-top: 1px solid var(--border-dark);
       margin-top: 3rem;
     }
-
-    .sims-privacy-footer a {
+    
+    .privacy-back {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      color: var(--sims-text-muted);
-      font-size: 0.875rem;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      font-weight: 600;
       text-decoration: none;
-      transition: color 0.2s;
+      transition: color var(--transition);
     }
-
-    .sims-privacy-footer a:hover {
-      color: var(--sims-accent-teal);
-    }
-
-    .sims-privacy-date {
-      color: var(--sims-text-muted);
-      font-size: 0.875rem;
+    
+    .privacy-back:hover { color: var(--color-primary); }
+    
+    .privacy-date {
+      color: var(--text-muted);
+      font-size: 0.85rem;
       margin-top: 1rem;
-    }
-
-    @media (max-width: 767px) {
-      .sims-privacy {
-        padding: 2rem 1.25rem;
-      }
     }
   </style>
 </head>
 <body>
-  <div class="sims-privacy">
 
-    <div class="sims-privacy-header">
-      <img class="sims-privacy-logo" src="logo.png" alt="Sims Checklist Logo" width="56" height="56">
-      <h1>Privacy Policy</h1>
+  <!-- Nav -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
+        <img class="nav-logo" src="logo.png" alt="Sims Checklist Logo" width="40" height="40">
+        <span style="font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: #f1f5f9; letter-spacing: 0.05em;">Sims Checklist</span>
+      </a>
+      <a href="index.html" class="nav-link">Back to Home</a>
+    </div>
+  </nav>
+
+  <!-- Privacy Content -->
+  <main class="privacy">
+
+    <div class="privacy-header">
+      <img class="privacy-logo" src="logo.png" alt="Sims Checklist Logo" width="56" height="56">
+      <h1>Privacy <span>Policy</span></h1>
       <p>Sims Checklist — Interactive Checklists for Flight Simulation</p>
-      <div class="sims-privacy-badge">&#x2705; No Personal Data Collected</div>
+      <div class="privacy-badge">✓ No Personal Data Collected</div>
     </div>
 
-    <div class="sims-privacy-section">
+    <div class="privacy-section">
       <h2>1. Overview</h2>
       <p>Sims Checklist is a free, open-source utility app for aviation flight simulators. We are committed to protecting your privacy. This policy explains how Sims Checklist handles your information.</p>
     </div>
 
-    <div class="sims-privacy-section">
+    <div class="privacy-section">
       <h2>2. Data Collection</h2>
       <p><strong>Sims Checklist does not collect, transmit, or store any personal data.</strong></p>
       <ul>
@@ -183,7 +259,7 @@
       </ul>
     </div>
 
-    <div class="sims-privacy-section">
+    <div class="privacy-section">
       <h2>3. Third-Party Services</h2>
       <p>The app uses the following external resources:</p>
       <ul>
@@ -194,31 +270,32 @@
       </ul>
     </div>
 
-    <div class="sims-privacy-section">
+    <div class="privacy-section">
       <h2>4. Children's Privacy</h2>
       <p><strong>Sims Checklist is not intended for children under the age of 13 (or the applicable age in your jurisdiction).</strong></p>
       <p>The app is designed for aviation simulation enthusiasts and does not contain features directed at children. We do not knowingly collect personal information from children.</p>
     </div>
 
-    <div class="sims-privacy-section">
+    <div class="privacy-section">
       <h2>5. Changes to This Policy</h2>
       <p>If we update this privacy policy, we will post the revised version on our GitHub repository and update the effective date below. We encourage you to review this policy periodically.</p>
     </div>
 
-    <div class="sims-privacy-section">
+    <div class="privacy-section">
       <h2>6. Contact</h2>
       <p>If you have questions about this privacy policy, please reach out via our GitHub repository:</p>
       <p><a href="https://github.com/alexmaryin/sims_checklist" target="_blank" rel="noopener noreferrer">github.com/alexmaryin/sims_checklist</a></p>
     </div>
 
-    <div class="sims-privacy-footer">
-      <a href="index.html">
+    <div class="privacy-footer">
+      <a href="index.html" class="privacy-back">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
         Back to Sims Checklist
       </a>
-      <p class="sims-privacy-date">Effective date: May 6, 2026</p>
+      <p class="privacy-date">Effective date: May 6, 2026</p>
     </div>
 
-  </div>
+  </main>
+
 </body>
 </html>

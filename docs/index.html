@@ -1,861 +1,1228 @@
-<!-- Sims Checklist Landing Page -->
-<!-- Gutenberg Custom HTML Block compatible -->
-<!-- Mobile-first, CSS-only animations, Inspiro Lite safe -->
-
-<!-- Google Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
-
-<!-- JSON-LD Structured Data -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "MobileApplication",
-  "name": "Sims Checklist",
-  "description": "Interactive checklists for virtual flight simulation. Fuel calculator, METAR/TAF weather, 85,000+ airports database, QFE Helper, and cold temperature corrector.",
-  "operatingSystem": "Android, Windows, Linux, macOS",
-  "applicationCategory": "Utility",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "screenshot": "https://raw.githubusercontent.com/alexmaryin/sims_checklist/master/site/Screenshot%202026-05-06%20211646.png",
-  "softwareVersion": "latest",
-  "featureList": "Checklists for Cessna 172, Cirrus SR-22, Citation X | Fuel calculator | METAR/TAF weather | 85,000+ airports offline | QFE Helper | Cold Temperature Corrector"
-}
-</script>
-
-<style>
-:root {
-  --sims-primary: #f59e0b;
-  --sims-primary-hover: #d97706;
-  --sims-primary-glow: rgba(245, 158, 11, 0.25);
-  --sims-bg-dark: #0b1120;
-  --sims-bg-dark-alt: #111827;
-  --sims-bg-card: #1e293b;
-  --sims-bg-card-hover: #273549;
-  --sims-bg-light: #f8fafc;
-  --sims-text-main: #1e293b;
-  --sims-text-light: #f1f5f9;
-  --sims-text-muted: #94a3b8;
-  --sims-text-muted-dark: #64748b;
-  --sims-accent-teal: #2dd4bf;
-  --sims-accent-blue: #3b82f6;
-  --sims-accent-amber: #fbbf24;
-  --sims-border: rgba(255,255,255,0.08);
-  --sims-border-light: rgba(0,0,0,0.08);
-  --sims-radius: 12px;
-  --sims-radius-lg: 20px;
-  --sims-shadow: 0 4px 24px rgba(0,0,0,0.12);
-  --sims-shadow-lg: 0 12px 48px rgba(0,0,0,0.2);
-  --sims-transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --sims-max-width: 1200px;
-}
-
-/* Reset & Base */
-.sims-wrapper * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-.sims-wrapper {
-  font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  color: var(--sims-text-main);
-  line-height: 1.6;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.sims-wrapper h1,
-.sims-wrapper h2,
-.sims-wrapper h3,
-.sims-wrapper h4 {
-  font-family: 'Chakra Petch', 'Segoe UI', sans-serif;
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
-}
-
-.sims-wrapper img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-.sims-wrapper a {
-  text-decoration: none;
-  color: inherit;
-}
-
-/* ========== SECTION: HERO ========== */
-.sims-hero {
-  position: relative;
-  min-height: 100vh;
-  min-height: 100dvh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--sims-bg-dark);
-  overflow: hidden;
-  padding: 2rem 1.5rem;
-}
-
-.sims-hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 80% 60% at 20% 80%, rgba(45, 212, 191, 0.08) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 80% 20%, rgba(245, 158, 11, 0.06) 0%, transparent 50%),
-    radial-gradient(ellipse 100% 80% at 50% 50%, rgba(11, 17, 32, 0.9) 0%, transparent 100%);
-  pointer-events: none;
-}
-
-/* Grid pattern overlay */
-.sims-hero::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-  background-size: 60px 60px;
-  pointer-events: none;
-}
-
-.sims-hero-inner {
-  position: relative;
-  z-index: 1;
-  max-width: var(--sims-max-width);
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-  animation: simsFadeUp 1s ease-out both;
-}
-
-@keyframes simsFadeUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.sims-hero-logo {
-  width: 80px;
-  height: 80px;
-  border-radius: 20px;
-  box-shadow: 0 0 40px var(--sims-primary-glow);
-  animation: simsPulse 3s ease-in-out infinite;
-}
-
-@keyframes simsPulse {
-  0%, 100% { box-shadow: 0 0 40px var(--sims-primary-glow); }
-  50% { box-shadow: 0 0 60px var(--sims-primary-glow), 0 0 80px rgba(245, 158, 11, 0.1); }
-}
-
-.sims-hero-content {
-  text-align: center;
-  max-width: 720px;
-}
-
-.sims-hero h1 {
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  color: var(--sims-text-light);
-  margin-bottom: 1rem;
-  background: linear-gradient(135deg, #f8fafc 0%, #f59e0b 50%, #2dd4bf 100%);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: simsShimmer 4s ease-in-out infinite;
-}
-
-@keyframes simsShimmer {
-  0%, 100% { background-position: 0% center; }
-  50% { background-position: 200% center; }
-}
-
-.sims-hero-subtitle {
-  font-size: clamp(1rem, 2.5vw, 1.25rem);
-  color: var(--sims-text-muted);
-  margin-bottom: 2rem;
-  line-height: 1.7;
-}
-
-.sims-hero-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
-}
-
-.sims-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.875rem 1.75rem;
-  border-radius: 50px;
-  font-family: 'Chakra Petch', sans-serif;
-  font-weight: 600;
-  font-size: 1rem;
-  transition: all var(--sims-transition);
-  cursor: pointer;
-  border: none;
-  white-space: nowrap;
-}
-
-.sims-btn svg {
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-}
-
-.sims-btn-primary {
-  background: var(--sims-primary);
-  color: #0b1120;
-  box-shadow: 0 4px 20px var(--sims-primary-glow);
-}
-
-.sims-btn-primary:hover {
-  background: var(--sims-primary-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px var(--sims-primary-glow);
-}
-
-.sims-btn-secondary {
-  background: rgba(255,255,255,0.1);
-  color: #ffffff;
-  border: 1px solid rgba(255,255,255,0.2);
-  backdrop-filter: blur(8px);
-}
-
-.sims-btn-secondary-light {
-  background: #1e293b;
-  color: #f1f5f9;
-  border: 1px solid #374151;
-}
-
-.sims-btn-secondary-light:hover {
-  background: #273549;
-  border-color: #4b5563;
-  transform: translateY(-2px);
-}
-
-.sims-btn-github {
-  background: #ffffff;
-  color: #0b1120;
-  border: 1px solid #e5e7eb;
-}
-
-.sims-btn-github:hover {
-  background: #f8fafc;
-  border-color: #d1d5db;
-  transform: translateY(-2px);
-}
-
-.sims-btn-secondary:hover {
-  background: rgba(255,255,255,0.18);
-  border-color: rgba(255,255,255,0.35);
-  transform: translateY(-2px);
-}
-
-.sims-hero-mockup {
-  position: relative;
-  width: 280px;
-  max-width: 100%;
-  animation: simsFadeUp 1s ease-out 0.3s both;
-}
-
-.sims-hero-mockup img {
-  border-radius: var(--sims-radius-lg);
-  box-shadow: var(--sims-shadow-lg);
-  border: 1px solid var(--sims-border);
-}
-
-/* ========== SECTION: FEATURES ========== */
-.sims-features {
-  padding: 5rem 1.5rem;
-  background: var(--sims-bg-light);
-  position: relative;
-}
-
-.sims-features::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--sims-border-light), transparent);
-}
-
-.sims-container {
-  max-width: var(--sims-max-width);
-  margin: 0 auto;
-}
-
-.sims-section-label {
-  display: inline-block;
-  font-family: 'Chakra Petch', sans-serif;
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--sims-primary);
-  background: var(--sims-primary-glow);
-  padding: 0.35rem 1rem;
-  border-radius: 50px;
-  margin-bottom: 1rem;
-}
-
-.sims-section-title {
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
-  color: var(--sims-text-main);
-  margin-bottom: 0.75rem;
-}
-
-.sims-section-subtitle {
-  font-size: 1.1rem;
-  color: var(--sims-text-muted-dark);
-  margin-bottom: 3rem;
-  max-width: 600px;
-}
-
-.sims-features-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-}
-
-.sims-feature-card {
-  background: white;
-  border-radius: var(--sims-radius);
-  padding: 2rem;
-  border: 1px solid var(--sims-border-light);
-  transition: all var(--sims-transition);
-  position: relative;
-  overflow: hidden;
-}
-
-.sims-feature-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--sims-primary), var(--sims-accent-teal));
-  opacity: 0;
-  transition: opacity var(--sims-transition);
-}
-
-.sims-feature-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--sims-shadow);
-  border-color: transparent;
-}
-
-.sims-feature-card:hover::before {
-  opacity: 1;
-}
-
-.sims-feature-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  margin-bottom: 1.25rem;
-  background: linear-gradient(135deg, var(--sims-primary-glow), rgba(45, 212, 191, 0.1));
-}
-
-.sims-feature-card h3 {
-  font-size: 1.15rem;
-  color: var(--sims-text-main);
-  margin-bottom: 0.5rem;
-}
-
-.sims-feature-card p {
-  font-size: 0.95rem;
-  color: var(--sims-text-muted-dark);
-  line-height: 1.6;
-}
-
-/* ========== SECTION: HOW IT WORKS ========== */
-.sims-steps {
-  padding: 5rem 1.5rem;
-  background: var(--sims-bg-dark);
-  position: relative;
-  overflow: hidden;
-}
-
-.sims-steps::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 50% 50% at 0% 100%, rgba(45, 212, 191, 0.05) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 50% at 100% 0%, rgba(245, 158, 11, 0.05) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-.sims-steps .sims-section-title {
-  color: var(--sims-text-light);
-}
-
-.sims-steps .sims-section-subtitle {
-  color: var(--sims-text-muted);
-}
-
-.sims-steps-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-  position: relative;
-  z-index: 1;
-}
-
-.sims-step {
-  display: flex;
-  gap: 1.25rem;
-  align-items: flex-start;
-  padding: 1.75rem;
-  border-radius: var(--sims-radius);
-  background: rgba(255,255,255,0.03);
-  border: 1px solid var(--sims-border);
-  transition: all var(--sims-transition);
-}
-
-.sims-step:hover {
-  background: rgba(255,255,255,0.06);
-  border-color: rgba(245, 158, 11, 0.2);
-  transform: translateX(4px);
-}
-
-.sims-step-number {
-  flex-shrink: 0;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Chakra Petch', sans-serif;
-  font-weight: 800;
-  font-size: 1.25rem;
-  color: var(--sims-primary);
-  background: rgba(245, 158, 11, 0.1);
-  border: 1px solid rgba(245, 158, 11, 0.2);
-}
-
-.sims-step-content h3 {
-  font-size: 1.1rem;
-  color: var(--sims-text-light);
-  margin-bottom: 0.35rem;
-}
-
-.sims-step-content p {
-  font-size: 0.95rem;
-  color: var(--sims-text-muted);
-}
-
-/* ========== SECTION: SCREENSHOTS ========== */
-.sims-screenshots {
-  padding: 5rem 1.5rem;
-  background: var(--sims-bg-light);
-  position: relative;
-}
-
-.sims-screenshots-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.25rem;
-}
-
-.sims-screenshot-item {
-  border-radius: var(--sims-radius);
-  overflow: hidden;
-  border: 1px solid var(--sims-border-light);
-  transition: all var(--sims-transition);
-  background: white;
-  padding: 0.5rem;
-}
-
-.sims-screenshot-item:hover {
-  transform: scale(1.02);
-  box-shadow: var(--sims-shadow);
-}
-
-.sims-screenshot-item img {
-  width: 100%;
-  border-radius: 8px;
-}
-
-.sims-screenshots-caption {
-  text-align: center;
-  margin-top: 2rem;
-  font-size: 1rem;
-  color: var(--sims-text-muted-dark);
-  font-style: italic;
-}
-
-/* ========== SECTION: WHY ========== */
-.sims-why {
-  padding: 5rem 1.5rem;
-  background: var(--sims-bg-dark);
-  position: relative;
-  overflow: hidden;
-}
-
-.sims-why::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 60% 50% at 50% 50%, rgba(45, 212, 191, 0.04) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-.sims-why .sims-section-title {
-  color: var(--sims-text-light);
-}
-
-.sims-why .sims-section-subtitle {
-  color: var(--sims-text-muted);
-}
-
-.sims-why-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-  position: relative;
-  z-index: 1;
-}
-
-.sims-why-item {
-  display: flex;
-  gap: 1.25rem;
-  align-items: flex-start;
-  padding: 1.75rem;
-  border-radius: var(--sims-radius);
-  background: rgba(255,255,255,0.03);
-  border: 1px solid var(--sims-border);
-  transition: all var(--sims-transition);
-}
-
-.sims-why-item:hover {
-  background: rgba(255,255,255,0.06);
-  border-color: rgba(45, 212, 191, 0.2);
-}
-
-.sims-why-icon {
-  flex-shrink: 0;
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.35rem;
-  background: rgba(45, 212, 191, 0.1);
-  border: 1px solid rgba(45, 212, 191, 0.15);
-}
-
-.sims-why-item h3 {
-  font-size: 1.05rem;
-  color: var(--sims-text-light);
-  margin-bottom: 0.25rem;
-}
-
-.sims-why-item p {
-  font-size: 0.9rem;
-  color: var(--sims-text-muted);
-  line-height: 1.6;
-}
-
-/* ========== SECTION: FAQ ========== */
-.sims-faq {
-  padding: 5rem 1.5rem;
-  background: var(--sims-bg-light);
-}
-
-.sims-faq-list {
-  max-width: 760px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.sims-faq-item {
-  border-radius: var(--sims-radius);
-  border: 1px solid var(--sims-border-light);
-  background: white;
-  overflow: hidden;
-  transition: all var(--sims-transition);
-}
-
-.sims-faq-item:hover {
-  border-color: rgba(37, 99, 235, 0.2);
-}
-
-.sims-faq-item[open] {
-  border-color: rgba(37, 99, 235, 0.3);
-  box-shadow: var(--sims-shadow);
-}
-
-.sims-faq-summary {
-  padding: 1.25rem 1.5rem;
-  font-family: 'Chakra Petch', sans-serif;
-  font-weight: 600;
-  font-size: 1.05rem;
-  color: var(--sims-text-main);
-  cursor: pointer;
-  list-style: none;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  transition: background var(--sims-transition);
-}
-
-.sims-faq-summary::-webkit-details-marker {
-  display: none;
-}
-
-.sims-faq-summary:hover {
-  background: rgba(37, 99, 235, 0.04);
-}
-
-.sims-faq-summary::after {
-  content: '';
-  flex-shrink: 0;
-  width: 20px;
-  height: 20px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
-  background-size: contain;
-  background-repeat: no-repeat;
-  transition: transform var(--sims-transition);
-}
-
-.sims-faq-item[open] .sims-faq-summary::after {
-  transform: rotate(180deg);
-}
-
-.sims-faq-answer {
-  padding: 0 1.5rem 1.25rem;
-  font-size: 0.95rem;
-  color: var(--sims-text-muted-dark);
-  line-height: 1.7;
-}
-
-/* ========== SECTION: FINAL CTA ========== */
-.sims-cta {
-  padding: 6rem 1.5rem;
-  background: var(--sims-bg-dark);
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.sims-cta::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 50% 60% at 50% 50%, rgba(245, 158, 11, 0.08) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-.sims-cta-inner {
-  position: relative;
-  z-index: 1;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.sims-cta h2 {
-  font-size: clamp(2rem, 5vw, 3rem);
-  color: var(--sims-text-light);
-  margin-bottom: 1rem;
-}
-
-.sims-cta h2 span {
-  background: linear-gradient(135deg, var(--sims-primary), var(--sims-accent-teal));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.sims-cta-subtitle {
-  font-size: 1.1rem;
-  color: var(--sims-text-muted);
-  margin-bottom: 2.5rem;
-}
-
-.sims-cta-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
-  margin-bottom: 2rem;
-}
-
-.sims-cta-note {
-  font-size: 0.85rem;
-  color: var(--sims-text-muted);
-  opacity: 0.7;
-}
-
-/* ========== RESPONSIVE ========== */
-@media (min-width: 640px) {
-  .sims-features-grid {
-    grid-template-columns: repeat(2, 1fr);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sims Checklist — Interactive checklists, fuel calculator, METAR/TAF weather, and 85,000+ airports database for flight simulation. Free, open source, no ads.">
+  <meta name="keywords" content="flight simulator, checklist, METAR, fuel calculator, aviation, sim, Cessna, Cirrus, Citation">
+  <meta name="author" content="Alex Maryin">
+  <meta name="theme-color" content="#0b1120">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Sims Checklist — Interactive Checklists for Virtual Flights">
+  <meta property="og:description" content="Cessna 172, Cirrus SR-22, Citation X — with fuel calculation, METAR weather, and 85,000+ airport database. Free and open source.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://alexmaryin.github.io/sims_checklist/">
+  <meta property="og:image" content="https://alexmaryin.github.io/sims_checklist/logo.png">
+  <meta property="og:image:alt" content="Sims Checklist Logo">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Sims Checklist — Interactive Checklists for Virtual Flights">
+  <meta name="twitter:description" content="Checklists, fuel calculator, METAR/TAF, 85K+ airports. Free, open source, no ads.">
+  <meta name="twitter:image" content="https://alexmaryin.github.io/sims_checklist/logo.png">
+  
+  <title>Sims Checklist — Interactive Checklists for Virtual Flights</title>
+  
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MobileApplication",
+    "name": "Sims Checklist",
+    "description": "Interactive checklists for virtual flight simulation. Fuel calculator, METAR/TAF weather, 85,000+ airports database, QFE Helper, and cold temperature corrector.",
+    "operatingSystem": "Android, Windows, Linux, macOS",
+    "applicationCategory": "Utility",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "screenshot": "https://alexmaryin.github.io/sims_checklist/screenshot-aircraft.png",
+    "softwareVersion": "latest",
+    "featureList": "Checklists for Cessna 172, Cirrus SR-22, Citation X | Fuel calculator | METAR/TAF weather | 85,000+ airports offline | QFE Helper | Cold Temperature Corrector"
   }
+  </script>
+  
+  <style>
+    /* ========== DESIGN TOKENS ========== */
+    :root {
+      /* Core palette */
+      --color-primary: #f59e0b;
+      --color-primary-hover: #d97706;
+      --color-primary-glow: rgba(245, 158, 11, 0.25);
+      --color-primary-subtle: rgba(245, 158, 11, 0.1);
+      
+      /* Secondary accent */
+      --color-accent: #2dd4bf;
+      --color-accent-hover: #14b8a6;
+      --color-accent-glow: rgba(45, 212, 191, 0.2);
+      --color-accent-subtle: rgba(45, 212, 191, 0.1);
+      
+      /* Backgrounds */
+      --bg-base: #0b1120;
+      --bg-surface: #111827;
+      --bg-elevated: #1e293b;
+      --bg-elevated-hover: #273549;
+      --bg-light: #f8fafc;
+      --bg-white: #ffffff;
+      
+      /* Text */
+      --text-heading: #f1f5f9;
+      --text-body: #cbd5e1;
+      --text-muted: #94a3b8;
+      --text-muted-dark: #64748b;
+      --text-dark: #0f172a;
+      --text-dark-muted: #475569;
+      
+      /* Borders */
+      --border-dark: rgba(255, 255, 255, 0.08);
+      --border-light: rgba(0, 0, 0, 0.08);
+      --border-primary: rgba(245, 158, 11, 0.3);
+      
+      /* Radius */
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --radius-full: 9999px;
+      
+      /* Shadows */
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0 4px 24px rgba(0, 0, 0, 0.12);
+      --shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.2);
+      --shadow-glow: 0 0 40px var(--color-primary-glow);
+      
+      /* Transitions */
+      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+      
+      /* Spacing */
+      --container-max: 1200px;
+      --section-padding: clamp(3rem, 8vw, 6rem);
+      --section-padding-mobile: 3rem;
+    }
+    
+    /* ========== BASE RESET ========== */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+    
+    body {
+      font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--text-heading);
+      background: var(--bg-base);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Bebas Neue', 'Arial Black', sans-serif;
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: 0.02em;
+    }
+    
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+    
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: color var(--transition-fast);
+    }
+    
+    ul {
+      list-style: none;
+    }
+    
+    /* ========== NAVIGATION ========== */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 1rem 1.5rem;
+      background: rgba(11, 17, 32, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-dark);
+      transition: all var(--transition);
+    }
+    
+    .nav-inner {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .nav-logo img {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+    }
+    
+    .nav-logo-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.05em;
+      color: var(--text-heading);
+    }
+    
+    .nav-links {
+      display: none;
+      align-items: center;
+      gap: 2rem;
+    }
+    
+    .nav-link {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      position: relative;
+    }
+    
+    .nav-link:hover {
+      color: var(--text-heading);
+    }
+    
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--color-primary);
+      transition: width var(--transition);
+    }
+    
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.25rem;
+      background: var(--color-primary);
+      color: var(--bg-base);
+      font-family: 'Source Sans 3', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border-radius: var(--radius-full);
+      transition: all var(--transition);
+    }
+    
+    .nav-cta:hover {
+      background: var(--color-primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px var(--color-primary-glow);
+    }
+    
+    @media (min-width: 768px) {
+      .nav-links {
+        display: flex;
+      }
+    }
+    
+    /* ========== BUTTONS ========== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 0.9rem 1.75rem;
+      font-family: 'Source Sans 3', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      border-radius: var(--radius-full);
+      transition: all var(--transition);
+      cursor: pointer;
+      border: none;
+      white-space: nowrap;
+      text-align: center;
+    }
+    
+    .btn svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+    
+    .btn-primary {
+      background: var(--color-primary);
+      color: var(--bg-base);
+      box-shadow: 0 4px 20px var(--color-primary-glow);
+    }
+    
+    .btn-primary:hover {
+      background: var(--color-primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px var(--color-primary-glow);
+    }
+    
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-heading);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+    }
+    
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+    
+    .btn-dark {
+      background: var(--bg-elevated);
+      color: var(--text-heading);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .btn-dark:hover {
+      background: var(--bg-elevated-hover);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+    
+    /* ========== SECTIONS ========== */
+    .section {
+      padding: var(--section-padding-mobile) 1.25rem;
+    }
+    
+    @media (min-width: 768px) {
+      .section {
+        padding: var(--section-padding) 2rem;
+      }
+    }
+    
+    .container {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      width: 100%;
+    }
+    
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    
+    @media (min-width: 768px) {
+      .section-header {
+        margin-bottom: 4rem;
+      }
+    }
+    
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-primary);
+      background: var(--color-primary-subtle);
+      padding: 0.4rem 1rem;
+      border-radius: var(--radius-full);
+      margin-bottom: 1rem;
+      border: 1px solid var(--border-primary);
+    }
+    
+    .section-title {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      color: var(--text-heading);
+      margin-bottom: 1rem;
+    }
+    
+    .section-title span {
+      color: var(--color-primary);
+    }
+    
+    .section-subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    
+    /* ========== HERO ========== */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-base);
+      overflow: hidden;
+      padding-top: 5rem;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 25% 75%, var(--color-accent-subtle) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 75% 25%, var(--color-primary-subtle) 0%, transparent 50%),
+        radial-gradient(ellipse 80% 60% at 50% 50%, rgba(11, 17, 32, 0.8) 0%, transparent 100%);
+      pointer-events: none;
+    }
+    
+    /* Grid pattern */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+      mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, black 20%, transparent 70%);
+      -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, black 20%, transparent 70%);
+    }
+    
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: var(--container-max);
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2.5rem;
+      padding: 2rem 1.25rem;
+      animation: heroFadeUp 0.8s ease-out both;
+    }
+    
+    @keyframes heroFadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .hero-logo {
+      width: 72px;
+      height: 72px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-glow);
+      animation: logoPulse 3s ease-in-out infinite;
+    }
+    
+    @keyframes logoPulse {
+      0%, 100% { box-shadow: 0 0 40px var(--color-primary-glow); }
+      50% { box-shadow: 0 0 60px var(--color-primary-glow), 0 0 80px rgba(245, 158, 11, 0.1); }
+    }
+    
+    .hero-content {
+      text-align: center;
+      max-width: 700px;
+    }
+    
+    .hero h1 {
+      font-size: clamp(2.5rem, 7vw, 4.5rem);
+      color: var(--text-heading);
+      margin-bottom: 1.25rem;
+      line-height: 1;
+    }
+    
+    .hero h1 .highlight {
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .hero-subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+      line-height: 1.7;
+      max-width: 550px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .hero-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+    }
+    
+    @media (min-width: 480px) {
+      .hero-buttons {
+        flex-direction: row;
+        justify-content: center;
+      }
+    }
+    
+    .hero-mockup {
+      position: relative;
+      width: 260px;
+      max-width: 80%;
+    }
+    
+    .hero-mockup::before {
+      content: '';
+      position: absolute;
+      inset: -20px;
+      background: radial-gradient(ellipse at center, var(--color-primary-glow) 0%, transparent 70%);
+      filter: blur(30px);
+      z-index: -1;
+    }
+    
+    .hero-mockup img {
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border-dark);
+      animation: mockupFloat 4s ease-in-out infinite;
+    }
+    
+    @keyframes mockupFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    @media (min-width: 768px) {
+      .hero-inner {
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 4rem;
+        padding: 3rem 2rem;
+      }
+      
+      .hero-content {
+        text-align: left;
+        flex: 1;
+      }
+      
+      .hero-subtitle {
+        margin-left: 0;
+      }
+      
+      .hero-buttons {
+        justify-content: flex-start;
+      }
+      
+      .hero-mockup {
+        width: 300px;
+        flex-shrink: 0;
+      }
+    }
+    
+    /* ========== FEATURES ========== */
+    .features {
+      background: var(--bg-light);
+      position: relative;
+    }
+    
+    .features .section-title {
+      color: var(--text-dark);
+    }
+    
+    .features .section-subtitle {
+      color: var(--text-dark-muted);
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+    
+    @media (min-width: 640px) {
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (min-width: 1024px) {
+      .features-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+      }
+    }
+    
+    .feature-card {
+      background: var(--bg-white);
+      border-radius: var(--radius-md);
+      padding: 2rem;
+      border: 1px solid var(--border-light);
+      transition: all var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: transparent;
+    }
+    
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+    
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.25rem;
+      background: linear-gradient(135deg, var(--color-primary-subtle), var(--color-accent-subtle));
+    }
+    
+    .feature-card h3 {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 0.5rem;
+      letter-spacing: normal;
+      text-transform: none;
+    }
+    
+    .feature-card p {
+      font-size: 0.95rem;
+      color: var(--text-dark-muted);
+      line-height: 1.6;
+    }
+    
+    /* ========== STEPS ========== */
+    .steps {
+      background: var(--bg-surface);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .steps::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 40% 40% at 0% 100%, var(--color-accent-subtle) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 100% 0%, var(--color-primary-subtle) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    
+    .steps-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+    
+    @media (min-width: 640px) {
+      .steps-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (min-width: 1024px) {
+      .steps-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    
+    .step {
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-start;
+      padding: 1.75rem;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-dark);
+      transition: all var(--transition);
+    }
+    
+    .step:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: var(--border-primary);
+      transform: translateX(4px);
+    }
+    
+    .step-number {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      color: var(--color-primary);
+      background: var(--color-primary-subtle);
+      border: 1px solid var(--border-primary);
+    }
+    
+    .step-content h3 {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-heading);
+      margin-bottom: 0.35rem;
+      letter-spacing: normal;
+      text-transform: none;
+    }
+    
+    .step-content p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+    
+    /* ========== SCREENSHOTS ========== */
+    .screenshots {
+      background: var(--bg-light);
+    }
+    
+    .screenshots .section-title {
+      color: var(--text-dark);
+    }
+    
+    .screenshots .section-subtitle {
+      color: var(--text-dark-muted);
+    }
+    
+    .screenshots-scroll {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      padding-bottom: 1rem;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-primary) var(--bg-elevated);
+    }
+    
+    .screenshots-scroll::-webkit-scrollbar {
+      height: 6px;
+    }
+    
+    .screenshots-scroll::-webkit-scrollbar-track {
+      background: var(--bg-elevated);
+      border-radius: var(--radius-full);
+    }
+    
+    .screenshots-scroll::-webkit-scrollbar-thumb {
+      background: var(--color-primary);
+      border-radius: var(--radius-full);
+    }
+    
+    .screenshot-item {
+      flex: 0 0 200px;
+      scroll-snap-align: start;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border-light);
+      background: var(--bg-white);
+      padding: 0.5rem;
+      transition: all var(--transition);
+    }
+    
+    .screenshot-item:hover {
+      transform: scale(1.02);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .screenshot-item img {
+      width: 100%;
+      border-radius: var(--radius-sm);
+    }
+    
+    @media (min-width: 768px) {
+      .screenshots-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.25rem;
+      }
+      
+      .screenshots-scroll {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        overflow-x: visible;
+        padding-bottom: 0;
+      }
+      
+      .screenshot-item {
+        flex: none;
+      }
+    }
+    
+    .screenshots-caption {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 1rem;
+      color: var(--text-dark-muted);
+      font-style: italic;
+    }
+    
+    /* ========== WHY ========== */
+    .why {
+      background: var(--bg-surface);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .why::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 50% 40% at 50% 50%, var(--color-accent-subtle) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      position: relative;
+      z-index: 1;
+    }
+    
+    @media (min-width: 640px) {
+      .why-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (min-width: 1024px) {
+      .why-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    
+    .why-item {
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-start;
+      padding: 1.75rem;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-dark);
+      transition: all var(--transition);
+    }
+    
+    .why-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: var(--color-accent);
+    }
+    
+    .why-icon {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      background: var(--color-accent-subtle);
+      border: 1px solid rgba(45, 212, 191, 0.15);
+    }
+    
+    .why-item h3 {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-heading);
+      margin-bottom: 0.25rem;
+      letter-spacing: normal;
+      text-transform: none;
+    }
+    
+    .why-item p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    
+    /* ========== FAQ ========== */
+    .faq {
+      background: var(--bg-light);
+    }
+    
+    .faq .section-title {
+      color: var(--text-dark);
+    }
+    
+    .faq .section-subtitle {
+      color: var(--text-dark-muted);
+    }
+    
+    .faq-list {
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    
+    .faq-item {
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+      background: var(--bg-white);
+      overflow: hidden;
+      transition: all var(--transition);
+    }
+    
+    .faq-item:hover {
+      border-color: rgba(245, 158, 11, 0.2);
+    }
+    
+    .faq-item[open] {
+      border-color: var(--border-primary);
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .faq-summary {
+      padding: 1.25rem 1.5rem;
+      font-family: 'Source Sans 3', sans-serif;
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: var(--text-dark);
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      transition: background var(--transition);
+    }
+    
+    .faq-summary::-webkit-details-marker {
+      display: none;
+    }
+    
+    .faq-summary:hover {
+      background: rgba(245, 158, 11, 0.04);
+    }
+    
+    .faq-summary::after {
+      content: '';
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+      background-size: contain;
+      background-repeat: no-repeat;
+      transition: transform var(--transition);
+    }
+    
+    .faq-item[open] .faq-summary::after {
+      transform: rotate(180deg);
+    }
+    
+    .faq-answer {
+      padding: 0 1.5rem 1.25rem;
+      font-size: 0.95rem;
+      color: var(--text-dark-muted);
+      line-height: 1.7;
+    }
+    
+    .faq-answer a {
+      color: var(--color-accent-hover);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    
+    .faq-answer a:hover {
+      color: var(--color-primary);
+    }
+    
+    /* ========== CTA ========== */
+    .cta {
+      background: var(--bg-base);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 50% 50% at 50% 50%, var(--color-primary-subtle) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    
+    .cta-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .cta h2 {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      color: var(--text-heading);
+      margin-bottom: 1rem;
+    }
+    
+    .cta h2 span {
+      color: var(--color-primary);
+    }
+    
+    .cta-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+    }
+    
+    .cta-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      align-items: center;
+    }
+    
+    @media (min-width: 480px) {
+      .cta-buttons {
+        flex-direction: row;
+        justify-content: center;
+      }
+    }
+    
+    .cta-note {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      opacity: 0.7;
+    }
+    
+    .cta-privacy {
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+    }
+    
+    .cta-privacy a {
+      color: var(--text-muted);
+      text-decoration: underline;
+      opacity: 0.7;
+      transition: opacity var(--transition);
+    }
+    
+    .cta-privacy a:hover {
+      opacity: 1;
+    }
+    
+    /* ========== FOOTER ========== */
+    .footer {
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border-dark);
+      padding: 2rem 1.25rem;
+    }
+    
+    @media (min-width: 768px) {
+      .footer {
+        padding: 2.5rem 2rem;
+      }
+    }
+    
+    .footer-inner {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    
+    @media (min-width: 768px) {
+      .footer-inner {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+    
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .footer-brand img {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+    }
+    
+    .footer-brand-text {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+    
+    .footer-link {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      transition: color var(--transition-fast);
+    }
+    
+    .footer-link:hover {
+      color: var(--color-primary);
+    }
+    
+    .footer-copy {
+      font-size: 0.8rem;
+      color: var(--text-muted-dark);
+      text-align: center;
+    }
+    
+    /* ========== SCROLL ANIMATIONS ========== */
+    @media (prefers-reduced-motion: no-preference) {
+      .animate-on-scroll {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      }
+      
+      .animate-on-scroll.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
 
-  .sims-steps-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <img src="logo.png" alt="Sims Checklist Logo" width="40" height="40">
+        <span class="nav-logo-text">Sims Checklist</span>
+      </a>
+      <div class="nav-links">
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#how-it-works" class="nav-link">How It Works</a>
+        <a href="#screenshots" class="nav-link">Screenshots</a>
+        <a href="#faq" class="nav-link">FAQ</a>
+      </div>
+      <a href="https://play.google.com/store/apps/details?id=ru.alexmaryin.simschecklist" target="_blank" rel="noopener noreferrer" class="nav-cta">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M3.609 1.814L13.793 12 3.61 22.186a.996.996 0 01-.61-.92V2.734a1 1 0 01.609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.199l2.302 2.302a1 1 0 010 1.38l-2.302 2.302L15.396 12l2.302-2.492zM5.864 2.658L16.8 8.99l-2.302 2.302L5.864 2.658z"/></svg>
+        Download
+      </a>
+    </div>
+  </nav>
 
-  .sims-why-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 768px) {
-  .sims-hero {
-    padding: 3rem 2rem;
-  }
-
-  .sims-hero-inner {
-    flex-direction: row;
-    justify-content: space-between;
-    gap: 3rem;
-  }
-
-  .sims-hero-content {
-    text-align: left;
-    flex: 1;
-  }
-
-  .sims-hero-content h1 {
-    font-size: clamp(2.25rem, 4vw, 3.25rem);
-  }
-
-  .sims-hero-buttons {
-    justify-content: flex-start;
-  }
-
-  .sims-hero-mockup {
-    width: 260px;
-    flex-shrink: 0;
-  }
-
-  .sims-features-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .sims-steps-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  .sims-screenshots-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  .sims-why-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  .sims-features,
-  .sims-steps,
-  .sims-screenshots,
-  .sims-why,
-  .sims-faq,
-  .sims-cta {
-    padding: 6rem 2rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .sims-features-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 767px) {
-  .sims-screenshots-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-</style>
-
-<div class="sims-wrapper">
-
-  <!-- ====== HERO ====== -->
-  <section class="sims-hero">
-    <div class="sims-hero-inner">
-      <div class="sims-hero-content">
-        <img class="sims-hero-logo" src="logo.png" alt="Sims Checklist Logo" width="80" height="80">
-        <h1>Interactive Checklists for Your Virtual Flights</h1>
-        <p class="sims-hero-subtitle">Cessna 172, Cirrus SR-22, Citation X — with fuel calculation, METAR weather data, and an 85,000+ airport database. All offline.</p>
-        <div class="sims-hero-buttons">
-          <a class="sims-btn sims-btn-primary wp-block-button__link" href="https://play.google.com/store/apps/details?id=ru.alexmaryin.simschecklist" target="_blank" rel="noopener noreferrer">
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <img class="hero-logo" src="logo.png" alt="Sims Checklist Logo" width="72" height="72">
+        <h1>Interactive Checklists for Your <span class="highlight">Virtual Flights</span></h1>
+        <p class="hero-subtitle">Cessna 172, Cirrus SR-22, Citation X — with fuel calculation, METAR weather, and 85,000+ airport database. All offline.</p>
+        <div class="hero-buttons">
+          <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=ru.alexmaryin.simschecklist" target="_blank" rel="noopener noreferrer">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.609 1.814L13.793 12 3.61 22.186a.996.996 0 01-.61-.92V2.734a1 1 0 01.609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.199l2.302 2.302a1 1 0 010 1.38l-2.302 2.302L15.396 12l2.302-2.492zM5.864 2.658L16.8 8.99l-2.302 2.302L5.864 2.658z"/></svg>
             Get it on Google Play
           </a>
-          <a class="sims-btn sims-btn-secondary sims-btn-github wp-block-button__link" href="https://github.com/alexmaryin/sims_checklist" target="_blank" rel="noopener noreferrer">
+          <a class="btn btn-secondary" href="https://github.com/alexmaryin/sims_checklist" target="_blank" rel="noopener noreferrer">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
             View on GitHub
           </a>
         </div>
       </div>
-      <div class="sims-hero-mockup">
-        <img src="Screenshot 2026-05-06 211646.png" alt="Sims Checklist App Screenshot" width="280" height="560">
+      <div class="hero-mockup">
+        <img src="screenshot-aircraft.png" alt="Sims Checklist App Screenshot" width="300" height="600">
       </div>
     </div>
   </section>
 
-  <!-- ====== FEATURES ====== -->
-  <section class="sims-features">
-    <div class="sims-container">
-      <span class="sims-section-label">Features</span>
-      <h2 class="sims-section-title">Everything You Need in the Cockpit</h2>
-      <p class="sims-section-subtitle">From pre-flight to touchdown, Sims Checklist covers every phase of your virtual flight.</p>
-      <div class="sims-features-grid">
-        <div class="sims-feature-card">
-          <div class="sims-feature-icon">✈️</div>
+  <!-- Features -->
+  <section class="section features" id="features">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Features</span>
+        <h2 class="section-title">Everything You Need <span>in the Cockpit</span></h2>
+        <p class="section-subtitle">From pre-flight to touchdown, Sims Checklist covers every phase of your virtual flight.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card animate-on-scroll">
+          <div class="feature-icon">✈️</div>
           <h3>Checklists for 3 Aircraft</h3>
           <p>Complete pre-flight, before-taxi, before-takeoff, and in-flight checklists for Cessna 172 Skyhawk, Cirrus SR-22, and Citation X.</p>
         </div>
-        <div class="sims-feature-card">
-          <div class="sims-feature-icon">⛽</div>
+        <div class="feature-card animate-on-scroll">
+          <div class="feature-icon">⛽</div>
           <h3>Fuel Calculator</h3>
           <p>Plan your fuel for the trip considering distance, wind, and alternate airport using predefined aircraft performance data.</p>
         </div>
-        <div class="sims-feature-card">
-          <div class="sims-feature-icon">🌤️</div>
+        <div class="feature-card animate-on-scroll">
+          <div class="feature-icon">🌤️</div>
           <h3>METAR/TAF Weather</h3>
           <p>Visualize wind direction, select preferred runway for headwind, and save your top airports for quick access.</p>
         </div>
-        <div class="sims-feature-card">
-          <div class="sims-feature-icon">🗺️</div>
+        <div class="feature-card animate-on-scroll">
+          <div class="feature-icon">🗺️</div>
           <h3>85,000+ Airports Database</h3>
           <p>Full offline database from OurAirports. Explore airports, runways, frequencies, and search by ICAO or name.</p>
         </div>
-        <div class="sims-feature-card">
-          <div class="sims-feature-icon">🎛️</div>
+        <div class="feature-card animate-on-scroll">
+          <div class="feature-icon">🎛️</div>
           <h3>QFE Helper</h3>
           <p>Convert QFE to QNH and meters AGL to feet ASL. Essential for modern aircraft that don't support QFE.</p>
         </div>
-        <div class="sims-feature-card">
-          <div class="sims-feature-icon">❄️</div>
+        <div class="feature-card animate-on-scroll">
+          <div class="feature-icon">❄️</div>
           <h3>Cold Temp Corrector</h3>
           <p>FAA segment-based altitude correction for cold weather approaches. Auto-loads airport elevation and METAR temperature.</p>
         </div>
@@ -863,38 +1230,40 @@
     </div>
   </section>
 
-  <!-- ====== HOW IT WORKS ====== -->
-  <section class="sims-steps">
-    <div class="sims-container">
-      <span class="sims-section-label">How It Works</span>
-      <h2 class="sims-section-title">Four Steps to a Safe Flight</h2>
-      <p class="sims-section-subtitle">From aircraft selection to final approach, every step covered.</p>
-      <div class="sims-steps-grid">
-        <div class="sims-step">
-          <div class="sims-step-number">1</div>
-          <div class="sims-step-content">
+  <!-- How It Works -->
+  <section class="section steps" id="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">How It Works</span>
+        <h2 class="section-title">Four Steps to a <span>Safe Flight</span></h2>
+        <p class="section-subtitle">From aircraft selection to final approach, every step covered.</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step animate-on-scroll">
+          <div class="step-number">1</div>
+          <div class="step-content">
             <h3>Select Your Aircraft</h3>
             <p>Choose from Cessna 172, Cirrus SR-22, or Citation X with pre-loaded checklists.</p>
           </div>
         </div>
-        <div class="sims-step">
-          <div class="sims-step-number">2</div>
-          <div class="sims-step-content">
-            <h3>Load Checklist &amp; Calculate Fuel</h3>
+        <div class="step animate-on-scroll">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3>Load Checklist & Calculate Fuel</h3>
             <p>Proceed through checklists and calculate fuel for your route with wind and alternate data.</p>
           </div>
         </div>
-        <div class="sims-step">
-          <div class="sims-step-number">3</div>
-          <div class="sims-step-content">
-            <h3>Check METAR &amp; Runway Wind</h3>
+        <div class="step animate-on-scroll">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3>Check METAR & Runway Wind</h3>
             <p>Review weather conditions and visualize headwind/crosswind components on your destination runway.</p>
           </div>
         </div>
-        <div class="sims-step">
-          <div class="sims-step-number">4</div>
-          <div class="sims-step-content">
-            <h3>QFE &amp; Temp Correction</h3>
+        <div class="step animate-on-scroll">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h3>QFE & Temp Correction</h3>
             <p>Apply QFE-to-QNH conversion and cold temperature altitude correction during final approach.</p>
           </div>
         </div>
@@ -902,72 +1271,76 @@
     </div>
   </section>
 
-  <!-- ====== SCREENSHOTS ====== -->
-  <section class="sims-screenshots">
-    <div class="sims-container">
-      <span class="sims-section-label">Screenshots</span>
-      <h2 class="sims-section-title">See It in Action</h2>
-      <p class="sims-section-subtitle">Native Material3 UI on Android and Desktop with dark and light themes.</p>
-      <div class="sims-screenshots-grid">
-        <div class="sims-screenshot-item">
-          <img src="Screenshot 2026-05-06 211441.png" alt="Aircraft selection screen" width="400" height="800">
+  <!-- Screenshots -->
+  <section class="section screenshots" id="screenshots">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Screenshots</span>
+        <h2 class="section-title">See It <span>in Action</span></h2>
+        <p class="section-subtitle">Native Material3 UI on Android and Desktop with dark and light themes.</p>
+      </div>
+      <div class="screenshots-scroll">
+        <div class="screenshot-item">
+          <img src="screenshot-aircraft.png" alt="Aircraft selection screen" loading="lazy">
         </div>
-        <div class="sims-screenshot-item">
-          <img src="Screenshot 2026-05-06 211511.png" alt="Checklist screen" width="400" height="800">
+        <div class="screenshot-item">
+          <img src="screenshot-checklist.png" alt="Checklist screen" loading="lazy">
         </div>
-        <div class="sims-screenshot-item">
-          <img src="Screenshot 2026-05-06 211523.png" alt="Fuel calculator screen" width="400" height="800">
+        <div class="screenshot-item">
+          <img src="screenshot-fuel.png" alt="Fuel calculator screen" loading="lazy">
         </div>
-        <div class="sims-screenshot-item">
-          <img src="Screenshot 2026-05-06 211529.png" alt="METAR weather screen" width="400" height="800">
+        <div class="screenshot-item">
+          <img src="screenshot-metar.png" alt="METAR weather screen" loading="lazy">
         </div>
-        <div class="sims-screenshot-item">
-          <img src="Screenshot 2026-05-06 211535.png" alt="Airport database screen" width="400" height="800">
+        <div class="screenshot-item">
+          <img src="screenshot-airports.png" alt="Airport database screen" loading="lazy">
         </div>
-        <div class="sims-screenshot-item">
-          <img src="Screenshot 2026-05-06 211631.png" alt="Airport details screen" width="400" height="800">
+        <div class="screenshot-item">
+          <img src="screenshot-airport-details.png" alt="Airport details screen" loading="lazy">
         </div>
-        <div class="sims-screenshot-item">
-          <img src="Screenshot 2026-05-06 211641.png" alt="QFE Helper screen" width="400" height="800">
+        <div class="screenshot-item">
+          <img src="screenshot-qfe.png" alt="QFE Helper screen" loading="lazy">
         </div>
-        <div class="sims-screenshot-item">
-          <img src="Screenshot 2026-05-06 211646.png" alt="Cold temperature corrector screen" width="400" height="800">
+        <div class="screenshot-item">
+          <img src="screenshot-temp-corrector.png" alt="Cold temperature corrector screen" loading="lazy">
         </div>
       </div>
-      <p class="sims-screenshots-caption">Works on Android and PC. Unified logic, native UI on every platform.</p>
+      <p class="screenshots-caption">Works on Android and PC. Unified logic, native UI on every platform.</p>
     </div>
   </section>
 
-  <!-- ====== WHY SIMS CHECKLIST ====== -->
-  <section class="sims-why">
-    <div class="sims-container">
-      <span class="sims-section-label">Why Sims Checklist</span>
-      <h2 class="sims-section-title">Built for Simmers, by a Simmer</h2>
-      <p class="sims-section-subtitle">No ads, no data collection, no compromise.</p>
-      <div class="sims-why-grid">
-        <div class="sims-why-item">
-          <div class="sims-why-icon">🔓</div>
+  <!-- Why Sims Checklist -->
+  <section class="section why" id="why">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Why Sims Checklist</span>
+        <h2 class="section-title">Built for Simmers, <span>by a Simmer</span></h2>
+        <p class="section-subtitle">No ads, no data collection, no compromise.</p>
+      </div>
+      <div class="why-grid">
+        <div class="why-item animate-on-scroll">
+          <div class="why-icon">🔓</div>
           <div>
             <h3>Open Source</h3>
             <p>Full source code on GitHub. Inspect, fork, and contribute.</p>
           </div>
         </div>
-        <div class="sims-why-item">
-          <div class="sims-why-icon">🔒</div>
+        <div class="why-item animate-on-scroll">
+          <div class="why-icon">🔒</div>
           <div>
             <h3>Zero Data Collection</h3>
             <p>No tracking, no ads, no telemetry. Your flight data stays yours.</p>
           </div>
         </div>
-        <div class="sims-why-item">
-          <div class="sims-why-icon">📦</div>
+        <div class="why-item animate-on-scroll">
+          <div class="why-icon">📦</div>
           <div>
             <h3>Works Offline</h3>
             <p>Airport database and checklists available without internet connection.</p>
           </div>
         </div>
-        <div class="sims-why-item">
-          <div class="sims-why-icon">🎯</div>
+        <div class="why-item animate-on-scroll">
+          <div class="why-icon">🎯</div>
           <div>
             <h3>Accurate Data</h3>
             <p>True north runway headings for correct wind component calculation, FAA cold temp methodology.</p>
@@ -977,55 +1350,91 @@
     </div>
   </section>
 
-  <!-- ====== FAQ ====== -->
-  <section class="sims-faq">
-    <div class="sims-container">
-      <span class="sims-section-label">FAQ</span>
-      <h2 class="sims-section-title">Common Questions</h2>
-      <p class="sims-section-subtitle">Everything you need to know before your first flight.</p>
-      <div class="sims-faq-list">
-        <details class="sims-faq-item">
-          <summary class="sims-faq-summary">Does it work without internet?</summary>
-          <div class="sims-faq-answer">Yes. All checklists and the airport database work offline. METAR/TAF weather data requires an internet connection to fetch from CheckWX API.</div>
+  <!-- FAQ -->
+  <section class="section faq" id="faq">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">FAQ</span>
+        <h2 class="section-title">Common <span>Questions</span></h2>
+        <p class="section-subtitle">Everything you need to know before your first flight.</p>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary class="faq-summary">Does it work without internet?</summary>
+          <div class="faq-answer">Yes. All checklists and the airport database work offline. METAR/TAF weather data requires an internet connection to fetch from CheckWX API.</div>
         </details>
-        <details class="sims-faq-item">
-          <summary class="sims-faq-summary">Which aircraft are supported?</summary>
-          <div class="sims-faq-answer">Currently three aircraft: <strong>Cessna 172 Skyhawk</strong> (the classic trainer), <strong>Cirrus SR-22</strong> (modern GA with glass cockpit), and <strong>Cessna Citation X</strong> (X-Plane 12 default, business jet). More aircraft may be added in future updates.</div>
+        <details class="faq-item">
+          <summary class="faq-summary">Which aircraft are supported?</summary>
+          <div class="faq-answer">Currently three aircraft: <strong>Cessna 172 Skyhawk</strong> (the classic trainer), <strong>Cirrus SR-22</strong> (modern GA with glass cockpit), and <strong>Cessna Citation X</strong> (X-Plane 12 default, business jet). More aircraft may be added in future updates.</div>
         </details>
-        <details class="sims-faq-item">
-          <summary class="sims-faq-summary">Will there be an iOS version?</summary>
-          <div class="sims-faq-answer">Currently available on Android and Desktop (Windows, Linux, macOS). Follow the <a href="https://github.com/alexmaryin/sims_checklist" target="_blank" rel="noopener noreferrer" style="color: var(--sims-accent-blue);">GitHub repository</a> for updates on platform expansion.</div>
+        <details class="faq-item">
+          <summary class="faq-summary">Will there be an iOS version?</summary>
+          <div class="faq-answer">Currently available on Android and Desktop (Windows, Linux, macOS). Follow the <a href="https://github.com/alexmaryin/sims_checklist" target="_blank" rel="noopener noreferrer">GitHub repository</a> for updates on platform expansion.</div>
         </details>
-        <details class="sims-faq-item">
-          <summary class="sims-faq-summary">Where does the airport data come from?</summary>
-          <div class="sims-faq-answer">The airport database is sourced from <a href="https://www.ourairports.com/" target="_blank" rel="noopener noreferrer" style="color: var(--sims-accent-blue);">OurAirports</a>, a community-driven project with 85,000+ airports worldwide. Data is fetched from CSV files and stored in a local SQLite database for incredibly fast performance.</div>
+        <details class="faq-item">
+          <summary class="faq-summary">Where does the airport data come from?</summary>
+          <div class="faq-answer">The airport database is sourced from <a href="https://www.ourairports.com/" target="_blank" rel="noopener noreferrer">OurAirports</a>, a community-driven project with 85,000+ airports worldwide. Data is fetched from CSV files and stored in a local SQLite database for incredibly fast performance.</div>
         </details>
-        <details class="sims-faq-item">
-          <summary class="sims-faq-summary">Why are runway headings in true courses, not magnetic?</summary>
-          <div class="sims-faq-answer">METAR wind reports reference <strong>true north</strong>, not magnetic. To accurately visualize headwind and crosswind components relative to your aircraft's track, we use true course runway headings. This ensures correct wind component calculation for your flight planning.</div>
+        <details class="faq-item">
+          <summary class="faq-summary">Why are runway headings in true courses, not magnetic?</summary>
+          <div class="faq-answer">METAR wind reports reference <strong>true north</strong>, not magnetic. To accurately visualize headwind and crosswind components relative to your aircraft's track, we use true course runway headings. This ensures correct wind component calculation for your flight planning.</div>
         </details>
       </div>
     </div>
   </section>
 
-  <!-- ====== FINAL CTA ====== -->
-  <section class="sims-cta">
-    <div class="sims-cta-inner">
+  <!-- CTA -->
+  <section class="section cta" id="download">
+    <div class="cta-inner">
       <h2>Ready for <span>Takeoff</span>?</h2>
-      <p class="sims-cta-subtitle">Free. No ads. Open source. Built for the simulation community.</p>
-      <div class="sims-cta-buttons">
-        <a class="sims-btn sims-btn-primary wp-block-button__link" href="https://play.google.com/store/apps/details?id=ru.alexmaryin.simschecklist" target="_blank" rel="noopener noreferrer">
+      <p class="cta-subtitle">Free. No ads. Open source. Built for the simulation community.</p>
+      <div class="cta-buttons">
+        <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=ru.alexmaryin.simschecklist" target="_blank" rel="noopener noreferrer">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.609 1.814L13.793 12 3.61 22.186a.996.996 0 01-.61-.92V2.734a1 1 0 01.609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.199l2.302 2.302a1 1 0 010 1.38l-2.302 2.302L15.396 12l2.302-2.492zM5.864 2.658L16.8 8.99l-2.302 2.302L5.864 2.658z"/></svg>
           Download from Google Play
         </a>
-        <a class="sims-btn sims-btn-secondary sims-btn-github wp-block-button__link" href="https://github.com/alexmaryin/sims_checklist" target="_blank" rel="noopener noreferrer">
+        <a class="btn btn-dark" href="https://github.com/alexmaryin/sims_checklist" target="_blank" rel="noopener noreferrer">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
           Source on GitHub
         </a>
       </div>
-      <p class="sims-cta-note">Free. No ads. Open Source (Apache 2.0)</p>
-      <p style="margin-top: 1.5rem; font-size: 0.85rem; color: var(--sims-text-muted);"><a href="privacy.html" style="color: var(--sims-text-muted); text-decoration: underline; opacity: 0.7; transition: opacity var(--sims-transition);">Privacy Policy</a></p>
+      <p class="cta-note">Free. No ads. Open Source (Apache 2.0)</p>
+      <p class="cta-privacy"><a href="privacy.html">Privacy Policy</a></p>
     </div>
   </section>
 
-</div>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="logo.png" alt="Sims Checklist Logo" width="32" height="32">
+        <span class="footer-brand-text">Sims Checklist</span>
+      </div>
+      <div class="footer-links">
+        <a href="#features" class="footer-link">Features</a>
+        <a href="#faq" class="footer-link">FAQ</a>
+        <a href="privacy.html" class="footer-link">Privacy</a>
+        <a href="https://github.com/alexmaryin/sims_checklist" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
+      </div>
+      <p class="footer-copy">&copy; 2026 Alex Maryin. Apache 2.0 License.</p>
+    </div>
+  </footer>
+
+  <!-- Scroll Animations Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+      
+      document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+    });
+  </script>
+
+</body>
+</html>
