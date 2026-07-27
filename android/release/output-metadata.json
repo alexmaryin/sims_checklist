@@ -11,8 +11,8 @@
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 32,
-      "versionName": "1.7.3",
+      "versionCode": 34,
+      "versionName": "1.9.0",
       "outputFile": "android-release.apk"
     }
   ],

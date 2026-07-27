@@ -19,12 +19,25 @@ internal class CheckWxMetarServiceTest {
     }
 
     @Test
-    fun `get METAR and TAF info from site should return success`() = runBlocking {
+    fun `get METAR info from site should return success`() = runBlocking {
         with (CheckWxMetarService(httpClient)) {
             val result = getMetar("UUWW")
             result.forSuccess {
                 println(it)
-                assertTrue { it.icao == "UUWW" }
+                assertTrue { it.isNotEmpty() }
+            }
+            result.forError { type, message ->
+                throw AssertionError("$type: $message")
+            }
+        }
+    }
+
+    @Test
+    fun `get TAF info from site should return success`() = runBlocking {
+        with (CheckWxMetarService(httpClient)) {
+            val result = getTaf("UUWW")
+            result.forSuccess {
+                println(it)
             }
             result.forError { type, message ->
                 throw AssertionError("$type: $message")

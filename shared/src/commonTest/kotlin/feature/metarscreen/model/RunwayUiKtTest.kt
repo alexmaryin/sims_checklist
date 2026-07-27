@@ -1,5 +1,6 @@
 package feature.metarscreen.model
 
+import alexmaryin.metarkt.models.Wind
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -80,7 +81,7 @@ internal class RunwayUiKtTest {
     @Test
     fun `calculateWind should return correct data for runway 18 and crosswind 15006Kt`() {
         val result = RunwayUi("18", "36", 180, 360)
-            .withCalculatedWind(5, 150)
+            .withCalculatedWind(Wind(direction = 150, speed = 5))
         val reference = RunwayUi("18", "36", 180, 360,
             RunwayWindUi(
                 lowRunway = WindUi.LeftCrossHeadWindUi(2, 4),
@@ -93,7 +94,7 @@ internal class RunwayUiKtTest {
     @Test
     fun `calculateWind should return correct data for runway 22 and crosswind 03012Kt`() {
         val result = RunwayUi("22", "04", 35, 215)
-            .withCalculatedWind(12, 30)
+            .withCalculatedWind(Wind(direction = 30, speed = 12))
         val reference = RunwayUi("22", "04", 35, 215,
             RunwayWindUi(
                 lowRunway = WindUi.LeftCrossHeadWindUi(1, 12),
@@ -106,7 +107,7 @@ internal class RunwayUiKtTest {
     @Test
     fun `calculateWind should return correct data for runway 10 and crosswind 15003Kt`() {
         val result = RunwayUi("10", "28", 100, 280)
-            .withCalculatedWind(3, 150)
+            .withCalculatedWind(Wind(direction = 150, speed = 3))
         val reference = RunwayUi("10", "28", 100, 280,
             RunwayWindUi(
                 lowRunway = WindUi.RightCrossHeadWindUi(2, 2),

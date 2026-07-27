@@ -52,11 +52,11 @@ This feature helps you calculate the corrected altitude for your waypoints based
 
 - Automatically loads airport elevation from the database
 - Fetches current temperature from METAR weather data
+- FAF and MDA/DA points are automatically added as temporary waypoints with visual distinction (no need to enter them twice)
 - Calculates corrected altitudes for all waypoints using FAA segment-based correction method (AIM 7-3-6)
-- Supports different correction values for intermediate, final, and missed approach segments
-- Default FAF/MDA altitudes automatically calculated from airport elevation (+3000 ft and +200 ft)
+- Temporary FAF/MDA points are sorted alongside user-added waypoints based on their altitude
+- Supports different correction values for intermediate and final approach segments
 - Accessible from the METAR screen via the snowflake icon (❄️) when weather data is available
-- Modern Material3 UI with segmented button controls for approach segment selection
 
 **Why it matters:** In cold temperatures, your true altitude is lower than what your altimeter indicates. This correction is essential for safe obstacle clearance during approaches in winter conditions.
 

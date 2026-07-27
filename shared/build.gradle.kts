@@ -49,6 +49,7 @@ kotlin {
                 implementation(libs.ktor.client.cio)
                 implementation(libs.ktor.negotiation)
                 implementation(libs.ktor.client.serialization)
+                implementation(libs.ktor.client.logging)
                 implementation(libs.ktor.client.serialization)
                 // Date-time
                 implementation(libs.kotlinx.datetime)

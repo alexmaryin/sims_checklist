@@ -35,8 +35,8 @@ class MetarScanner(
         }
     }
 
-    data class Loading(var loadMetar: Boolean = false, var loadAirport: Boolean = false) {
-        val state get() = loadMetar || loadAirport
+    data class Loading(var loadMetar: Boolean = false, var loadTaf: Boolean = false, var loadAirport: Boolean = false) {
+        val state get() = loadMetar || loadTaf || loadAirport
     }
 
     private val metarService: MetarService by inject()
@@ -45,6 +45,7 @@ class MetarScanner(
     val state by saveableMutableValue(MetarScreenViewState.serializer(), init = ::MetarScreenViewState)
 
     private var metarJob: Job? = null
+    private var tafJob: Job? = null
     private var airportJob: Job? = null
 
     private val scope = componentContext.coroutineScope() + SupervisorJob()
@@ -73,6 +74,7 @@ class MetarScanner(
 
     private fun submitWindAngle(new: Int) {
         metarJob?.cancel().also { metarJob = null }
+        tafJob?.cancel().also { tafJob = null }
         airportJob?.cancel().also { airportJob = null }
         state.update {
             it.copy(data = state.value.data.copy(userAngle = new, metarAngle = null, metarSpeedKt = null))
@@ -82,6 +84,7 @@ class MetarScanner(
 
     private fun submitWindSpeed(new: Int) {
         metarJob?.cancel().also { metarJob = null }
+        tafJob?.cancel().also { tafJob = null }
         airportJob?.cancel().also { airportJob = null }
         state.update {
             it.copy(data = state.value.data.copy(userSpeed = new, metarAngle = null, metarSpeedKt = null))
@@ -113,17 +116,15 @@ class MetarScanner(
     private suspend fun fetchMetar(station: String) {
         val response = metarService.getMetar(station)
         combineLoading.loadMetar = false
-        response.forSuccess { metarApi ->
+        response.forSuccess { metarRaw ->
             state.update {
-                val metar = metarApi.parseMetar()
+                val metar = parseMetar(metarRaw)
                 it.copy(
                     metar = metar.toMetarData(),
-                    data = MetarUi(
+                    data = it.data.copy(
                         metarAngle = metar.wind?.direction ?: it.data.metarAngle,
                         metarSpeedKt = metar.wind?.speedKt ?: it.data.metarSpeedKt,
-                        airport = metarApi.name,
-                        rawMetar = metarApi.metar,
-                        rawTaf = metarApi.taf,
+                        rawMetar = metarRaw,
                     ),
                     isLoading = combineLoading.state,
                     error = if (metar.wind == null) {
@@ -133,6 +134,19 @@ class MetarScanner(
             }
         }
         response.forError { error -> setErrorState(error) }
+    }
+
+    private suspend fun fetchTaf(station: String) {
+        val response = metarService.getTaf(station)
+        combineLoading.loadTaf = false
+        response.forSuccess { tafRaw ->
+            state.update {
+                it.copy(
+                    data = it.data.copy(rawTaf = tafRaw),
+                    isLoading = combineLoading.state
+                )
+            }
+        }
     }
 
     private suspend fun fetchAirport(icao: String) {
@@ -164,12 +178,12 @@ class MetarScanner(
     }
 
     private fun submitICAO(station: String) {
-        // Say to Ui that loading has started
         combineLoading.loadMetar = true
+        combineLoading.loadTaf = true
         combineLoading.loadAirport = true
         state.update { it.copy(isLoading = combineLoading.state, airport = null, historyAirports = emptyList()) }
-        // Start requests to METAR and Airport API in parallel
         metarJob = scope.launch { fetchMetar(station) }
+        tafJob = scope.launch { fetchTaf(station) }
         airportJob = scope.launch { fetchAirport(station) }
         fetchHistoryAirports()
     }

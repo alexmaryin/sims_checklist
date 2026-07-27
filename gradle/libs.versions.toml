@@ -38,8 +38,8 @@ ksp = "2.3.6"
 adaptive = "1.2.0"
 android-compileSdk = "36"
 android-minSdk = "26"
-mainVersion = "1.9.0"
-mainVersionCode = "34"
+mainVersion = "1.9.1"
+mainVersionCode = "35"
 
 [libraries]
 
@@ -61,6 +61,7 @@ koin = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 ktor-client-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 parser = { module = "io.github.alexmaryin.metarkt:metarkt", version.ref = "parser" }
