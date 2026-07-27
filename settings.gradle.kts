@@ -24,6 +24,7 @@ pluginManagement {
 
 plugins {
     id("de.fayard.refreshVersions")
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }
 refreshVersions {
     rejectVersionIf {

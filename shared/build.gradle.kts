@@ -1,11 +1,11 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.BOOLEAN
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.jetbrains.compose.internal.utils.getLocalProperty
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.androidKmpLibrary)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.buildKonfig)
@@ -19,7 +19,18 @@ room {
 }
 
 kotlin {
-    androidTarget()
+    android {
+        namespace = "ru.alexmaryin.simschecklist.shared"
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        minSdk = libs.versions.android.minSdk.get().toInt()
+
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_21)
+        }
+
+        androidResources { enable = true }
+    }
+
     jvm("desktop")
 
     sourceSets {
@@ -31,34 +42,23 @@ kotlin {
                 implementation(compose.material3)
                 implementation(compose.components.resources)
                 implementation(libs.material3.adaptive)
-//                implementation(libs.material.icons)
                 implementation(libs.kotlinx.coroutines.core)
-//                implementation(compose.materialIconsExtended)
-                // Needed only for preview.
                 implementation(compose.preview)
-                // Decompose navigation library
                 implementation(libs.decompose)
                 implementation(libs.decompose.extensions)
                 implementation(libs.decompose.essenity)
-                // Serialization
                 implementation(libs.kotlinx.serialization.json)
-                // Koin-DI
                 implementation(libs.koin)
-                // Ktor
                 implementation(libs.ktor.client.core)
                 implementation(libs.ktor.client.cio)
                 implementation(libs.ktor.negotiation)
                 implementation(libs.ktor.client.serialization)
                 implementation(libs.ktor.client.logging)
                 implementation(libs.ktor.client.serialization)
-                // Date-time
                 implementation(libs.kotlinx.datetime)
-                // METAR parser
                 implementation(libs.parser)
-                // Room
                 implementation(libs.androidx.room.runtime)
                 implementation(libs.androidx.sqlite.bundled)
-                // Lifecycle
                 implementation(libs.androidx.lifecycle.runtimeCompose)
                 implementation(libs.androidx.lifecycle.viewmodelCompose)
             }
@@ -83,11 +83,7 @@ kotlin {
                 api(libs.core.ktx)
                 implementation(compose.foundation)
                 implementation(libs.kotlinx.coroutines.android)
-                // Koin DI
                 implementation(libs.koin.android)
-                // Room for version > 2.8.0
-//                implementation(libs.androidx.room.sqlite.wrapper)
-
             }
         }
         val desktopMain by getting {
@@ -104,26 +100,10 @@ kotlin {
     }
 }
 
-android {
-    namespace = "ru.alexmaryin.simschecklist"
-    compileSdk = 36
-
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-
-    defaultConfig {
-        minSdk = libs.versions.android.minSdk.get().toInt()
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
-    }
-    buildFeatures {
-        compose = true
-    }
-    dependencies {
-        debugImplementation(compose.uiTooling)
-    }
+dependencies {
+    add("kspAndroid", libs.androidx.room.compiler)
+    add("kspDesktop", libs.androidx.room.compiler)
+    "androidRuntimeClasspath"(compose.uiTooling)
 }
 
 buildkonfig {
@@ -133,9 +113,4 @@ buildkonfig {
         buildConfigField(BOOLEAN, "DEBUG", "false")
         buildConfigField(STRING, "VER", libs.versions.mainVersion.get())
     }
-}
-
-dependencies {
-    add("kspAndroid", libs.androidx.room.compiler)
-    add("kspDesktop", libs.androidx.room.compiler)
 }
