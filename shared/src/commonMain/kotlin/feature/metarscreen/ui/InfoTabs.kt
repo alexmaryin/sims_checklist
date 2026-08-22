@@ -217,7 +217,7 @@ private fun DatisEntryContent(entry: DatisEntry) {
         Text(
             text = entry.datis,
             fontSize = 14.sp,
-            color = MaterialTheme.colorScheme.secondary,
+            color = MaterialTheme.colorScheme.onSurface,
             lineHeight = 18.sp
         )
     }
@@ -230,10 +230,7 @@ private fun DatisTypeIcon(type: AtisType) {
         AtisType.ARRIVAL -> Res.drawable.atis_arrival to "Arrival ATIS"
         AtisType.DEPARTURE -> Res.drawable.atis_departure to "Departure ATIS"
     }
-    val tintColor = when (type) {
-        AtisType.ARRIVAL -> MaterialTheme.colorScheme.onPrimaryContainer
-        AtisType.DEPARTURE -> MaterialTheme.colorScheme.onTertiaryContainer
-    }
+    val tintColor = MaterialTheme.colorScheme.onSurface
     Icon(
         painter = painterResource(iconRes),
         contentDescription = contentDesc,

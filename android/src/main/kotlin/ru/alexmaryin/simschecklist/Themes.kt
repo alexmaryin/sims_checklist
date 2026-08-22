@@ -8,9 +8,13 @@ object Themes {
     val light = lightColorScheme(
         primary = SimColors.backgroundBrown,
         primaryContainer = SimColors.backgroundBrown,
+        onPrimaryContainer = SimColors.textLight,
         secondary = SimColors.accentBrown,
         onSecondary = SimColors.textLight,
+        secondaryContainer = SimColors.lightSurface,
         onSecondaryContainer = SimColors.accentGreen,
+        tertiaryContainer = SimColors.accentBrown,
+        onTertiaryContainer = SimColors.textLight,
         inversePrimary = SimColors.accentGreen,
         onPrimary = SimColors.textLight,
         onSurface = SimColors.textBlack,
