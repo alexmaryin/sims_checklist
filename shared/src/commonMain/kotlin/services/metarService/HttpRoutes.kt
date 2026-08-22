@@ -10,4 +10,7 @@ object HttpRoutes {
     private const val AVIATION_WEATHER_BASE = "https://aviationweather.gov/api/data"
     const val AVIATION_WEATHER_METAR = "$AVIATION_WEATHER_BASE/metar"
     const val AVIATION_WEATHER_TAF = "$AVIATION_WEATHER_BASE/taf"
+
+    private const val ATIS_INFO_BASE = "https://atis.info/api"
+    const val ATIS_INFO = ATIS_INFO_BASE
 }

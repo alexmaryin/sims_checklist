@@ -15,5 +15,8 @@ data class MetarScreenViewState(
     val error: String? = null,
     val showInfo: Boolean = false,
     val runway: RunwayUi = RunwayUi().withCalculatedWind(Wind(INIT_WIND_HEADING, speed = INIT_WIND_SPEED)),
-    val historyAirports: List<HistoryAirport> = emptyList()
+    val historyAirports: List<HistoryAirport> = emptyList(),
+    val datis: DatisUi? = null,
+    val selectedInfoTab: Int = 0,
+    val isLoadingAtis: Boolean = false
 )

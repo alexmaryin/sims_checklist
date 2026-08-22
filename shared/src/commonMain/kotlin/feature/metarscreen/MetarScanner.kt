@@ -15,6 +15,8 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import services.airportService.AirportService
 import services.airportService.model.dropClosedRunways
+import services.atisService.AtisService
+import services.commonApi.ErrorType
 import services.commonApi.Result
 import services.commonApi.forError
 import services.commonApi.forSuccess
@@ -35,18 +37,20 @@ class MetarScanner(
         }
     }
 
-    data class Loading(var loadMetar: Boolean = false, var loadTaf: Boolean = false, var loadAirport: Boolean = false) {
-        val state get() = loadMetar || loadTaf || loadAirport
+    data class Loading(var loadMetar: Boolean = false, var loadTaf: Boolean = false, var loadAirport: Boolean = false, var loadAtis: Boolean = false) {
+        val state get() = loadMetar || loadTaf || loadAirport || loadAtis
     }
 
     private val metarService: MetarService by inject()
     private val airportService: AirportService by inject()
+    private val atisService: AtisService by inject()
 
     val state by saveableMutableValue(MetarScreenViewState.serializer(), init = ::MetarScreenViewState)
 
     private var metarJob: Job? = null
     private var tafJob: Job? = null
     private var airportJob: Job? = null
+    private var atisJob: Job? = null
 
     private val scope = componentContext.coroutineScope() + SupervisorJob()
 
@@ -60,6 +64,7 @@ class MetarScanner(
         is MetarUiEvent.DismissInfoDialog -> showInfoDialog(false)
         is MetarUiEvent.SubmitRunwayAngle -> submitRunwayAngle(event.new)
         is MetarUiEvent.SubmitWindSpeed -> submitWindSpeed(event.new)
+        is MetarUiEvent.SelectInfoTab -> selectInfoTab(event.tab)
         is MetarUiEvent.LoadTopLatest -> fetchHistoryAirports()
         is MetarUiEvent.OpenQfeHelper -> openQfeHelper()
         is MetarUiEvent.OpenColdTemperature -> openColdTemperature()
@@ -76,6 +81,7 @@ class MetarScanner(
         metarJob?.cancel().also { metarJob = null }
         tafJob?.cancel().also { tafJob = null }
         airportJob?.cancel().also { airportJob = null }
+        atisJob?.cancel().also { atisJob = null }
         state.update {
             it.copy(data = state.value.data.copy(userAngle = new, metarAngle = null, metarSpeedKt = null))
                 .updateRunwayWind(state.value.runway)
@@ -86,6 +92,7 @@ class MetarScanner(
         metarJob?.cancel().also { metarJob = null }
         tafJob?.cancel().also { tafJob = null }
         airportJob?.cancel().also { airportJob = null }
+        atisJob?.cancel().also { atisJob = null }
         state.update {
             it.copy(data = state.value.data.copy(userSpeed = new, metarAngle = null, metarSpeedKt = null))
                 .updateRunwayWind(state.value.runway)
@@ -164,6 +171,39 @@ class MetarScanner(
         response.forError { error -> setErrorState(error) }
     }
 
+    private suspend fun fetchAtis(station: String) {
+        val response = atisService.getDatis(station)
+        combineLoading.loadAtis = false
+        response.forSuccess { entries ->
+            state.update {
+                it.copy(
+                    datis = DatisUi(entries = entries),
+                    isLoadingAtis = false,
+                    isLoading = combineLoading.state
+                )
+            }
+        }
+        response.forError { error ->
+            if (error.type == ErrorType.EMPTY_RESULT) {
+                state.update {
+                    it.copy(
+                        datis = null,
+                        isLoadingAtis = false,
+                        isLoading = combineLoading.state
+                    )
+                }
+            } else {
+                state.update {
+                    it.copy(
+                        datis = DatisUi(error = "Failed to load D-ATIS: ${error.message}"),
+                        isLoadingAtis = false,
+                        isLoading = combineLoading.state
+                    )
+                }
+            }
+        }
+    }
+
     private fun fetchHistoryAirports() {
         scope.launch {
             val response = airportService.getAirportsHistory()
@@ -181,11 +221,21 @@ class MetarScanner(
         combineLoading.loadMetar = true
         combineLoading.loadTaf = true
         combineLoading.loadAirport = true
-        state.update { it.copy(isLoading = combineLoading.state, airport = null, historyAirports = emptyList()) }
+        combineLoading.loadAtis = true
+        metarJob?.cancel()
+        tafJob?.cancel()
+        airportJob?.cancel()
+        atisJob?.cancel()
+        state.update { it.copy(isLoading = combineLoading.state, airport = null, historyAirports = emptyList(), selectedInfoTab = 0, isLoadingAtis = true, data = it.data.copy(lastIcao = station)) }
         metarJob = scope.launch { fetchMetar(station) }
         tafJob = scope.launch { fetchTaf(station) }
         airportJob = scope.launch { fetchAirport(station) }
+        atisJob = scope.launch { fetchAtis(station) }
         fetchHistoryAirports()
+    }
+
+    private fun selectInfoTab(tab: Int) {
+        state.update { it.copy(selectedInfoTab = tab) }
     }
 
     private fun showInfoDialog(show: Boolean = true) {
