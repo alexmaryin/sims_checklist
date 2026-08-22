@@ -26,6 +26,8 @@ Select preferable runway to land for headwind.
 
 Save your own top list of recent airports on METAR screen for faster access.
 
+Get METAR, TAF, and D-ATIS (Digital ATIS) for US airports — view arrival and departure ATIS info in a tabbed layout.
+
 #### NOTICE
 To serve the main purpose of the provided airport information—visualizing headwind and crosswind components —
 the runway headings are given in **true courses**, not magnetic.
@@ -64,7 +66,8 @@ This feature helps you calculate the corrected altitude for your waypoints based
 *Some develop details:*
 - Compose Multiplatform project in Kotlin 2.20
 - Custom drawing for wind director
-- METAR/TAF info is fetching from https://checkwx.com/
+- METAR/TAF info is fetching from https://aviationweather.gov/
+- D-ATIS info is fetching from [FAA Digital ATIS](https://atis.info/) 
 - Airports information fetches from CSV files (https://davidmegginson.github.io/ourairports-data) and maps to local multiplatform sqlite database (incredibly fast performance).
 - METAR parser from my own library [metarKt](https://github.com/alexmaryin/metarKt) published on MavenCentral.
 - Awesome library [Decompose](https://github.com/arkivanov/Decompose) for navigation and lifecycle management, thanks to @arkivanov
@@ -77,7 +80,7 @@ Glad to see you soon in virtual skies!
 
 ## License
 
-Copyright 2023-2025 Alex Maryin
+Copyright 2023-2026 Alex Maryin
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
