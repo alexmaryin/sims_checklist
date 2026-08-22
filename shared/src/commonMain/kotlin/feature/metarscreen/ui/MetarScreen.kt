@@ -39,7 +39,6 @@ import sims_checklist.shared.generated.resources.compress
 import sims_checklist.shared.generated.resources.info
 import sims_checklist.shared.generated.resources.snowflake
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MetarScreen(component: MetarScanner) {
 
@@ -211,12 +210,18 @@ fun MetarScreen(component: MetarScanner) {
                 }
 
                 AnimatedVisibility(
-                    visible = state.data.rawMetar.isNotBlank() || state.data.rawTaf.isNotBlank(),
+                    visible = state.data.rawMetar.isNotBlank() || state.data.rawTaf.isNotBlank() || state.datis != null || state.isLoadingAtis,
                     enter = fadeIn() + slideInVertically(),
                     exit = fadeOut() + slideOutVertically(),
                     modifier = Modifier.padding(8.dp).fillMaxWidth()
                 ) {
-                    MetarInfo(state.data)
+                    InfoTabs(
+                        metarUi = state.data,
+                        datisUi = state.datis,
+                        isLoadingAtis = state.isLoadingAtis,
+                        selectedTab = state.selectedInfoTab,
+                        onSelectTab = { tab -> component.onEvent(MetarUiEvent.SelectInfoTab(tab)) }
+                    )
                 }
 
                 AnimatedVisibility(

@@ -15,5 +15,6 @@ data class MetarUi(
     val metarAngle: Heading? = null,
     val metarSpeedKt: Int? = null,
     val rawMetar: String = "",
-    val rawTaf: String = ""
+    val rawTaf: String = "",
+    val lastIcao: String? = null
 )

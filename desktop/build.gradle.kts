@@ -10,7 +10,7 @@ kotlin {
     jvm {}
 
     sourceSets {
-        val jvmMain by getting {
+        val jvmMain = getByName("jvmMain") {
             dependencies {
                 implementation(compose.desktop.currentOs)
                 implementation(libs.compose.material3)

@@ -34,16 +34,16 @@ kotlin {
     jvm("desktop")
 
     sourceSets {
-        val commonMain by getting {
+        val commonMain = getByName("commonMain") {
             dependencies {
-                implementation(compose.ui)
-                implementation(compose.runtime)
-                implementation(compose.foundation)
-                implementation(compose.material3)
-                implementation(compose.components.resources)
+                implementation(libs.compose.ui)
+                implementation(libs.compose.runtime)
+                implementation(libs.compose.foundation)
+                implementation(libs.compose.material3)
+                implementation(libs.compose.components.resources)
                 implementation(libs.material3.adaptive)
                 implementation(libs.kotlinx.coroutines.core)
-                implementation(compose.preview)
+                implementation(libs.compose.preview)
                 implementation(libs.decompose)
                 implementation(libs.decompose.extensions)
                 implementation(libs.decompose.essenity)
@@ -63,7 +63,7 @@ kotlin {
                 implementation(libs.androidx.lifecycle.viewmodelCompose)
             }
         }
-        val commonTest by getting {
+        val commonTest = getByName("commonTest") {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-junit"))
@@ -72,25 +72,26 @@ kotlin {
                 implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.ktor.client.core)
                 implementation(libs.ktor.client.cio)
+                implementation(libs.ktor.client.mock)
                 implementation(libs.ktor.client.serialization)
                 implementation(libs.ktor.negotiation)
             }
         }
-        val androidMain by getting {
+        val androidMain = getByName("androidMain") {
             dependencies {
                 api(libs.activity.compose)
                 api(libs.appcompat)
                 api(libs.core.ktx)
-                implementation(compose.foundation)
+                implementation(libs.compose.foundation)
                 implementation(libs.kotlinx.coroutines.android)
                 implementation(libs.koin.android)
             }
         }
-        val desktopMain by getting {
+        val desktopMain = getByName("desktopMain") {
             dependencies {
                 implementation(libs.kotlinx.coroutines.swing)
-                implementation(compose.desktop.common)
-                implementation(compose.foundation)
+                implementation(libs.compose.desktop)
+                implementation(libs.compose.foundation)
             }
         }
     }
@@ -103,7 +104,7 @@ kotlin {
 dependencies {
     add("kspAndroid", libs.androidx.room.compiler)
     add("kspDesktop", libs.androidx.room.compiler)
-    "androidRuntimeClasspath"(compose.uiTooling)
+    "androidRuntimeClasspath"(libs.compose.tooling)
 }
 
 buildkonfig {

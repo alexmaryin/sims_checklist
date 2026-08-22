@@ -8,6 +8,7 @@ sealed class MetarUiEvent {
     data class SubmitICAO(val station: String) : MetarUiEvent()
     data class SubmitRunway(val new: RunwayUi) : MetarUiEvent()
     data class SubmitRunwayAngle(val new: Int) : MetarUiEvent()
+    data class SelectInfoTab(val tab: Int) : MetarUiEvent()
     data object ShowInfoDialog : MetarUiEvent()
     data object DismissInfoDialog : MetarUiEvent()
     data object LoadTopLatest : MetarUiEvent()
