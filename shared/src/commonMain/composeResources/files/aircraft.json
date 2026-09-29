@@ -1037,5 +1037,702 @@
       }
     ],
     "photo": "citationx"
+  },
+  {
+    "id": 3,
+    "name": "Beech King Air 350",
+    "performance": {
+      "fuelCapacity": 539,
+      "averageCruiseSpeed": 310,
+      "averageFuelFlow": 125
+    },
+    "checklists": [
+      {
+        "id": 0,
+        "caption": "Preflight",
+        "items": [
+          {
+            "caption": "Fuel/Payload Menu",
+            "action": "SET & CHECK CG"
+          },
+          {
+            "caption": "Aircraft Documents",
+            "action": "CHECKED"
+          },
+          {
+            "caption": "Parking Brake",
+            "action": "SET"
+          },
+          {
+            "caption": "Landing Gear Control",
+            "action": "DOWN"
+          },
+          {
+            "caption": "Elevator Trim",
+            "action": "2 UNITS NOSE UP"
+          },
+          {
+            "caption": "Rudder and Aileron Trim",
+            "action": "SET NEUTRAL"
+          },
+          {
+            "caption": "Battery Bus (MP)",
+            "action": "NORM"
+          },
+          {
+            "caption": "Voltmeter (OH)",
+            "action": "CHECK",
+            "details": "Battery position...MIN 23 VOLTS\nAll other positions...0 VOLTS"
+          },
+          {
+            "caption": "Battery (MP)",
+            "action": "ON"
+          },
+          {
+            "caption": "Landing Gear",
+            "action": "ILLUMINATED"
+          },
+          {
+            "caption": "Fuel Quantity",
+            "action": "CHECK MAIN & AUXILIARY"
+          },
+          {
+            "caption": "Voltmeter (OH)",
+            "action": "CHECK",
+            "details": "TRIPLE FEED...MIN 22 VOLTS\nR and L GEN...0 VOLTS\nCENTER...MIN 23 VOLTS\nEXT PWR...0 VOLTS"
+          },
+          {
+            "caption": "Flaps",
+            "action": "CHECK",
+            "details": "a) Select APP and check if stopped at TO AND APP\nb) Select DOWN and check if stopped at DOWN\nc) Flaps UP"
+          },
+          {
+            "caption": "Battery (MP)",
+            "action": "OFF"
+          },
+          {
+            "caption": "Oxygen System Preflight Check",
+            "action": "COMPLETE"
+          },
+          {
+            "caption": "Outside Checks",
+            "action": "COMPLETE"
+          },
+          {
+            "caption": "ATC Clearance",
+            "action": "AS REQ"
+          },
+          {
+            "caption": "Pushback",
+            "action": "AS REQ"
+          }
+        ]
+      },
+      {
+        "id": 1,
+        "caption": "Engine start (cold)",
+        "items": [
+          {
+            "caption": "Doors",
+            "action": "LOCKED"
+          },
+          {
+            "caption": "Load and Baggage",
+            "action": "SECURE"
+          },
+          {
+            "caption": "Passenger Briefing",
+            "action": "COMPLETE"
+          },
+          {
+            "caption": "Cabin Equipment",
+            "action": "POSITIONED",
+            "details": "a) All Seats...SEAT BACKS UPRIGHT\nb) Lateral-Tracking Seats...OUTBOARD POSITION\nc) Tables...STOWED"
+          },
+          {
+            "caption": "Pilot Seats, Belts & Harness",
+            "action": "ADJUSTED/FASTENED"
+          },
+          {
+            "caption": "Parking Brake",
+            "action": "SET"
+          },
+          {
+            "caption": "ELT Switch",
+            "action": "ARM",
+            "details": "Yellow XMT Light - EXTINGUISHED"
+          },
+          {
+            "caption": "Fuel Panel",
+            "action": "CHECK",
+            "details": "a) Standby Pumps...OFF\nb) Crossfeed...OFF\nc) Aux Transfer Switches...AUTO\nd) Circuit Breakers...CHECK IN"
+          },
+          {
+            "caption": "Pilot's Instrument Panel and Subpanel",
+            "action": "CHECK",
+            "details": "a) STBY Flight Display System Power...TEST\nb) STBY Flight Display System Power...ON\nc) Battery Bus...CONFIRM NORM\nd) Engine Anti-Ice...ON\ne) Landing Gear Control...DOWN"
+          },
+          {
+            "caption": "Ext Power (MP)",
+            "action": "AS REQ"
+          },
+          {
+            "caption": "Battery (MP)",
+            "action": "ON"
+          },
+          {
+            "caption": "Avionics (MP)",
+            "action": "ON"
+          },
+          {
+            "caption": "Power Levers",
+            "action": "IDLE"
+          },
+          {
+            "caption": "Propeller Levers",
+            "action": "FULL FORWARD"
+          },
+          {
+            "caption": "Condition Levers",
+            "action": "FUEL CUTOFF"
+          },
+          {
+            "caption": "Right Panel Circuit Breakers",
+            "action": "CHECK IN"
+          },
+          {
+            "caption": "Overhead Switch Panel",
+            "action": "SET",
+            "details": "a) Master Panel Lights...AS REQ\nb) Display Brightness...AS REQ\nc) Interior Master Switch...ON"
+          },
+          {
+            "caption": "Beacon (MP)",
+            "action": "ON"
+          },
+          {
+            "caption": "Right Ignition and Engine Start (MP)",
+            "action": "ON"
+          },
+          {
+            "caption": "Right Condition Lever (at min. 12% N1)",
+            "action": "LOW IDLE",
+            "details": "Monitor right ITT and N1 (max. 1000°)\nIf no ITT rise is observed within 10 seconds, move the Condition Lever to CUTOFF and release Starter Switch"
+          },
+          {
+            "caption": "Right Oil Pressure",
+            "action": "CHECK"
+          },
+          {
+            "caption": "Right Ignition and Engine Start (at min 50% N1)",
+            "action": "OFF"
+          },
+          {
+            "caption": "Right Condition Lever",
+            "action": "HIGH IDLE"
+          },
+          {
+            "caption": "Right Generator (MP)",
+            "action": "ON"
+          },
+          {
+            "caption": "Left Engine",
+            "action": "START",
+            "details": "Repeat the same start sequence for the left engine"
+          },
+          {
+            "caption": "Throttle Levers",
+            "action": "MIN. 1050 RPM"
+          },
+          {
+            "caption": "Voltmeter",
+            "action": "CHECK",
+            "details": "R and L GEN...27-29 VOLTS"
+          },
+          {
+            "caption": "Ext. Power (MP)",
+            "action": "OFF"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "caption": "Before taxi",
+        "items": [
+          {
+            "caption": "Avionics/GPS/Autopilot",
+            "action": "SET & PROGRAMMED"
+          },
+          {
+            "caption": "NAVI/CDI",
+            "action": "SET GPS IF REQ"
+          },
+          {
+            "caption": "Transponder",
+            "action": "SET & STBY"
+          },
+          {
+            "caption": "Altimeter",
+            "action": "SET LOCAL QNH"
+          },
+          {
+            "caption": "Interior Master Switch (OH)",
+            "action": "AS REQ"
+          },
+          {
+            "caption": "Master Panel and Cockpit Lights (OH)",
+            "action": "AS REQ"
+          },
+          {
+            "caption": "Cabin Lights (OH)",
+            "action": "AS REQ"
+          },
+          {
+            "caption": "Cabin Signs (FSB Fasten Seats Belts) (OH)",
+            "action": "ON"
+          },
+          {
+            "caption": "Standby Flight Display",
+            "action": "INITIALIZATION COMPLETE"
+          },
+          {
+            "caption": "Standby Altimeter",
+            "action": "SET"
+          },
+          {
+            "caption": "Prop Sync (MP)",
+            "action": "ON"
+          },
+          {
+            "caption": "Flaps",
+            "action": "UP"
+          },
+          {
+            "caption": "Flight & Engine Instruments",
+            "action": "CHECK"
+          },
+          {
+            "caption": "Flight Controls",
+            "action": "CHECK"
+          },
+          {
+            "caption": "ATC Clearances",
+            "action": "AS REQ"
+          },
+          {
+            "caption": "Nav Lights (MP)",
+            "action": "ON"
+          },
+          {
+            "caption": "Logo Lights (MP)",
+            "action": "ON"
+          },
+          {
+            "caption": "Taxi Lights (MP)",
+            "action": "ON"
+          },
+          {
+            "caption": "Parking Brake",
+            "action": "RELEASE"
+          },
+          {
+            "caption": "Brakes",
+            "action": "CHECK"
+          },
+          {
+            "caption": "Steering",
+            "action": "CHECK"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "caption": "Before takeoff",
+        "items": [
+          {
+            "caption": "Avionics/GPS/Autopilot",
+            "action": "CHECK SET"
+          },
+          {
+            "caption": "NAVI/CDI",
+            "action": "CHECK SET GPS IF REQ"
+          },
+          {
+            "caption": "Transponder",
+            "action": "ON"
+          },
+          {
+            "caption": "Altimeter",
+            "action": "CHECK SET LOCAL QNH"
+          },
+          {
+            "caption": "Cabin Pressurization (CP)",
+            "action": "1000 FT ABOVE CRZ ALT"
+          },
+          {
+            "caption": "Pitch Trim",
+            "action": "TAKEOFF"
+          },
+          {
+            "caption": "Flaps",
+            "action": "APPROACH"
+          },
+          {
+            "caption": "Autofeather",
+            "action": "ARM"
+          },
+          {
+            "caption": "Propeller Levers",
+            "action": "MANUAL FEATHER CHECK"
+          },
+          {
+            "caption": "Fuel Quantity",
+            "action": "CHECK"
+          },
+          {
+            "caption": "Flight Instruments",
+            "action": "CHECK"
+          },
+          {
+            "caption": "Engine Instruments",
+            "action": "CHECK"
+          },
+          {
+            "caption": "V1, VR & V2",
+            "action": "SET",
+            "details": "V1 ~ 95-100 KIAS\nVR 102-105 KIAS\nV2 105-110 KIAS"
+          },
+          {
+            "caption": "Engine Auto-Ignition (MP)",
+            "action": "ARM"
+          },
+          {
+            "caption": "Anti-Ice (MP)",
+            "action": "SET",
+            "details": "a) Engine Anti-Ice...AS REQ\nb) Windshield Anti-Ice...NORMAL/HI (if req.)\nc) Prop De-Ice...AUTO\nd) Left and Right Fuel Vent Heat...ON\ne) Stall Warning Heat...ON\nf) Pitot Heat L & R...ON"
+          },
+          {
+            "caption": "Propeller Levers",
+            "action": "FULL FORWARD"
+          },
+          {
+            "caption": "Landing Lights (MP)",
+            "action": "ON"
+          },
+          {
+            "caption": "Strobe Lights (MP)",
+            "action": "ON"
+          },
+          {
+            "caption": "CAS Messages",
+            "action": "REMOVED OR ADDRESSED"
+          },
+          {
+            "caption": "ATC Clearances",
+            "action": "AS REQ"
+          },
+          {
+            "caption": "Start Replay-Tool",
+            "action": "IF REQ"
+          },
+          {
+            "caption": "Parking Brake",
+            "action": "RELEASE"
+          },
+          {
+            "caption": "Takeoff Power",
+            "action": "SET",
+            "details": "Limits: 100% TQ / 820° ITT / 104% N1 / 1700 RPM\nRotate @ VR, pitch ~ 10-15°, initial climb @ V2, retract gear\nAt ~ 400 ft AGL start to accelerate: VX 125 KIAS / VY 140 KIAS / VYSE 125 KIAS\nRetract flaps UP at 125 KIAS"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "caption": "Climb",
+        "items": [
+          {
+            "caption": "Taxi Lights",
+            "action": "OFF"
+          },
+          {
+            "caption": "Flaps",
+            "action": "CHECK UP"
+          },
+          {
+            "caption": "Landing Gear",
+            "action": "CHECK RETRACTED"
+          },
+          {
+            "caption": "Yaw Damper",
+            "action": "ON",
+            "details": "Latest at 5000 ft"
+          },
+          {
+            "caption": "Windshield Anti-Ice",
+            "action": "CHECK NORMAL"
+          },
+          {
+            "caption": "Anti-Ice",
+            "action": "AS REQ"
+          },
+          {
+            "caption": "Cabin Pressurization",
+            "action": "CHECK"
+          },
+          {
+            "caption": "Cruise Climb Power",
+            "action": "SET",
+            "details": "Limits: 100% TQ / 785° ITT / 104% N1 / 1700 RPM\nRecommended propeller speed: 1600 RPM"
+          },
+          {
+            "caption": "Cruise Climb Speed",
+            "action": "SET",
+            "details": "SL to 10,000 ft...170 KIAS\nto 15,000 ft...160 KIAS\nto 20,000 ft...150 KIAS\nto 25,000 ft...140 KIAS\nto 30,000 ft...130 KIAS\nto 35,000 ft...120 KIAS"
+          },
+          {
+            "caption": "Autopilot",
+            "action": "AS REQ",
+            "details": "Min. 1000 ft AGL"
+          },
+          {
+            "caption": "Altimeter @ Transition Altitude",
+            "action": "SET STD QNE"
+          },
+          {
+            "caption": "Landing Lights @ 10,000 ft / FL100",
+            "action": "OFF"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "caption": "Cruise",
+        "items": [
+          {
+            "caption": "Autofeather",
+            "action": "OFF"
+          },
+          {
+            "caption": "Cabin Pressurization",
+            "action": "SET AND CHECK"
+          },
+          {
+            "caption": "Anti-Ice",
+            "action": "AS REQ"
+          },
+          {
+            "caption": "Engine Auto-Ignition",
+            "action": "AS REQ",
+            "details": "ON in icing conditions"
+          },
+          {
+            "caption": "Cabin Signs (FSB)",
+            "action": "AS REQ"
+          },
+          {
+            "caption": "Cruise Power",
+            "action": "SET",
+            "details": "Limits: TQ see below / 820° ITT / 104% N1 / 1700 RPM\nRecommended propeller: 1500 RPM\nMaximum cruise power at ISA:\nSL to 20,000 ft...100% TQ → ~260-240 KIAS\n@ 22,000 ft...95% TQ → ~225 KIAS\n@ 24,000 ft...85% TQ → ~217 KIAS\n@ 26,000 ft...80% TQ → ~209 KIAS\n@ 28,000 ft...75% TQ → ~200 KIAS\n@ 30,000 ft...70% TQ → ~190 KIAS\n@ 33,000 ft...60% TQ → ~175 KIAS\n@ 35,000 ft...55% TQ → ~162 KIAS\nNormal cruise power: subtract 5% TQ from maximum cruise power from 18,000 ft on and above\nMaximum range power: 45% TQ"
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "caption": "Descent",
+        "items": [
+          {
+            "caption": "Top of Descent (TOD)",
+            "action": "DETERMINE",
+            "details": "Start descent latest at approx. (Altitude/1000)*3 NM + 10 NM before destination\nSink rate for 3° glidepath = 5 x Ground Speed"
+          },
+          {
+            "caption": "Avionics/GPS/Autopilot",
+            "action": "SET"
+          },
+          {
+            "caption": "ILS Frequency",
+            "action": "COMPARE AND CHECK SET"
+          },
+          {
+            "caption": "NAVI/Flightplan",
+            "action": "ACTIVATE APPROACH IF REQUIRED"
+          },
+          {
+            "caption": "Approach Speeds",
+            "action": "CONFIRM"
+          },
+          {
+            "caption": "Cabin Pressurization",
+            "action": "CHECK"
+          },
+          {
+            "caption": "Cabin Signs (FSB)",
+            "action": "AS REQ"
+          },
+          {
+            "caption": "Anti-Ice",
+            "action": "AS REQ"
+          },
+          {
+            "caption": "Fuel Balance",
+            "action": "CHECK"
+          },
+          {
+            "caption": "Propeller Levers",
+            "action": "1500 RPM"
+          },
+          {
+            "caption": "Descent Speed",
+            "action": "M.58 OR 250 KIAS"
+          },
+          {
+            "caption": "Descent Power",
+            "action": "MAINTAIN ~1500 FPM",
+            "details": "Sink rate for a 3° glidepath ~ 5 x Ground Speed"
+          },
+          {
+            "caption": "Landing Lights @ 10,000 ft / FL100",
+            "action": "ON/AS REQ"
+          },
+          {
+            "caption": "Altimeter @ Transition Flightlevel",
+            "action": "SET LOCAL QNH"
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "caption": "Approach",
+        "items": [
+          {
+            "caption": "ATC Clearances @ ~15 NM to go",
+            "action": "AS REQ"
+          },
+          {
+            "caption": "NAVI/CDI",
+            "action": "SET VLOC IF REQ FOR ILS"
+          },
+          {
+            "caption": "Autofeather",
+            "action": "ARM"
+          },
+          {
+            "caption": "Cabin Signs (FSB) (OH)",
+            "action": "ON"
+          },
+          {
+            "caption": "Cabin Pressurization",
+            "action": "CHECK"
+          },
+          {
+            "caption": "Altimeter",
+            "action": "CHECK SET LOCAL QNH"
+          },
+          {
+            "caption": "Visual Approach",
+            "action": "PERFORM",
+            "details": "Enter downwind leg @ 1000 ft AGL\n@ 8-7 NM to go: reduce speed to ~150-160 KIAS, set FLAPS 1 (APPROACH) @ ~160 KIAS\n@ downwind leg or ~6 NM: reduce speed to ~120 KIAS, lower LANDING GEAR (mid downwind), set Flaps 2 (DOWN) @ ~140 KIAS\n@ base leg or ~3 NM: YAW Damper OFF, propeller levers FULL FORWARD, start descending, sink rate ~500-1000 fpm\nAirspeed on final VREF ~ 100-110 KIAS"
+          },
+          {
+            "caption": "ILS Approach",
+            "action": "PERFORM",
+            "details": "Be @ ~3000 ft above destination airport elevation or use proper procedure altitudes\n@ 15-12 NM to go: reduce speed to ~150-160 KIAS, set FLAPS 1 (APPROACH) @ ~160 KIAS\n@ glideslope capture: start descending, sink rate for 3° glidepath = 5 x Ground Speed\n@ ~6 NM to go: reduce speed to ~120 KIAS, lower LANDING GEAR, set Flaps 2 (DOWN) @ ~140 KIAS\n@ ~3 NM to go: Autopilot OFF, YAW Damper OFF, propeller levers FULL FORWARD\nAirspeed on final VREF ~ 100-110 KIAS"
+          },
+          {
+            "caption": "Short Final",
+            "action": "CHECK",
+            "details": "Flaps...CHECK FULL\nLanding Gear...CHECK DOWN\nPropeller Levers...CHECK FULL FORWARD"
+          },
+          {
+            "caption": "Runway Threshold (@ ~50 ft)",
+            "action": "LAND"
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "caption": "After landing",
+        "items": [
+          {
+            "caption": "Taxi Lights",
+            "action": "OFF"
+          },
+          {
+            "caption": "Landing Lights",
+            "action": "OFF"
+          },
+          {
+            "caption": "Strobe Lights",
+            "action": "OFF"
+          },
+          {
+            "caption": "Engine Auto-Ignition",
+            "action": "OFF"
+          },
+          {
+            "caption": "Engine Anti-Ice",
+            "action": "ON"
+          },
+          {
+            "caption": "Transponder",
+            "action": "STBY"
+          },
+          {
+            "caption": "Flaps",
+            "action": "RETRACT"
+          },
+          {
+            "caption": "Cabin Pressurization",
+            "action": "CHECK 0"
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "caption": "Parking",
+        "items": [
+          {
+            "caption": "Parking Brake",
+            "action": "SET"
+          },
+          {
+            "caption": "Avionics",
+            "action": "OFF"
+          },
+          {
+            "caption": "Autofeather",
+            "action": "OFF"
+          },
+          {
+            "caption": "Exterior Lights",
+            "action": "OFF"
+          },
+          {
+            "caption": "Interior Master Switch",
+            "action": "OFF"
+          },
+          {
+            "caption": "ITT",
+            "action": "STABILIZED"
+          },
+          {
+            "caption": "Condition Levers",
+            "action": "FUEL CUTOFF"
+          },
+          {
+            "caption": "Propeller Levers",
+            "action": "FEATHER"
+          },
+          {
+            "caption": "Overhead Panel Switches",
+            "action": "OFF"
+          },
+          {
+            "caption": "Battery and Generators",
+            "action": "OFF BELOW 15% N1"
+          }
+        ]
+      }
+    ],
+    "photo": "king_air_350"
   }
 ]
