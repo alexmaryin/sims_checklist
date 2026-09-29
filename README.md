@@ -12,6 +12,7 @@
 - the most popular Cessna 172 Skyhawk 
 - luxury one Cirrus SR-22
 - Cessna Citation X (X-plane 12 default edition)
+- Beech King Air 350 with a full ten-checklist set derived from the official checklists
 
 ### Fuel calculator
 
