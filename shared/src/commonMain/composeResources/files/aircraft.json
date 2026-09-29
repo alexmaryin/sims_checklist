@@ -1399,7 +1399,7 @@
           {
             "caption": "V1, VR & V2",
             "action": "SET",
-            "details": "V1 ~ 95-100 KIAS (dep. on weight)\nVR 102-105 KIAS (dep. on weight)\nV2 105-110 KIAS (dep. on weight)"
+            "details": "V1 ~ 95-100 KIAS\nVR 102-105 KIAS\nV2 105-110 KIAS"
           },
           {
             "caption": "Engine Auto-Ignition (MP)",
@@ -1441,7 +1441,7 @@
           {
             "caption": "Takeoff Power",
             "action": "SET",
-            "details": "Limits: 100% TQ / 820° ITT / 104% N1 / 1700 RPM\nLine up and brake, set throttle to TAKEOFF POWER, release brakes\nRotate @ VR, pitch ~ 10-15°, initial climb @ V2, retract gear\nAt ~ 400 ft AGL start to accelerate: VX 125 KIAS / VY 140 KIAS / VYSE 125 KIAS\nRetract flaps UP at 125 KIAS"
+            "details": "Limits: 100% TQ / 820° ITT / 104% N1 / 1700 RPM\nRotate @ VR, pitch ~ 10-15°, initial climb @ V2, retract gear\nAt ~ 400 ft AGL start to accelerate: VX 125 KIAS / VY 140 KIAS / VYSE 125 KIAS\nRetract flaps UP at 125 KIAS"
           }
         ]
       },
@@ -1542,7 +1542,7 @@
           {
             "caption": "Top of Descent (TOD)",
             "action": "DETERMINE",
-            "details": "Check STAR and APPROACH altitude constraints and compare to actual charts if possible\nStart descent latest at approx. (Altitude/1000)*3 NM + 10 NM before destination\nIf ATC has not given clearance 1-2 minutes after TOD, start descent anyway\nFor a standard 3° glidepath: do not be significantly higher than destination elevation + 1000 ft per 3 NM to go\nSink rate for 3° glidepath = 5 x Ground Speed"
+            "details": "Start descent latest at approx. (Altitude/1000)*3 NM + 10 NM before destination\nSink rate for 3° glidepath = 5 x Ground Speed"
           },
           {
             "caption": "Avionics/GPS/Autopilot",
@@ -1582,13 +1582,12 @@
           },
           {
             "caption": "Descent Speed",
-            "action": "M.58 OR 250 KIAS",
-            "details": "Whichever is less"
+            "action": "M.58 OR 250 KIAS"
           },
           {
             "caption": "Descent Power",
             "action": "MAINTAIN ~1500 FPM",
-            "details": "Sink rate for a 3° glidepath ~ 5 x Ground Speed (only as information, not mandatory)"
+            "details": "Sink rate for a 3° glidepath ~ 5 x Ground Speed"
           },
           {
             "caption": "Landing Lights @ 10,000 ft / FL100",
@@ -1631,12 +1630,12 @@
           {
             "caption": "Visual Approach",
             "action": "PERFORM",
-            "details": "Enter downwind leg @ 1000 ft AGL\n@ 8-7 NM to go: reduce speed to ~150-160 KIAS, set FLAPS 1 (APPROACH) @ ~160 KIAS\n@ downwind leg or ~6 NM: reduce speed to ~120 KIAS, lower LANDING GEAR (mid downwind), set Flaps 2 (DOWN) @ ~140 KIAS\n@ base leg or ~3 NM: YAW Damper OFF, propeller levers FULL FORWARD, start descending, sink rate ~500-1000 fpm\nAirspeed on final VREF ~ 100-110 KIAS (dep. on weight)"
+            "details": "Enter downwind leg @ 1000 ft AGL\n@ 8-7 NM to go: reduce speed to ~150-160 KIAS, set FLAPS 1 (APPROACH) @ ~160 KIAS\n@ downwind leg or ~6 NM: reduce speed to ~120 KIAS, lower LANDING GEAR (mid downwind), set Flaps 2 (DOWN) @ ~140 KIAS\n@ base leg or ~3 NM: YAW Damper OFF, propeller levers FULL FORWARD, start descending, sink rate ~500-1000 fpm\nAirspeed on final VREF ~ 100-110 KIAS"
           },
           {
             "caption": "ILS Approach",
             "action": "PERFORM",
-            "details": "Be @ ~3000 ft above destination airport elevation or use proper procedure altitudes\n@ 15-12 NM to go: reduce speed to ~150-160 KIAS, set FLAPS 1 (APPROACH) @ ~160 KIAS\n@ glideslope capture: start descending, sink rate for 3° glidepath = 5 x Ground Speed\n@ ~6 NM to go: reduce speed to ~120 KIAS, lower LANDING GEAR, set Flaps 2 (DOWN) @ ~140 KIAS\n@ ~3 NM to go: Autopilot OFF, YAW Damper OFF, propeller levers FULL FORWARD\nAirspeed on final VREF ~ 100-110 KIAS (dep. on weight)"
+            "details": "Be @ ~3000 ft above destination airport elevation or use proper procedure altitudes\n@ 15-12 NM to go: reduce speed to ~150-160 KIAS, set FLAPS 1 (APPROACH) @ ~160 KIAS\n@ glideslope capture: start descending, sink rate for 3° glidepath = 5 x Ground Speed\n@ ~6 NM to go: reduce speed to ~120 KIAS, lower LANDING GEAR, set Flaps 2 (DOWN) @ ~140 KIAS\n@ ~3 NM to go: Autopilot OFF, YAW Damper OFF, propeller levers FULL FORWARD\nAirspeed on final VREF ~ 100-110 KIAS"
           },
           {
             "caption": "Short Final",
@@ -1645,8 +1644,7 @@
           },
           {
             "caption": "Runway Threshold (@ ~50 ft)",
-            "action": "LAND",
-            "details": "Throttle slowly to IDLE\nSlowly flare @ 10-20 ft AGL\nTouchdown with main wheels first\nUse reverse throttle if required"
+            "action": "LAND"
           }
         ]
       },
