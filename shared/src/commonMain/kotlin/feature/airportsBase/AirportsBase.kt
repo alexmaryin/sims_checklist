@@ -110,31 +110,47 @@ class AirportsBase(
                 }
 
                 is AirportUpdateService.UpdateResult.Error -> {
-                    state.update { it.copy(snackbar = AirportsSnackBarState.ErrorHint(error = result.message)) }
+                    state.update {
+                        it.copy(
+                            updating = false,
+                            progress = 0,
+                            snackbar = AirportsSnackBarState.ErrorHint(error = "Some files are missing. Try again later.")
+                        )
+                    }
                 }
             }
         }
     }
 
     private fun CoroutineScope.onStartConvert() = launch {
-        csvConverter.convertFiles(this).collect { result ->
-            when (result) {
-                is LocalBaseConverter.UpdateResult.Progress -> {
-                    state.update {
+        try {
+            csvConverter.convertFiles(this).collect { result ->
+                when (result) {
+                    is LocalBaseConverter.UpdateResult.Progress -> {
+                        state.update {
+                            it.copy(
+                                processingLabel = result.label,
+                                airportsCount = result.count
+                            )
+                        }
+                    }
+
+                    is LocalBaseConverter.UpdateResult.Success -> state.update {
+                        launch(Dispatchers.IO) { updateService.clearAfterUpdate() }
                         it.copy(
-                            processingLabel = result.label,
+                            updating = false,
                             airportsCount = result.count
                         )
                     }
                 }
-
-                is LocalBaseConverter.UpdateResult.Success -> state.update {
-                    launch(Dispatchers.IO) { updateService.clearAfterUpdate() }
-                    it.copy(
-                        updating = false,
-                        airportsCount = result.count
-                    )
-                }
+            }
+        } catch (e: Exception) {
+            if (e is CancellationException) throw e
+            state.update {
+                it.copy(
+                    updating = false,
+                    snackbar = AirportsSnackBarState.ErrorHint(e.message ?: "Conversion failed")
+                )
             }
         }
     }

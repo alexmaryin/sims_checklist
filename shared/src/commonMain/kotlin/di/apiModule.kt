@@ -5,6 +5,7 @@ import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.HttpRequestRetry
 import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.compression.ContentEncoding
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
@@ -32,12 +33,16 @@ val apiModule = module {
                     println("KTOR DEBUG: $message")
                 }
             }
-            level = LogLevel.ALL
+            level = LogLevel.HEADERS
+        }
+        install(ContentEncoding) {
+            gzip()
+            deflate()
         }
         install(HttpTimeout) {
-            requestTimeoutMillis = 15000
-            connectTimeoutMillis = 10000
-            socketTimeoutMillis = 15000
+            requestTimeoutMillis = 60_000
+            connectTimeoutMillis = 10_000
+            socketTimeoutMillis = 30_000
         }
         install(HttpRequestRetry) {
             retryOnServerErrors(maxRetries = 3)

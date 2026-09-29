@@ -54,6 +54,7 @@ kotlin {
                 implementation(libs.ktor.negotiation)
                 implementation(libs.ktor.client.serialization)
                 implementation(libs.ktor.client.logging)
+                implementation(libs.ktor.client.encoding)
                 implementation(libs.ktor.client.serialization)
                 implementation(libs.kotlinx.datetime)
                 implementation(libs.parser)

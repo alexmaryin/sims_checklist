@@ -18,12 +18,16 @@ class AirportUpdateServiceImpl(
 
     override suspend fun updateFlow(scope: CoroutineScope): Flow<UpdateResult> = channelFlow {
         send(UpdateResult.Progress("files...", 0))
+        var hasErrors = false
         FilesLinks.files.forEachIndexed { idx, file ->
             scope.launch(Dispatchers.IO) {
                 httpClient.downloadFile(getFilePath(file), "${FilesLinks.BASE_URL}/$file")
                     .collect { result ->
                         when (result) {
-                            is DownloadResult.Error -> send(UpdateResult.Error(result.message, result.error))
+                            is DownloadResult.Error -> {
+                                hasErrors = true
+                                send(UpdateResult.Error(result.message, result.error))
+                            }
                             DownloadResult.Success -> send(
                                 UpdateResult.Progress(
                                     file,
@@ -34,7 +38,9 @@ class AirportUpdateServiceImpl(
                     }
             }.join()
         }
-        send(UpdateResult.Success(System.currentTimeMillis()))
+        // Don't report Success if some files failed to download,
+        // otherwise the converter will crash on missing files
+        if (!hasErrors) send(UpdateResult.Success(System.currentTimeMillis()))
     }
 
     override suspend fun clearAfterUpdate() {

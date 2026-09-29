@@ -8,6 +8,7 @@ import com.arkivanov.essenty.lifecycle.doOnCreate
 import com.arkivanov.essenty.lifecycle.doOnStart
 import com.arkivanov.essenty.lifecycle.doOnStop
 import feature.mainScreen.database.AircraftBase
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
@@ -66,43 +67,61 @@ class AircraftList(
     }
 
     private fun CoroutineScope.onStartUpdate() = launch {
-        updateService.updateFlow(this).collect {
-            when (it) {
-                is AirportUpdateService.UpdateResult.Progress -> {
-                    state.update { old -> old.copy(
-                        updateMessage = "Downloading ${it.file}",
-                        progress = it.count.toFloat()
-                    ) }
-                }
+        var downloadSucceeded = false
+        try {
+            updateService.updateFlow(this).collect {
+                when (it) {
+                    is AirportUpdateService.UpdateResult.Progress -> {
+                        state.update { old -> old.copy(
+                            updateMessage = "Downloading ${it.file}",
+                            progress = it.count.toFloat()
+                        ) }
+                    }
 
-                is AirportUpdateService.UpdateResult.Error -> {
-                    state.update { old -> old.copy(
-                        updateMessage = null,
-                        snack = MainScreenSnack.Close(it.message)
-                    ) }
-                }
-
-                is AirportUpdateService.UpdateResult.Success -> Unit
-            }
-        }
-        csvConverter.convertFiles(this).collect {
-            when (it) {
-                is LocalBaseConverter.UpdateResult.Progress -> {
-                    state.update { old -> old.copy(updateMessage = "Converting ${it.label}") }
-                }
-
-                is LocalBaseConverter.UpdateResult.Success -> {
-                    state.update { old ->
-                        old.copy(
+                    is AirportUpdateService.UpdateResult.Error -> {
+                        state.update { old -> old.copy(
                             updateMessage = null,
                             progress = 0f,
-                            snack = MainScreenSnack.Close("Updated successfully. ${it.count} airports in database.")
-                        )
+                            snack = MainScreenSnack.Close("Some files are missing. Try again later.")
+                        ) }
+                    }
+
+                    is AirportUpdateService.UpdateResult.Success -> {
+                        downloadSucceeded = true
                     }
                 }
             }
+            if (!downloadSucceeded) {
+                state.update { old -> old.copy(updateMessage = null, progress = 0f) }
+                return@launch
+            }
+            csvConverter.convertFiles(this).collect {
+                when (it) {
+                    is LocalBaseConverter.UpdateResult.Progress -> {
+                        state.update { old -> old.copy(updateMessage = "Converting ${it.label}") }
+                    }
+
+                    is LocalBaseConverter.UpdateResult.Success -> {
+                        state.update { old ->
+                            old.copy(
+                                updateMessage = null,
+                                progress = 0f,
+                                snack = MainScreenSnack.Close("Updated successfully. ${it.count} airports in database.")
+                            )
+                        }
+                    }
+                }
+            }
+            updateService.clearAfterUpdate()
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            state.update { old -> old.copy(
+                updateMessage = null,
+                progress = 0f,
+                snack = MainScreenSnack.Close(e.message ?: "Update failed")
+            ) }
         }
-        updateService.clearAfterUpdate()
     }
 
     private fun CoroutineScope.onConfirmDropBase() = launch {

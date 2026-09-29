@@ -7,13 +7,14 @@ import services.airportService.LocalBaseConverter.UpdateResult
 import services.airportService.getFilePath
 import services.airportService.model.room.*
 import java.io.File
+import java.io.FileNotFoundException
 import java.util.*
 
 class RoomConverter(private val database: AirportDatabase) : LocalBaseConverter {
 
     private fun getCsvAsListOfMaps(filename: String): List<Map<String, String>> {
-        println("try to open ${getFilePath(filename)}")
         val file = File(getFilePath(filename))
+        if (!file.exists()) throw FileNotFoundException("Some files are missing. Try again later.")
         val lines = file.readLines()
         val headers = lines.firstOrNull()?.replace("\"", "")?.split(",")
             ?: throw RuntimeException("File $filename has not valid headers")
