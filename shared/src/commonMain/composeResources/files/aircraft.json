@@ -1734,5 +1734,679 @@
       }
     ],
     "photo": "king_air_350"
+  },
+  {
+    "id": 4,
+    "name": "Piper PA-24-250 Comanche",
+    "performance": {
+      "fuelCapacity": 94,
+      "averageCruiseSpeed": 140,
+      "averageFuelFlow": 10.5
+    },
+    "checklists": [
+      {
+        "id": 0,
+        "caption": "Before starting",
+        "items": [
+          {
+            "caption": "External visual inspection",
+            "action": "Complete"
+          },
+          {
+            "caption": "Fuel quantity in tanks",
+            "action": "Checked"
+          },
+          {
+            "caption": "Oil level",
+            "action": "Checked (7-9 qt)"
+          },
+          {
+            "caption": "Control lock",
+            "action": "Unlocked, Free"
+          },
+          {
+            "caption": "Documents",
+            "action": "Onboard"
+          },
+          {
+            "caption": "Ignition Key",
+            "action": "Off"
+          },
+          {
+            "caption": "Avionics Master (or Radios)",
+            "action": "Off"
+          },
+          {
+            "caption": "Landing Gear Selector",
+            "action": "Down"
+          },
+          {
+            "caption": "Master Switch",
+            "action": "On"
+          },
+          {
+            "caption": "Fuel Gauges",
+            "action": "Check Each Tank"
+          },
+          {
+            "caption": "Landing, Nav, Beacon, Cabin Lights",
+            "action": "Check"
+          },
+          {
+            "caption": "Flaps",
+            "action": "Down"
+          },
+          {
+            "caption": "Master Switch",
+            "action": "Off"
+          },
+          {
+            "caption": "Oxygen Quantity (If Equipped & Req.)",
+            "action": "Adequate"
+          }
+        ]
+      },
+      {
+        "id": 1,
+        "caption": "Starting the engine",
+        "items": [
+          {
+            "caption": "Parking brake",
+            "action": "Set"
+          },
+          {
+            "caption": "Belts and Harness",
+            "action": "Fastened & Adjusted"
+          },
+          {
+            "caption": "Avionics Master (Or Radios)",
+            "action": "Off"
+          },
+          {
+            "caption": "Fuel Selector",
+            "action": "Desired Tank"
+          },
+          {
+            "caption": "Circuit Breakers",
+            "action": "CHECK: In"
+          },
+          {
+            "caption": "Carburetor Heat",
+            "action": "Full Cold"
+          },
+          {
+            "caption": "Alternate Static Source (If Installed)",
+            "action": "Closed"
+          },
+          {
+            "caption": "Controls",
+            "action": "Free & Correct"
+          },
+          {
+            "caption": "Door",
+            "action": "Latched"
+          },
+          {
+            "caption": "Throttle",
+            "action": "1/4 in Open (1/2 in When Hot)"
+          },
+          {
+            "caption": "Mixture",
+            "action": "Full Rich"
+          },
+          {
+            "caption": "Prop Control",
+            "action": "Full Forward - Increase RPM"
+          },
+          {
+            "caption": "Beacon Light",
+            "action": "On"
+          },
+          {
+            "caption": "Master Switch",
+            "action": "On"
+          },
+          {
+            "caption": "Electric Fuel Pump",
+            "action": "On (Listen / Check Pressure) - Off"
+          },
+          {
+            "caption": "Prime",
+            "action": "3 - 5 times (As necessary), Lock"
+          },
+          {
+            "caption": "Magnetos",
+            "action": "Both"
+          },
+          {
+            "caption": "Prop",
+            "action": "“Clear”"
+          },
+          {
+            "caption": "Starter",
+            "action": "Engage (Max 15 Seconds)"
+          },
+          {
+            "caption": "Immediately after the engine fires",
+            "action": "CHECK",
+            "details": "Oil pressure...Check Green within 30 sec\nThrottle...1000 RPM\nMixture to Cutoff if oil pressure doesn't go Green\nIf engine stops...Mixture Cutoff (pull)"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "caption": "Before taxi",
+        "items": [
+          {
+            "caption": "Flaps",
+            "action": "Retract"
+          },
+          {
+            "caption": "Primer",
+            "action": "Check In and Locked"
+          },
+          {
+            "caption": "Landing Gear Selector",
+            "action": "Center “Off” Position"
+          },
+          {
+            "caption": "Landing Gear Indicator light",
+            "action": "Check Green"
+          },
+          {
+            "caption": "Avionics Master (Or Radios)",
+            "action": "On"
+          },
+          {
+            "caption": "Transponder",
+            "action": "Set 1200 - Standby"
+          },
+          {
+            "caption": "Artificial horizon",
+            "action": "Set"
+          },
+          {
+            "caption": "Rate-of-Climb Indicator",
+            "action": "Check Zero"
+          },
+          {
+            "caption": "Altimeter",
+            "action": "Field Height"
+          },
+          {
+            "caption": "Pitot Heat",
+            "action": "On, Check Ammeter Discharge, Off"
+          },
+          {
+            "caption": "Parking brake",
+            "action": "Free"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "caption": "Taxi",
+        "items": [
+          {
+            "caption": "Brakes",
+            "action": "CHECK",
+            "details": "Note: Allow the engine to warm between 800-1200 RPM for 2-4 minutes before runup"
+          },
+          {
+            "caption": "Steering",
+            "action": "CHECK"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "caption": "Run up",
+        "items": [
+          {
+            "caption": "Parking brake",
+            "action": "Set"
+          },
+          {
+            "caption": "Controls",
+            "action": "Free and Correct"
+          },
+          {
+            "caption": "Mixture",
+            "action": "Full Rich"
+          },
+          {
+            "caption": "Prop",
+            "action": "Full Forward"
+          },
+          {
+            "caption": "Oil temp & Pressure",
+            "action": "Check Green"
+          },
+          {
+            "caption": "Throttle",
+            "action": "2000 RPM",
+            "details": "Caution: Do not exceed 2200 rpm in routine static test"
+          },
+          {
+            "caption": "Mag Check",
+            "action": "@ 15 in Hg",
+            "details": "Max Speed drop M1 & M2...175 RPM\nMax Difference between M1 & M2...50 RPM"
+          },
+          {
+            "caption": "Carburetor Heat",
+            "action": "CHECK",
+            "details": "Caution: Avoid prolonged ground ops with Carb Heat on as the air is unfiltered"
+          },
+          {
+            "caption": "Vacuum",
+            "action": "5.0 in Hg +.1 or -.2 in"
+          },
+          {
+            "caption": "Ammeter",
+            "action": "Check Charging"
+          },
+          {
+            "caption": "Prop",
+            "action": "Cycle as needed to Circ. Oil and Governor (3X)",
+            "details": "Normal Drop...300-400 rpm\nReduce to 1500 RPM...make sure it holds steady\nCaution: Do not exceed 500 rpm drop for > few seconds"
+          },
+          {
+            "caption": "Throttle to Idle",
+            "action": "CHECK"
+          },
+          {
+            "caption": "Throttle",
+            "action": "1000 RPM"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "caption": "Before take off",
+        "items": [
+          {
+            "caption": "Door",
+            "action": "Closed & Locked"
+          },
+          {
+            "caption": "Seat belts",
+            "action": "Locked and Tight"
+          },
+          {
+            "caption": "Fuel Selector",
+            "action": "Leave on Previously Selected Tank"
+          },
+          {
+            "caption": "Fuel pump",
+            "action": "On"
+          },
+          {
+            "caption": "Flaps",
+            "action": "As Desired"
+          },
+          {
+            "caption": "Rudder and Elevator trim",
+            "action": "Set"
+          },
+          {
+            "caption": "Engine Gauges",
+            "action": "Normal"
+          },
+          {
+            "caption": "Strobe Lights",
+            "action": "On",
+            "details": "Note: Engine is warm enough for takeoff when throttle can be opened without engine faltering"
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "caption": "Take off",
+        "items": [
+          {
+            "caption": "Compass & Flight Instruments",
+            "action": "CHECK runway heading"
+          },
+          {
+            "caption": "Transponder",
+            "action": "ALT & 1200 (or ATC)"
+          },
+          {
+            "caption": "Pitot tube heater",
+            "action": "On (if required)"
+          },
+          {
+            "caption": "Mixture",
+            "action": "Rich (or as appropriate >4000 ft)"
+          },
+          {
+            "caption": "Throttle",
+            "action": "Smoothly Fully Forward"
+          },
+          {
+            "caption": "Accelerate to Vᵣ",
+            "action": "Approx. 85 MPH (74 kt)"
+          },
+          {
+            "caption": "Take off",
+            "action": "CHECK",
+            "details": "(Normal)...Pull back lightly on Yoke\n(Short Takeoff)...Approx. 65-75 MPH (56-65 kt)"
+          },
+          {
+            "caption": "Brakes",
+            "action": "Tap after wheels leave ground"
+          },
+          {
+            "caption": "Landing Gear",
+            "action": "Retract"
+          },
+          {
+            "caption": "Landing Gear Indicator",
+            "action": "Amber"
+          },
+          {
+            "caption": "Flaps",
+            "action": "Retract (>84 mph & >200 ft)"
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "caption": "After take off",
+        "items": [
+          {
+            "caption": "Climb",
+            "action": "SET",
+            "details": "Best Angle-of-Climb Speed (Vx)...84 MPH\nBest Rate-of-Climb Speed (Vy)...105 MPH\nBest En-Route Rate-of-Climb Speed...120 MPH"
+          },
+          {
+            "caption": "Cylinder Head Temperature",
+            "action": "Maintain in Green"
+          },
+          {
+            "caption": "Prop",
+            "action": "2400 rpm above 1000 ft AGL"
+          },
+          {
+            "caption": "Power",
+            "action": "As required above 1000 ft AGL"
+          },
+          {
+            "caption": "Fuel pump",
+            "action": "Off - Check Pressure Gauge is Green"
+          },
+          {
+            "caption": "Landing Gear Selector",
+            "action": "Center “Off” Position"
+          },
+          {
+            "caption": "Rudder Trim",
+            "action": "Neutral"
+          },
+          {
+            "caption": "Elevator Trim",
+            "action": "Set"
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "caption": "Enroute",
+        "items": [
+          {
+            "caption": "Power",
+            "action": "Set Per Power Table in Section 5 (Performance)"
+          },
+          {
+            "caption": "Normal Max Cruise Power",
+            "action": "75%"
+          },
+          {
+            "caption": "Mixture",
+            "action": "Lean appropriately above 3000 ft"
+          },
+          {
+            "caption": "Fuel Tank",
+            "action": "Switch every 30 min",
+            "details": "Fuel Pump...On\nFuel Tank Selector...Switch to opposite Tank\nFuel Pump...Off\nFuel Pressure Gauge...Check for Pressure"
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "caption": "Descent",
+        "items": [
+          {
+            "caption": "Propeller",
+            "action": "Cruise RPM"
+          },
+          {
+            "caption": "Manifold Pressure",
+            "action": "15 to 17 in Hg"
+          },
+          {
+            "caption": "Airspeed",
+            "action": "Maintain Cylinder Head Temp in Green",
+            "details": "Caution: Clear the engine approx. every 30 sec by opening the throttle slowly to prevent fouling. Avoid cylinder head temperature drops below 100 °C"
+          }
+        ]
+      },
+      {
+        "id": 10,
+        "caption": "Landing",
+        "items": [
+          {
+            "caption": "Pattern Entry",
+            "action": "CHECK",
+            "details": "Seat Belts...Check & Secure\nFuel...Fullest Tank\nMixture...Full Rich (As Required >4000 ft)\nProp...Full Forward\nCarb Heat...On as appropriate\nAirspeed...120 MPH"
+          },
+          {
+            "caption": "Downwind",
+            "action": "CHECK",
+            "details": "Landing Gear...Down (max. 148 mph / 129 kt) and Green\nBrakes...Check\nFuel Pump...On\nLanding Lights...On\nFlaps...Rest 1 passing threshold at < 125 mph"
+          },
+          {
+            "caption": "Base",
+            "action": "CHECK",
+            "details": "Airspeed...95 MPH\nFlaps...Rest 2"
+          },
+          {
+            "caption": "Final Approach",
+            "action": "CHECK",
+            "details": "Airspeed...90 MPH\nFlaps...As Required\nNote: Approach with engine power; Avoid “floating in” at idle\nShort Runway Landings - Final Approach Airspeed...84 MPH"
+          }
+        ]
+      },
+      {
+        "id": 11,
+        "caption": "After landing",
+        "items": [
+          {
+            "caption": "Fuel Pump",
+            "action": "Off"
+          },
+          {
+            "caption": "Flaps",
+            "action": "Retract"
+          },
+          {
+            "caption": "Strobos (NOT Rotating Beacon)",
+            "action": "Off"
+          },
+          {
+            "caption": "Mixture",
+            "action": "Lean as required"
+          }
+        ]
+      },
+      {
+        "id": 12,
+        "caption": "Engine shut down",
+        "items": [
+          {
+            "caption": "Parking Brake",
+            "action": "Set"
+          },
+          {
+            "caption": "Transponder and Radios",
+            "action": "Off"
+          },
+          {
+            "caption": "Throttle",
+            "action": "1800 RPM for 15 - 20 Seconds"
+          },
+          {
+            "caption": "Throttle",
+            "action": "1200 RPM for 10 - 20 Seconds"
+          },
+          {
+            "caption": "Mixture",
+            "action": "Pull Out / Idle Cutoff"
+          },
+          {
+            "caption": "Magnetos",
+            "action": "Off"
+          },
+          {
+            "caption": "Ignition Key",
+            "action": "Remove"
+          },
+          {
+            "caption": "All Electrical Switches",
+            "action": "Off, starting from R/H Side"
+          }
+        ]
+      },
+      {
+        "id": 13,
+        "caption": "Before leaving aircraft",
+        "items": [
+          {
+            "caption": "Fuel Tank",
+            "action": "Off"
+          },
+          {
+            "caption": "Flight Controls",
+            "action": "Lock"
+          },
+          {
+            "caption": "Cabin Fresh Air Inlets",
+            "action": "Close"
+          },
+          {
+            "caption": "Operating Hours",
+            "action": "Note"
+          },
+          {
+            "caption": "Pitot Cover",
+            "action": "Install"
+          },
+          {
+            "caption": "Tie-Downs",
+            "action": "Secure"
+          }
+        ]
+      },
+      {
+        "id": 14,
+        "caption": "Engine fire when starting",
+        "items": [
+          {
+            "caption": "Mixture",
+            "action": "Pull Out"
+          },
+          {
+            "caption": "Throttle",
+            "action": "Pull Out"
+          },
+          {
+            "caption": "Battery",
+            "action": "Off"
+          },
+          {
+            "caption": "Plane",
+            "action": "Leave"
+          }
+        ]
+      },
+      {
+        "id": 15,
+        "caption": "Engine failure in flight",
+        "items": [
+          {
+            "caption": "Best Glide Speed",
+            "action": "105 MPH"
+          },
+          {
+            "caption": "Restart",
+            "action": "CHECK",
+            "details": "Fuel Pump...On\nFuel Selector...Switch to Fullest Tank\nCarb Heat...On (Pull)\nMixture...Full Rich (Push)\nMagnetos...Check M1+M2"
+          },
+          {
+            "caption": "If Prop is not turning",
+            "action": "CHECK",
+            "details": "Prop...Full Forward\nThrottle...1/10 (first click)\nPrimer...3-5 Times\nStarter...Push\nFuel Pump...Stays On\nLand...Nearest Airfield"
+          }
+        ]
+      },
+      {
+        "id": 16,
+        "caption": "Engine fire in flight",
+        "items": [
+          {
+            "caption": "Mixture",
+            "action": "Pull Out"
+          },
+          {
+            "caption": "Heating / Ventilation",
+            "action": "Off"
+          }
+        ]
+      },
+      {
+        "id": 17,
+        "caption": "Landing without motor",
+        "items": [
+          {
+            "caption": "Seat Belt",
+            "action": "Pull Tight"
+          },
+          {
+            "caption": "Landing Field",
+            "action": "Search"
+          },
+          {
+            "caption": "Radio (121.5 if Center is unknown)",
+            "action": "Explain Emergency"
+          },
+          {
+            "caption": "Best Glide Speed",
+            "action": "105 MPH",
+            "details": "Note: Extend Landing Gear only when landing on Firm ground is ENSURED"
+          },
+          {
+            "caption": "Mixture",
+            "action": "Off (Pull out)"
+          },
+          {
+            "caption": "Magnetos",
+            "action": "Off"
+          },
+          {
+            "caption": "Fuel Selector",
+            "action": "Off"
+          },
+          {
+            "caption": "All Electrical Switches",
+            "action": "Off"
+          },
+          {
+            "caption": "Doors",
+            "action": "Unlock"
+          }
+        ]
+      }
+    ],
+    "photo": "piper_pa24"
   }
 ]
