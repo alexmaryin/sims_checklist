@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -18,7 +19,7 @@ import sims_checklist.shared.generated.resources.Res
 import sims_checklist.shared.generated.resources.done
 
 @Composable
-fun ChecklistItem(item: Item, onClick: () -> Unit) = Row(
+fun ChecklistItem(item: Item, onClick: () -> Unit) = Column(
     modifier = Modifier
         .clickable { onClick() }
         .fillMaxWidth()
@@ -27,24 +28,35 @@ fun ChecklistItem(item: Item, onClick: () -> Unit) = Row(
         .padding(10.dp)
 ) {
 
-    Column(modifier = Modifier.weight(1f).fillMaxWidth()) {
-        ToggleableText(item.caption, item.checked)
-        if (item.details.isNotEmpty()) ToggleableText(
-            text = item.details,
+    Row(modifier = Modifier.fillMaxWidth()) {
+        ToggleableText(
+            text = item.caption,
             isToggled = item.checked,
-            modifier = Modifier.padding(start = 6.dp),
-            textStyle = TextStyle(fontWeight = FontWeight.Light, fontSize = 12.sp)
+            modifier = Modifier.weight(3f)
+        )
+
+        Spacer(modifier = Modifier.width(16.dp))
+
+        if (item.action.isNotEmpty()) Box(
+            modifier = Modifier.weight(2f),
+            contentAlignment = Alignment.TopEnd
+        ) {
+            ToggleableText(item.action, item.checked)
+        }
+
+        if (item.checked) Icon(
+            painter = painterResource(Res.drawable.done),
+            modifier = Modifier.size(24.dp),
+            contentDescription = "item checked"
         )
     }
 
-    Spacer(modifier = Modifier.width(24.dp))
-
-    if (item.action.isNotEmpty())
-        ToggleableText(item.action, item.checked)
-
-    if (item.checked) Icon(
-        painter = painterResource(Res.drawable.done),
-        modifier = Modifier.size(24.dp),
-        contentDescription = "item checked"
+    if (item.details.isNotEmpty()) ToggleableText(
+        text = item.details,
+        isToggled = item.checked,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 6.dp, top = 4.dp, end = 6.dp),
+        textStyle = TextStyle(fontWeight = FontWeight.Light, fontSize = 12.sp)
     )
 }
