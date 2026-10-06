@@ -1762,7 +1762,7 @@
           },
           {
             "caption": "Control lock",
-            "action": "Unlocked, Free"
+            "action": "Free"
           },
           {
             "caption": "Documents",
@@ -1786,7 +1786,7 @@
           },
           {
             "caption": "Fuel Gauges",
-            "action": "Check Each Tank"
+            "action": "Check"
           },
           {
             "caption": "Landing, Nav, Beacon, Cabin Lights",
@@ -1816,7 +1816,7 @@
           },
           {
             "caption": "Belts and Harness",
-            "action": "Fastened & Adjusted"
+            "action": "Fastened"
           },
           {
             "caption": "Avionics Master (Or Radios)",
@@ -1840,7 +1840,7 @@
           },
           {
             "caption": "Controls",
-            "action": "Free & Correct"
+            "action": "Free"
           },
           {
             "caption": "Door",
@@ -1848,7 +1848,7 @@
           },
           {
             "caption": "Throttle",
-            "action": "1/4 in Open (1/2 in When Hot)"
+            "action": "1/4 Open (1/2 When Hot)"
           },
           {
             "caption": "Mixture",
@@ -1856,7 +1856,7 @@
           },
           {
             "caption": "Prop Control",
-            "action": "Full Forward - Increase RPM"
+            "action": "Full Forward"
           },
           {
             "caption": "Beacon Light",
@@ -1868,11 +1868,11 @@
           },
           {
             "caption": "Electric Fuel Pump",
-            "action": "On (Listen / Check Pressure) - Off"
+            "action": "On (Check Pressure) - Off"
           },
           {
             "caption": "Prime",
-            "action": "3 - 5 times (As necessary), Lock"
+            "action": "3-5 times, Lock"
           },
           {
             "caption": "Magnetos",
@@ -1884,7 +1884,7 @@
           },
           {
             "caption": "Starter",
-            "action": "Engage (Max 15 Seconds)"
+            "action": "Engage"
           },
           {
             "caption": "Immediately after the engine fires",
@@ -1903,15 +1903,15 @@
           },
           {
             "caption": "Primer",
-            "action": "Check In and Locked"
+            "action": "Locked"
           },
           {
             "caption": "Landing Gear Selector",
-            "action": "Center “Off” Position"
+            "action": "Off"
           },
           {
             "caption": "Landing Gear Indicator light",
-            "action": "Check Green"
+            "action": "Green"
           },
           {
             "caption": "Avionics Master (Or Radios)",
@@ -1919,7 +1919,7 @@
           },
           {
             "caption": "Transponder",
-            "action": "Set 1200 - Standby"
+            "action": "Set"
           },
           {
             "caption": "Artificial horizon",
@@ -1927,7 +1927,7 @@
           },
           {
             "caption": "Rate-of-Climb Indicator",
-            "action": "Check Zero"
+            "action": "Zero"
           },
           {
             "caption": "Altimeter",
@@ -1949,12 +1949,12 @@
         "items": [
           {
             "caption": "Brakes",
-            "action": "CHECK",
+            "action": "Check",
             "details": "Note: Allow the engine to warm between 800-1200 RPM for 2-4 minutes before runup"
           },
           {
             "caption": "Steering",
-            "action": "CHECK"
+            "action": "Check"
           }
         ]
       },
@@ -1968,7 +1968,7 @@
           },
           {
             "caption": "Controls",
-            "action": "Free and Correct"
+            "action": "Free"
           },
           {
             "caption": "Mixture",
@@ -1994,7 +1994,7 @@
           },
           {
             "caption": "Carburetor Heat",
-            "action": "CHECK",
+            "action": "Check",
             "details": "Caution: Avoid prolonged ground ops with Carb Heat on as the air is unfiltered"
           },
           {
@@ -2007,12 +2007,12 @@
           },
           {
             "caption": "Prop",
-            "action": "Cycle as needed to Circ. Oil and Governor (3X)",
+            "action": "Cycle 3X",
             "details": "Normal Drop...300-400 rpm\nReduce to 1500 RPM...make sure it holds steady\nCaution: Do not exceed 500 rpm drop for > few seconds"
           },
           {
             "caption": "Throttle to Idle",
-            "action": "CHECK"
+            "action": "Check"
           },
           {
             "caption": "Throttle",
@@ -2030,11 +2030,11 @@
           },
           {
             "caption": "Seat belts",
-            "action": "Locked and Tight"
+            "action": "Locked"
           },
           {
             "caption": "Fuel Selector",
-            "action": "Leave on Previously Selected Tank"
+            "action": "Leave on Previously Tank"
           },
           {
             "caption": "Fuel pump",
@@ -2065,15 +2065,15 @@
         "items": [
           {
             "caption": "Compass & Flight Instruments",
-            "action": "CHECK runway heading"
+            "action": "Check runway heading"
           },
           {
             "caption": "Transponder",
-            "action": "ALT & 1200 (or ATC)"
+            "action": "ALT"
           },
           {
             "caption": "Pitot tube heater",
-            "action": "On (if required)"
+            "action": "On"
           },
           {
             "caption": "Mixture",
@@ -2089,7 +2089,7 @@
           },
           {
             "caption": "Take off",
-            "action": "CHECK",
+            "action": "Check",
             "details": "(Normal)...Pull back lightly on Yoke\n(Short Takeoff)...Approx. 65-75 MPH (56-65 kt)"
           },
           {
@@ -2106,7 +2106,7 @@
           },
           {
             "caption": "Flaps",
-            "action": "Retract (>84 mph & >200 ft)"
+            "action": "Retract"
           }
         ]
       },
@@ -2116,7 +2116,7 @@
         "items": [
           {
             "caption": "Climb",
-            "action": "SET",
+            "action": "Set",
             "details": "Best Angle-of-Climb Speed (Vx)...84 MPH\nBest Rate-of-Climb Speed (Vy)...105 MPH\nBest En-Route Rate-of-Climb Speed...120 MPH"
           },
           {
@@ -2129,15 +2129,15 @@
           },
           {
             "caption": "Power",
-            "action": "As required above 1000 ft AGL"
+            "action": "As required"
           },
           {
             "caption": "Fuel pump",
-            "action": "Off - Check Pressure Gauge is Green"
+            "action": "Off"
           },
           {
             "caption": "Landing Gear Selector",
-            "action": "Center “Off” Position"
+            "action": "Off Position"
           },
           {
             "caption": "Rudder Trim",
@@ -2155,7 +2155,7 @@
         "items": [
           {
             "caption": "Power",
-            "action": "Set Per Power Table in Section 5 (Performance)"
+            "action": "Set Cruise"
           },
           {
             "caption": "Normal Max Cruise Power",
@@ -2163,7 +2163,7 @@
           },
           {
             "caption": "Mixture",
-            "action": "Lean appropriately above 3000 ft"
+            "action": "Lean above 3000 ft"
           },
           {
             "caption": "Fuel Tank",
@@ -2182,7 +2182,7 @@
           },
           {
             "caption": "Manifold Pressure",
-            "action": "15 to 17 in Hg"
+            "action": "15 to 17 inHg"
           },
           {
             "caption": "Airspeed",
@@ -2197,22 +2197,22 @@
         "items": [
           {
             "caption": "Pattern Entry",
-            "action": "CHECK",
+            "action": "Check",
             "details": "Seat Belts...Check & Secure\nFuel...Fullest Tank\nMixture...Full Rich (As Required >4000 ft)\nProp...Full Forward\nCarb Heat...On as appropriate\nAirspeed...120 MPH"
           },
           {
             "caption": "Downwind",
-            "action": "CHECK",
+            "action": "Check",
             "details": "Landing Gear...Down (max. 148 mph / 129 kt) and Green\nBrakes...Check\nFuel Pump...On\nLanding Lights...On\nFlaps...Rest 1 passing threshold at < 125 mph"
           },
           {
             "caption": "Base",
-            "action": "CHECK",
+            "action": "Check",
             "details": "Airspeed...95 MPH\nFlaps...Rest 2"
           },
           {
             "caption": "Final Approach",
-            "action": "CHECK",
+            "action": "Check",
             "details": "Airspeed...90 MPH\nFlaps...As Required\nNote: Approach with engine power; Avoid “floating in” at idle\nShort Runway Landings - Final Approach Airspeed...84 MPH"
           }
         ]
@@ -2253,11 +2253,11 @@
           },
           {
             "caption": "Throttle",
-            "action": "1800 RPM for 15 - 20 Seconds"
+            "action": "1800 RPM for 15-20 Sec"
           },
           {
             "caption": "Throttle",
-            "action": "1200 RPM for 10 - 20 Seconds"
+            "action": "1200 RPM for 10-20 Sec"
           },
           {
             "caption": "Mixture",
@@ -2339,12 +2339,12 @@
           },
           {
             "caption": "Restart",
-            "action": "CHECK",
+            "action": "Check",
             "details": "Fuel Pump...On\nFuel Selector...Switch to Fullest Tank\nCarb Heat...On (Pull)\nMixture...Full Rich (Push)\nMagnetos...Check M1+M2"
           },
           {
             "caption": "If Prop is not turning",
-            "action": "CHECK",
+            "action": "Check",
             "details": "Prop...Full Forward\nThrottle...1/10 (first click)\nPrimer...3-5 Times\nStarter...Push\nFuel Pump...Stays On\nLand...Nearest Airfield"
           }
         ]
