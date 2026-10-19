@@ -13,6 +13,9 @@
 - luxury one Cirrus SR-22
 - Cessna Citation X (X-plane 12 default edition)
 - Beech King Air 350 with a full ten-checklist set derived from the official checklists
+- Piper PA-24-250 Comanche with 14 normal and 4 emergency checklists derived from the official checklist set
+
+Every checklist item is rendered as a clean two-column row (caption and action) with details displayed below.
 
 ### Fuel calculator
 
@@ -65,7 +68,7 @@ This feature helps you calculate the corrected altitude for your waypoints based
 
 
 *Some develop details:*
-- Compose Multiplatform project in Kotlin 2.20
+- Compose Multiplatform project in Kotlin 2.4.20
 - Custom drawing for wind director
 - METAR/TAF info is fetching from https://aviationweather.gov/
 - D-ATIS info is fetching from [FAA Digital ATIS](https://atis.info/) 
