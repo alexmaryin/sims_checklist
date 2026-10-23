@@ -1,6 +1,6 @@
 ## Why
 
-The app ships with three aircraft (Cessna 172, Cirrus SR22, Citation X) but no turboprop. Users have requested the Beech King Air 350, a popular MS Flight Simulator aircraft, and the reference material (`openspec/specs/king-air-checklist/checklists.pdf`) and photo asset (`king_air_350.jpg`) are already available in the repo.
+The app ships with three aircraft (Cessna 172, Cirrus SR22, Citation X) but no turboprop. Users have requested the Beech King Air 350, a popular MS Flight Simulator aircraft, and the reference material (`../../../specs/king-air-350-data/checklists.pdf`) and photo asset (`king_air_350.jpg`) are already available in the repo.
 
 ## What Changes
 

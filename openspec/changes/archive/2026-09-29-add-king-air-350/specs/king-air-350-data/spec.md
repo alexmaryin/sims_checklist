@@ -37,7 +37,7 @@ The King Air 350 record SHALL set `photo` to `"king_air_350"` so the existing `l
 
 ### Requirement: King Air 350 checklist set
 
-The King Air 350 record SHALL include exactly ten checklists, derived from `openspec/specs/king-air-checklist/checklists.pdf`, with sequential ids `0`–`9` and captions in this order:
+The King Air 350 record SHALL include exactly ten checklists, derived from `../../../../../specs/king-air-350-data/checklists.pdf`, with sequential ids `0`–`9` and captions in this order:
 
 | id | caption |
 |----|---------|

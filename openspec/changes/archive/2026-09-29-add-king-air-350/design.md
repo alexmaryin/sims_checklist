@@ -2,7 +2,7 @@
 
 The aircraft catalog is a single static JSON file (`shared/src/commonMain/composeResources/files/aircraft.json`) deserialized at runtime by `AircraftBaseImpl` into `List<Aircraft>`. Adding an aircraft is a pure data operation: the models (`Aircraft`, `Performance`, `Checklist`, `Item`), the loader, the aircraft list UI, and the fuel calculator are all schema-driven and require no code changes.
 
-The source material is `openspec/specs/king-air-checklist/checklists.pdf` (Beech King Air 350i beginner guide by JayDee v0.3). Its text was extracted for authoring. The photo asset `king_air_350.jpg` already exists in `composeResources/drawable`.
+The source material is `../../../specs/king-air-350-data/checklists.pdf` (Beech King Air 350i beginner guide by JayDee v0.3). Its text was extracted for authoring. The photo asset `king_air_350.jpg` already exists in `composeResources/drawable`.
 
 ## Goals / Non-Goals
 

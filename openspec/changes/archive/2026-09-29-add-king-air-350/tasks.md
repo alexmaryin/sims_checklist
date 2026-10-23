@@ -1,6 +1,6 @@
 ## 1. Prepare
 
-- [x] 1.1 Re-read the extracted source text of `openspec/specs/king-air-checklist/checklists.pdf` (use `pdftotext -layout` if needed) and the existing records in `shared/src/commonMain/composeResources/files/aircraft.json` for style reference.
+- [x] 1.1 Re-read the extracted source text of `../../../specs/king-air-350-data/checklists.pdf` (use `pdftotext -layout` if needed) and the existing records in `shared/src/commonMain/composeResources/files/aircraft.json` for style reference.
 - [x] 1.2 Confirm the drawable `king_air_350.jpg` exists in `composeResources/drawable` (photo key `king_air_350`) and that no existing aircraft uses `id: 3`.
 
 ## 2. Add the aircraft record

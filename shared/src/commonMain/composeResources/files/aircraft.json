@@ -1056,10 +1056,6 @@
             "action": "SET & CHECK CG"
           },
           {
-            "caption": "Aircraft Documents",
-            "action": "CHECKED"
-          },
-          {
             "caption": "Parking Brake",
             "action": "SET"
           },
@@ -1103,8 +1099,7 @@
           },
           {
             "caption": "Flaps",
-            "action": "CHECK",
-            "details": "a) Select APP and check if stopped at TO AND APP\nb) Select DOWN and check if stopped at DOWN\nc) Flaps UP"
+            "action": "CHECK"
           },
           {
             "caption": "Battery (MP)",
@@ -1121,16 +1116,12 @@
           {
             "caption": "ATC Clearance",
             "action": "AS REQ"
-          },
-          {
-            "caption": "Pushback",
-            "action": "AS REQ"
           }
         ]
       },
       {
         "id": 1,
-        "caption": "Engine start (cold)",
+        "caption": "Engine start",
         "items": [
           {
             "caption": "Doors",
@@ -1143,15 +1134,6 @@
           {
             "caption": "Passenger Briefing",
             "action": "COMPLETE"
-          },
-          {
-            "caption": "Cabin Equipment",
-            "action": "POSITIONED",
-            "details": "a) All Seats...SEAT BACKS UPRIGHT\nb) Lateral-Tracking Seats...OUTBOARD POSITION\nc) Tables...STOWED"
-          },
-          {
-            "caption": "Pilot Seats, Belts & Harness",
-            "action": "ADJUSTED/FASTENED"
           },
           {
             "caption": "Parking Brake",
@@ -1202,8 +1184,7 @@
           },
           {
             "caption": "Overhead Switch Panel",
-            "action": "SET",
-            "details": "a) Master Panel Lights...AS REQ\nb) Display Brightness...AS REQ\nc) Interior Master Switch...ON"
+            "action": "SET"
           },
           {
             "caption": "Beacon (MP)",
@@ -1219,10 +1200,6 @@
             "details": "Monitor right ITT and N1 (max. 1000°)\nIf no ITT rise is observed within 10 seconds, move the Condition Lever to CUTOFF and release Starter Switch"
           },
           {
-            "caption": "Right Oil Pressure",
-            "action": "CHECK"
-          },
-          {
             "caption": "Right Ignition and Engine Start (at min 50% N1)",
             "action": "OFF"
           },
@@ -1236,8 +1213,7 @@
           },
           {
             "caption": "Left Engine",
-            "action": "START",
-            "details": "Repeat the same start sequence for the left engine"
+            "action": "START"
           },
           {
             "caption": "Throttle Levers",
@@ -1275,24 +1251,8 @@
             "action": "SET LOCAL QNH"
           },
           {
-            "caption": "Interior Master Switch (OH)",
-            "action": "AS REQ"
-          },
-          {
-            "caption": "Master Panel and Cockpit Lights (OH)",
-            "action": "AS REQ"
-          },
-          {
-            "caption": "Cabin Lights (OH)",
-            "action": "AS REQ"
-          },
-          {
             "caption": "Cabin Signs (FSB Fasten Seats Belts) (OH)",
             "action": "ON"
-          },
-          {
-            "caption": "Standby Flight Display",
-            "action": "INITIALIZATION COMPLETE"
           },
           {
             "caption": "Standby Altimeter",
@@ -1349,14 +1309,6 @@
         "caption": "Before takeoff",
         "items": [
           {
-            "caption": "Avionics/GPS/Autopilot",
-            "action": "CHECK SET"
-          },
-          {
-            "caption": "NAVI/CDI",
-            "action": "CHECK SET GPS IF REQ"
-          },
-          {
             "caption": "Transponder",
             "action": "ON"
           },
@@ -1386,14 +1338,6 @@
           },
           {
             "caption": "Fuel Quantity",
-            "action": "CHECK"
-          },
-          {
-            "caption": "Flight Instruments",
-            "action": "CHECK"
-          },
-          {
-            "caption": "Engine Instruments",
             "action": "CHECK"
           },
           {
@@ -1429,19 +1373,6 @@
           {
             "caption": "ATC Clearances",
             "action": "AS REQ"
-          },
-          {
-            "caption": "Start Replay-Tool",
-            "action": "IF REQ"
-          },
-          {
-            "caption": "Parking Brake",
-            "action": "RELEASE"
-          },
-          {
-            "caption": "Takeoff Power",
-            "action": "SET",
-            "details": "Limits: 100% TQ / 820° ITT / 104% N1 / 1700 RPM\nRotate @ VR, pitch ~ 10-15°, initial climb @ V2, retract gear\nAt ~ 400 ft AGL start to accelerate: VX 125 KIAS / VY 140 KIAS / VYSE 125 KIAS\nRetract flaps UP at 125 KIAS"
           }
         ]
       },
@@ -1487,11 +1418,6 @@
             "caption": "Cruise Climb Speed",
             "action": "SET",
             "details": "SL to 10,000 ft...170 KIAS\nto 15,000 ft...160 KIAS\nto 20,000 ft...150 KIAS\nto 25,000 ft...140 KIAS\nto 30,000 ft...130 KIAS\nto 35,000 ft...120 KIAS"
-          },
-          {
-            "caption": "Autopilot",
-            "action": "AS REQ",
-            "details": "Min. 1000 ft AGL"
           },
           {
             "caption": "Altimeter @ Transition Altitude",
@@ -1545,16 +1471,8 @@
             "details": "Start descent latest at approx. (Altitude/1000)*3 NM + 10 NM before destination\nSink rate for 3° glidepath = 5 x Ground Speed"
           },
           {
-            "caption": "Avionics/GPS/Autopilot",
-            "action": "SET"
-          },
-          {
             "caption": "ILS Frequency",
             "action": "COMPARE AND CHECK SET"
-          },
-          {
-            "caption": "NAVI/Flightplan",
-            "action": "ACTIVATE APPROACH IF REQUIRED"
           },
           {
             "caption": "Approach Speeds",
@@ -1586,16 +1504,11 @@
           },
           {
             "caption": "Descent Power",
-            "action": "MAINTAIN ~1500 FPM",
-            "details": "Sink rate for a 3° glidepath ~ 5 x Ground Speed"
+            "action": "MAINTAIN ~1500 FPM"
           },
           {
             "caption": "Landing Lights @ 10,000 ft / FL100",
-            "action": "ON/AS REQ"
-          },
-          {
-            "caption": "Altimeter @ Transition Flightlevel",
-            "action": "SET LOCAL QNH"
+            "action": "ON"
           }
         ]
       },
@@ -1603,14 +1516,6 @@
         "id": 7,
         "caption": "Approach",
         "items": [
-          {
-            "caption": "ATC Clearances @ ~15 NM to go",
-            "action": "AS REQ"
-          },
-          {
-            "caption": "NAVI/CDI",
-            "action": "SET VLOC IF REQ FOR ILS"
-          },
           {
             "caption": "Autofeather",
             "action": "ARM"
@@ -1628,23 +1533,9 @@
             "action": "CHECK SET LOCAL QNH"
           },
           {
-            "caption": "Visual Approach",
+            "caption": "Approach",
             "action": "PERFORM",
             "details": "Enter downwind leg @ 1000 ft AGL\n@ 8-7 NM to go: reduce speed to ~150-160 KIAS, set FLAPS 1 (APPROACH) @ ~160 KIAS\n@ downwind leg or ~6 NM: reduce speed to ~120 KIAS, lower LANDING GEAR (mid downwind), set Flaps 2 (DOWN) @ ~140 KIAS\n@ base leg or ~3 NM: YAW Damper OFF, propeller levers FULL FORWARD, start descending, sink rate ~500-1000 fpm\nAirspeed on final VREF ~ 100-110 KIAS"
-          },
-          {
-            "caption": "ILS Approach",
-            "action": "PERFORM",
-            "details": "Be @ ~3000 ft above destination airport elevation or use proper procedure altitudes\n@ 15-12 NM to go: reduce speed to ~150-160 KIAS, set FLAPS 1 (APPROACH) @ ~160 KIAS\n@ glideslope capture: start descending, sink rate for 3° glidepath = 5 x Ground Speed\n@ ~6 NM to go: reduce speed to ~120 KIAS, lower LANDING GEAR, set Flaps 2 (DOWN) @ ~140 KIAS\n@ ~3 NM to go: Autopilot OFF, YAW Damper OFF, propeller levers FULL FORWARD\nAirspeed on final VREF ~ 100-110 KIAS"
-          },
-          {
-            "caption": "Short Final",
-            "action": "CHECK",
-            "details": "Flaps...CHECK FULL\nLanding Gear...CHECK DOWN\nPropeller Levers...CHECK FULL FORWARD"
-          },
-          {
-            "caption": "Runway Threshold (@ ~50 ft)",
-            "action": "LAND"
           }
         ]
       },
@@ -1761,18 +1652,6 @@
             "action": "Checked (7-9 qt)"
           },
           {
-            "caption": "Control lock",
-            "action": "Free"
-          },
-          {
-            "caption": "Documents",
-            "action": "Onboard"
-          },
-          {
-            "caption": "Ignition Key",
-            "action": "Off"
-          },
-          {
             "caption": "Avionics Master (or Radios)",
             "action": "Off"
           },
@@ -1799,10 +1678,6 @@
           {
             "caption": "Master Switch",
             "action": "Off"
-          },
-          {
-            "caption": "Oxygen Quantity (If Equipped & Req.)",
-            "action": "Adequate"
           }
         ]
       },
@@ -1813,10 +1688,6 @@
           {
             "caption": "Parking brake",
             "action": "Set"
-          },
-          {
-            "caption": "Belts and Harness",
-            "action": "Fastened"
           },
           {
             "caption": "Avionics Master (Or Radios)",
@@ -1833,14 +1704,6 @@
           {
             "caption": "Carburetor Heat",
             "action": "Full Cold"
-          },
-          {
-            "caption": "Alternate Static Source (If Installed)",
-            "action": "Closed"
-          },
-          {
-            "caption": "Controls",
-            "action": "Free"
           },
           {
             "caption": "Door",
@@ -2029,10 +1892,6 @@
             "action": "Closed & Locked"
           },
           {
-            "caption": "Seat belts",
-            "action": "Locked"
-          },
-          {
             "caption": "Fuel Selector",
             "action": "Leave on Previously Tank"
           },
@@ -2054,8 +1913,7 @@
           },
           {
             "caption": "Strobe Lights",
-            "action": "On",
-            "details": "Note: Engine is warm enough for takeoff when throttle can be opened without engine faltering"
+            "action": "On"
           }
         ]
       },
@@ -2183,42 +2041,11 @@
           {
             "caption": "Manifold Pressure",
             "action": "15 to 17 inHg"
-          },
-          {
-            "caption": "Airspeed",
-            "action": "Maintain Cylinder Head Temp in Green",
-            "details": "Caution: Clear the engine approx. every 30 sec by opening the throttle slowly to prevent fouling. Avoid cylinder head temperature drops below 100 °C"
           }
         ]
       },
       {
         "id": 10,
-        "caption": "Landing",
-        "items": [
-          {
-            "caption": "Pattern Entry",
-            "action": "Check",
-            "details": "Seat Belts...Check & Secure\nFuel...Fullest Tank\nMixture...Full Rich (As Required >4000 ft)\nProp...Full Forward\nCarb Heat...On as appropriate\nAirspeed...120 MPH"
-          },
-          {
-            "caption": "Downwind",
-            "action": "Check",
-            "details": "Landing Gear...Down (max. 148 mph / 129 kt) and Green\nBrakes...Check\nFuel Pump...On\nLanding Lights...On\nFlaps...Rest 1 passing threshold at < 125 mph"
-          },
-          {
-            "caption": "Base",
-            "action": "Check",
-            "details": "Airspeed...95 MPH\nFlaps...Rest 2"
-          },
-          {
-            "caption": "Final Approach",
-            "action": "Check",
-            "details": "Airspeed...90 MPH\nFlaps...As Required\nNote: Approach with engine power; Avoid “floating in” at idle\nShort Runway Landings - Final Approach Airspeed...84 MPH"
-          }
-        ]
-      },
-      {
-        "id": 11,
         "caption": "After landing",
         "items": [
           {
@@ -2230,7 +2057,7 @@
             "action": "Retract"
           },
           {
-            "caption": "Strobos (NOT Rotating Beacon)",
+            "caption": "Strobe",
             "action": "Off"
           },
           {
@@ -2240,7 +2067,7 @@
         ]
       },
       {
-        "id": 12,
+        "id": 11,
         "caption": "Engine shut down",
         "items": [
           {
@@ -2278,37 +2105,7 @@
         ]
       },
       {
-        "id": 13,
-        "caption": "Before leaving aircraft",
-        "items": [
-          {
-            "caption": "Fuel Tank",
-            "action": "Off"
-          },
-          {
-            "caption": "Flight Controls",
-            "action": "Lock"
-          },
-          {
-            "caption": "Cabin Fresh Air Inlets",
-            "action": "Close"
-          },
-          {
-            "caption": "Operating Hours",
-            "action": "Note"
-          },
-          {
-            "caption": "Pitot Cover",
-            "action": "Install"
-          },
-          {
-            "caption": "Tie-Downs",
-            "action": "Secure"
-          }
-        ]
-      },
-      {
-        "id": 14,
+        "id": 12,
         "caption": "Engine fire when starting",
         "items": [
           {
@@ -2330,7 +2127,7 @@
         ]
       },
       {
-        "id": 15,
+        "id": 13,
         "caption": "Engine failure in flight",
         "items": [
           {
@@ -2350,7 +2147,7 @@
         ]
       },
       {
-        "id": 16,
+        "id": 14,
         "caption": "Engine fire in flight",
         "items": [
           {
@@ -2364,7 +2161,7 @@
         ]
       },
       {
-        "id": 17,
+        "id": 15,
         "caption": "Landing without motor",
         "items": [
           {
