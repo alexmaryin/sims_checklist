@@ -38,8 +38,8 @@ ksp = "2.3.9"
 adaptive = "1.2.0"
 android-compileSdk = "37"
 android-minSdk = "26"
-mainVersion = "1.12.1"
-mainVersionCode = "40"
+mainVersion = "1.12.2"
+mainVersionCode = "41"
 
 [libraries]
 
