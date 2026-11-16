@@ -692,345 +692,672 @@
     "checklists": [
       {
         "id": 0,
-        "caption": "Pre start",
+        "caption": "Preflight",
         "items": [
           {
-            "caption": "Takeoff briefing",
-            "action": "COMPLETED"
+            "caption": "Circuit breakers",
+            "action": "IN"
           },
           {
-            "caption": "Gears",
-            "action": "DOWN"
+            "caption": "Emergency lights",
+            "action": "ON, CHECK, ARM"
           },
           {
-            "caption": "Fuel boost switches",
-            "action": "OFF"
+            "caption": "Oxygen mask",
+            "action": "TEST"
           },
           {
-            "caption": "Ignition",
-            "action": "OFF"
+            "caption": "Passenger oxygen",
+            "action": "AUTO"
           },
           {
-            "caption": "Batteries",
-            "action": "ON"
-          },
-          {
-            "caption": "Avionics EICAS",
-            "action": "ON"
-          },
-          {
-            "caption": "Hydraulic A AUX pump",
-            "action": "ON"
-          },
-          {
-            "caption": "APU gen",
-            "action": "ON"
-          },
-          {
-            "caption": "APU master",
-            "action": "ON"
-          },
-          {
-            "caption": "APU start",
-            "action": "ON",
-            "details": "hold 5 sec"
-          },
-          {
-            "caption": "Bleed air",
-            "action": "ON"
-          },
-          {
-            "caption": "PACS",
-            "action": "On"
-          },
-          {
-            "caption": "Avionics",
-            "action": "On"
-          },
-          {
-            "caption": "Flight plan & perf",
+            "caption": "Weight & balance",
             "action": "SET"
           },
           {
-            "caption": "Altimeter",
-            "action": "SET"
+            "caption": "Chocks & covers",
+            "action": "REMOVED"
+          },
+          {
+            "caption": "Landing gear",
+            "action": "DOWN & 3 GREEN"
+          },
+          {
+            "caption": "Fuel quantity & balance",
+            "action": "CHECK"
+          },
+          {
+            "caption": "Hydraulic quantity",
+            "action": "CHECK"
+          },
+          {
+            "caption": "Flaps, slats & speedbrakes",
+            "action": "CHECK INDICATIONS"
+          },
+          {
+            "caption": "Pitot & static heat",
+            "action": "ON, CHECK, OFF"
+          },
+          {
+            "caption": "Exterior inspection",
+            "action": "COMPLETE"
           }
         ]
       },
       {
         "id": 1,
-        "caption": "Start up",
+        "caption": "Pre start",
         "items": [
           {
-            "caption": "Doors & windows",
-            "action": "CLOSED"
-          },
-          {
-            "caption": "Seatbelts sign",
+            "caption": "Standby power",
             "action": "ON"
           },
           {
-            "caption": "Anti-ice",
-            "action": "AS REQUIRED"
-          },
-          {
-            "caption": "Gnd rec lights",
+            "caption": "Batteries 1 + 2",
             "action": "ON"
           },
           {
-            "caption": "Throttles",
-            "action": "CUT OFF"
-          },
-          {
-            "caption": "Fuel boost switches",
-            "action": "ON"
-          },
-          {
-            "caption": "PACS",
-            "action": "OFF"
-          },
-          {
-            "caption": "Engine 1 & 2 start:",
-            "action": "DONE",
-            "details": "Ignition... NORM\nEngine start... ON\nN2% > 10% - throttle... IDLE\nIgnition... OFF"
-          },
-          {
-            "caption": "PACS",
-            "action": "ON"
-          }
-        ]
-      },
-      {
-        "id": 2,
-        "caption": "After start",
-        "items": [
-          {
-            "caption": "Generators",
-            "action": "ON"
-          },
-          {
-            "caption": "Hydraulic A AUX pump",
-            "action": "OFF"
-          },
-          {
-            "caption": "APU bleed",
-            "action": "OFF"
-          },
-          {
-            "caption": "APU",
-            "action": "STOP",
-            "details": "hold 5 sec"
-          },
-          {
-            "caption": "Pass oxy",
-            "action": "AUTO"
-          },
-          {
-            "caption": "Center wings xfer L & R",
-            "action": "NORM"
-          }
-        ]
-      },
-      {
-        "id": 3,
-        "caption": "Taxi",
-        "items": [
-          {
-            "caption": "taxi lights",
-            "action": "ON"
-          },
-          {
-            "caption": "Pitot heat",
-            "action": "ON"
-          },
-          {
-            "caption": "Windshield heat",
-            "action": "AS REQUIRED"
-          },
-          {
-            "caption": "Flaps",
-            "action": "AS REQUIRED"
+            "caption": "External power",
+            "action": "AS DES, THEN OFF"
           },
           {
             "caption": "Nav lights",
             "action": "ON"
           },
           {
-            "caption": "TRIM",
-            "action": "SET TO T/O"
+            "caption": "Avionics + EICAS",
+            "action": "ON"
           },
           {
-            "caption": "Engines bleed air",
-            "action": "HP/LP"
+            "caption": "IRS",
+            "action": "BOTH ALIGN, THEN NAV"
+          },
+          {
+            "caption": "APU",
+            "action": "START",
+            "details": "Starter disengage...NORMAL\nTest...PUSH & HOLD until 101% RPM\nDC volts...MIN 22V / Amps...UNDER 300"
+          },
+          {
+            "caption": "APU bleed",
+            "action": "AS REQ"
+          },
+          {
+            "caption": "Fuel boost LH + RH",
+            "action": "NORM"
+          },
+          {
+            "caption": "Fuel crossfeed",
+            "action": "TEST"
+          },
+          {
+            "caption": "Flight control shut-off switches",
+            "action": "ALL LIGHTS OFF"
+          },
+          {
+            "caption": "Warning systems & CVR",
+            "action": "TEST"
+          },
+          {
+            "caption": "Aileron & rudder trim",
+            "action": "NEUTRAL"
+          },
+          {
+            "caption": "Radios",
+            "action": "AS REQ"
+          },
+          {
+            "caption": "ATIS & ATC clearance",
+            "action": "AS REQ"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "caption": "Before engine start",
+        "items": [
+          {
+            "caption": "Parking brake",
+            "action": "SET"
+          },
+          {
+            "caption": "Doors & windows",
+            "action": "CLOSED & LOCKED"
+          },
+          {
+            "caption": "EICAS",
+            "action": "CHECK"
+          },
+          {
+            "caption": "Fuel quantity",
+            "action": "CHECK"
+          },
+          {
+            "caption": "ATC / TCAS",
+            "action": "SQUAWK SET / STBY"
+          },
+          {
+            "caption": "COM / NAV / ADF",
+            "action": "AS DES"
+          },
+          {
+            "caption": "ADIRS",
+            "action": "CHECK ALIGNED"
+          },
+          {
+            "caption": "FMS",
+            "action": "SETUP COMPLETED"
+          },
+          {
+            "caption": "PFD V-Speeds",
+            "action": "SET / CONFIRM",
+            "details": "Flaps 15° by weight (<27 / 27-30 / 30-33 / >33 tons):\nV1...114 / 116 / 125 / 133\nVR...116 / 119 / 128 / 134\nV2...129 / 127 / 132 / 137"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "caption": "Engine start",
+        "items": [
+          {
+            "caption": "APU",
+            "action": "STARTED"
+          },
+          {
+            "caption": "APU bleed",
+            "action": "ON"
+          },
+          {
+            "caption": "PAC isol valve",
+            "action": "CLOSED"
+          },
+          {
+            "caption": "Nav lights",
+            "action": "ON"
+          },
+          {
+            "caption": "Ground rec / anti-coll lights",
+            "action": "GND REC"
+          },
+          {
+            "caption": "Passenger signs",
+            "action": "PASS SAFETY"
+          },
+          {
+            "caption": "EICAS",
+            "action": "SYS ENG PAGE"
+          },
+          {
+            "caption": "Thrust levers",
+            "action": "CUT-OFF (FULL AFT)"
+          },
+          {
+            "caption": "Engine 2 (RH)",
+            "action": "START",
+            "details": "Residual ITT...MAX 200°C\nThrust lever IDLE...at 10% N2\nIgnition...VERIFY ~33% N2\nStarter disengage...BY ~57% N2"
+          },
+          {
+            "caption": "Engine 1 (LH)",
+            "action": "START"
+          },
+          {
+            "caption": "Hydraulic pressure",
+            "action": "CHECK"
+          },
+          {
+            "caption": "Electrical buses",
+            "action": "CHECK VOLTS & AMPS"
+          },
+          {
+            "caption": "APU bleed",
+            "action": "OFF"
+          },
+          {
+            "caption": "Engine bleed air",
+            "action": "LP / HP"
+          },
+          {
+            "caption": "PAC isol valve",
+            "action": "OPEN"
           }
         ]
       },
       {
         "id": 4,
-        "caption": "Line up",
+        "caption": "After start / Taxi",
         "items": [
           {
-            "caption": "landing lights",
-            "action": "ON"
+            "caption": "Flight controls",
+            "action": "FREE & FULL MOVEMENT"
+          },
+          {
+            "caption": "Standby gyro",
+            "action": "UNCAGE"
+          },
+          {
+            "caption": "Anti-ice",
+            "action": "AS REQ"
+          },
+          {
+            "caption": "Passenger signs",
+            "action": "SEAT BELTS"
+          },
+          {
+            "caption": "Pressurization",
+            "action": "AS REQ"
+          },
+          {
+            "caption": "ATC taxi clearance",
+            "action": "AS REQ"
           },
           {
             "caption": "Taxi lights",
-            "action": "OFF"
+            "action": "ON"
           },
           {
-            "caption": "Strobe light",
-            "action": "ON",
-            "details": "V rotate - 145 Kt"
+            "caption": "Parking brake",
+            "action": "RELEASE"
+          },
+          {
+            "caption": "Brakes & steering",
+            "action": "CHECK"
+          },
+          {
+            "caption": "Thrust reversers",
+            "action": "CHECK",
+            "details": "Deploy...check UNLOCK & DEPLOY lights\nStow...reverser switch NORM"
           }
         ]
       },
       {
         "id": 5,
-        "caption": "After take off",
+        "caption": "Before takeoff",
         "items": [
           {
-            "caption": "Gears",
-            "action": "UP"
+            "caption": "Altimeters",
+            "action": "SET LOCAL QNH"
           },
           {
-            "caption": "Autopilot",
-            "action": "ENGAGED"
+            "caption": "Pitot & static heat",
+            "action": "ON"
           },
           {
-            "caption": "Landing lights",
-            "action": "OFF"
+            "caption": "Windshield heat",
+            "action": "ON"
+          },
+          {
+            "caption": "Anti-ice",
+            "action": "AS REQ"
+          },
+          {
+            "caption": "Pressurization",
+            "action": "AS REQ"
+          },
+          {
+            "caption": "FGCP yaw damper & Mach trim",
+            "action": "ON"
+          },
+          {
+            "caption": "FGCP AP modes",
+            "action": "PRESELECT AS DES"
+          },
+          {
+            "caption": "FMA",
+            "action": "CHECK"
           },
           {
             "caption": "Flaps",
-            "action": "RETRACTED"
+            "action": "SET FOR T.O."
           },
           {
-            "caption": "Climb power",
-            "action": "SET"
+            "caption": "Speedbrakes",
+            "action": "ZERO"
           },
           {
-            "caption": "Oil pressure",
-            "action": "IN GREEN"
+            "caption": "Stab trim",
+            "action": "SET",
+            "details": "By CG (15 / 20 / 25 / 30 / 35% MAC):\nFlaps 5°...-5.0 / -4.3 / -3.5 / -2.8 / -2.0\nFlaps 15°...-8.0 / -6.9 / -5.8 / -4.6 / -3.5"
           },
           {
-            "caption": "Fuel boost switches",
-            "action": "NORM"
+            "caption": "ATC / TCAS",
+            "action": "TA/RA"
+          },
+          {
+            "caption": "WX radar",
+            "action": "AS DES"
+          },
+          {
+            "caption": "Strobe / anti-collision lights",
+            "action": "ON"
+          },
+          {
+            "caption": "Landing lights",
+            "action": "ON"
+          },
+          {
+            "caption": "ATC departure clearance",
+            "action": "AS REQ"
           }
         ]
       },
       {
         "id": 6,
-        "caption": "Cruise",
+        "caption": "Climb",
         "items": [
           {
-            "caption": "Cruise power",
-            "action": "SET"
+            "caption": "Landing gear",
+            "action": "UP"
+          },
+          {
+            "caption": "Flaps",
+            "action": "UP ABOVE 170 KIAS"
+          },
+          {
+            "caption": "Thrust levers",
+            "action": "CLB DETENT",
+            "details": "TO/MC thrust...MAX 5 MIN"
+          },
+          {
+            "caption": "FGCP modes",
+            "action": "LNAV / VNAV + FLC"
+          },
+          {
+            "caption": "Taxi lights",
+            "action": "OFF"
+          },
+          {
+            "caption": "Engine sync",
+            "action": "AS REQ"
+          },
+          {
+            "caption": "Anti-ice",
+            "action": "AS REQ"
+          },
+          {
+            "caption": "Pressurization",
+            "action": "AS REQ"
+          },
+          {
+            "caption": "Climb speed",
+            "action": "250 KIAS BELOW 10,000 FT"
+          },
+          {
+            "caption": "APU",
+            "action": "SHUTDOWN",
+            "details": "Before FL310:\nBleed...OFF\nStart switch...STOP\nMaster...OFF"
+          },
+          {
+            "caption": "Passenger signs",
+            "action": "AS REQ"
+          },
+          {
+            "caption": "Landing lights",
+            "action": "OFF @ 10,000 FT"
+          },
+          {
+            "caption": "Altimeters",
+            "action": "SET STD @ TRANSITION ALT"
           }
         ]
       },
       {
         "id": 7,
-        "caption": "Approach",
+        "caption": "Cruise",
         "items": [
           {
-            "caption": "Altimeter",
-            "action": "SET"
+            "caption": "Thrust levers",
+            "action": "CRU / AS REQ"
+          },
+          {
+            "caption": "Anti-ice",
+            "action": "AS REQ"
+          },
+          {
+            "caption": "Pressurization",
+            "action": "AS REQ"
+          },
+          {
+            "caption": "Fuel quantity & balance",
+            "action": "MONITOR"
+          },
+          {
+            "caption": "TOD",
+            "action": "X-CHECK",
+            "details": "Distance NM = (Cruise - Target Alt)/1,000 x Factor + 10\nFactor 3.5 @ 2° / 3 @ 3° / 2.5 @ 4°\nFMS PROG page 2/3"
           }
         ]
       },
       {
         "id": 8,
-        "caption": "Landing",
+        "caption": "Descent",
         "items": [
           {
+            "caption": "ATC descent clearance",
+            "action": "AS REQ"
+          },
+          {
+            "caption": "Descent",
+            "action": "INITIATE AT TOD"
+          },
+          {
+            "caption": "Approach & landing data",
+            "action": "CONFIRM"
+          },
+          {
+            "caption": "FMS NAV - approach",
+            "action": "SET"
+          },
+          {
+            "caption": "FMS PERF - landing",
+            "action": "SET"
+          },
+          {
+            "caption": "ILS frequency",
+            "action": "CONFIRM"
+          },
+          {
+            "caption": "Minimums",
+            "action": "SET"
+          },
+          {
+            "caption": "FGCP altitude",
+            "action": "PRESELECT"
+          },
+          {
+            "caption": "Pressurization",
+            "action": "AS REQ"
+          },
+          {
+            "caption": "Altimeters",
+            "action": "SET LOCAL QNH @ TRANSITION FL"
+          },
+          {
             "caption": "Landing lights",
-            "action": "ON"
-          },
-          {
-            "caption": "Flaps",
-            "action": "AS REQUIRED"
-          },
-          {
-            "caption": "Gears",
-            "action": "DOWN",
-            "details": "Vref... 132 Kt"
+            "action": "ON @ 10,000 FT"
           }
         ]
       },
       {
         "id": 9,
-        "caption": "After landing",
+        "caption": "Approach",
         "items": [
           {
-            "caption": "Taxi lights",
-            "action": "ON"
+            "caption": "Minimums",
+            "action": "CHECK SET"
+          },
+          {
+            "caption": "VREF / VAPP",
+            "action": "CONFIRM",
+            "details": "Flaps full by weight (23 / 24 / 26 / 28 / 30 / 31.8 tons):\nVREF...108 / 110 / 115 / 121 / 126 / 132\nVAPP...113 / 116 / 121 / 126 / 131 / 136"
+          },
+          {
+            "caption": "Ignition",
+            "action": "NORM"
+          },
+          {
+            "caption": "Fuel crossfeed",
+            "action": "OFF"
+          },
+          {
+            "caption": "Passenger signs",
+            "action": "SEAT BELTS"
           },
           {
             "caption": "Landing lights",
-            "action": "OFF"
-          },
-          {
-            "caption": "Strobe",
-            "action": "OFF"
-          },
-          {
-            "caption": "Flaps",
-            "action": "RETRACTED"
-          },
-          {
-            "caption": "Spoilers",
-            "action": "RETRACTED"
-          },
-          {
-            "caption": "APU master",
             "action": "ON"
+          },
+          {
+            "caption": "Engine sync",
+            "action": "OFF"
           },
           {
             "caption": "APU",
-            "action": "START",
-            "details": "hold 5 sec"
-          },
-          {
-            "caption": "APU bleed",
-            "action": "ON"
+            "action": "AS REQ"
           }
         ]
       },
       {
         "id": 10,
+        "caption": "After landing",
+        "items": [
+          {
+            "caption": "Landing lights",
+            "action": "OFF"
+          },
+          {
+            "caption": "Taxi lights",
+            "action": "ON"
+          },
+          {
+            "caption": "Ground rec / anti-coll lights",
+            "action": "GND REC"
+          },
+          {
+            "caption": "Thrust reversers",
+            "action": "CHECK STOWED"
+          },
+          {
+            "caption": "Speedbrakes",
+            "action": "ZERO"
+          },
+          {
+            "caption": "Flaps",
+            "action": "UP"
+          },
+          {
+            "caption": "WX radar",
+            "action": "OFF"
+          },
+          {
+            "caption": "ATC / TCAS",
+            "action": "STBY"
+          },
+          {
+            "caption": "Pitot & static heat",
+            "action": "OFF"
+          },
+          {
+            "caption": "Windshield heat",
+            "action": "AS REQ"
+          },
+          {
+            "caption": "Anti-ice",
+            "action": "AS REQ"
+          },
+          {
+            "caption": "APU",
+            "action": "AS REQ"
+          }
+        ]
+      },
+      {
+        "id": 11,
+        "caption": "Parking",
+        "items": [
+          {
+            "caption": "Parking brake",
+            "action": "SET"
+          },
+          {
+            "caption": "Taxi lights",
+            "action": "OFF"
+          },
+          {
+            "caption": "Ground rec / anti-coll lights",
+            "action": "OFF"
+          },
+          {
+            "caption": "Anti-ice",
+            "action": "ALL OFF"
+          },
+          {
+            "caption": "Passenger signs",
+            "action": "OFF"
+          },
+          {
+            "caption": "Pressurization",
+            "action": "CHECK ZERO DIFF"
+          },
+          {
+            "caption": "Thrust levers",
+            "action": "CUT-OFF WHEN ITT STABILIZED"
+          },
+          {
+            "caption": "APU",
+            "action": "AS DES"
+          },
+          {
+            "caption": "APU bleed",
+            "action": "AS DES"
+          },
+          {
+            "caption": "Chocks, covers & GPU",
+            "action": "AS DES"
+          }
+        ]
+      },
+      {
+        "id": 12,
         "caption": "Shutdown",
         "items": [
           {
-            "caption": "Throttles",
-            "action": "CUT OFF"
-          },
-          {
-            "caption": "Fuel boost switches",
+            "caption": "IRS",
             "action": "OFF"
           },
           {
-            "caption": "Ignition",
+            "caption": "Standby gyro",
+            "action": "CAGED"
+          },
+          {
+            "caption": "Standby power",
             "action": "OFF"
           },
           {
-            "caption": "Avionics",
+            "caption": "Avionics + EICAS",
             "action": "OFF"
           },
           {
-            "caption": "Batteries",
+            "caption": "Emergency lights",
             "action": "OFF"
           },
           {
-            "caption": "PACS",
+            "caption": "Fuel crossfeed",
+            "action": "OFF"
+          },
+          {
+            "caption": "Gravity X-flow",
             "action": "OFF"
           },
           {
             "caption": "APU",
-            "action": "STOP",
-            "details": "hold 5 sec"
+            "action": "SHUTDOWN",
+            "details": "Bleed...OFF\nStart switch...STOP\nMaster...OFF"
           },
           {
-            "caption": "APU bleed",
+            "caption": "External lights",
+            "action": "OFF"
+          },
+          {
+            "caption": "Batteries 1 + 2",
             "action": "OFF"
           }
         ]
