@@ -5,6 +5,7 @@ sealed class MainScreenEvent {
     data object StartUpdate : MainScreenEvent()
     data object DropBaseConfirm : MainScreenEvent()
     data object DropBase : MainScreenEvent()
+    data object OpenToolsMenu : MainScreenEvent()
     data class SelectAircraft(val aircraftId: Int) : MainScreenEvent()
     data object SelectMetar : MainScreenEvent()
     data object SelectAirportsBase : MainScreenEvent()

@@ -32,7 +32,6 @@ import sims_checklist.shared.generated.resources.*
 fun loadAircraftJpgPhoto(name: String): Painter =
     painterResource(Res.allDrawableResources[name] ?: error("App resources are broken!"))
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AircraftListScreen(component: MainEventExecutor) {
 
@@ -55,31 +54,7 @@ fun AircraftListScreen(component: MainEventExecutor) {
             TopAppBar(
                 title = { Text("Select your aircraft") },
                 actions = {
-                    VersionBadge()
-                    IconButton(onClick = { component(MainScreenEvent.SelectMetar) }) {
-                        Icon(
-                            painter = painterResource(Res.drawable.air),
-                            contentDescription = "Weather and airport"
-                        )
-                    }
-                    IconButton(onClick = { component(MainScreenEvent.SelectAirportsBase) }) {
-                        Icon(
-                            painter = painterResource(Res.drawable.cloud_download),
-                            contentDescription = "Airports database"
-                        )
-                    }
-                    IconButton(onClick = { component(MainScreenEvent.SelectQFEHelper) }) {
-                        Icon(
-                            painter = painterResource(Res.drawable.compress),
-                            contentDescription = "QFE helper"
-                        )
-                    }
-                    IconButton(onClick = { component(MainScreenEvent.SelectColdTemperature) }) {
-                        Icon(
-                            painter = painterResource(Res.drawable.snowflake),
-                            contentDescription = "Cold temperature corrector"
-                        )
-                    }
+                    MainToolsMenu(component)
                 },
                 colors = SimColors.topBarColors()
             )
