@@ -4,6 +4,7 @@ import feature.checklists.model.Aircraft
 
 data class MainScreenViewState(
     val aircraftList: List<Aircraft> = emptyList(),
+    val airportsCount: Long? = null,
     val isLoading: Boolean = false,
     val updateMessage: String? = null,
     val snack: MainScreenSnack? = null,

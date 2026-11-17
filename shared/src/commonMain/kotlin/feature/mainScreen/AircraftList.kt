@@ -44,12 +44,19 @@ class AircraftList(
 
         lifecycle.doOnStart(true) {
             scope.launch {
-                val snack = if (airportService.isEmpty())
-                    MainScreenSnack.StartUpdate("Airport database is empty!")
-                else airportService.getLastUpdate()?.let {
-                    MainScreenSnack.Close("${it.airports} airports in database.")
+                val count: Long?
+                val snack: MainScreenSnack?
+                if (airportService.isEmpty()) {
+                    count = null
+                    snack = MainScreenSnack.StartUpdate("Airport database is empty!")
+                } else {
+                    val last = airportService.getLastUpdate()
+                    count = last?.airports
+                    snack = last?.let {
+                        MainScreenSnack.Close("${it.airports} airports in database.")
+                    }
                 }
-                state.update { it.copy(snack = snack) }
+                state.update { it.copy(snack = snack, airportsCount = count) }
             }
         }
 
@@ -62,6 +69,7 @@ class AircraftList(
             MainScreenEvent.StartUpdate -> scope.onStartUpdate()
             MainScreenEvent.DropBaseConfirm -> scope.onConfirmDropBase()
             MainScreenEvent.DropBase -> scope.onDropBase()
+            MainScreenEvent.OpenToolsMenu -> scope.onRefreshAirportsCount()
             else -> onUiCommand(event)
         }
     }
@@ -106,6 +114,7 @@ class AircraftList(
                             old.copy(
                                 updateMessage = null,
                                 progress = 0f,
+                                airportsCount = it.count,
                                 snack = MainScreenSnack.Close("Updated successfully. ${it.count} airports in database.")
                             )
                         }
@@ -129,6 +138,16 @@ class AircraftList(
     }
     private fun CoroutineScope.onDropBase() = launch {
         airportService.dropAll()
-        state.update { it.copy(snack = MainScreenSnack.StartUpdate("Database dropped. Download again?")) }
+        state.update {
+            it.copy(
+                airportsCount = 0,
+                snack = MainScreenSnack.StartUpdate("Database dropped. Download again?")
+            )
+        }
+    }
+
+    private fun CoroutineScope.onRefreshAirportsCount() = launch {
+        val count = airportService.getLastUpdate()?.airports
+        state.update { it.copy(airportsCount = count) }
     }
 }
