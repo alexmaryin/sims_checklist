@@ -47,16 +47,18 @@ The King Air 350 record SHALL include exactly ten checklists, derived from `chec
 
 | id | caption |
 |----|---------|
-| 0 | Preflight |
-| 1 | Engine start (cold) |
-| 2 | Before taxi |
-| 3 | Before takeoff |
-| 4 | Climb |
-| 5 | Cruise |
-| 6 | Descent |
-| 7 | Approach |
-| 8 | After landing |
-| 9 | Parking |
+| 0 | PREFLIGHT |
+| 1 | ENGINE START |
+| 2 | BEFORE TAXI |
+| 3 | BEFORE TAKEOFF |
+| 4 | CLIMB |
+| 5 | CRUISE |
+| 6 | DESCENT |
+| 7 | APPROACH |
+| 8 | AFTER LANDING |
+| 9 | PARKING |
+
+Captions SHALL be stored in uppercase per the catalog caption normalization. The id `1` caption is reconciled from the previously specified `Engine start (cold)` to `ENGINE START`, matching the actual catalog record categorized as `PROCEDURE`.
 
 Each checklist SHALL use the existing `Checklist`/`Item` schema. Each `Item` SHALL carry a `caption` and an `action`; the `details` field MAY hold multi-line sub-steps. Where the PDF groups items under a heading or a visual rule, the record MAY use a caption-only separator item (`caption == "LINE"`, matching `CHECKLIST_LINE`) consistent with the Cirrus SR22 record.
 
@@ -64,7 +66,7 @@ Each checklist SHALL use the existing `Checklist`/`Item` schema. Each `Item` SHA
 
 - **WHEN** the King Air 350 record is loaded
 - **THEN** `checklists` SHALL contain ten entries with ids `0` through `9`
-- **AND** their captions SHALL match, in order: `Preflight`, `Engine start (cold)`, `Before taxi`, `Before takeoff`, `Climb`, `Cruise`, `Descent`, `Approach`, `After landing`, `Parking`
+- **AND** their captions SHALL match, in order: `PREFLIGHT`, `ENGINE START`, `BEFORE TAXI`, `BEFORE TAKEOFF`, `CLIMB`, `CRUISE`, `DESCENT`, `APPROACH`, `AFTER LANDING`, `PARKING`
 
 #### Scenario: Excluded PDF sections
 
