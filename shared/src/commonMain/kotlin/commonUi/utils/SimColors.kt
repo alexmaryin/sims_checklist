@@ -6,6 +6,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import feature.checklistDetails.model.ChecklistCategory
 
 @OptIn(ExperimentalMaterial3Api::class)
 object SimColors {
@@ -22,6 +23,28 @@ object SimColors {
     val backgroundGray = Color(0xffa69b97)
     val textBrown = Color(0xff4e342e)
     val textUltraLight = Color(0xfffbe9e7)
+
+    // Checklist category colors (same in light and dark themes, dark text on top)
+    val procedureBlue = Color(0xff81d4fa)
+    val nonNormalRed = Color(0xffe57373)
+    val nonNormalRedSoft = Color(0xffef9a9a)
+    val nonNormalRedVivid = Color(0xffff8a80)
+
+    /**
+     * Card colors for the checklists list: container to content (text/icon tint).
+     * NORMAL keeps the legacy behavior (default surface, green when completed);
+     * PROCEDURE and NON-NORMAL keep their category color regardless of completion.
+     * Swap the active NON-NORMAL constant here to test red candidates.
+     */
+    @Composable
+    fun checklistCardColors(category: ChecklistCategory, isCompleted: Boolean): Pair<Color, Color> =
+        when (category) {
+            ChecklistCategory.NORMAL ->
+                if (isCompleted) MaterialTheme.colorScheme.inversePrimary to MaterialTheme.colorScheme.inverseOnSurface
+                else Color.Unspecified to MaterialTheme.colorScheme.onSurface
+            ChecklistCategory.PROCEDURE -> procedureBlue to textBlack
+            ChecklistCategory.NON_NORMAL -> nonNormalRed to textBlack
+        }
 
 
     @Composable

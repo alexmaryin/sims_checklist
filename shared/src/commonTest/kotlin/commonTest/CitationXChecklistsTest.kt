@@ -8,9 +8,9 @@ import kotlin.test.*
 class CitationXChecklistsTest {
 
     private val expectedCaptions = listOf(
-        "Preflight", "Pre start", "Before engine start", "Engine start",
-        "After start / Taxi", "Before takeoff", "Climb", "Cruise",
-        "Descent", "Approach", "After landing", "Parking", "Shutdown",
+        "PREFLIGHT", "PRE START", "BEFORE ENGINE START", "ENGINE START",
+        "AFTER START / TAXI", "BEFORE TAKEOFF", "CLIMB", "CRUISE",
+        "DESCENT", "APPROACH", "AFTER LANDING", "PARKING", "SHUTDOWN",
     )
 
     private val catalog by lazy { runBlocking { AircraftBaseImpl().getAircraft() } }
@@ -70,16 +70,16 @@ class CitationXChecklistsTest {
 
     @Test
     fun `reference figures are kept as details on relevant items`() {
-        val vSpeeds = citationX.checklists.first { it.caption == "Before engine start" }
+        val vSpeeds = citationX.checklists.first { it.caption == "BEFORE ENGINE START" }
             .items.first { it.caption == "PFD V-Speeds" }
         assertContains(vSpeeds.details, "V1...114 / 116 / 125 / 133")
         assertContains(vSpeeds.details, "VR...116 / 119 / 128 / 134")
 
-        val stabTrim = citationX.checklists.first { it.caption == "Before takeoff" }
+        val stabTrim = citationX.checklists.first { it.caption == "BEFORE TAKEOFF" }
             .items.first { it.caption == "Stab trim" }
         assertContains(stabTrim.details, "Flaps 15°...-8.0 / -6.9 / -5.8 / -4.6 / -3.5")
 
-        val vref = citationX.checklists.first { it.caption == "Approach" }
+        val vref = citationX.checklists.first { it.caption == "APPROACH" }
             .items.first { it.caption == "VREF / VAPP" }
         assertContains(vref.details, "VAPP...113 / 116 / 121 / 126 / 131 / 136")
     }

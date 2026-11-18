@@ -10,17 +10,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import feature.checklistDetails.model.ChecklistCategory
 import feature.checklists.Checklists
 import feature.checklists.ChecklistsUiEvent
 import feature.checklists.ChecklistsViewState
 import commonUi.TopBarWithClearAction
+import commonUi.utils.SimColors
 import commonUi.utils.largeWithShadow
 import commonUi.utils.mySnackbarHost
+import org.jetbrains.compose.resources.painterResource
+import sims_checklist.shared.generated.resources.Res
+import sims_checklist.shared.generated.resources.done
 
 @Composable
 fun ChecklistsScreen(component: Checklists) {
@@ -58,23 +63,33 @@ fun ChecklistsScreen(component: Checklists) {
                 items = state.value.list,
                 key = { checklist -> checklist.id }
             ) { checklist ->
+                val (containerColor, contentColor) = SimColors.checklistCardColors(checklist.category, checklist.isCompleted)
                 Card(
                     modifier = Modifier.padding(vertical = 1.dp),
                     elevation = CardDefaults.elevatedCardElevation(12.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = if (checklist.isCompleted) MaterialTheme.colorScheme.inversePrimary
-                        else Color.Unspecified
-                    )
+                    colors = CardDefaults.cardColors(containerColor = containerColor)
                 ) {
-                    Text(
-                        text = checklist.caption.uppercase(),
+                    Box(
                         modifier = Modifier.clickable { component.onEvent(ChecklistsUiEvent.SelectChecklist(checklist.id)) }
                             .fillMaxWidth()
-                            .padding(16.dp),
-                        color = if (checklist.isCompleted) MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.onSurface,
-                        textAlign = TextAlign.Center,
-                        style = largeWithShadow()
-                    )
+                            .padding(16.dp)
+                    ) {
+                        Text(
+                            text = checklist.caption.uppercase(),
+                            modifier = Modifier.fillMaxWidth(),
+                            color = contentColor,
+                            textAlign = TextAlign.Center,
+                            style = largeWithShadow()
+                        )
+                        if (checklist.isCompleted && checklist.category != ChecklistCategory.NORMAL) {
+                            Icon(
+                                painter = painterResource(Res.drawable.done),
+                                contentDescription = "Completed",
+                                modifier = Modifier.align(Alignment.CenterEnd),
+                                tint = contentColor
+                            )
+                        }
+                    }
                 }
             }
         }

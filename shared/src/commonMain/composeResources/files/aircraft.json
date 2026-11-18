@@ -10,7 +10,7 @@
     "checklists": [
       {
         "id": 0,
-        "caption": "Engine start (normal)",
+        "caption": "ENGINE START",
         "items": [
           {
             "caption": "Seatbelts/Shoulder Harness",
@@ -66,7 +66,7 @@
       },
       {
         "id": 1,
-        "caption": "After engine start",
+        "caption": "AFTER ENGINE START",
         "items": [
           {
             "caption": "Ignition Switch",
@@ -104,7 +104,7 @@
       },
       {
         "id": 2,
-        "caption": "Taxi",
+        "caption": "TAXI",
         "items": [
           {
             "caption": "Brakes",
@@ -122,7 +122,7 @@
       },
       {
         "id": 3,
-        "caption": "Before takeoff",
+        "caption": "BEFORE TAKEOFF",
         "items": [
           {
             "caption": "Parking Brakes",
@@ -197,7 +197,7 @@
       },
       {
         "id": 4,
-        "caption": "Takeoff",
+        "caption": "TAKEOFF",
         "items": [
           {
             "caption": "Lights",
@@ -219,7 +219,7 @@
       },
       {
         "id": 5,
-        "caption": "Before landing",
+        "caption": "BEFORE LANDING",
         "items": [
           {
             "caption": "Fuel Selector",
@@ -261,7 +261,7 @@
       },
       {
         "id": 6,
-        "caption": "After landing check",
+        "caption": "AFTER LANDING CHECK",
         "items": [
           {
             "caption": "Lights (Except Beacon)",
@@ -283,7 +283,7 @@
       },
       {
         "id": 7,
-        "caption": "Engine shutdown",
+        "caption": "ENGINE SHUTDOWN",
         "items": [
           {
             "caption": "Throttle",
@@ -317,7 +317,7 @@
       },
       {
         "id": 8,
-        "caption": "Securing aircraft",
+        "caption": "SECURING AIRCRAFT",
         "items": [
           {
             "caption": "Control Lock",
@@ -347,7 +347,7 @@
     "checklists": [
       {
         "id": 0,
-        "caption": "Engine start (normal)",
+        "caption": "ENGINE START",
         "items": [
           {
             "caption": "Brakes",
@@ -355,7 +355,7 @@
           },
           {
             "caption": "Bat master switches",
-            "action": "ON (check volts)"
+            "action": "ON (CHECK VOLTS)"
           },
           {
             "caption": "Strobe lights",
@@ -371,7 +371,7 @@
           },
           {
             "caption": "Fuel pump",
-            "action": "PRIME, then BOOST"
+            "action": "PRIME, THEN BOOST"
           },
           {
             "caption": "Propeller area",
@@ -379,7 +379,7 @@
           },
           {
             "caption": "Power lever",
-            "action": "OPEN ¼ inch"
+            "action": "OPEN ¼ INCH"
           },
           {
             "caption": "Ignition switch",
@@ -390,7 +390,7 @@
       },
       {
         "id": 1,
-        "caption": "After engine start",
+        "caption": "AFTER ENGINE START",
         "items": [
           {
             "caption": "Power lever",
@@ -421,7 +421,7 @@
       },
       {
         "id": 2,
-        "caption": "Taxi",
+        "caption": "TAXI",
         "items": [
           {
             "caption": "Brakes",
@@ -458,7 +458,7 @@
       },
       {
         "id": 3,
-        "caption": "Before takeoff",
+        "caption": "BEFORE TAKEOFF",
         "items": [
           {
             "caption": "Doors",
@@ -474,7 +474,7 @@
           },
           {
             "caption": "Trim",
-            "action": "SET Takeoff"
+            "action": "SET TAKEOFF"
           },
           {
             "caption": "Autopilot",
@@ -534,7 +534,7 @@
       },
       {
         "id": 4,
-        "caption": "Takeoff",
+        "caption": "TAKEOFF",
         "items": [
           {
             "caption": "Power lever",
@@ -563,7 +563,7 @@
       },
       {
         "id": 5,
-        "caption": "Cruise & leaning",
+        "caption": "CRUISE & LEANING",
         "items": [
           {
             "caption": "Landing lights",
@@ -581,7 +581,7 @@
       },
       {
         "id": 6,
-        "caption": "Before landing",
+        "caption": "BEFORE LANDING",
         "items": [
           {
             "caption": "Mixture",
@@ -614,7 +614,7 @@
       },
       {
         "id": 7,
-        "caption": "After landing",
+        "caption": "AFTER LANDING",
         "items": [
           {
             "caption": "Flaps",
@@ -640,7 +640,7 @@
       },
       {
         "id": 8,
-        "caption": "Shutdown",
+        "caption": "SHUTDOWN",
         "items": [
           {
             "caption": "Avionic switch",
@@ -662,7 +662,7 @@
       },
       {
         "id": 9,
-        "caption": "Securing aircraft",
+        "caption": "SECURING AIRCRAFT",
         "items": [
           {
             "caption": "Control Lock",
@@ -692,7 +692,7 @@
     "checklists": [
       {
         "id": 0,
-        "caption": "Preflight",
+        "caption": "PREFLIGHT",
         "items": [
           {
             "caption": "Circuit breakers",
@@ -746,7 +746,7 @@
       },
       {
         "id": 1,
-        "caption": "Pre start",
+        "caption": "PRE START",
         "items": [
           {
             "caption": "Standby power",
@@ -813,7 +813,7 @@
       },
       {
         "id": 2,
-        "caption": "Before engine start",
+        "caption": "BEFORE ENGINE START",
         "items": [
           {
             "caption": "Parking brake",
@@ -856,7 +856,8 @@
       },
       {
         "id": 3,
-        "caption": "Engine start",
+        "caption": "ENGINE START",
+        "category": "PROCEDURE",
         "items": [
           {
             "caption": "APU",
@@ -923,7 +924,7 @@
       },
       {
         "id": 4,
-        "caption": "After start / Taxi",
+        "caption": "AFTER START / TAXI",
         "items": [
           {
             "caption": "Flight controls",
@@ -970,7 +971,7 @@
       },
       {
         "id": 5,
-        "caption": "Before takeoff",
+        "caption": "BEFORE TAKEOFF",
         "items": [
           {
             "caption": "Altimeters",
@@ -1041,7 +1042,7 @@
       },
       {
         "id": 6,
-        "caption": "Climb",
+        "caption": "CLIMB",
         "items": [
           {
             "caption": "Landing gear",
@@ -1101,7 +1102,7 @@
       },
       {
         "id": 7,
-        "caption": "Cruise",
+        "caption": "CRUISE",
         "items": [
           {
             "caption": "Thrust levers",
@@ -1128,7 +1129,7 @@
       },
       {
         "id": 8,
-        "caption": "Descent",
+        "caption": "DESCENT",
         "items": [
           {
             "caption": "ATC descent clearance",
@@ -1178,7 +1179,7 @@
       },
       {
         "id": 9,
-        "caption": "Approach",
+        "caption": "APPROACH",
         "items": [
           {
             "caption": "Minimums",
@@ -1217,7 +1218,7 @@
       },
       {
         "id": 10,
-        "caption": "After landing",
+        "caption": "AFTER LANDING",
         "items": [
           {
             "caption": "Landing lights",
@@ -1271,7 +1272,7 @@
       },
       {
         "id": 11,
-        "caption": "Parking",
+        "caption": "PARKING",
         "items": [
           {
             "caption": "Parking brake",
@@ -1317,7 +1318,7 @@
       },
       {
         "id": 12,
-        "caption": "Shutdown",
+        "caption": "SHUTDOWN",
         "items": [
           {
             "caption": "IRS",
@@ -1376,7 +1377,7 @@
     "checklists": [
       {
         "id": 0,
-        "caption": "Preflight",
+        "caption": "PREFLIGHT",
         "items": [
           {
             "caption": "Fuel/Payload Menu",
@@ -1448,7 +1449,8 @@
       },
       {
         "id": 1,
-        "caption": "Engine start",
+        "caption": "ENGINE START",
+        "category": "PROCEDURE",
         "items": [
           {
             "caption": "Doors",
@@ -1559,7 +1561,7 @@
       },
       {
         "id": 2,
-        "caption": "Before taxi",
+        "caption": "BEFORE TAXI",
         "items": [
           {
             "caption": "Avionics/GPS/Autopilot",
@@ -1633,7 +1635,7 @@
       },
       {
         "id": 3,
-        "caption": "Before takeoff",
+        "caption": "BEFORE TAKEOFF",
         "items": [
           {
             "caption": "Transponder",
@@ -1705,7 +1707,7 @@
       },
       {
         "id": 4,
-        "caption": "Climb",
+        "caption": "CLIMB",
         "items": [
           {
             "caption": "Taxi Lights",
@@ -1758,7 +1760,7 @@
       },
       {
         "id": 5,
-        "caption": "Cruise",
+        "caption": "CRUISE",
         "items": [
           {
             "caption": "Autofeather",
@@ -1790,7 +1792,7 @@
       },
       {
         "id": 6,
-        "caption": "Descent",
+        "caption": "DESCENT",
         "items": [
           {
             "caption": "Top of Descent (TOD)",
@@ -1841,7 +1843,7 @@
       },
       {
         "id": 7,
-        "caption": "Approach",
+        "caption": "APPROACH",
         "items": [
           {
             "caption": "Autofeather",
@@ -1868,7 +1870,7 @@
       },
       {
         "id": 8,
-        "caption": "After landing",
+        "caption": "AFTER LANDING",
         "items": [
           {
             "caption": "Taxi Lights",
@@ -1906,7 +1908,7 @@
       },
       {
         "id": 9,
-        "caption": "Parking",
+        "caption": "PARKING",
         "items": [
           {
             "caption": "Parking Brake",
@@ -1964,117 +1966,117 @@
     "checklists": [
       {
         "id": 0,
-        "caption": "Before starting",
+        "caption": "BEFORE STARTING",
         "items": [
           {
             "caption": "External visual inspection",
-            "action": "Complete"
+            "action": "COMPLETE"
           },
           {
             "caption": "Fuel quantity in tanks",
-            "action": "Checked"
+            "action": "CHECKED"
           },
           {
             "caption": "Oil level",
-            "action": "Checked (7-9 qt)"
+            "action": "CHECKED (7-9 QT)"
           },
           {
             "caption": "Avionics Master (or Radios)",
-            "action": "Off"
+            "action": "OFF"
           },
           {
             "caption": "Landing Gear Selector",
-            "action": "Down"
+            "action": "DOWN"
           },
           {
             "caption": "Master Switch",
-            "action": "On"
+            "action": "ON"
           },
           {
             "caption": "Fuel Gauges",
-            "action": "Check"
+            "action": "CHECK"
           },
           {
             "caption": "Landing, Nav, Beacon, Cabin Lights",
-            "action": "Check"
+            "action": "CHECK"
           },
           {
             "caption": "Flaps",
-            "action": "Down"
+            "action": "DOWN"
           },
           {
             "caption": "Master Switch",
-            "action": "Off"
+            "action": "OFF"
           }
         ]
       },
       {
         "id": 1,
-        "caption": "Starting the engine",
+        "caption": "STARTING THE ENGINE",
         "items": [
           {
             "caption": "Parking brake",
-            "action": "Set"
+            "action": "SET"
           },
           {
             "caption": "Avionics Master (Or Radios)",
-            "action": "Off"
+            "action": "OFF"
           },
           {
             "caption": "Fuel Selector",
-            "action": "Desired Tank"
+            "action": "DESIRED TANK"
           },
           {
             "caption": "Circuit Breakers",
-            "action": "CHECK: In"
+            "action": "CHECK: IN"
           },
           {
             "caption": "Carburetor Heat",
-            "action": "Full Cold"
+            "action": "FULL COLD"
           },
           {
             "caption": "Door",
-            "action": "Latched"
+            "action": "LATCHED"
           },
           {
             "caption": "Throttle",
-            "action": "1/4 Open (1/2 When Hot)"
+            "action": "1/4 OPEN (1/2 WHEN HOT)"
           },
           {
             "caption": "Mixture",
-            "action": "Full Rich"
+            "action": "FULL RICH"
           },
           {
             "caption": "Prop Control",
-            "action": "Full Forward"
+            "action": "FULL FORWARD"
           },
           {
             "caption": "Beacon Light",
-            "action": "On"
+            "action": "ON"
           },
           {
             "caption": "Master Switch",
-            "action": "On"
+            "action": "ON"
           },
           {
             "caption": "Electric Fuel Pump",
-            "action": "On (Check Pressure) - Off"
+            "action": "ON (CHECK PRESSURE) - OFF"
           },
           {
             "caption": "Prime",
-            "action": "3-5 times, Lock"
+            "action": "3-5 TIMES, LOCK"
           },
           {
             "caption": "Magnetos",
-            "action": "Both"
+            "action": "BOTH"
           },
           {
             "caption": "Prop",
-            "action": "“Clear”"
+            "action": "“CLEAR”"
           },
           {
             "caption": "Starter",
-            "action": "Engage"
+            "action": "ENGAGE"
           },
           {
             "caption": "Immediately after the engine fires",
@@ -2085,92 +2087,93 @@
       },
       {
         "id": 2,
-        "caption": "Before taxi",
+        "caption": "BEFORE TAXI",
         "items": [
           {
             "caption": "Flaps",
-            "action": "Retract"
+            "action": "RETRACT"
           },
           {
             "caption": "Primer",
-            "action": "Locked"
+            "action": "LOCKED"
           },
           {
             "caption": "Landing Gear Selector",
-            "action": "Off"
+            "action": "OFF"
           },
           {
             "caption": "Landing Gear Indicator light",
-            "action": "Green"
+            "action": "GREEN"
           },
           {
             "caption": "Avionics Master (Or Radios)",
-            "action": "On"
+            "action": "ON"
           },
           {
             "caption": "Transponder",
-            "action": "Set"
+            "action": "SET"
           },
           {
             "caption": "Artificial horizon",
-            "action": "Set"
+            "action": "SET"
           },
           {
             "caption": "Rate-of-Climb Indicator",
-            "action": "Zero"
+            "action": "ZERO"
           },
           {
             "caption": "Altimeter",
-            "action": "Field Height"
+            "action": "FIELD HEIGHT"
           },
           {
             "caption": "Pitot Heat",
-            "action": "On, Check Ammeter Discharge, Off"
+            "action": "ON, CHECK AMMETER DISCHARGE, OFF"
           },
           {
             "caption": "Parking brake",
-            "action": "Free"
+            "action": "FREE"
           }
         ]
       },
       {
         "id": 3,
-        "caption": "Taxi",
+        "caption": "TAXI",
         "items": [
           {
             "caption": "Brakes",
-            "action": "Check",
+            "action": "CHECK",
             "details": "Note: Allow the engine to warm between 800-1200 RPM for 2-4 minutes before runup"
           },
           {
             "caption": "Steering",
-            "action": "Check"
+            "action": "CHECK"
           }
         ]
       },
       {
         "id": 4,
-        "caption": "Run up",
+        "caption": "RUN UP",
+        "category": "PROCEDURE",
         "items": [
           {
             "caption": "Parking brake",
-            "action": "Set"
+            "action": "SET"
           },
           {
             "caption": "Controls",
-            "action": "Free"
+            "action": "FREE"
           },
           {
             "caption": "Mixture",
-            "action": "Full Rich"
+            "action": "FULL RICH"
           },
           {
             "caption": "Prop",
-            "action": "Full Forward"
+            "action": "FULL FORWARD"
           },
           {
             "caption": "Oil temp & Pressure",
-            "action": "Check Green"
+            "action": "CHECK GREEN"
           },
           {
             "caption": "Throttle",
@@ -2179,30 +2182,30 @@
           },
           {
             "caption": "Mag Check",
-            "action": "@ 15 in Hg",
+            "action": "@ 15 IN HG",
             "details": "Max Speed drop M1 & M2...175 RPM\nMax Difference between M1 & M2...50 RPM"
           },
           {
             "caption": "Carburetor Heat",
-            "action": "Check",
+            "action": "CHECK",
             "details": "Caution: Avoid prolonged ground ops with Carb Heat on as the air is unfiltered"
           },
           {
             "caption": "Vacuum",
-            "action": "5.0 in Hg +.1 or -.2 in"
+            "action": "5.0 IN HG +.1 OR -.2 IN"
           },
           {
             "caption": "Ammeter",
-            "action": "Check Charging"
+            "action": "CHECK CHARGING"
           },
           {
             "caption": "Prop",
-            "action": "Cycle 3X",
+            "action": "CYCLE 3X",
             "details": "Normal Drop...300-400 rpm\nReduce to 1500 RPM...make sure it holds steady\nCaution: Do not exceed 500 rpm drop for > few seconds"
           },
           {
             "caption": "Throttle to Idle",
-            "action": "Check"
+            "action": "CHECK"
           },
           {
             "caption": "Throttle",
@@ -2212,45 +2215,45 @@
       },
       {
         "id": 5,
-        "caption": "Before take off",
+        "caption": "BEFORE TAKE OFF",
         "items": [
           {
             "caption": "Door",
-            "action": "Closed & Locked"
+            "action": "CLOSED & LOCKED"
           },
           {
             "caption": "Fuel Selector",
-            "action": "Leave on Previously Tank"
+            "action": "LEAVE ON PREVIOUSLY TANK"
           },
           {
             "caption": "Fuel pump",
-            "action": "On"
+            "action": "ON"
           },
           {
             "caption": "Flaps",
-            "action": "As Desired"
+            "action": "AS DESIRED"
           },
           {
             "caption": "Rudder and Elevator trim",
-            "action": "Set"
+            "action": "SET"
           },
           {
             "caption": "Engine Gauges",
-            "action": "Normal"
+            "action": "NORMAL"
           },
           {
             "caption": "Strobe Lights",
-            "action": "On"
+            "action": "ON"
           }
         ]
       },
       {
         "id": 6,
-        "caption": "Take off",
+        "caption": "TAKE OFF",
         "items": [
           {
             "caption": "Compass & Flight Instruments",
-            "action": "Check runway heading"
+            "action": "CHECK RUNWAY HEADING"
           },
           {
             "caption": "Transponder",
@@ -2258,89 +2261,89 @@
           },
           {
             "caption": "Pitot tube heater",
-            "action": "On"
+            "action": "ON"
           },
           {
             "caption": "Mixture",
-            "action": "Rich (or as appropriate >4000 ft)"
+            "action": "RICH (OR AS APPROPRIATE >4000 FT)"
           },
           {
             "caption": "Throttle",
-            "action": "Smoothly Fully Forward"
+            "action": "SMOOTHLY FULLY FORWARD"
           },
           {
             "caption": "Accelerate to Vᵣ",
-            "action": "Approx. 85 MPH (74 kt)"
+            "action": "APPROX. 85 MPH (74 KT)"
           },
           {
             "caption": "Take off",
-            "action": "Check",
+            "action": "CHECK",
             "details": "(Normal)...Pull back lightly on Yoke\n(Short Takeoff)...Approx. 65-75 MPH (56-65 kt)"
           },
           {
             "caption": "Brakes",
-            "action": "Tap after wheels leave ground"
+            "action": "TAP AFTER WHEELS LEAVE GROUND"
           },
           {
             "caption": "Landing Gear",
-            "action": "Retract"
+            "action": "RETRACT"
           },
           {
             "caption": "Landing Gear Indicator",
-            "action": "Amber"
+            "action": "AMBER"
           },
           {
             "caption": "Flaps",
-            "action": "Retract"
+            "action": "RETRACT"
           }
         ]
       },
       {
         "id": 7,
-        "caption": "After take off",
+        "caption": "AFTER TAKE OFF",
         "items": [
           {
             "caption": "Climb",
-            "action": "Set",
+            "action": "SET",
             "details": "Best Angle-of-Climb Speed (Vx)...84 MPH\nBest Rate-of-Climb Speed (Vy)...105 MPH\nBest En-Route Rate-of-Climb Speed...120 MPH"
           },
           {
             "caption": "Cylinder Head Temperature",
-            "action": "Maintain in Green"
+            "action": "MAINTAIN IN GREEN"
           },
           {
             "caption": "Prop",
-            "action": "2400 rpm above 1000 ft AGL"
+            "action": "2400 RPM ABOVE 1000 FT AGL"
           },
           {
             "caption": "Power",
-            "action": "As required"
+            "action": "AS REQUIRED"
           },
           {
             "caption": "Fuel pump",
-            "action": "Off"
+            "action": "OFF"
           },
           {
             "caption": "Landing Gear Selector",
-            "action": "Off Position"
+            "action": "OFF POSITION"
           },
           {
             "caption": "Rudder Trim",
-            "action": "Neutral"
+            "action": "NEUTRAL"
           },
           {
             "caption": "Elevator Trim",
-            "action": "Set"
+            "action": "SET"
           }
         ]
       },
       {
         "id": 8,
-        "caption": "Enroute",
+        "caption": "ENROUTE",
         "items": [
           {
             "caption": "Power",
-            "action": "Set Cruise"
+            "action": "SET CRUISE"
           },
           {
             "caption": "Normal Max Cruise Power",
@@ -2348,114 +2351,116 @@
           },
           {
             "caption": "Mixture",
-            "action": "Lean above 3000 ft"
+            "action": "LEAN ABOVE 3000 FT"
           },
           {
             "caption": "Fuel Tank",
-            "action": "Switch every 30 min",
+            "action": "SWITCH EVERY 30 MIN",
             "details": "Fuel Pump...On\nFuel Tank Selector...Switch to opposite Tank\nFuel Pump...Off\nFuel Pressure Gauge...Check for Pressure"
           }
         ]
       },
       {
         "id": 9,
-        "caption": "Descent",
+        "caption": "DESCENT",
         "items": [
           {
             "caption": "Propeller",
-            "action": "Cruise RPM"
+            "action": "CRUISE RPM"
           },
           {
             "caption": "Manifold Pressure",
-            "action": "15 to 17 inHg"
+            "action": "15 TO 17 INHG"
           }
         ]
       },
       {
         "id": 10,
-        "caption": "After landing",
+        "caption": "AFTER LANDING",
         "items": [
           {
             "caption": "Fuel Pump",
-            "action": "Off"
+            "action": "OFF"
           },
           {
             "caption": "Flaps",
-            "action": "Retract"
+            "action": "RETRACT"
           },
           {
             "caption": "Strobe",
-            "action": "Off"
+            "action": "OFF"
           },
           {
             "caption": "Mixture",
-            "action": "Lean as required"
+            "action": "LEAN AS REQUIRED"
           }
         ]
       },
       {
         "id": 11,
-        "caption": "Engine shut down",
+        "caption": "ENGINE SHUT DOWN",
         "items": [
           {
             "caption": "Parking Brake",
-            "action": "Set"
+            "action": "SET"
           },
           {
             "caption": "Transponder and Radios",
-            "action": "Off"
+            "action": "OFF"
           },
           {
             "caption": "Throttle",
-            "action": "1800 RPM for 15-20 Sec"
+            "action": "1800 RPM FOR 15-20 SEC"
           },
           {
             "caption": "Throttle",
-            "action": "1200 RPM for 10-20 Sec"
+            "action": "1200 RPM FOR 10-20 SEC"
           },
           {
             "caption": "Mixture",
-            "action": "Pull Out / Idle Cutoff"
+            "action": "PULL OUT / IDLE CUTOFF"
           },
           {
             "caption": "Magnetos",
-            "action": "Off"
+            "action": "OFF"
           },
           {
             "caption": "Ignition Key",
-            "action": "Remove"
+            "action": "REMOVE"
           },
           {
             "caption": "All Electrical Switches",
-            "action": "Off, starting from R/H Side"
+            "action": "OFF, STARTING FROM R/H SIDE"
           }
         ]
       },
       {
         "id": 12,
-        "caption": "Engine fire when starting",
+        "caption": "ENGINE FIRE WHEN STARTING",
+        "category": "NON_NORMAL",
         "items": [
           {
             "caption": "Mixture",
-            "action": "Pull Out"
+            "action": "PULL OUT"
           },
           {
             "caption": "Throttle",
-            "action": "Pull Out"
+            "action": "PULL OUT"
           },
           {
             "caption": "Battery",
-            "action": "Off"
+            "action": "OFF"
           },
           {
             "caption": "Plane",
-            "action": "Leave"
+            "action": "LEAVE"
           }
         ]
       },
       {
         "id": 13,
-        "caption": "Engine failure in flight",
+        "caption": "ENGINE FAILURE IN FLIGHT",
+        "category": "NON_NORMAL",
         "items": [
           {
             "caption": "Best Glide Speed",
@@ -2463,45 +2468,47 @@
           },
           {
             "caption": "Restart",
-            "action": "Check",
+            "action": "CHECK",
             "details": "Fuel Pump...On\nFuel Selector...Switch to Fullest Tank\nCarb Heat...On (Pull)\nMixture...Full Rich (Push)\nMagnetos...Check M1+M2"
           },
           {
             "caption": "If Prop is not turning",
-            "action": "Check",
+            "action": "CHECK",
             "details": "Prop...Full Forward\nThrottle...1/10 (first click)\nPrimer...3-5 Times\nStarter...Push\nFuel Pump...Stays On\nLand...Nearest Airfield"
           }
         ]
       },
       {
         "id": 14,
-        "caption": "Engine fire in flight",
+        "caption": "ENGINE FIRE IN FLIGHT",
+        "category": "NON_NORMAL",
         "items": [
           {
             "caption": "Mixture",
-            "action": "Pull Out"
+            "action": "PULL OUT"
           },
           {
             "caption": "Heating / Ventilation",
-            "action": "Off"
+            "action": "OFF"
           }
         ]
       },
       {
         "id": 15,
-        "caption": "Landing without motor",
+        "caption": "LANDING WITHOUT MOTOR",
+        "category": "NON_NORMAL",
         "items": [
           {
             "caption": "Seat Belt",
-            "action": "Pull Tight"
+            "action": "PULL TIGHT"
           },
           {
             "caption": "Landing Field",
-            "action": "Search"
+            "action": "SEARCH"
           },
           {
             "caption": "Radio (121.5 if Center is unknown)",
-            "action": "Explain Emergency"
+            "action": "EXPLAIN EMERGENCY"
           },
           {
             "caption": "Best Glide Speed",
@@ -2510,23 +2517,23 @@
           },
           {
             "caption": "Mixture",
-            "action": "Off (Pull out)"
+            "action": "OFF (PULL OUT)"
           },
           {
             "caption": "Magnetos",
-            "action": "Off"
+            "action": "OFF"
           },
           {
             "caption": "Fuel Selector",
-            "action": "Off"
+            "action": "OFF"
           },
           {
             "caption": "All Electrical Switches",
-            "action": "Off"
+            "action": "OFF"
           },
           {
             "caption": "Doors",
-            "action": "Unlock"
+            "action": "UNLOCK"
           }
         ]
       }
