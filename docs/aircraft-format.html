@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Aircraft JSON format reference for Sims Checklist — every field, its type and units, the fuel calculator math, and how to import your own aircraft. Worked example: Cessna 172 Skyhawk.">
+  <meta name="author" content="Alex Maryin">
+  <meta name="theme-color" content="#0b1120">
+  <title>Aircraft JSON Format — Sims Checklist</title>
+
+  <link rel="icon" type="image/png" href="logo.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --color-primary: #f59e0b;
+      --color-primary-hover: #d97706;
+      --color-primary-subtle: rgba(245, 158, 11, 0.1);
+      --color-accent: #2dd4bf;
+      --color-accent-hover: #14b8a6;
+      --color-accent-subtle: rgba(45, 212, 191, 0.1);
+      --bg-base: #0b1120;
+      --bg-surface: #111827;
+      --bg-elevated: #1e293b;
+      --bg-code: #0d1526;
+      --text-heading: #f1f5f9;
+      --text-body: #cbd5e1;
+      --text-muted: #94a3b8;
+      --text-muted-dark: #64748b;
+      --border-dark: rgba(255, 255, 255, 0.08);
+      --border-primary: rgba(245, 158, 11, 0.3);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-full: 9999px;
+      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', Consolas, monospace;
+      --content-max: 1080px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+    body {
+      font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg-base);
+      color: var(--text-body);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      line-height: 1.1;
+      color: var(--text-heading);
+    }
+
+    a { color: var(--color-accent-hover); text-decoration: underline; text-underline-offset: 2px; transition: color var(--transition); }
+    a:hover { color: var(--color-primary); }
+
+    code, .mono { font-family: var(--mono); }
+
+    /* Inline code */
+    p code, li code, td code {
+      font-family: var(--mono);
+      font-size: 0.85em;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-dark);
+      border-radius: 5px;
+      padding: 0.1em 0.4em;
+      color: var(--color-accent);
+      white-space: nowrap;
+    }
+
+    /* ===== Nav ===== */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1rem 1.5rem;
+      background: rgba(11, 17, 32, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-dark);
+    }
+    .nav-inner {
+      max-width: var(--content-max); margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+    .nav-logo img { width: 40px; height: 40px; border-radius: var(--radius-sm); }
+    .nav-logo-text { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.05em; color: var(--text-heading); }
+    .nav-back { font-size: 0.95rem; font-weight: 600; color: var(--text-muted); text-decoration: none; }
+    .nav-back:hover { color: var(--text-heading); }
+
+    /* ===== Layout ===== */
+    .wrap { max-width: var(--content-max); margin: 0 auto; padding: 0 1.5rem; }
+
+    /* ===== Hero ===== */
+    .hero { padding: 7.5rem 0 3rem; position: relative; overflow: hidden; }
+    .hero::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 60% 50% at 80% 0%, var(--color-primary-subtle) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 0% 100%, var(--color-accent-subtle) 0%, transparent 60%);
+    }
+    .hero-grid {
+      position: relative; z-index: 1;
+      display: grid; grid-template-columns: 1fr; gap: 2.5rem; align-items: center;
+    }
+    @media (min-width: 900px) {
+      .hero-grid { grid-template-columns: 0.9fr 1.1fr; gap: 3rem; }
+    }
+    .hero-kicker {
+      font-family: var(--mono); font-size: 0.8rem; font-weight: 500;
+      color: var(--color-accent); margin-bottom: 1rem;
+    }
+    .hero h1 { font-size: clamp(2.75rem, 6vw, 4.25rem); margin-bottom: 1.25rem; }
+    .hero-lede { font-size: 1.1rem; color: var(--text-muted); max-width: 46ch; margin-bottom: 1.75rem; }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .chip {
+      font-family: var(--mono); font-size: 0.78rem;
+      padding: 0.35rem 0.8rem; border-radius: var(--radius-full);
+      border: 1px solid var(--border-dark); background: var(--bg-surface); color: var(--text-muted);
+    }
+    .chip strong { color: var(--color-primary); font-weight: 500; }
+
+    /* ===== Code block ===== */
+    .code-card {
+      background: var(--bg-code);
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+    }
+    .code-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.75rem 1.25rem;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-dark);
+    }
+    .code-file { font-family: var(--mono); font-size: 0.82rem; color: var(--text-muted); }
+    .code-dots { display: flex; gap: 0.4rem; }
+    .code-dots span { width: 10px; height: 10px; border-radius: 50%; background: var(--bg-elevated); }
+    .code-dots span:first-child { background: var(--color-primary); }
+    pre {
+      margin: 0; padding: 1.25rem 1.5rem; overflow-x: auto;
+      font-family: var(--mono); font-size: 0.82rem; line-height: 1.75;
+      color: var(--text-body); tab-size: 2;
+    }
+    pre .k { color: var(--color-accent); }        /* keys */
+    pre .s { color: #fbbf24; }                    /* strings */
+    pre .n { color: #f1f5f9; }                    /* numbers */
+    pre .c { color: var(--text-muted-dark); font-style: italic; }  /* comments */
+    pre .p { color: var(--text-muted-dark); }     /* punctuation */
+
+    /* ===== Sections ===== */
+    section.block { padding: 3.5rem 0; border-top: 1px solid var(--border-dark); }
+    .block-head { margin-bottom: 2rem; max-width: 60ch; }
+    .block-head h2 { font-size: clamp(1.9rem, 4vw, 2.75rem); margin-bottom: 0.75rem; }
+    .block-head p { color: var(--text-muted); }
+    .section-no {
+      font-family: var(--mono); font-size: 0.8rem; color: var(--color-primary);
+      display: block; margin-bottom: 0.5rem;
+    }
+
+    /* ===== Field reference (sticky two-column) ===== */
+    .ref { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+    @media (min-width: 900px) {
+      .ref { grid-template-columns: 220px 1fr; gap: 3rem; }
+      .ref-index { position: sticky; top: 6rem; align-self: start; }
+    }
+    .ref-index ul { list-style: none; display: flex; flex-direction: column; gap: 0.25rem; }
+    .ref-index a {
+      display: block; padding: 0.5rem 0.75rem; border-radius: var(--radius-sm);
+      font-family: var(--mono); font-size: 0.85rem; color: var(--text-muted);
+      text-decoration: none; border-left: 2px solid transparent;
+    }
+    .ref-index a:hover { color: var(--text-heading); background: var(--bg-surface); border-left-color: var(--color-primary); }
+
+    .field-group { margin-bottom: 2.5rem; scroll-margin-top: 6rem; }
+    .field-group > h3 {
+      font-family: 'Source Sans 3', sans-serif; font-weight: 700; font-size: 1.2rem;
+      letter-spacing: normal; color: var(--text-heading); margin-bottom: 0.35rem;
+    }
+    .field-group > .group-path { font-family: var(--mono); font-size: 0.8rem; color: var(--color-accent); margin-bottom: 1rem; }
+    .field-group > p.desc { color: var(--text-muted); margin-bottom: 1.25rem; max-width: 68ch; }
+
+    table.fields { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+    table.fields th {
+      text-align: left; font-family: 'Source Sans 3', sans-serif; font-weight: 600;
+      font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase;
+      color: var(--text-muted-dark); padding: 0.6rem 0.75rem;
+      border-bottom: 1px solid var(--border-dark);
+    }
+    table.fields td { padding: 0.7rem 0.75rem; border-bottom: 1px solid var(--border-dark); vertical-align: top; }
+    table.fields tr:last-child td { border-bottom: none; }
+    table.fields td.fname { font-family: var(--mono); font-size: 0.85rem; color: var(--color-accent); white-space: nowrap; }
+    table.fields td.ftype { font-family: var(--mono); font-size: 0.8rem; color: var(--text-muted); white-space: nowrap; }
+    .req { color: var(--color-primary); font-weight: 600; }
+    .opt { color: var(--text-muted-dark); }
+    .unit { font-family: var(--mono); font-size: 0.8rem; color: var(--text-heading); }
+
+    /* ===== Callout ===== */
+    .note {
+      border-left: 3px solid var(--color-accent);
+      background: var(--color-accent-subtle);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 1rem 1.25rem; margin: 1.5rem 0; font-size: 0.95rem;
+    }
+    .note.warn { border-left-color: var(--color-primary); background: var(--color-primary-subtle); }
+    .note strong { color: var(--text-heading); }
+
+    /* ===== Fuel math ===== */
+    .formula {
+      background: var(--bg-code); border: 1px solid var(--border-dark);
+      border-radius: var(--radius-md); padding: 1.5rem; margin: 1.5rem 0;
+      font-family: var(--mono); font-size: 0.9rem; line-height: 2; overflow-x: auto;
+    }
+    .formula .term { color: var(--color-accent); }
+    .formula .op { color: var(--text-muted-dark); }
+    .formula .res { color: var(--color-primary); font-weight: 700; }
+
+    .worked { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: 1.5rem; }
+    @media (min-width: 640px) { .worked { grid-template-columns: repeat(2, 1fr); } }
+    .worked-row {
+      display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+      padding: 0.85rem 1.1rem; background: var(--bg-surface);
+      border: 1px solid var(--border-dark); border-radius: var(--radius-sm);
+    }
+    .worked-row .label { color: var(--text-muted); font-size: 0.9rem; }
+    .worked-row .val { font-family: var(--mono); font-size: 0.95rem; color: var(--text-heading); white-space: nowrap; }
+    .worked-row.total { border-color: var(--border-primary); background: var(--color-primary-subtle); }
+    .worked-row.total .val { color: var(--color-primary); font-weight: 700; }
+
+    /* ===== Steps ===== */
+    .steps { list-style: none; counter-reset: step; display: flex; flex-direction: column; gap: 1rem; max-width: 70ch; }
+    .steps li {
+      counter-increment: step; position: relative; padding: 1.1rem 1.25rem 1.1rem 4rem;
+      background: var(--bg-surface); border: 1px solid var(--border-dark); border-radius: var(--radius-md);
+    }
+    .steps li::before {
+      content: counter(step); position: absolute; left: 1.1rem; top: 1.1rem;
+      width: 2rem; height: 2rem; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.15rem;
+      color: var(--color-primary); background: var(--color-primary-subtle); border: 1px solid var(--border-primary);
+    }
+    .steps li strong { color: var(--text-heading); }
+
+    /* ===== Rules list ===== */
+    .rules { list-style: none; display: grid; grid-template-columns: 1fr; gap: 0.75rem; max-width: 70ch; }
+    @media (min-width: 640px) { .rules { grid-template-columns: repeat(2, 1fr); } }
+    .rules li {
+      padding: 0.9rem 1.1rem; background: var(--bg-surface);
+      border: 1px solid var(--border-dark); border-radius: var(--radius-sm); font-size: 0.92rem;
+    }
+    .rules li::before { content: '✓ '; color: var(--color-accent); font-weight: 700; }
+
+    /* ===== Footer ===== */
+    .footer { border-top: 1px solid var(--border-dark); background: var(--bg-surface); padding: 2rem 1.5rem; margin-top: 2rem; }
+    .footer-inner {
+      max-width: var(--content-max); margin: 0 auto;
+      display: flex; flex-direction: column; gap: 1rem; align-items: center; text-align: center;
+    }
+    @media (min-width: 768px) { .footer-inner { flex-direction: row; justify-content: space-between; text-align: left; } }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { font-size: 0.9rem; color: var(--text-muted); text-decoration: none; }
+    .footer-links a:hover { color: var(--color-primary); }
+    .footer-copy { font-size: 0.8rem; color: var(--text-muted-dark); }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="logo.png" alt="Sims Checklist Logo" width="40" height="40">
+        <span class="nav-logo-text">Sims Checklist</span>
+      </a>
+      <a href="index.html" class="nav-back">← Back to home</a>
+    </div>
+  </nav>
+
+  <!-- Hero: the artifact itself -->
+  <header class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="hero-kicker">custom aircraft · file reference</p>
+        <h1>Aircraft JSON Format</h1>
+        <p class="hero-lede">
+          Every aircraft in Sims Checklist is one JSON file. This page documents each field,
+          its type and units, and how the fuel calculator uses them — with the Cessna 172
+          Skyhawk as a complete working example.
+        </p>
+        <div class="hero-meta">
+          <span class="chip">file <strong>aircraft.json</strong></span>
+          <span class="chip">encoding <strong>UTF-8</strong></span>
+          <span class="chip">icon <strong>JPEG</strong></span>
+        </div>
+      </div>
+
+      <div class="code-card">
+        <div class="code-head">
+          <span class="code-file">cessna172.json</span>
+          <span class="code-dots"><span></span><span></span><span></span></span>
+        </div>
+<pre><span class="p">{</span>
+  <span class="k">"id"</span><span class="p">:</span> <span class="n">0</span><span class="p">,</span>
+  <span class="k">"name"</span><span class="p">:</span> <span class="s">"Cessna 172 Skyhawk"</span><span class="p">,</span>
+  <span class="k">"performance"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="k">"fuelCapacity"</span><span class="p">:</span> <span class="n">56</span><span class="p">,</span>        <span class="c">// gallons</span>
+    <span class="k">"averageCruiseSpeed"</span><span class="p">:</span> <span class="n">100</span><span class="p">,</span> <span class="c">// knots</span>
+    <span class="k">"averageFuelFlow"</span><span class="p">:</span> <span class="n">8</span>       <span class="c">// gallons / hour</span>
+  <span class="p">},</span>
+  <span class="k">"checklists"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="k">"id"</span><span class="p">:</span> <span class="n">0</span><span class="p">,</span>
+      <span class="k">"caption"</span><span class="p">:</span> <span class="s">"ENGINE START"</span><span class="p">,</span>
+      <span class="k">"items"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span> <span class="k">"caption"</span><span class="p">:</span> <span class="s">"Brakes"</span><span class="p">,</span> <span class="k">"action"</span><span class="p">:</span> <span class="s">"TEST &amp; SET"</span> <span class="p">}</span>
+      <span class="p">]</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="k">"photo"</span><span class="p">:</span> <span class="s">"cessna172"</span>
+<span class="p">}</span></pre>
+      </div>
+    </div>
+  </header>
+
+  <!-- Field reference -->
+  <section class="block" id="fields">
+    <div class="wrap">
+      <div class="block-head">
+        <span class="section-no">01 · schema</span>
+        <h2>Field reference</h2>
+        <p>The top-level object has five fields. Required fields must be present; optional fields fall back to the defaults shown.</p>
+      </div>
+
+      <div class="ref">
+        <aside class="ref-index">
+          <ul>
+            <li><a href="#f-top">top level</a></li>
+            <li><a href="#f-perf">performance</a></li>
+            <li><a href="#f-check">checklists[]</a></li>
+            <li><a href="#f-item">items[]</a></li>
+          </ul>
+        </aside>
+
+        <div>
+          <div class="field-group" id="f-top">
+            <h3>Aircraft record</h3>
+            <p class="group-path">root object</p>
+            <table class="fields">
+              <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td class="fname">id</td><td class="ftype">integer</td><td class="req">yes</td><td>Unique aircraft id. <strong>On import the app replaces it</strong> with the next free id, so any value works.</td></tr>
+                <tr><td class="fname">name</td><td class="ftype">string</td><td class="req">yes</td><td>Display name, e.g. <code>Cessna 172 Skyhawk</code>. Must be non-empty and unique across all aircraft (case-insensitive).</td></tr>
+                <tr><td class="fname">performance</td><td class="ftype">object</td><td class="req">yes</td><td>Performance numbers used by the fuel calculator. See below.</td></tr>
+                <tr><td class="fname">checklists</td><td class="ftype">array</td><td class="req">yes</td><td>Ordered list of checklists. See below.</td></tr>
+                <tr><td class="fname">photo</td><td class="ftype">string</td><td class="opt">no</td><td>Icon key. <strong>On import the app replaces it</strong> with the stored icon name. Defaults to empty.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="field-group" id="f-perf">
+            <h3>Performance</h3>
+            <p class="group-path">performance</p>
+            <p class="desc">These values feed the block-fuel calculation. The first three are required and must be positive; the rest are optional with sensible defaults. Units matter — see the <a href="#fuel">fuel calculator</a> section.</p>
+            <table class="fields">
+              <thead><tr><th>Field</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td class="fname">fuelCapacity</td><td class="ftype">number</td><td class="unit">gallons</td><td class="req">required</td><td>Total usable fuel. The calculator flags "Fuel exceed!" when block fuel is above this.</td></tr>
+                <tr><td class="fname">averageCruiseSpeed</td><td class="ftype">number</td><td class="unit">knots</td><td class="req">required</td><td>Cruise true airspeed used to turn distance into time.</td></tr>
+                <tr><td class="fname">averageFuelFlow</td><td class="ftype">number</td><td class="unit">gal/hour</td><td class="req">required</td><td>Average cruise fuel burn.</td></tr>
+                <tr><td class="fname">taxiFuel</td><td class="ftype">number</td><td class="unit">gallons</td><td class="opt">1</td><td>Fuel burned during start and taxi, added once.</td></tr>
+                <tr><td class="fname">contingency</td><td class="ftype">integer</td><td class="unit">% of trip</td><td class="opt">5</td><td>Extra fuel as a percentage of the trip distance fuel (0–99).</td></tr>
+                <tr><td class="fname">reservesMinutes</td><td class="ftype">integer</td><td class="unit">minutes</td><td class="opt">45</td><td>Final reserve time, converted to fuel at cruise flow (0–89).</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="field-group" id="f-check">
+            <h3>Checklist</h3>
+            <p class="group-path">checklists[]</p>
+            <table class="fields">
+              <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td class="fname">id</td><td class="ftype">integer</td><td class="req">yes</td><td>Unique within this aircraft. Use sequential ids starting at 0.</td></tr>
+                <tr><td class="fname">caption</td><td class="ftype">string</td><td class="req">yes</td><td>Checklist title, stored in uppercase, e.g. <code>ENGINE START</code>. Non-empty.</td></tr>
+                <tr><td class="fname">items</td><td class="ftype">array</td><td class="req">yes</td><td>Ordered checklist items. See below.</td></tr>
+                <tr><td class="fname">category</td><td class="ftype">string</td><td class="opt">no</td><td>One of <code>NORMAL</code>, <code>NON_NORMAL</code>, <code>PROCEDURE</code>. Defaults to <code>NORMAL</code>. Colors the card: procedure = blue, non-normal = red.</td></tr>
+                <tr><td class="fname">isCompleted</td><td class="ftype">boolean</td><td class="opt">no</td><td>Completion flag, managed by the app. Defaults to <code>false</code>; you can omit it.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="field-group" id="f-item">
+            <h3>Checklist item</h3>
+            <p class="group-path">checklists[].items[]</p>
+            <table class="fields">
+              <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td class="fname">caption</td><td class="ftype">string</td><td class="req">yes</td><td>The item to check, e.g. <code>Brakes</code>. Non-empty.</td></tr>
+                <tr><td class="fname">action</td><td class="ftype">string</td><td class="req">yes*</td><td>The expected state, uppercase, e.g. <code>TEST &amp; SET</code>. Non-empty for normal items.</td></tr>
+                <tr><td class="fname">details</td><td class="ftype">string</td><td class="opt">no</td><td>Extra notes shown under the item. Use <code>\n</code> for line breaks. Defaults to empty.</td></tr>
+                <tr><td class="fname">checked</td><td class="ftype">boolean</td><td class="opt">no</td><td>Check state, managed by the app. Defaults to <code>false</code>; you can omit it.</td></tr>
+              </tbody>
+            </table>
+            <div class="note">
+              <strong>Separator lines.</strong> To draw a visual divider inside a checklist, add an item whose
+              <code>caption</code> is exactly <code>LINE</code>. Such an item may have an empty <code>action</code>
+              and is not counted toward completion.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fuel calculator -->
+  <section class="block" id="fuel">
+    <div class="wrap">
+      <div class="block-head">
+        <span class="section-no">02 · units &amp; math</span>
+        <h2>How the fuel calculator uses these fields</h2>
+        <p>Distances are in statute miles as shown in the app, speed in knots, fuel in US gallons. The calculator turns distance into time using cruise speed minus headwind, then multiplies by fuel flow.</p>
+      </div>
+
+      <div class="formula">
+<span class="term">trip fuel</span>      <span class="op">=</span> tripDistance <span class="op">/</span> (cruiseSpeed <span class="op">−</span> headwind) <span class="op">×</span> fuelFlow<br>
+<span class="term">alternate fuel</span> <span class="op">=</span> alterDistance <span class="op">/</span> (cruiseSpeed <span class="op">−</span> headwind) <span class="op">×</span> fuelFlow<br>
+<span class="term">contingency</span>    <span class="op">=</span> fuel for (tripDistance <span class="op">×</span> contingency <span class="op">/</span> 100)<br>
+<span class="term">reserve</span>        <span class="op">=</span> reservesMinutes <span class="op">/</span> 60 <span class="op">×</span> fuelFlow<br>
+<span class="res">block fuel</span>     <span class="op">=</span> trip <span class="op">+</span> alternate <span class="op">+</span> contingency <span class="op">+</span> taxiFuel <span class="op">+</span> reserve
+      </div>
+
+      <p style="max-width:68ch; color:var(--text-muted);">Worked example with the Cessna 172 numbers above — a 100&nbsp;sm trip, no alternate, no headwind, and the default taxi / contingency / reserve values:</p>
+
+      <div class="worked">
+        <div class="worked-row"><span class="label">Trip fuel · 100 sm ÷ 100 kt × 8 gph</span><span class="val">8 gal</span></div>
+        <div class="worked-row"><span class="label">Alternate fuel · 0 sm</span><span class="val">0 gal</span></div>
+        <div class="worked-row"><span class="label">Contingency · 5% of trip</span><span class="val">0 gal</span></div>
+        <div class="worked-row"><span class="label">Taxi fuel</span><span class="val">1 gal</span></div>
+        <div class="worked-row"><span class="label">Reserve · 45 min at 8 gph</span><span class="val">6 gal</span></div>
+        <div class="worked-row total"><span class="label">Block fuel</span><span class="val">15 gal</span></div>
+      </div>
+
+      <div class="note warn">
+        <strong>Capacity check.</strong> If block fuel exceeds <code>fuelCapacity</code> (56 gal here), the
+        result field turns red and reads "Fuel exceed!". Set <code>fuelCapacity</code> to the aircraft's real
+        usable fuel so this warning is meaningful.
+      </div>
+    </div>
+  </section>
+
+  <!-- Icon -->
+  <section class="block" id="icon">
+    <div class="wrap">
+      <div class="block-head">
+        <span class="section-no">03 · icon</span>
+        <h2>The icon image</h2>
+        <p>Each aircraft needs a separate JPEG icon, selected alongside the JSON file. The app validates it before saving.</p>
+      </div>
+      <ul class="rules">
+        <li>Format: <strong>JPEG</strong> (PNG and other formats are rejected)</li>
+        <li>File size: <strong>50 KB or less</strong></li>
+        <li>Dimensions: <strong>200 px or less</strong> on each side</li>
+        <li>Proportions: width and height within <strong>10%</strong> of each other</li>
+      </ul>
+      <div class="note">
+        A 150×150&nbsp;px JPEG is the sweet spot — it matches the bundled aircraft icons. A slightly
+        non-square image such as 152×150 is fine; 150×180 is not.
+      </div>
+    </div>
+  </section>
+
+  <!-- Import -->
+  <section class="block" id="import">
+    <div class="wrap">
+      <div class="block-head">
+        <span class="section-no">04 · import</span>
+        <h2>Adding your aircraft</h2>
+        <p>Open the tools menu on the main screen and choose <strong>Add custom aircraft</strong>. The app checks everything before it writes a single file.</p>
+      </div>
+      <ol class="steps">
+        <li><strong>Select the JSON file.</strong> It is parsed strictly and checked against the rules below. Errors appear next to the file control.</li>
+        <li><strong>Select the JPEG icon.</strong> It is checked for format, size, dimensions and proportions.</li>
+        <li><strong>Confirm image rights.</strong> Tick the box declaring you own the image or obtained it from a free source.</li>
+        <li><strong>Save.</strong> The app assigns the next free id, rewrites the <code>photo</code> label, and stores both files in its data directory. Your aircraft appears in the list immediately.</li>
+      </ol>
+
+      <div class="block-head" style="margin-top:2.5rem;">
+        <h2 style="font-size:1.6rem;">Validation rules</h2>
+      </div>
+      <ul class="rules">
+        <li>Valid JSON matching the schema exactly — unknown fields are rejected</li>
+        <li>Required fields present: <code>name</code>, <code>performance</code>, <code>checklists</code></li>
+        <li>Performance values positive; taxi / contingency / reserve non-negative</li>
+        <li>Checklist ids unique within the aircraft</li>
+        <li>Item captions and actions non-empty (except <code>LINE</code> separators)</li>
+        <li>Category is <code>NORMAL</code>, <code>NON_NORMAL</code> or <code>PROCEDURE</code></li>
+        <li>Aircraft name not already used by another aircraft</li>
+        <li>Icon passes all four image checks</li>
+      </ul>
+
+      <div class="note">
+        <strong>Removing an aircraft.</strong> Custom aircraft show a trash-can icon on their card. Confirming
+        removes both files. Bundled aircraft cannot be removed.
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#faq">FAQ</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="https://github.com/alexmaryin/sims_checklist" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+      <p class="footer-copy">&copy; 2026 Alex Maryin. Apache 2.0 License.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

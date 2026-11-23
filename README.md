@@ -3,7 +3,7 @@
 
 *My first multiplatform App in Kotlin for Desktop & Android*
 
-#### Application helps to control, proceed and complete checklists of virtual airplanes as far as calculate fuel quantity for your trip and get METAR/TAF with visualized wind director.
+#### Application helps to control, proceed and complete checklists of virtual airplanes as far as calculate fuel quantity for your trip and get METAR/TAF/D-ATIS with visualized wind director. Fly the five bundled aircraft — or bring your own.
 
 ## Features
 
@@ -16,6 +16,22 @@
 - Piper PA-24-250 Comanche with 14 normal and 4 emergency checklists derived from the official checklist set
 
 Every checklist item is rendered as a clean two-column row (caption and action) with details displayed below.
+Checklists are grouped by category — normal, procedure (blue), and non-normal/emergency (red).
+
+### Custom aircraft
+
+Not flying one of the bundled five? Add your own aircraft from the tools menu (**Add custom aircraft**):
+
+- Provide a **JSON file** with the aircraft's performance and checklists, plus a **JPEG icon**
+- The app validates everything before saving: strict schema, positive performance values, unique checklist ids,
+  and icon rules (JPEG, ≤ 50 KB, ≤ 200 px per side, near-square proportions)
+- A copyright attestation is required for the icon; duplicate aircraft names are rejected
+- The app assigns the id, stores both files in its data directory, and the aircraft works with
+  checklists and the fuel calculator just like a bundled one
+- Remove your custom aircraft anytime from the trash-can icon on its card
+
+The full field reference, units, and validation rules are documented in
+[docs/aircraft-format.html](https://alexmaryin.github.io/sims_checklist/aircraft-format.html).
 
 ### Fuel calculator
 
@@ -77,6 +93,10 @@ This feature helps you calculate the corrected altitude for your waypoints based
 - Awesome library [Decompose](https://github.com/arkivanov/Decompose) for navigation and lifecycle management, thanks to @arkivanov
 - Google Material library for UI with dark and light theme support.
 - MVI architecture.
+- App files (airports database, aircraft catalog, custom aircraft) live in one OS-conventional
+  per-user directory — see [docs/storage.md](docs/storage.md).
+- Each bundled aircraft is a separate JSON file, deployed to app storage on first run / upgrade,
+  with per-file fallback to bundled resources; custom aircraft are never touched by upgrades.
 
 
 
