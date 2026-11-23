@@ -18,9 +18,9 @@ data class FuelCalcViewState(
 
     private fun contFuel() = fuelInGallons(tripDistance * performance.contingency / 100)
 
-    private fun reserveFuel() = performance.reservesMinutes / 60 * performance.averageFuelFlow
+    private fun reserveFuel() = performance.reservesMinutes / 60f * performance.averageFuelFlow
 
-    fun blockFuel() = fuelInGallons(tripDistance) + fuelInGallons(alterDistance) + contFuel() + performance.taxiFuel + reserveFuel()
+    fun blockFuel() = (fuelInGallons(tripDistance) + fuelInGallons(alterDistance) + contFuel() + performance.taxiFuel + reserveFuel()).roundToInt()
 
     val fuelExceed get() = blockFuel() > performance.fuelCapacity
 }
