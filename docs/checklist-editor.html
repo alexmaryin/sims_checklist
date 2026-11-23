@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Visual editor for creating aircraft JSON files for Sims Checklist. Build checklists, set performance values, and download a valid file ready for import.">
+  <meta name="author" content="Alex Maryin">
+  <meta name="theme-color" content="#0b1120">
+  <title>Checklist Editor — Sims Checklist</title>
+
+  <link rel="icon" type="image/png" href="logo.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- SortableJS for drag-and-drop -->
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
+
+  <style>
+    :root {
+      --color-primary: #f59e0b;
+      --color-primary-hover: #d97706;
+      --color-primary-subtle: rgba(245, 158, 11, 0.1);
+      --color-accent: #2dd4bf;
+      --color-accent-hover: #14b8a6;
+      --color-accent-subtle: rgba(45, 212, 191, 0.1);
+      --bg-base: #0b1120;
+      --bg-surface: #111827;
+      --bg-elevated: #1e293b;
+      --bg-code: #0d1526;
+      --text-heading: #f1f5f9;
+      --text-body: #cbd5e1;
+      --text-muted: #94a3b8;
+      --text-muted-dark: #64748b;
+      --border-dark: rgba(255, 255, 255, 0.08);
+      --border-primary: rgba(245, 158, 11, 0.3);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-full: 9999px;
+      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', Consolas, monospace;
+      --content-max: 1080px;
+      --error: #ef4444;
+      --error-subtle: rgba(239, 68, 68, 0.1);
+      --warning: #f59e0b;
+      --warning-subtle: rgba(245, 158, 11, 0.08);
+      --cat-procedure: #93c5fd;
+      --cat-non-normal: #fca5a5;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+    body {
+      font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg-base);
+      color: var(--text-body);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      line-height: 1.1;
+      color: var(--text-heading);
+    }
+
+    a { color: var(--color-accent-hover); text-decoration: underline; text-underline-offset: 2px; transition: color var(--transition); }
+    a:hover { color: var(--color-primary); }
+    code, .mono { font-family: var(--mono); }
+
+    /* ===== Nav ===== */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1rem 1.5rem;
+      background: rgba(11, 17, 32, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-dark);
+    }
+    .nav-inner {
+      max-width: var(--content-max); margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+    .nav-logo img { width: 40px; height: 40px; border-radius: var(--radius-sm); }
+    .nav-logo-text { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.05em; color: var(--text-heading); }
+    .nav-back { font-size: 0.95rem; font-weight: 600; color: var(--text-muted); text-decoration: none; }
+    .nav-back:hover { color: var(--text-heading); }
+
+    /* ===== Layout ===== */
+    .wrap { max-width: var(--content-max); margin: 0 auto; padding: 0 1.5rem; }
+
+    /* ===== Hero ===== */
+    .hero { padding: 7.5rem 0 1.5rem; position: relative; overflow: hidden; }
+    .hero::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 60% 50% at 80% 0%, var(--color-primary-subtle) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 0% 100%, var(--color-accent-subtle) 0%, transparent 60%);
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 700px; }
+    .hero-kicker {
+      font-family: var(--mono); font-size: 0.8rem; font-weight: 500;
+      color: var(--color-accent); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .hero h1 { font-size: clamp(2.75rem, 6vw, 4rem); margin-bottom: 0.75rem; }
+    .hero h1 .accent { color: var(--color-primary); }
+    .hero-lede { font-size: 1.05rem; color: var(--text-muted); max-width: 56ch; margin-bottom: 1.25rem; }
+    .hero-link { font-size: 0.92rem; color: var(--text-muted); }
+    .hero-link a { font-weight: 600; }
+
+    /* ===== Toolbar ===== */
+    .toolbar {
+      position: relative; z-index: 1;
+      max-width: var(--content-max); margin: 1rem auto; padding: 0 1.5rem;
+      display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center;
+    }
+    .toolbar .spacer { flex: 1; }
+
+    /* ===== Buttons ===== */
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.55rem 1.1rem;
+      font-family: 'Source Sans 3', sans-serif; font-weight: 600; font-size: 0.88rem;
+      border-radius: var(--radius-sm); cursor: pointer; border: none;
+      transition: all var(--transition); text-decoration: none; white-space: nowrap;
+    }
+    .btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+    .btn-primary { background: var(--color-primary); color: var(--bg-base); }
+    .btn-primary:hover { background: var(--color-primary-hover); }
+    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-secondary { background: var(--bg-elevated); color: var(--text-heading); border: 1px solid var(--border-dark); }
+    .btn-secondary:hover { background: var(--bg-surface); border-color: var(--border-primary); }
+    .btn-ghost { background: transparent; color: var(--text-muted); border: 1px solid var(--border-dark); }
+    .btn-ghost:hover { color: var(--text-heading); border-color: var(--text-muted-dark); }
+    .btn-sm { padding: 0.35rem 0.7rem; font-size: 0.82rem; }
+
+    /* ===== Sections ===== */
+    section.block { padding: 2rem 0 0; }
+    .block-head { margin-bottom: 1.25rem; }
+    .block-head h2 { font-size: 1.5rem; margin-bottom: 0.35rem; }
+    .block-head p { color: var(--text-muted); font-size: 0.92rem; max-width: 68ch; }
+
+    /* ===== Form fields ===== */
+    .field { margin-bottom: 1rem; }
+    .field label {
+      display: block; font-weight: 600; font-size: 0.85rem;
+      color: var(--text-muted); margin-bottom: 0.3rem; letter-spacing: 0.02em;
+    }
+    .field label .unit { font-family: var(--mono); font-weight: 400; color: var(--text-muted-dark); font-size: 0.8rem; }
+    .field .hint { font-size: 0.8rem; color: var(--text-muted-dark); margin-top: 0.2rem; }
+    .field input, .field select, .field textarea {
+      width: 100%; padding: 0.6rem 0.8rem;
+      background: var(--bg-code); color: var(--text-heading);
+      border: 1px solid var(--border-dark); border-radius: var(--radius-sm);
+      font-family: 'Source Sans 3', sans-serif; font-size: 0.95rem;
+      transition: border-color var(--transition);
+    }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      outline: none; border-color: var(--color-accent);
+      box-shadow: 0 0 0 2px rgba(45, 212, 191, 0.15);
+    }
+    .field textarea { resize: vertical; min-height: 60px; font-family: var(--mono); font-size: 0.85rem; }
+    .field.invalid input, .field.invalid select { border-color: var(--error); }
+    .field .error-msg { font-size: 0.8rem; color: var(--error); margin-top: 0.25rem; display: none; }
+    .field.invalid .error-msg { display: block; }
+
+    /* ===== Performance grid ===== */
+    .perf-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.25rem 1.5rem;
+    }
+
+    /* ===== Checklist cards ===== */
+    .checklists-section { padding-bottom: 1rem; }
+    .checklist-card {
+      background: var(--bg-surface); border: 1px solid var(--border-dark);
+      border-radius: var(--radius-md); margin-bottom: 0.75rem; overflow: hidden;
+    }
+    .checklist-card.cat-procedure { border-left: 3px solid var(--cat-procedure); }
+    .checklist-card.cat-non-normal { border-left: 3px solid var(--cat-non-normal); }
+
+    .checklist-header {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.75rem 1rem; background: var(--bg-elevated);
+      min-height: 52px;
+    }
+    .checklist-card:not(.collapsed) > .checklist-header { border-bottom: 1px solid var(--border-dark); }
+
+    .drag-handle {
+      cursor: grab; color: var(--text-muted-dark); font-size: 1.1rem;
+      padding: 0.4rem 0.2rem; user-select: none; flex-shrink: 0; line-height: 1;
+      border-radius: 4px; touch-action: none;
+    }
+    .drag-handle:hover { color: var(--text-heading); background: rgba(255,255,255,0.06); }
+    .drag-handle:active { cursor: grabbing; }
+
+    .move-buttons { display: flex; flex-direction: column; gap: 1px; flex-shrink: 0; }
+    .move-btn {
+      background: none; border: none; color: var(--text-muted-dark); cursor: pointer;
+      font-size: 0.6rem; line-height: 1; padding: 2px 4px; border-radius: 3px;
+    }
+    .move-btn:hover { color: var(--text-heading); background: rgba(255,255,255,0.06); }
+
+    .cl-collapse {
+      background: none; border: none; color: var(--text-muted-dark); cursor: pointer;
+      padding: 0.3rem; line-height: 0; flex-shrink: 0; border-radius: 4px;
+    }
+    .cl-collapse:hover { color: var(--text-heading); background: rgba(255,255,255,0.06); }
+    .cl-collapse svg { width: 18px; height: 18px; transition: transform var(--transition); }
+    .checklist-card.collapsed .cl-collapse svg { transform: rotate(-90deg); }
+
+    .cl-header-inputs {
+      flex: 1; display: flex; gap: 0.6rem; align-items: center; min-width: 0;
+    }
+    .cl-header-inputs input {
+      flex: 1; min-width: 0; padding: 0.5rem 0.75rem;
+      background: var(--bg-code); color: var(--text-heading);
+      border: 1px solid var(--border-dark); border-radius: var(--radius-sm);
+      font-family: 'Source Sans 3', sans-serif; font-size: 0.95rem; font-weight: 600;
+      transition: border-color var(--transition);
+    }
+    .cl-header-inputs input:focus { outline: none; border-color: var(--color-accent); }
+    .cl-header-inputs select {
+      flex-shrink: 0; width: 150px; padding: 0.5rem 0.6rem;
+      background: var(--bg-code); color: var(--text-heading);
+      border: 1px solid var(--border-dark); border-radius: var(--radius-sm);
+      font-family: var(--mono); font-size: 0.8rem;
+    }
+    .cl-header-inputs select:focus { outline: none; border-color: var(--color-accent); }
+
+    .cl-count {
+      font-family: var(--mono); font-size: 0.75rem; color: var(--text-muted-dark);
+      white-space: nowrap; display: none; flex-shrink: 0;
+    }
+    .checklist-card.collapsed .cl-count { display: inline; }
+
+    .checklist-items { padding: 0.75rem; }
+    .checklist-card.collapsed .checklist-items,
+    .checklist-card.collapsed .checklist-actions { display: none; }
+
+    .item-row {
+      display: grid;
+      grid-template-columns: 26px minmax(0, 1fr) minmax(0, 1fr) auto auto;
+      gap: 0.5rem; align-items: center;
+      padding: 0.45rem 0.5rem; border-radius: var(--radius-sm); margin-bottom: 0.25rem;
+      border: 1px solid transparent;
+    }
+    .item-row:hover { border-color: var(--border-dark); background: rgba(255,255,255,0.02); }
+    .item-row .drag-handle { grid-row: 1 / span 2; align-self: start; padding-top: 0.55rem; }
+    .item-row .move-buttons { grid-row: 1 / span 2; align-self: start; padding-top: 0.45rem; }
+    .item-row > input {
+      width: 100%; padding: 0.5rem 0.7rem;
+      background: var(--bg-code); color: var(--text-body);
+      border: 1px solid var(--border-dark); border-radius: var(--radius-sm);
+      font-family: 'Source Sans 3', sans-serif; font-size: 0.92rem;
+    }
+    .item-row > input:focus { outline: none; border-color: var(--color-accent); }
+    .item-row .inp-action { color: var(--text-heading); font-weight: 600; text-transform: uppercase; }
+
+    .item-details-toggle {
+      background: none; border: 1px solid transparent; border-radius: 6px;
+      font-size: 0.78rem; font-family: var(--mono); color: var(--text-muted-dark);
+      cursor: pointer; padding: 0.35rem 0.55rem; white-space: nowrap;
+    }
+    .item-details-toggle:hover { color: var(--text-muted); background: rgba(255,255,255,0.04); }
+    .item-details-toggle.has-details { color: var(--color-primary); }
+
+    .item-details-row { grid-column: 2 / -1; grid-row: 2; }
+    .item-details-row textarea {
+      width: 100%; padding: 0.5rem 0.7rem;
+      background: var(--bg-code); color: var(--text-muted);
+      border: 1px solid var(--border-dark); border-radius: var(--radius-sm);
+      font-family: var(--mono); font-size: 0.82rem;
+      resize: vertical; min-height: 48px;
+    }
+    .item-details-row textarea:focus { outline: none; border-color: var(--color-accent); }
+
+    .item-row.is-line { grid-template-columns: 26px 1fr auto; background: var(--bg-code); border-color: var(--border-dark); }
+    .item-row.is-line .line-label {
+      font-family: var(--mono); font-size: 0.8rem; color: var(--text-muted-dark);
+      text-align: center; letter-spacing: 0.05em;
+    }
+
+    .item-remove, .checklist-remove {
+      background: none; border: none; color: var(--text-muted-dark); cursor: pointer;
+      padding: 0.3rem 0.45rem; font-size: 1.05rem; line-height: 1; border-radius: 4px; flex-shrink: 0;
+    }
+    .item-remove:hover, .checklist-remove:hover { color: var(--error); background: var(--error-subtle); }
+
+    .checklist-actions {
+      display: flex; gap: 0.5rem; padding: 0 0.75rem 0.75rem;
+    }
+
+    .sortable-ghost { opacity: 0.35; background: var(--bg-elevated) !important; }
+
+    /* ===== Preview ===== */
+    .preview-card {
+      background: var(--bg-code); border: 1px solid var(--border-dark);
+      border-radius: var(--radius-lg); overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+    }
+    .preview-head {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      padding: 0.6rem 1rem; background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-dark);
+    }
+    .preview-head .filename { font-family: var(--mono); font-size: 0.82rem; color: var(--text-muted); }
+    .preview-head-right { display: flex; align-items: center; gap: 0.75rem; }
+    .preview-card pre {
+      margin: 0; padding: 1.25rem 1.5rem; overflow: auto; max-height: 60vh;
+      font-family: var(--mono); font-size: 0.82rem; line-height: 1.75;
+      color: var(--text-body); tab-size: 2; white-space: pre;
+    }
+    .preview-card .k { color: var(--color-accent); }
+    .preview-card .s { color: #fbbf24; }
+    .preview-card .n { color: #f1f5f9; }
+    .preview-card .c { color: var(--text-muted-dark); font-style: italic; }
+    .preview-card .p { color: var(--text-muted-dark); }
+    .preview-card .bl { color: #c084fc; }
+
+    /* ===== Error / warning banners ===== */
+    .error-banner {
+      background: var(--error-subtle); border: 1px solid var(--error);
+      border-radius: var(--radius-sm); padding: 0.75rem 1rem; margin-bottom: 1rem;
+      font-size: 0.88rem; color: var(--text-heading); display: none;
+    }
+    .error-banner.visible { display: block; }
+    .error-banner ul { margin: 0.5rem 0 0 1.25rem; list-style: disc; color: var(--text-body); }
+    .error-banner li { font-size: 0.85rem; margin-bottom: 0.15rem; }
+
+    .warning-banner {
+      background: var(--warning-subtle); border: 1px solid var(--warning);
+      border-radius: var(--radius-sm); padding: 0.75rem 1rem; margin-bottom: 1rem;
+      font-size: 0.88rem; color: var(--text-heading); display: none;
+    }
+    .warning-banner.visible { display: block; }
+    .warning-banner ul { margin: 0.5rem 0 0 1.25rem; list-style: disc; color: var(--text-body); }
+    .warning-banner li { font-size: 0.85rem; margin-bottom: 0.15rem; }
+
+    /* ===== Save indicator ===== */
+    .save-indicator {
+      font-family: var(--mono); font-size: 0.75rem; color: var(--text-muted-dark);
+      padding: 0.2rem 0.5rem; border-radius: var(--radius-full);
+      border: 1px solid var(--border-dark); opacity: 0; transition: opacity var(--transition);
+    }
+    .save-indicator.saved { opacity: 1; color: var(--color-accent); }
+
+    /* ===== Footer ===== */
+    .footer { border-top: 1px solid var(--border-dark); background: var(--bg-surface); padding: 2rem 1.5rem; margin-top: 3rem; }
+    .footer-inner {
+      max-width: var(--content-max); margin: 0 auto;
+      display: flex; flex-direction: column; gap: 1rem; align-items: center; text-align: center;
+    }
+    @media (min-width: 768px) { .footer-inner { flex-direction: row; justify-content: space-between; text-align: left; } }
+    .footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .footer-links a { font-size: 0.9rem; color: var(--text-muted); text-decoration: none; }
+    .footer-links a:hover { color: var(--color-primary); }
+    .footer-copy { font-size: 0.8rem; color: var(--text-muted-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 700px) {
+      .cl-header-inputs { flex-wrap: wrap; }
+      .cl-header-inputs select { width: 100%; }
+      .item-row { grid-template-columns: 26px minmax(0, 1fr) auto auto; }
+      .item-row .inp-action { grid-column: 2; }
+      .item-row .item-details-row { grid-column: 2 / -1; grid-row: 3; }
+      .item-row .drag-handle { grid-row: 1 / span 3; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="logo.png" alt="Sims Checklist Logo" width="40" height="40">
+        <span class="nav-logo-text">Sims Checklist</span>
+      </a>
+      <a href="index.html" class="nav-back">&larr; Back to home</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="wrap hero-content">
+      <p class="hero-kicker">custom aircraft · visual tool</p>
+      <h1>Checklist <span class="accent">Editor</span></h1>
+      <p class="hero-lede">
+        Build an aircraft JSON file without writing JSON by hand. Fill in the form, arrange checklists, and download a valid file the app can import directly.
+      </p>
+      <p class="hero-link">
+        Need the field reference? <a href="aircraft-format.html">Aircraft JSON Format &rarr;</a>
+      </p>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <button class="btn btn-primary js-download" disabled>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+      Download JSON
+    </button>
+    <button class="btn btn-secondary" id="btnLoad">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+      Load existing JSON
+    </button>
+    <input type="file" id="fileInput" accept=".json" style="display:none">
+    <button class="btn btn-ghost" id="btnClear">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+      Clear
+    </button>
+    <span class="save-indicator" id="saveIndicator">saved</span>
+  </div>
+
+  <main class="wrap">
+    <div class="error-banner" id="errorBanner">
+      <strong>Fix these issues before downloading:</strong>
+      <ul id="errorList"></ul>
+    </div>
+    <div class="warning-banner" id="warningBanner">
+      <strong>Heads up:</strong>
+      <ul id="warningList"></ul>
+    </div>
+
+    <!-- Aircraft identity -->
+    <section class="block" id="secIdentity">
+      <div class="block-head">
+        <h2>Aircraft</h2>
+      </div>
+      <div class="field" id="fieldName">
+        <label for="inpName">Name</label>
+        <input type="text" id="inpName" placeholder="e.g. Cessna 172 Skyhawk" autocomplete="off" spellcheck="false">
+        <p class="error-msg">Aircraft name is required.</p>
+      </div>
+    </section>
+
+    <!-- Performance -->
+    <section class="block" id="secPerf">
+      <div class="block-head">
+        <h2>Performance</h2>
+        <p>Values used by the fuel calculator. Required fields must be positive.</p>
+      </div>
+      <div class="perf-grid">
+        <div class="field" id="fieldFuelCapacity">
+          <label for="inpFuelCapacity">Fuel capacity <span class="unit">gallons</span></label>
+          <input type="number" id="inpFuelCapacity" step="any" min="0" placeholder="56">
+          <p class="error-msg">Must be a positive number.</p>
+        </div>
+        <div class="field" id="fieldCruiseSpeed">
+          <label for="inpCruiseSpeed">Cruise speed <span class="unit">knots</span></label>
+          <input type="number" id="inpCruiseSpeed" step="any" min="0" placeholder="100">
+          <p class="error-msg">Must be a positive number.</p>
+        </div>
+        <div class="field" id="fieldFuelFlow">
+          <label for="inpFuelFlow">Fuel flow <span class="unit">gal/hour</span></label>
+          <input type="number" id="inpFuelFlow" step="any" min="0" placeholder="8">
+          <p class="error-msg">Must be a positive number.</p>
+        </div>
+        <div class="field" id="fieldTaxiFuel">
+          <label for="inpTaxiFuel">Taxi fuel <span class="unit">gallons</span></label>
+          <input type="number" id="inpTaxiFuel" step="any" min="0" placeholder="1">
+          <p class="hint">Default: 1</p>
+          <p class="error-msg">Must be 0 or more.</p>
+        </div>
+        <div class="field" id="fieldContingency">
+          <label for="inpContingency">Contingency <span class="unit">% of trip</span></label>
+          <input type="number" id="inpContingency" step="1" min="0" max="99" placeholder="5">
+          <p class="hint">0–99. Default: 5</p>
+          <p class="error-msg">Must be 0–99.</p>
+        </div>
+        <div class="field" id="fieldReserves">
+          <label for="inpReserves">Reserves <span class="unit">minutes</span></label>
+          <input type="number" id="inpReserves" step="1" min="0" max="89" placeholder="45">
+          <p class="hint">0–89. Default: 45</p>
+          <p class="error-msg">Must be 0–89.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Checklists -->
+    <section class="block checklists-section" id="secChecklists">
+      <div class="block-head">
+        <h2>Checklists</h2>
+        <p>Drag the <span class="mono">⠿</span> handle to reorder. Collapse a card to make moving it easier.</p>
+      </div>
+      <div id="checklistsContainer"></div>
+      <button class="btn btn-secondary btn-sm" id="btnAddChecklist" style="margin-top: 0.5rem;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+        Add checklist
+      </button>
+    </section>
+
+    <!-- Generated JSON -->
+    <section class="block" id="secPreview" style="padding-bottom: 2rem;">
+      <div class="block-head">
+        <h2>Generated JSON</h2>
+        <p>Exactly the file you will download: ids assigned, captions and actions uppercased, defaults filled in.</p>
+      </div>
+      <div class="preview-card">
+        <div class="preview-head">
+          <span class="filename" id="previewFilename">aircraft.json</span>
+          <div class="preview-head-right">
+            <span class="filename" id="previewStatus"></span>
+            <button class="btn btn-primary btn-sm js-download" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+              Download JSON
+            </button>
+          </div>
+        </div>
+        <pre id="jsonPreview"><span class="p">{}</span></pre>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#faq">FAQ</a>
+        <a href="aircraft-format.html">JSON Format</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="https://github.com/alexmaryin/sims_checklist" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+      <p class="footer-copy">&copy; 2026 Alex Maryin. Apache 2.0 License.</p>
+    </div>
+  </footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var STORAGE_KEY = 'sims-checklist-editor-state';
+  var hasSortable = typeof window.Sortable !== 'undefined';
+
+  // ===== State =====
+  function emptyData() {
+    return {
+      id: 0,
+      name: '',
+      performance: {
+        fuelCapacity: '',
+        averageCruiseSpeed: '',
+        averageFuelFlow: '',
+        taxiFuel: '',
+        contingency: '',
+        reservesMinutes: ''
+      },
+      checklists: [],
+      photo: ''
+    };
+  }
+
+  var aircraftData = emptyData();
+
+  // ===== Debounce helper =====
+  function debounce(fn, ms) {
+    var timer;
+    return function () {
+      var args = arguments;
+      var ctx = this;
+      clearTimeout(timer);
+      timer = setTimeout(function () { fn.apply(ctx, args); }, ms);
+    };
+  }
+
+  // ===== localStorage =====
+  var _saveToStorage = debounce(function () {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(aircraftData));
+      var el = document.getElementById('saveIndicator');
+      el.classList.add('saved');
+      setTimeout(function () { el.classList.remove('saved'); }, 1200);
+    } catch (e) { /* quota or disabled — ignore */ }
+  }, 500);
+
+  function saveState() { _saveToStorage(); }
+
+  function loadState() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return false;
+      var parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed !== 'object') return false;
+      aircraftData = parsed;
+      // Ensure all keys exist
+      var def = emptyData();
+      for (var k in def) { if (!(k in aircraftData)) aircraftData[k] = def[k]; }
+      if (!aircraftData.performance) aircraftData.performance = def.performance;
+      if (!Array.isArray(aircraftData.checklists)) aircraftData.checklists = [];
+      aircraftData.checklists.forEach(function (cl) {
+        if (!Array.isArray(cl.items)) cl.items = [];
+        if (!cl.category) cl.category = 'NORMAL';
+      });
+      return true;
+    } catch (e) { return false; }
+  }
+
+  function clearState() {
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+  }
+
+  // ===== JSON generation =====
+  function generateOutput() {
+    var perf = aircraftData.performance;
+    var output = {
+      id: 0,
+      name: aircraftData.name,
+      performance: {
+        fuelCapacity: parseFloat(perf.fuelCapacity) || 0,
+        averageCruiseSpeed: parseFloat(perf.averageCruiseSpeed) || 0,
+        averageFuelFlow: parseFloat(perf.averageFuelFlow) || 0
+      },
+      checklists: aircraftData.checklists.map(function (cl, i) {
+        var out = {
+          id: i,
+          caption: (cl.caption || '').toUpperCase(),
+          items: (cl.items || []).map(function (item) {
+            var o = { caption: item.caption || '', action: (item.action || '').toUpperCase() };
+            if (item.details && item.details.trim()) o.details = item.details;
+            return o;
+          })
+        };
+        if (cl.category && cl.category !== 'NORMAL') out.category = cl.category;
+        return out;
+      }),
+      photo: ''
+    };
+    // Optional performance with defaults
+    var taxi = parseFloat(perf.taxiFuel);
+    output.performance.taxiFuel = isNaN(taxi) ? 1 : taxi;
+    var cont = parseInt(perf.contingency, 10);
+    output.performance.contingency = isNaN(cont) ? 5 : cont;
+    var res = parseInt(perf.reservesMinutes, 10);
+    output.performance.reservesMinutes = isNaN(res) ? 45 : res;
+    return output;
+  }
+
+  // ===== Validation =====
+  function validate() {
+    var errors = [];
+    var warnings = [];
+    if (!aircraftData.name || !aircraftData.name.trim()) {
+      errors.push({ field: 'fieldName', msg: 'Aircraft name is required.' });
+    }
+    var perf = aircraftData.performance;
+    var fc = parseFloat(perf.fuelCapacity);
+    if (isNaN(fc) || fc <= 0) errors.push({ field: 'fieldFuelCapacity', msg: 'Fuel capacity must be a positive number.' });
+    var cs = parseFloat(perf.averageCruiseSpeed);
+    if (isNaN(cs) || cs <= 0) errors.push({ field: 'fieldCruiseSpeed', msg: 'Cruise speed must be a positive number.' });
+    var ff = parseFloat(perf.averageFuelFlow);
+    if (isNaN(ff) || ff <= 0) errors.push({ field: 'fieldFuelFlow', msg: 'Fuel flow must be a positive number.' });
+    if (perf.taxiFuel !== '' && parseFloat(perf.taxiFuel) < 0) {
+      errors.push({ field: 'fieldTaxiFuel', msg: 'Taxi fuel must be 0 or more.' });
+    }
+    var ct = parseInt(perf.contingency, 10);
+    if (perf.contingency !== '' && (isNaN(ct) || ct < 0 || ct > 99)) {
+      errors.push({ field: 'fieldContingency', msg: 'Contingency must be 0–99.' });
+    }
+    var rm = parseInt(perf.reservesMinutes, 10);
+    if (perf.reservesMinutes !== '' && (isNaN(rm) || rm < 0 || rm > 89)) {
+      errors.push({ field: 'fieldReserves', msg: 'Reserves must be 0–89.' });
+    }
+    aircraftData.checklists.forEach(function (cl, i) {
+      if (!cl.caption || !cl.caption.trim()) {
+        errors.push({ field: null, msg: 'Checklist ' + (i + 1) + ' has an empty caption.' });
+      }
+      if (!cl.items || cl.items.length === 0) {
+        errors.push({ field: null, msg: 'Checklist "' + (cl.caption || i) + '" has no items.' });
+      } else {
+        cl.items.forEach(function (item, j) {
+          if (!item.caption || !item.caption.trim()) {
+            errors.push({ field: null, msg: 'Item ' + (j + 1) + ' in "' + (cl.caption || 'checklist ' + (i + 1)) + '" has an empty caption.' });
+          } else if (item.caption !== 'LINE' && (!item.action || !item.action.trim())) {
+            errors.push({ field: null, msg: 'Item "' + item.caption + '" in "' + (cl.caption || 'checklist ' + (i + 1)) + '" has an empty action.' });
+          }
+        });
+      }
+    });
+    // Duplicate checklist captions warning
+    var seen = {};
+    aircraftData.checklists.forEach(function (cl) {
+      var upper = (cl.caption || '').toUpperCase();
+      if (!upper) return;
+      if (seen[upper]) {
+        warnings.push('Duplicate checklist caption: ' + upper);
+      }
+      seen[upper] = true;
+    });
+    return { errors: errors, warnings: warnings };
+  }
+
+  // ===== Syntax-highlighted JSON =====
+  function highlightJSON(obj) {
+    var json = JSON.stringify(obj, null, 2);
+    return json
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"([^"]+)"(\s*:)/g, '<span class="k">"$1"</span>$2')
+      .replace(/:\s"((?:[^"\\]|\\.)*)"/g, ': <span class="s">"$1"</span>')
+      .replace(/\b(\d+\.?\d*)\b/g, '<span class="n">$1</span>')
+      .replace(/\b(true|false)\b/g, '<span class="bl">$1</span>')
+      .replace(/\bnull\b/g, '<span class="bl">null</span>')
+      .replace(/([{}[\],])/g, '<span class="p">$1</span>');
+  }
+
+  // ===== Render form inputs from state =====
+  function syncFormToState() {
+    document.getElementById('inpName').value = aircraftData.name || '';
+    document.getElementById('inpFuelCapacity').value = aircraftData.performance.fuelCapacity || '';
+    document.getElementById('inpCruiseSpeed').value = aircraftData.performance.averageCruiseSpeed || '';
+    document.getElementById('inpFuelFlow').value = aircraftData.performance.averageFuelFlow || '';
+    document.getElementById('inpTaxiFuel').value = aircraftData.performance.taxiFuel || '';
+    document.getElementById('inpContingency').value = aircraftData.performance.contingency || '';
+    document.getElementById('inpReserves').value = aircraftData.performance.reservesMinutes || '';
+  }
+
+  // ===== Render checklist cards =====
+  var CHEVRON_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>';
+
+  function renderChecklists() {
+    var container = document.getElementById('checklistsContainer');
+    container.innerHTML = '';
+    aircraftData.checklists.forEach(function (cl, ci) {
+      var collapsed = !!cl.collapsed;
+      var card = document.createElement('div');
+      card.className = 'checklist-card' + (collapsed ? ' collapsed' : '');
+      if (cl.category === 'PROCEDURE') card.classList.add('cat-procedure');
+      if (cl.category === 'NON_NORMAL') card.classList.add('cat-non-normal');
+
+      // --- Header ---
+      var header = document.createElement('div');
+      header.className = 'checklist-header';
+
+      if (hasSortable) {
+        var handle = document.createElement('span');
+        handle.className = 'drag-handle';
+        handle.textContent = '\u2807';
+        handle.title = 'Drag to reorder';
+        header.appendChild(handle);
+      } else {
+        var nav = document.createElement('span');
+        nav.className = 'move-buttons';
+        nav.innerHTML =
+          '<button class="move-btn" data-clu="' + ci + '" title="Move up">\u25B2</button>' +
+          '<button class="move-btn" data-cld="' + ci + '" title="Move down">\u25BC</button>';
+        header.appendChild(nav);
+      }
+
+      var collapseBtn = document.createElement('button');
+      collapseBtn.className = 'cl-collapse';
+      collapseBtn.innerHTML = CHEVRON_SVG;
+      collapseBtn.title = collapsed ? 'Expand' : 'Collapse';
+      collapseBtn.addEventListener('click', function () {
+        cl.collapsed = !cl.collapsed;
+        saveState();
+        renderChecklists();
+      });
+      header.appendChild(collapseBtn);
+
+      var inputs = document.createElement('div');
+      inputs.className = 'cl-header-inputs';
+
+      var captionInp = document.createElement('input');
+      captionInp.type = 'text';
+      captionInp.value = cl.caption || '';
+      captionInp.placeholder = 'Checklist title';
+      captionInp.addEventListener('input', function () {
+        cl.caption = this.value;
+        saveState(); updatePreview();
+      });
+      inputs.appendChild(captionInp);
+
+      var catSel = document.createElement('select');
+      catSel.innerHTML = '<option value="NORMAL">NORMAL</option><option value="PROCEDURE">PROCEDURE</option><option value="NON_NORMAL">NON_NORMAL</option>';
+      catSel.value = cl.category || 'NORMAL';
+      catSel.addEventListener('change', function () {
+        cl.category = this.value;
+        renderChecklists(); // re-render to update left border color
+        saveState(); updatePreview();
+      });
+      inputs.appendChild(catSel);
+
+      header.appendChild(inputs);
+
+      var count = document.createElement('span');
+      count.className = 'cl-count';
+      var n = (cl.items || []).length;
+      count.textContent = n + (n === 1 ? ' item' : ' items');
+      header.appendChild(count);
+
+      var removeBtn = document.createElement('button');
+      removeBtn.className = 'checklist-remove';
+      removeBtn.innerHTML = '&times;';
+      removeBtn.title = 'Remove checklist';
+      removeBtn.addEventListener('click', function () {
+        aircraftData.checklists.splice(ci, 1);
+        renderChecklists(); saveState(); updatePreview();
+      });
+      header.appendChild(removeBtn);
+
+      card.appendChild(header);
+
+      // --- Items ---
+      var itemsDiv = document.createElement('div');
+      itemsDiv.className = 'checklist-items';
+      itemsDiv.dataset.ci = ci;
+
+      (cl.items || []).forEach(function (item, ii) {
+        if (item.caption === 'LINE') {
+          var lineRow = document.createElement('div');
+          lineRow.className = 'item-row is-line';
+          if (hasSortable) {
+            var lh = document.createElement('span');
+            lh.className = 'drag-handle';
+            lh.textContent = '\u2807';
+            lh.title = 'Drag to reorder';
+            lineRow.appendChild(lh);
+          }
+          var ll = document.createElement('span');
+          ll.className = 'line-label';
+          ll.textContent = '- - -  separator line  - - -';
+          lineRow.appendChild(ll);
+          var lr = document.createElement('button');
+          lr.className = 'item-remove';
+          lr.innerHTML = '&times;';
+          lr.title = 'Remove separator';
+          lr.addEventListener('click', function () {
+            cl.items.splice(ii, 1);
+            renderChecklists(); saveState(); updatePreview();
+          });
+          lineRow.appendChild(lr);
+          itemsDiv.appendChild(lineRow);
+        } else {
+          var row = document.createElement('div');
+          row.className = 'item-row';
+          if (hasSortable) {
+            var h = document.createElement('span');
+            h.className = 'drag-handle';
+            h.textContent = '\u2807';
+            h.title = 'Drag to reorder';
+            row.appendChild(h);
+          } else {
+            var mb = document.createElement('span');
+            mb.className = 'move-buttons';
+            mb.innerHTML =
+              '<button class="move-btn" data-miu="' + ci + ':' + ii + '" title="Move up">\u25B2</button>' +
+              '<button class="move-btn" data-mid="' + ci + ':' + ii + '" title="Move down">\u25BC</button>';
+            row.appendChild(mb);
+          }
+
+          var capInp = document.createElement('input');
+          capInp.type = 'text';
+          capInp.value = item.caption || '';
+          capInp.placeholder = 'Item caption';
+          capInp.addEventListener('input', function () { item.caption = this.value; saveState(); updatePreview(); });
+          row.appendChild(capInp);
+
+          var actInp = document.createElement('input');
+          actInp.type = 'text';
+          actInp.className = 'inp-action';
+          actInp.value = item.action || '';
+          actInp.placeholder = 'ACTION';
+          actInp.addEventListener('input', function () { item.action = this.value; saveState(); updatePreview(); });
+          row.appendChild(actInp);
+
+          var hasDet = !!(item.details && item.details.trim());
+          var open = item.showDetails || hasDet;
+          var detBtn = document.createElement('button');
+          detBtn.className = 'item-details-toggle' + (hasDet ? ' has-details' : '');
+          detBtn.textContent = open ? '\u25B4 details' : '\u25BE details';
+          detBtn.title = open ? 'Hide details' : 'Add details';
+          detBtn.addEventListener('click', function () {
+            item.showDetails = !open;
+            renderChecklists();
+          });
+          row.appendChild(detBtn);
+
+          var remBtn = document.createElement('button');
+          remBtn.className = 'item-remove';
+          remBtn.innerHTML = '&times;';
+          remBtn.title = 'Remove item';
+          remBtn.addEventListener('click', function () {
+            cl.items.splice(ii, 1);
+            renderChecklists(); saveState(); updatePreview();
+          });
+          row.appendChild(remBtn);
+
+          if (open) {
+            var detCell = document.createElement('div');
+            detCell.className = 'item-details-row';
+            var detTa = document.createElement('textarea');
+            detTa.value = item.details || '';
+            detTa.placeholder = 'Extra notes shown under the item. Use \n for line breaks.';
+            detTa.addEventListener('input', function () { item.details = this.value; saveState(); updatePreview(); });
+            detCell.appendChild(detTa);
+            row.appendChild(detCell);
+          }
+
+          itemsDiv.appendChild(row);
+        }
+      });
+
+      card.appendChild(itemsDiv);
+
+      // --- Item actions ---
+      var actions = document.createElement('div');
+      actions.className = 'checklist-actions';
+      var addItemBtn = document.createElement('button');
+      addItemBtn.className = 'btn btn-ghost btn-sm';
+      addItemBtn.textContent = '+ Item';
+      addItemBtn.addEventListener('click', function () {
+        cl.items.push({ caption: '', action: '', details: '' });
+        renderChecklists(); saveState(); updatePreview();
+      });
+      actions.appendChild(addItemBtn);
+
+      var sepBtn = document.createElement('button');
+      sepBtn.className = 'btn btn-ghost btn-sm';
+      sepBtn.textContent = '+ Separator';
+      sepBtn.addEventListener('click', function () {
+        cl.items.push({ caption: 'LINE', action: '', details: '' });
+        renderChecklists(); saveState(); updatePreview();
+      });
+      actions.appendChild(sepBtn);
+
+      card.appendChild(actions);
+      container.appendChild(card);
+    });
+
+    // Initialize Sortable on the checklists container
+    if (hasSortable && container.children.length > 1) {
+      new Sortable(container, {
+        handle: '.checklist-header .drag-handle',
+        animation: 150,
+        ghostClass: 'sortable-ghost',
+        draggable: '.checklist-card',
+        onEnd: function (evt) {
+          var moved = aircraftData.checklists.splice(evt.oldIndex, 1)[0];
+          aircraftData.checklists.splice(evt.newIndex, 0, moved);
+          saveState(); updatePreview();
+        }
+      });
+
+      // Initialize Sortable on each checklist items container
+      document.querySelectorAll('.checklist-items').forEach(function (el) {
+        if (el.children.length > 1) {
+          new Sortable(el, {
+            handle: '.drag-handle',
+            animation: 150,
+            ghostClass: 'sortable-ghost',
+            draggable: '.item-row',
+            onEnd: function (evt) {
+              var ci = parseInt(el.dataset.ci, 10);
+              var cl = aircraftData.checklists[ci];
+              if (cl) {
+                var moved = cl.items.splice(evt.oldIndex, 1)[0];
+                cl.items.splice(evt.newIndex, 0, moved);
+                saveState(); updatePreview();
+              }
+            }
+          });
+        }
+      });
+    }
+
+    // Fallback move-button handlers (no CDN)
+    if (!hasSortable) {
+      container.querySelectorAll('[data-clu]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var idx = parseInt(this.dataset.clu, 10);
+          if (idx > 0) {
+            var tmp = aircraftData.checklists[idx - 1];
+            aircraftData.checklists[idx - 1] = aircraftData.checklists[idx];
+            aircraftData.checklists[idx] = tmp;
+            renderChecklists(); saveState(); updatePreview();
+          }
+        });
+      });
+      container.querySelectorAll('[data-cld]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var idx = parseInt(this.dataset.cld, 10);
+          if (idx < aircraftData.checklists.length - 1) {
+            var tmp = aircraftData.checklists[idx + 1];
+            aircraftData.checklists[idx + 1] = aircraftData.checklists[idx];
+            aircraftData.checklists[idx] = tmp;
+            renderChecklists(); saveState(); updatePreview();
+          }
+        });
+      });
+      container.querySelectorAll('[data-miu]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var p = this.dataset.miu.split(':');
+          var cl = aircraftData.checklists[parseInt(p[0], 10)];
+          var i = parseInt(p[1], 10);
+          if (cl && i > 0) {
+            var tmp = cl.items[i - 1];
+            cl.items[i - 1] = cl.items[i];
+            cl.items[i] = tmp;
+            renderChecklists(); saveState(); updatePreview();
+          }
+        });
+      });
+      container.querySelectorAll('[data-mid]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var p = this.dataset.mid.split(':');
+          var cl = aircraftData.checklists[parseInt(p[0], 10)];
+          var i = parseInt(p[1], 10);
+          if (cl && i < cl.items.length - 1) {
+            var tmp = cl.items[i + 1];
+            cl.items[i + 1] = cl.items[i];
+            cl.items[i] = tmp;
+            renderChecklists(); saveState(); updatePreview();
+          }
+        });
+      });
+    }
+  }
+
+  // ===== Update preview and validation =====
+  var _updatePreview = debounce(function () {
+    var output = generateOutput();
+    document.getElementById('jsonPreview').innerHTML = highlightJSON(output);
+    document.getElementById('previewFilename').textContent = fileNameFromName();
+
+    var result = validate();
+    var errBanner = document.getElementById('errorBanner');
+    var warnBanner = document.getElementById('warningBanner');
+    var errList = document.getElementById('errorList');
+    var warnList = document.getElementById('warningList');
+
+    // Clear inline errors
+    document.querySelectorAll('.field.invalid').forEach(function (el) { el.classList.remove('invalid'); });
+    result.errors.forEach(function (e) {
+      if (e.field) {
+        var el = document.getElementById(e.field);
+        if (el) el.classList.add('invalid');
+      }
+    });
+
+    if (result.errors.length > 0) {
+      errList.innerHTML = result.errors.map(function (e) { return '<li>' + e.msg + '</li>'; }).join('');
+      errBanner.classList.add('visible');
+    } else {
+      errBanner.classList.remove('visible');
+    }
+
+    if (result.warnings.length > 0) {
+      var unique = result.warnings.filter(function (v, i, a) { return a.indexOf(v) === i; });
+      warnList.innerHTML = unique.map(function (w) { return '<li>' + w + '</li>'; }).join('');
+      warnBanner.classList.add('visible');
+    } else {
+      warnBanner.classList.remove('visible');
+    }
+
+    document.querySelectorAll('.js-download').forEach(function (b) {
+      b.disabled = result.errors.length > 0;
+    });
+    var status = document.getElementById('previewStatus');
+    status.textContent = result.errors.length > 0 ? result.errors.length + ' issue(s)' : 'ready';
+    status.style.color = result.errors.length > 0 ? 'var(--error)' : 'var(--color-accent)';
+  }, 150);
+
+  function updatePreview() { _updatePreview(); }
+
+  // ===== Download =====
+  function fileNameFromName() {
+    if (!aircraftData.name || !aircraftData.name.trim()) return 'aircraft.json';
+    return aircraftData.name.toLowerCase()
+      .replace(/\s+/g, '_')
+      .replace(/[^a-z0-9_]/g, '')
+      .replace(/_+/g, '_')
+      .replace(/^_|_$/g, '') + '.json';
+  }
+
+  function doDownload() {
+    var output = generateOutput();
+    var json = JSON.stringify(output, null, 2);
+    var blob = new Blob([json], { type: 'application/json;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = fileNameFromName();
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
+
+  // ===== Wire identity & performance inputs =====
+  function bindField(id, path, obj) {
+    var el = document.getElementById(id);
+    el.addEventListener('input', function () {
+      obj[path] = this.value;
+      saveState(); updatePreview();
+    });
+  }
+
+  function init() {
+    // Load saved state
+    loadState();
+    syncFormToState();
+    renderChecklists();
+
+    bindField('inpName', 'name', aircraftData);
+    bindField('inpFuelCapacity', 'fuelCapacity', aircraftData.performance);
+    bindField('inpCruiseSpeed', 'averageCruiseSpeed', aircraftData.performance);
+    bindField('inpFuelFlow', 'averageFuelFlow', aircraftData.performance);
+    bindField('inpTaxiFuel', 'taxiFuel', aircraftData.performance);
+    bindField('inpContingency', 'contingency', aircraftData.performance);
+    bindField('inpReserves', 'reservesMinutes', aircraftData.performance);
+
+    // Add checklist
+    document.getElementById('btnAddChecklist').addEventListener('click', function () {
+      aircraftData.checklists.push({ id: aircraftData.checklists.length, caption: '', category: 'NORMAL', items: [] });
+      renderChecklists(); saveState(); updatePreview();
+    });
+
+    // Download buttons (top toolbar + next to the preview)
+    document.querySelectorAll('.js-download').forEach(function (btn) {
+      btn.addEventListener('click', doDownload);
+    });
+
+    // Load
+    document.getElementById('btnLoad').addEventListener('click', function () {
+      document.getElementById('fileInput').click();
+    });
+    document.getElementById('fileInput').addEventListener('change', function () {
+      var file = this.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        try {
+          var data = JSON.parse(e.target.result);
+          if (!data || typeof data !== 'object') throw new Error('Not an object');
+          if (!data.name || typeof data.name !== 'string') throw new Error('Missing or invalid "name"');
+          if (!data.performance || typeof data.performance !== 'object') throw new Error('Missing "performance"');
+          var req = ['fuelCapacity', 'averageCruiseSpeed', 'averageFuelFlow'];
+          for (var i = 0; i < req.length; i++) {
+            if (typeof data.performance[req[i]] !== 'number' || data.performance[req[i]] <= 0) {
+              throw new Error('performance.' + req[i] + ' must be a positive number');
+            }
+          }
+          if (!Array.isArray(data.checklists)) throw new Error('"checklists" must be an array');
+          data.checklists.forEach(function (cl, ci) {
+            if (!cl.caption || typeof cl.caption !== 'string') throw new Error('checklist ' + ci + ' missing caption');
+            if (!Array.isArray(cl.items)) throw new Error('checklist ' + ci + ' missing items');
+            if (cl.category && ['NORMAL', 'PROCEDURE', 'NON_NORMAL'].indexOf(cl.category) === -1) {
+              throw new Error('checklist ' + ci + ' invalid category');
+            }
+          });
+          // Populate
+          aircraftData = {
+            id: 0,
+            name: data.name,
+            performance: {
+              fuelCapacity: String(data.performance.fuelCapacity),
+              averageCruiseSpeed: String(data.performance.averageCruiseSpeed),
+              averageFuelFlow: String(data.performance.averageFuelFlow),
+              taxiFuel: data.performance.taxiFuel != null ? String(data.performance.taxiFuel) : '',
+              contingency: data.performance.contingency != null ? String(data.performance.contingency) : '',
+              reservesMinutes: data.performance.reservesMinutes != null ? String(data.performance.reservesMinutes) : ''
+            },
+            checklists: data.checklists.map(function (cl) {
+              return {
+                id: 0,
+                caption: cl.caption || '',
+                category: cl.category || 'NORMAL',
+                items: (cl.items || []).map(function (item) {
+                  return { caption: item.caption || '', action: item.action || '', details: item.details || '' };
+                })
+              };
+            }),
+            photo: ''
+          };
+          syncFormToState();
+          renderChecklists();
+          saveState();
+          updatePreview();
+        } catch (err) {
+          alert('Cannot load file: ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+      this.value = '';
+    });
+
+    // Clear
+    document.getElementById('btnClear').addEventListener('click', function () {
+      if (!confirm('Clear all data and remove the saved draft?')) return;
+      aircraftData = emptyData();
+      clearState();
+      syncFormToState();
+      renderChecklists();
+      updatePreview();
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+
+</body>
+</html>

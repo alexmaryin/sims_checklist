@@ -30,6 +30,9 @@ Not flying one of the bundled five? Add your own aircraft from the tools menu (*
   checklists and the fuel calculator just like a bundled one
 - Remove your custom aircraft anytime from the trash-can icon on its card
 
+Want to build the file visually instead of writing JSON by hand? Use the
+**Checklist Editor** on the app site: https://alexmaryin.github.io/sims_checklist/checklist-editor.html
+
 The full field reference, units, and validation rules are documented in
 [docs/aircraft-format.html](https://alexmaryin.github.io/sims_checklist/aircraft-format.html).
 
