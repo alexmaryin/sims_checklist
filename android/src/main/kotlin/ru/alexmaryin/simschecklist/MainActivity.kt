@@ -9,6 +9,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import com.arkivanov.decompose.defaultComponentContext
 import decompose.Root
+import services.fileIO.FileHandler
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,6 +17,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         enableEdgeToEdge()
+        FileHandler.bindActivity(this)
 
         val root = Root(defaultComponentContext())
         setContent {

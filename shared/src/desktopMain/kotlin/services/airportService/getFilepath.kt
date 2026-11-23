@@ -1,13 +1,7 @@
 package services.airportService
 
-import java.nio.file.Files
-import java.nio.file.Path
+import services.storage.getAppDataDir
+import java.io.File
 
-actual fun getFilePath(filename: String): String {
-    val tempDir = System.getProperty("java.io.tmpdir")
-    val dir = Path.of(tempDir)
-    if (Files.notExists(dir)) {
-        Files.createDirectory(dir)
-    }
-    return dir.resolve(filename).toString()
-}
+actual fun getFilePath(filename: String): String =
+    File(getAppDataDir(), filename).absolutePath

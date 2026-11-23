@@ -21,6 +21,14 @@ class AircraftRepositoryImpl(
         base?.firstOrNull { it.id == id }
             ?: throw IllegalArgumentException("Wrong aircraft id!")
 
+    override fun addAircraft(aircraft: Aircraft) {
+        base = (base ?: emptyList()) + aircraft
+    }
+
+    override fun removeAircraft(id: Int) {
+        base = base?.filterNot { it.id == id }
+    }
+
     override fun getChecklist(aircraftId: Int, checklistId: Int): Checklist =
         getById(aircraftId).checklists.firstOrNull { it.id == checklistId }
             ?: throw IllegalArgumentException("Wrong checklist id!")

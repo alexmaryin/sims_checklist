@@ -3,6 +3,7 @@ package commonTest
 import feature.checklistDetails.model.ChecklistCategory
 import feature.mainScreen.database.AircraftBaseImpl
 import kotlinx.coroutines.runBlocking
+import java.nio.file.Files
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -11,7 +12,11 @@ import kotlin.test.assertTrue
 
 class CatalogCategoriesTest {
 
-    private val catalog by lazy { runBlocking { AircraftBaseImpl().getAircraft() } }
+    private val catalog by lazy {
+        runBlocking {
+            AircraftBaseImpl { Files.createTempDirectory("catalog-categories-test").toFile() }.getAircraft()
+        }
+    }
 
     private val expectedAssignments = setOf(
         Triple(2, "ENGINE START", ChecklistCategory.PROCEDURE),

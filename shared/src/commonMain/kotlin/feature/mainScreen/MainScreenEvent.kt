@@ -11,5 +11,8 @@ sealed class MainScreenEvent {
     data object SelectAirportsBase : MainScreenEvent()
     data object SelectQFEHelper : MainScreenEvent()
     data object SelectColdTemperature : MainScreenEvent()
+    data object SelectAddCustomAircraft : MainScreenEvent()
+    data class RemoveAircraftConfirm(val aircraftId: Int) : MainScreenEvent()
+    data class RemoveAircraft(val aircraftId: Int) : MainScreenEvent()
     data class SelectFuelCalculator(val aircraftId: Int) : MainScreenEvent()
 }

@@ -10,14 +10,19 @@ import com.arkivanov.essenty.lifecycle.doOnStop
 import feature.mainScreen.database.AircraftBase
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import repository.AircraftRepository
+import services.aircraftService.removeCustomAircraftFiles
 import services.airportService.AirportService
 import services.airportService.LocalBaseConverter
 import services.airportService.updateService.AirportUpdateService
+import services.storage.aircraftDir
 
 class AircraftList(
     private val componentContext: ComponentContext,
@@ -25,6 +30,7 @@ class AircraftList(
 ) : MainEventExecutor, KoinComponent, ComponentContext by componentContext {
 
     private val aircraftBase: AircraftBase by inject()
+    private val aircraftRepository: AircraftRepository by inject()
     private val airportService: AirportService by inject()
     private val updateService: AirportUpdateService by inject()
     private val csvConverter: LocalBaseConverter by inject()
@@ -34,10 +40,19 @@ class AircraftList(
 
     init {
         lifecycle.doOnCreate {
+            state.update { it.copy(isLoading = true) }
+        }
+
+        // Reload on every start (including resume after returning from the import screen)
+        // so newly added custom aircraft appear without an app restart.
+        lifecycle.doOnStart {
             scope.launch {
-                state.update { it.copy(isLoading = true) }
                 aircraftBase.getAircraft()?.let { base ->
                     state.update { it.copy(aircraftList = base, isLoading = false) }
+                }
+                val warnings = aircraftBase.loadWarnings
+                if (warnings.isNotEmpty()) {
+                    state.update { it.copy(snack = MainScreenSnack.Close(warnings.joinToString("; "))) }
                 }
             }
         }
@@ -52,9 +67,7 @@ class AircraftList(
                 } else {
                     val last = airportService.getLastUpdate()
                     count = last?.airports
-                    snack = last?.let {
-                        MainScreenSnack.Close("${it.airports} airports in database.")
-                    }
+                    snack = null
                 }
                 state.update { it.copy(snack = snack, airportsCount = count) }
             }
@@ -70,6 +83,8 @@ class AircraftList(
             MainScreenEvent.DropBaseConfirm -> scope.onConfirmDropBase()
             MainScreenEvent.DropBase -> scope.onDropBase()
             MainScreenEvent.OpenToolsMenu -> scope.onRefreshAirportsCount()
+            is MainScreenEvent.RemoveAircraftConfirm -> scope.onRemoveAircraftConfirm(event.aircraftId)
+            is MainScreenEvent.RemoveAircraft -> scope.onRemoveAircraft(event.aircraftId)
             else -> onUiCommand(event)
         }
     }
@@ -149,5 +164,23 @@ class AircraftList(
     private fun CoroutineScope.onRefreshAirportsCount() = launch {
         val count = airportService.getLastUpdate()?.airports
         state.update { it.copy(airportsCount = count) }
+    }
+
+    private fun CoroutineScope.onRemoveAircraftConfirm(aircraftId: Int) = launch {
+        val name = state.value.aircraftList.firstOrNull { it.id == aircraftId }?.name ?: "this aircraft"
+        state.update {
+            it.copy(snack = MainScreenSnack.RemoveAircraft(aircraftId, "Remove $name?"))
+        }
+    }
+
+    private fun CoroutineScope.onRemoveAircraft(aircraftId: Int) = launch {
+        withContext(Dispatchers.IO) { removeCustomAircraftFiles(aircraftDir(), aircraftId) }
+        aircraftRepository.removeAircraft(aircraftId)
+        state.update {
+            it.copy(
+                aircraftList = it.aircraftList.filterNot { aircraft -> aircraft.id == aircraftId },
+                snack = null
+            )
+        }
     }
 }

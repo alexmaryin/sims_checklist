@@ -3,6 +3,7 @@ package commonTest
 import feature.checklistDetails.model.CHECKLIST_LINE
 import feature.mainScreen.database.AircraftBaseImpl
 import kotlinx.coroutines.runBlocking
+import java.nio.file.Files
 import kotlin.test.*
 
 class CitationXChecklistsTest {
@@ -13,14 +14,18 @@ class CitationXChecklistsTest {
         "DESCENT", "APPROACH", "AFTER LANDING", "PARKING", "SHUTDOWN",
     )
 
-    private val catalog by lazy { runBlocking { AircraftBaseImpl().getAircraft() } }
+    private val catalog by lazy {
+        runBlocking {
+            AircraftBaseImpl { Files.createTempDirectory("citation-x-test").toFile() }.getAircraft()
+        }
+    }
 
     private val citationX: feature.checklists.model.Aircraft
         get() = assertNotNull(catalog).first { it.id == 2 }
 
     @Test
     fun `catalog parses with all aircraft`() {
-        assertNotNull(catalog, "bundled aircraft.json must deserialize")
+        assertNotNull(catalog, "bundled aircraft catalog must deserialize")
         assertEquals(listOf(0, 1, 2, 3, 4), catalog!!.map { it.id })
     }
 

@@ -6,6 +6,8 @@ import feature.checklistDetails.model.Checklist
 interface AircraftRepository {
     fun getAll(): List<Aircraft>
     fun getById(id: Int): Aircraft
+    fun addAircraft(aircraft: Aircraft)
+    fun removeAircraft(id: Int)
     fun getChecklist(aircraftId: Int, checklistId: Int): Checklist
     fun toggleChecklistItem(aircraftId: Int, checklistId: Int, itemId: Int)
     fun clearChecklist(aircraftId: Int, checklistId: Int)

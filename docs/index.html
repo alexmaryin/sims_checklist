@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Sims Checklist — Interactive checklists, fuel calculator, METAR/TAF weather, and 85,000+ airports database for flight simulation. Free, open source, no ads.">
-  <meta name="keywords" content="flight simulator, checklist, METAR, fuel calculator, aviation, sim, Cessna, Cirrus, Citation">
+  <meta name="description" content="Sims Checklist — Interactive checklists for 5 aircraft plus your own custom aircraft, fuel calculator, METAR/TAF/D-ATIS weather, and 85,000+ airports database for flight simulation. Free, open source, no ads.">
+  <meta name="keywords" content="flight simulator, checklist, METAR, TAF, D-ATIS, fuel calculator, aviation, sim, Cessna, Cirrus, Citation, King Air, Comanche, custom aircraft">
   <meta name="author" content="Alex Maryin">
   <meta name="theme-color" content="#0b1120">
   
   <!-- Open Graph -->
   <meta property="og:title" content="Sims Checklist — Interactive Checklists for Virtual Flights">
-  <meta property="og:description" content="Cessna 172, Cirrus SR-22, Citation X — with fuel calculation, METAR weather, and 85,000+ airport database. Free and open source.">
+  <meta property="og:description" content="Cessna 172, Cirrus SR-22, Citation X, King Air 350, Piper Comanche — plus your own custom aircraft. Fuel calculation, METAR/TAF/D-ATIS weather, and 85,000+ airport database. Free and open source.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://alexmaryin.github.io/sims_checklist/">
   <meta property="og:image" content="https://alexmaryin.github.io/sims_checklist/logo.png">
@@ -19,7 +19,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Sims Checklist — Interactive Checklists for Virtual Flights">
-  <meta name="twitter:description" content="Checklists, fuel calculator, METAR/TAF, 85K+ airports. Free, open source, no ads.">
+  <meta name="twitter:description" content="Checklists for 5 aircraft + your own, fuel calculator, METAR/TAF/D-ATIS, 85K+ airports. Free, open source, no ads.">
   <meta name="twitter:image" content="https://alexmaryin.github.io/sims_checklist/logo.png">
   
   <title>Sims Checklist — Interactive Checklists for Virtual Flights</title>
@@ -30,7 +30,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   
   <!-- JSON-LD Structured Data -->
   <script type="application/ld+json">
@@ -38,7 +38,7 @@
     "@context": "https://schema.org",
     "@type": "MobileApplication",
     "name": "Sims Checklist",
-    "description": "Interactive checklists for virtual flight simulation. Fuel calculator, METAR/TAF weather, 85,000+ airports database, QFE Helper, and cold temperature corrector.",
+    "description": "Interactive checklists for virtual flight simulation. Five bundled aircraft plus custom aircraft import, fuel calculator, METAR/TAF/D-ATIS weather, 85,000+ airports database, QFE Helper, and cold temperature corrector.",
     "operatingSystem": "Android, Windows, Linux, macOS",
     "applicationCategory": "Utility",
     "offers": {
@@ -48,7 +48,7 @@
     },
     "screenshot": "https://alexmaryin.github.io/sims_checklist/screenshot-aircraft.png",
     "softwareVersion": "latest",
-    "featureList": "Checklists for Cessna 172, Cirrus SR-22, Citation X | Fuel calculator | METAR/TAF weather | 85,000+ airports offline | QFE Helper | Cold Temperature Corrector"
+    "featureList": "Checklists for Cessna 172, Cirrus SR-22, Citation X, King Air 350, Piper Comanche | Custom aircraft import | Fuel calculator | METAR/TAF/D-ATIS weather | 85,000+ airports offline | QFE Helper | Cold Temperature Corrector"
   }
   </script>
   
@@ -640,6 +640,96 @@
       line-height: 1.6;
     }
     
+    /* ========== CUSTOM AIRCRAFT BANNER ========== */
+    .custom-aircraft {
+      background: var(--bg-base);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .custom-aircraft::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 50% 60% at 85% 50%, var(--color-accent-subtle) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .custom-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      align-items: center;
+      padding: 2.5rem;
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius-lg);
+      background: var(--bg-surface);
+    }
+
+    @media (min-width: 900px) {
+      .custom-inner {
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 3rem;
+        padding: 3rem;
+      }
+    }
+
+    .custom-copy h2 {
+      font-size: clamp(2rem, 4.5vw, 3rem);
+      color: var(--text-heading);
+      margin-bottom: 1rem;
+    }
+
+    .custom-copy h2 span { color: var(--color-accent); }
+
+    .custom-copy p {
+      color: var(--text-muted);
+      max-width: 52ch;
+      margin-bottom: 1.75rem;
+    }
+
+    .custom-points {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-bottom: 2rem;
+    }
+
+    .custom-points li {
+      position: relative;
+      padding-left: 1.6rem;
+      color: var(--text-body);
+      font-size: 0.98rem;
+    }
+
+    .custom-points li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--color-accent);
+      font-weight: 700;
+    }
+
+    .custom-snippet {
+      background: var(--bg-base);
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace;
+      font-size: 0.82rem;
+      line-height: 1.8;
+      color: var(--text-body);
+      overflow-x: auto;
+    }
+
+    .custom-snippet .k { color: var(--color-accent); }
+    .custom-snippet .s { color: #fbbf24; }
+    .custom-snippet .n { color: var(--text-heading); }
+    .custom-snippet .c { color: var(--text-muted-dark); font-style: italic; }
+
     /* ========== STEPS ========== */
     .steps {
       background: var(--bg-surface);
@@ -1152,9 +1242,11 @@
       </a>
       <div class="nav-links">
         <a href="#features" class="nav-link">Features</a>
+        <a href="#custom-aircraft" class="nav-link">Custom Aircraft</a>
         <a href="#how-it-works" class="nav-link">How It Works</a>
         <a href="#screenshots" class="nav-link">Screenshots</a>
         <a href="#faq" class="nav-link">FAQ</a>
+        <a href="aircraft-format.html" class="nav-link">JSON Format</a>
       </div>
       <a href="https://play.google.com/store/apps/details?id=ru.alexmaryin.simschecklist" target="_blank" rel="noopener noreferrer" class="nav-cta">
         <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M3.609 1.814L13.793 12 3.61 22.186a.996.996 0 01-.61-.92V2.734a1 1 0 01.609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.199l2.302 2.302a1 1 0 010 1.38l-2.302 2.302L15.396 12l2.302-2.492zM5.864 2.658L16.8 8.99l-2.302 2.302L5.864 2.658z"/></svg>
@@ -1169,7 +1261,7 @@
       <div class="hero-content">
         <img class="hero-logo" src="logo.png" alt="Sims Checklist Logo" width="72" height="72">
         <h1>Interactive Checklists for Your <span class="highlight">Virtual Flights</span></h1>
-        <p class="hero-subtitle">Cessna 172, Cirrus SR-22, Citation X — with fuel calculation, METAR weather, and 85,000+ airport database. All offline.</p>
+        <p class="hero-subtitle">Cessna 172, Cirrus SR-22, Citation X, King Air 350, Piper Comanche — or bring your own aircraft. Fuel calculation, METAR/TAF/D-ATIS weather, and 85,000+ airport database. All offline.</p>
         <div class="hero-buttons">
           <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=ru.alexmaryin.simschecklist" target="_blank" rel="noopener noreferrer">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.609 1.814L13.793 12 3.61 22.186a.996.996 0 01-.61-.92V2.734a1 1 0 01.609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.199l2.302 2.302a1 1 0 010 1.38l-2.302 2.302L15.396 12l2.302-2.492zM5.864 2.658L16.8 8.99l-2.302 2.302L5.864 2.658z"/></svg>
@@ -1198,8 +1290,8 @@
       <div class="features-grid">
         <div class="feature-card animate-on-scroll">
           <div class="feature-icon">✈️</div>
-          <h3>Checklists for 3 Aircraft</h3>
-          <p>Complete pre-flight, before-taxi, before-takeoff, and in-flight checklists for Cessna 172 Skyhawk, Cirrus SR-22, and Citation X.</p>
+          <h3>Checklists for 5 Aircraft</h3>
+          <p>Complete checklist sets for Cessna 172 Skyhawk, Cirrus SR-22, Cessna Citation X, Beech King Air 350, and Piper PA-24 Comanche — normal, procedure, and emergency.</p>
         </div>
         <div class="feature-card animate-on-scroll">
           <div class="feature-icon">⛽</div>
@@ -1208,8 +1300,8 @@
         </div>
         <div class="feature-card animate-on-scroll">
           <div class="feature-icon">🌤️</div>
-          <h3>METAR/TAF Weather</h3>
-          <p>Visualize wind direction, select preferred runway for headwind, and save your top airports for quick access.</p>
+          <h3>METAR / TAF / D-ATIS</h3>
+          <p>Visualize wind direction, select the preferred runway for headwind, and read METAR, TAF, and US Digital ATIS in a tabbed view. Save your top airports.</p>
         </div>
         <div class="feature-card animate-on-scroll">
           <div class="feature-icon">🗺️</div>
@@ -1230,6 +1322,39 @@
     </div>
   </section>
 
+  <!-- Custom aircraft -->
+  <section class="section custom-aircraft" id="custom-aircraft">
+    <div class="container">
+      <div class="custom-inner animate-on-scroll">
+        <div class="custom-copy">
+          <h2>Fly Something <span>Not in the List?</span></h2>
+          <p>Add any aircraft to Sims Checklist. Provide a JSON file with its performance and checklists, plus a JPEG icon — the app checks everything before it saves.</p>
+          <ul class="custom-points">
+            <li>Strict validation of data, units, and icon before anything is written</li>
+            <li>The app assigns the id and stores files in its data directory</li>
+            <li>Works with the fuel calculator and checklists like any bundled aircraft</li>
+            <li>Remove your custom aircraft anytime from its card</li>
+          </ul>
+          <a class="btn btn-primary" href="aircraft-format.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            Read the JSON format
+          </a>
+        </div>
+        <div class="custom-snippet" aria-hidden="true">
+{<br>
+&nbsp;&nbsp;<span class="k">"name"</span>: <span class="s">"My Aircraft"</span>,<br>
+&nbsp;&nbsp;<span class="k">"performance"</span>: {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">"fuelCapacity"</span>: <span class="n">56</span>,&nbsp;&nbsp;<span class="c">// gal</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">"averageCruiseSpeed"</span>: <span class="n">100</span>, <span class="c">// kt</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">"averageFuelFlow"</span>: <span class="n">8</span>&nbsp;&nbsp;<span class="c">// gph</span><br>
+&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;<span class="k">"checklists"</span>: [ <span class="c">/* ... */</span> ]<br>
+}
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- How It Works -->
   <section class="section steps" id="how-it-works">
     <div class="container">
@@ -1243,7 +1368,7 @@
           <div class="step-number">1</div>
           <div class="step-content">
             <h3>Select Your Aircraft</h3>
-            <p>Choose from Cessna 172, Cirrus SR-22, or Citation X with pre-loaded checklists.</p>
+            <p>Choose from five bundled aircraft — or add your own from a JSON file — with ready-to-use checklists.</p>
           </div>
         </div>
         <div class="step animate-on-scroll">
@@ -1361,11 +1486,15 @@
       <div class="faq-list">
         <details class="faq-item">
           <summary class="faq-summary">Does it work without internet?</summary>
-          <div class="faq-answer">Yes. All checklists and the airport database work offline. METAR/TAF weather data requires an internet connection to fetch from CheckWX API.</div>
+          <div class="faq-answer">Yes. All checklists and the airport database work offline. METAR/TAF weather data requires an internet connection to fetch from the NOAA Aviation Weather Center (aviationweather.gov); D-ATIS is fetched from atis.info for US stations.</div>
         </details>
         <details class="faq-item">
           <summary class="faq-summary">Which aircraft are supported?</summary>
-          <div class="faq-answer">Currently three aircraft: <strong>Cessna 172 Skyhawk</strong> (the classic trainer), <strong>Cirrus SR-22</strong> (modern GA with glass cockpit), and <strong>Cessna Citation X</strong> (X-Plane 12 default, business jet). More aircraft may be added in future updates.</div>
+          <div class="faq-answer">Five bundled aircraft: <strong>Cessna 172 Skyhawk</strong>, <strong>Cirrus SR-22</strong>, <strong>Cessna Citation X</strong>, <strong>Beech King Air 350</strong>, and <strong>Piper PA-24-250 Comanche</strong>. You can also <strong>add your own aircraft</strong> from a JSON file — see the next question.</div>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-summary">Can I add my own aircraft?</summary>
+          <div class="faq-answer">Yes. Open the tools menu and choose <strong>Add custom aircraft</strong>, then select a JSON file with the aircraft's performance and checklists plus a JPEG icon. The app validates the data and image, assigns the id, and adds it to your list. The full field reference, units, and rules are in the <a href="aircraft-format.html">Aircraft JSON Format</a> guide.</div>
         </details>
         <details class="faq-item">
           <summary class="faq-summary">Will there be an iOS version?</summary>
@@ -1413,6 +1542,7 @@
       <div class="footer-links">
         <a href="#features" class="footer-link">Features</a>
         <a href="#faq" class="footer-link">FAQ</a>
+        <a href="aircraft-format.html" class="footer-link">JSON Format</a>
         <a href="privacy.html" class="footer-link">Privacy</a>
         <a href="https://github.com/alexmaryin/sims_checklist" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
       </div>

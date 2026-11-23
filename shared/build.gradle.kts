@@ -95,6 +95,12 @@ kotlin {
                 implementation(libs.compose.foundation)
             }
         }
+        val desktopTest = getByName("desktopTest") {
+            dependencies {
+                // Skiko native runtime for image decoding in headless tests
+                implementation(compose.desktop.currentOs)
+            }
+        }
     }
     compilerOptions {
         freeCompilerArgs.add("-Xexpect-actual-classes")

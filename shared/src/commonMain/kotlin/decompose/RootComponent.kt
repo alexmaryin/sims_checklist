@@ -6,6 +6,7 @@ import feature.airportsBase.AirportsBase
 import feature.checklistDetails.ChecklistDetails
 import feature.coldTemperature.ColdTemperatureCorrector
 import feature.checklists.Checklists
+import feature.customAircraft.AddCustomAircraft
 import feature.fuelcalculator.FuelCalculator
 import feature.mainScreen.MainEventExecutor
 import feature.metarscreen.MetarScanner
@@ -23,5 +24,6 @@ interface RootComponent {
         data class AirportsBaseChild(val component: AirportsBase): Child()
         data class QFEHelperChild(val component: QFEHelper): Child()
         data class ColdTemperatureChild(val component: ColdTemperatureCorrector): Child()
+        data class AddCustomAircraftChild(val component: AddCustomAircraft): Child()
     }
 }
