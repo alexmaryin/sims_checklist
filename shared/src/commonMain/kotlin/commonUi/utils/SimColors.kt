@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import feature.checklistDetails.model.ChecklistCategory
 
-@OptIn(ExperimentalMaterial3Api::class)
 object SimColors {
     // Light theme
     val accentGreen = Color(0xff00c853)

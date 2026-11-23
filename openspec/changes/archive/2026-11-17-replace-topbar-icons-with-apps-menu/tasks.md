@@ -14,7 +14,7 @@
 ## 3. Wire-up and cleanup
 
 - [x] 3.1 Replace the `actions` block in `AircraftListScreen` with `MainToolsMenu(component)` and delete `VersionBadge.kt` — verify compile succeeds and the top bar shows title + single apps button only.
-- [ ] 3.2 Run full verification on both targets: `gradlew :shared:build` (or project's build command) and manual pass through the spec scenarios — launcher opens/closes, all four tools navigate, version line and airports count render, count changes after database update and after "Drop airports database" (debug build), no references to `Res.drawable.airplanes`/`Badge` remain outside the new footer.
+- [x] 3.2 Run full verification on both targets: `gradlew :shared:build` (or project's build command) and manual pass through the spec scenarios — launcher opens/closes, all four tools navigate, version line and airports count render, count changes after database update and after "Drop airports database" (debug build), no references to `Res.drawable.airplanes`/`Badge` remain outside the new footer.
 
 ## Workflow follow-up
 
