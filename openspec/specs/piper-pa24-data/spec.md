@@ -38,24 +38,26 @@ The PA-24-250 record SHALL include exactly eighteen checklists, transcribed from
 
 | id | caption |
 |----|---------|
-| 0 | Before starting |
-| 1 | Starting the engine |
-| 2 | Before taxi |
-| 3 | Taxi |
-| 4 | Run up |
-| 5 | Before take off |
-| 6 | Take off |
-| 7 | After take off |
-| 8 | Enroute |
-| 9 | Descent |
-| 10 | Landing |
-| 11 | After landing |
-| 12 | Engine shut down |
-| 13 | Before leaving aircraft |
-| 14 | Engine fire when starting |
-| 15 | Engine failure in flight |
-| 16 | Engine fire in flight |
-| 17 | Landing without motor |
+| 0 | BEFORE STARTING |
+| 1 | STARTING THE ENGINE |
+| 2 | BEFORE TAXI |
+| 3 | TAXI |
+| 4 | RUN UP |
+| 5 | BEFORE TAKE OFF |
+| 6 | TAKE OFF |
+| 7 | AFTER TAKE OFF |
+| 8 | ENROUTE |
+| 9 | DESCENT |
+| 10 | LANDING |
+| 11 | AFTER LANDING |
+| 12 | ENGINE SHUT DOWN |
+| 13 | BEFORE LEAVING AIRCRAFT |
+| 14 | ENGINE FIRE WHEN STARTING |
+| 15 | ENGINE FAILURE IN FLIGHT |
+| 16 | ENGINE FIRE IN FLIGHT |
+| 17 | LANDING WITHOUT MOTOR |
+
+Captions SHALL be stored in uppercase per the catalog caption normalization.
 
 #### Scenario: Eighteen checklists in order
 
@@ -66,7 +68,7 @@ The PA-24-250 record SHALL include exactly eighteen checklists, transcribed from
 #### Scenario: Emergency checklists present as distinct checklists
 
 - **WHEN** the checklist set is inspected
-- **THEN** `Engine fire when starting`, `Engine failure in flight`, `Engine fire in flight`, and `Landing without motor` SHALL each be a standalone checklist
+- **THEN** `ENGINE FIRE WHEN STARTING`, `ENGINE FAILURE IN FLIGHT`, `ENGINE FIRE IN FLIGHT`, and `LANDING WITHOUT MOTOR` SHALL each be a standalone checklist
 
 #### Scenario: Excluded PDF sections
 
@@ -75,7 +77,7 @@ The PA-24-250 record SHALL include exactly eighteen checklists, transcribed from
 
 #### Scenario: Landing pattern legs preserved
 
-- **WHEN** the `Landing` checklist is inspected
+- **WHEN** the `LANDING` checklist is inspected
 - **THEN** the four PDF legs `Pattern Entry`, `Downwind`, `Base`, and `Final Approach` SHALL be represented with their sub-steps intact (via `details` groupings)
 
 ### Requirement: Cautions and notes retained as details
@@ -84,7 +86,7 @@ Red-text cautions and italic notes in the PDF (for example "Do not exceed 2200 r
 
 #### Scenario: Run-up caution retained
 
-- **WHEN** the `Run up` checklist is inspected
+- **WHEN** the `RUN UP` checklist is inspected
 - **THEN** the item preceding or following the 2000 RPM throttle setting SHALL carry a `details` string containing the "do not exceed 2200 rpm" caution
 
 ### Requirement: PA-24-250 photo binding

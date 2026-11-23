@@ -8,7 +8,7 @@ Defines the Citation X aircraft record in the bundled catalog: a 13-checklist se
 
 ### Requirement: Citation X checklist set rebased to FlightFX v2.1
 
-The system SHALL replace only the `checklists` array of the existing `Cessna Citation X` record (`id: 2`) in `shared/src/commonMain/composeResources/files/aircraft.json` with exactly thirteen checklists derived from the FlightFX v2.1 scans (`openspec/specs/citation-x/Citation_X---001.jpg` … `007.jpg`). Checklist ids SHALL be sequential `0`–`12` with the captions enumerated in the scenario below; the record's `name`, `photo` and `performance` fields SHALL not be touched by this replacement.
+The system SHALL replace only the `checklists` array of the existing `Cessna Citation X` record (`id: 2`) in `shared/src/commonMain/composeResources/files/aircraft.json` with exactly thirteen checklists derived from the FlightFX v2.1 scans (`openspec/specs/citation-x/Citation_X---001.jpg` … `007.jpg`). Checklist ids SHALL be sequential `0`–`12` with the captions enumerated in the scenario below; the record's `name`, `photo` and `performance` fields SHALL not be touched by this replacement. Captions SHALL be stored in uppercase per the catalog caption normalization.
 
 #### Scenario: Thirteen checklists in order
 
@@ -17,19 +17,19 @@ The system SHALL replace only the `checklists` array of the existing `Cessna Cit
 
 | id | caption |
 |----|---------|
-| 0 | Preflight |
-| 1 | Pre start |
-| 2 | Before engine start |
-| 3 | Engine start |
-| 4 | After start / Taxi |
-| 5 | Before takeoff |
-| 6 | Climb |
-| 7 | Cruise |
-| 8 | Descent |
-| 9 | Approach |
-| 10 | After landing |
-| 11 | Parking |
-| 12 | Shutdown |
+| 0 | PREFLIGHT |
+| 1 | PRE START |
+| 2 | BEFORE ENGINE START |
+| 3 | ENGINE START |
+| 4 | AFTER START / TAXI |
+| 5 | BEFORE TAKEOFF |
+| 6 | CLIMB |
+| 7 | CRUISE |
+| 8 | DESCENT |
+| 9 | APPROACH |
+| 10 | AFTER LANDING |
+| 11 | PARKING |
+| 12 | SHUTDOWN |
 
 #### Scenario: Catalog stays valid
 
