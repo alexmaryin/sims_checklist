@@ -11,10 +11,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -25,12 +28,31 @@ import commonUi.utils.largeWithShadow
 import commonUi.utils.mySnackbarHost
 import feature.mainScreen.MainEventExecutor
 import feature.mainScreen.MainScreenEvent
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.jetbrains.compose.resources.painterResource
+import services.aircraftService.CUSTOM_PREFIX
+import services.aircraftService.decodeImage
+import services.storage.aircraftDir
 import sims_checklist.shared.generated.resources.*
+import java.io.File
 
+/**
+ * Resolves an aircraft photo: a file in the app data aircraft directory first
+ * (custom aircraft icons), then the bundled drawable resource. Returns null while
+ * a file icon is still decoding or when neither source exists.
+ */
 @Composable
-fun loadAircraftJpgPhoto(name: String): Painter =
-    painterResource(Res.allDrawableResources[name] ?: error("App resources are broken!"))
+fun loadAircraftJpgPhoto(name: String): Painter? {
+    val filePainter by produceState<Painter?>(initialValue = null, key1 = name) {
+        value = withContext(Dispatchers.IO) {
+            val file = File(aircraftDir(), "$name.jpg")
+            if (file.exists()) decodeImage(file.readBytes())?.bitmap?.let { BitmapPainter(it) }
+            else null
+        }
+    }
+    return filePainter ?: Res.allDrawableResources[name]?.let { painterResource(it) }
+}
 
 @Composable
 fun AircraftListScreen(component: MainEventExecutor) {
@@ -91,24 +113,53 @@ fun AircraftListScreen(component: MainEventExecutor) {
                         .padding(1.dp)
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Image(
-                            painter = loadAircraftJpgPhoto(item.photo),
-                            contentDescription = "Photo of ${item.name}",
-                            modifier = Modifier
-                                .padding(8.dp)
-                                .size(150.dp)
-                                .shadow(
-                                    elevation = 8.dp,
-                                    shape = RoundedCornerShape(16.dp),
-                                    clip = true
+                        val photoModifier = Modifier
+                            .padding(8.dp)
+                            .size(150.dp)
+                            .shadow(
+                                elevation = 8.dp,
+                                shape = RoundedCornerShape(16.dp),
+                                clip = true
+                            )
+                        val painter = loadAircraftJpgPhoto(item.photo)
+                        if (painter != null) {
+                            Image(
+                                painter = painter,
+                                contentDescription = "Photo of ${item.name}",
+                                modifier = photoModifier
+                            )
+                        } else {
+                            Box(
+                                modifier = photoModifier,
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(
+                                    painter = painterResource(Res.drawable.airplanes),
+                                    contentDescription = "Photo of ${item.name} is loading",
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
-                        )
+                            }
+                        }
                         Row(
-                            modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally)
+                            modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
+                            if (item.photo.startsWith(CUSTOM_PREFIX)) {
+                                IconButton(
+                                    onClick = { component(MainScreenEvent.RemoveAircraftConfirm(item.id)) }
+                                ) {
+                                    Icon(
+                                        painter = painterResource(Res.drawable.delete),
+                                        contentDescription = "Remove ${item.name}"
+                                    )
+                                }
+                            } else {
+                                // keep the title centered on bundled cards too
+                                Spacer(Modifier.size(48.dp))
+                            }
                             Text(
                                 text = item.name.uppercase(),
-                                modifier = Modifier.padding(8.dp).weight(1f),
+                                modifier = Modifier.padding(4.dp).weight(1f),
                                 color = MaterialTheme.colorScheme.onSurface,
                                 textAlign = TextAlign.Center,
                                 style = largeWithShadow()

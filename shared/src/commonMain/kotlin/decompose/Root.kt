@@ -19,6 +19,8 @@ import feature.coldTemperature.ColdTemperatureCorrector
 import feature.coldTemperature.ui.ColdTemperatureScreen
 import feature.checklists.Checklists
 import feature.checklists.ui.ChecklistsScreen
+import feature.customAircraft.AddCustomAircraft
+import feature.customAircraft.ui.AddCustomAircraftScreen
 import feature.fuelcalculator.FuelCalculator
 import feature.fuelcalculator.ui.FuelCalculatorScreen
 import feature.mainScreen.AircraftList
@@ -51,6 +53,7 @@ class Root(
             MainScreenEvent.SelectMetar -> navigation.pushNew(Configuration.MetarScanner())
             MainScreenEvent.SelectQFEHelper -> navigation.pushNew(Configuration.QFEHelper())
             MainScreenEvent.SelectColdTemperature -> navigation.pushNew(Configuration.ColdTemperature())
+            MainScreenEvent.SelectAddCustomAircraft -> navigation.pushNew(Configuration.AddCustomAircraft)
             else -> Unit
         }
     }
@@ -117,6 +120,11 @@ class Root(
         onBack = { navigation.pop() }
     )
 
+    private fun addCustomAircraft(context: ComponentContext) = AddCustomAircraft(
+        componentContext = context,
+        onBack = { navigation.pop() }
+    )
+
     private fun createChild(configuration: Configuration, context: ComponentContext): RootComponent.Child =
         when (configuration) {
 
@@ -147,6 +155,8 @@ class Root(
                 configuration.icao,
                 configuration.temperature
             ))
+
+            Configuration.AddCustomAircraft -> AddCustomAircraftChild(addCustomAircraft(context))
         }
 }
 
@@ -165,6 +175,7 @@ fun RootUi(root: RootComponent) {
             is MetarScannerChild -> MetarScreen(child.component)
             is QFEHelperChild -> QFEHelperScreen(child.component)
             is ColdTemperatureChild -> ColdTemperatureScreen(child.component)
+            is AddCustomAircraftChild -> AddCustomAircraftScreen(child.component)
         }
     }
 }

@@ -8,7 +8,7 @@ Defines the Citation X aircraft record in the bundled catalog: a 13-checklist se
 
 ### Requirement: Citation X checklist set rebased to FlightFX v2.1
 
-The system SHALL replace only the `checklists` array of the existing `Cessna Citation X` record (`id: 2`) in `shared/src/commonMain/composeResources/files/aircraft.json` with exactly thirteen checklists derived from the FlightFX v2.1 scans (`openspec/specs/citation-x/Citation_X---001.jpg` … `007.jpg`). Checklist ids SHALL be sequential `0`–`12` with the captions enumerated in the scenario below; the record's `name`, `photo` and `performance` fields SHALL not be touched by this replacement. Captions SHALL be stored in uppercase per the catalog caption normalization.
+The system SHALL replace only the `checklists` array of the existing `Cessna Citation X` record (`id: 2`), stored in the per-aircraft file `shared/src/commonMain/composeResources/files/aircraft/citationx.json`, with exactly thirteen checklists derived from the FlightFX v2.1 scans (`openspec/specs/citation-x/Citation_X---001.jpg` … `007.jpg`). Checklist ids SHALL be sequential `0`–`12` with the captions enumerated in the scenario below; the record's `name`, `photo` and `performance` fields SHALL not be touched by this replacement. Captions SHALL be stored in uppercase per the catalog caption normalization.
 
 #### Scenario: Thirteen checklists in order
 
@@ -33,7 +33,7 @@ The system SHALL replace only the `checklists` array of the existing `Cessna Cit
 
 #### Scenario: Catalog stays valid
 
-- **WHEN** the bundled `aircraft.json` is loaded and deserialized via `AircraftBaseImpl`
+- **WHEN** the bundled catalog is loaded and deserialized from the per-aircraft files
 - **THEN** parsing SHALL succeed and produce the full aircraft list with all other records unchanged
 
 ### Requirement: Source fidelity and v2.1 terminology

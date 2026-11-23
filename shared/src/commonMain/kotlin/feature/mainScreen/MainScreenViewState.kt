@@ -29,4 +29,10 @@ sealed class MainScreenSnack(val message: String, val event: MainScreenEvent, va
         MainScreenEvent.DropBase,
         "Confirm"
     )
+
+    data class RemoveAircraft(val aircraftId: Int, val msg: String) : MainScreenSnack(
+        msg,
+        MainScreenEvent.RemoveAircraft(aircraftId),
+        "Remove"
+    )
 }

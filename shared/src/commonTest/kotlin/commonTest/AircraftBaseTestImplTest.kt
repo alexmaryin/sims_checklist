@@ -91,6 +91,7 @@ internal class AircraftBaseTestImplTest {
                 try { listOf(Json.decodeFromString(TEST_DATA)) }
                 catch (_: IllegalArgumentException) { null }
 
+            override val loadWarnings: List<String> = emptyList()
         }
         repository = AircraftRepositoryImpl(aircraftBaseTestImpl)
     }

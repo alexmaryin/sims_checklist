@@ -35,4 +35,7 @@ sealed interface Configuration {
         val icao: String? = null,
         val temperature: Int? = null
     ) : Configuration
+
+    @Serializable
+    data object AddCustomAircraft : Configuration
 }
