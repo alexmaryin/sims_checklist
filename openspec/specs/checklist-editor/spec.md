@@ -1,10 +1,10 @@
-# Spec Delta
+# checklist-editor Specification
 
 ## Purpose
 
-Provides a standalone web-based visual editor that lets users build, validate, and download a valid aircraft JSON file without writing JSON by hand, reducing import errors when adding custom aircraft to the app.
+Provides a standalone web-based visual editor that lets users build, validate, and download a valid aircraft JSON file without writing JSON by hand, and crop a matching JPEG icon, reducing import errors when adding custom aircraft to the app.
 
-## ADDED Requirements
+## Requirements
 
 ### Requirement: Single page with CDN dependencies only
 
@@ -13,6 +13,10 @@ The editor SHALL be delivered as a single `docs/checklist-editor.html` file cont
 #### Scenario: CDN-loaded SortableJS
 - **WHEN** the page loads
 - **THEN** SortableJS SHALL be loaded from a CDN (jsDelivr) via a single `<script>` tag and used for drag-and-drop reordering
+
+#### Scenario: CDN-loaded Cropper.js
+- **WHEN** the page loads
+- **THEN** Cropper.js v2 SHALL be loaded from a CDN (jsDelivr) via a single `<script>` tag and used for the icon creator
 
 #### Scenario: No build step or bundler
 - **WHEN** the page source is inspected
@@ -210,22 +214,55 @@ The editor SHALL provide a file-input control that lets the user load an existin
 - **WHEN** the user loads a file that is not valid JSON or does not match the aircraft schema
 - **THEN** the editor SHALL display an error and SHALL NOT modify the current form state
 
-### Requirement: Stage 2 JPEG icon creator
+### Requirement: Icon image input and cropping
 
-Stage 2 SHALL add a JPEG icon creator section to the editor page, using **Cropper.js v2** loaded from a CDN. The user SHALL be able to drag-and-drop any image onto a drop zone, see it in an interactive cropper with a forced 1:1 (square) aspect ratio, zoom and reposition the crop, choose an output size (up to 200 px per side), and download the result as a JPEG within the app's icon constraints (≤ 200 px, ≤ 50 KB, near-square). This capability is explicitly deferred to Stage 2 and SHALL NOT be included in the Stage 1 implementation.
+The editor SHALL provide an aircraft icon section using **Cropper.js v2** loaded from a CDN. The user SHALL be able to drag-and-drop or file-pick an image, crop it in an interactive editor with a forced 1:1 aspect ratio, and zoom or reposition the image and crop.
 
-#### Scenario: Stage 1 does not include icon creator
-- **WHEN** the Stage 1 page is delivered
-- **THEN** no image upload, crop, or JPEG export controls SHALL be present
+#### Scenario: Drag-and-drop or file pick
+- **WHEN** the user drops an image onto the icon area or picks one through the file control
+- **THEN** the image SHALL appear in the Cropper.js editor with a square crop overlay the user can reposition and resize
 
-#### Scenario: Stage 2 drag-and-drop image
-- **WHEN** Stage 2 is implemented and the user drops an image onto the icon area
-- **THEN** the image SHALL appear in the Cropper.js editor with a square crop overlay the user can reposition and zoom
+#### Scenario: Non-image file rejected
+- **WHEN** the selected or dropped file is not an image
+- **THEN** the editor SHALL show a visible rejection message and keep the current icon unchanged
 
-#### Scenario: Stage 2 forced square crop
-- **WHEN** the Stage 2 cropper is active
+#### Scenario: Forced square crop
+- **WHEN** the cropper is active and the user resizes the crop or zooms the image
 - **THEN** the crop area SHALL maintain a 1:1 aspect ratio at all times
 
-#### Scenario: Stage 2 JPEG export within constraints
-- **WHEN** the user exports the icon from Stage 2
-- **THEN** the output SHALL be a JPEG, at most 200 px on each side, at most 50 KB, and the width and height SHALL differ by no more than 10%
+#### Scenario: Cropper CDN unavailable
+- **WHEN** the Cropper.js CDN is unreachable
+- **THEN** the icon section SHALL show an unavailable notice and the rest of the editor SHALL remain fully usable
+
+### Requirement: Icon export constraints
+
+The editor SHALL export the crop as a separate JPEG named after the aircraft, with a selectable output size of 100, 150, or 200 px. The output SHALL be exactly square, at most 200 px per side, and at most 50 KB, reducing JPEG quality automatically until it fits. The preview SHALL report the output dimensions and byte size. The icon SHALL NOT be embedded in the aircraft JSON.
+
+#### Scenario: Output size selection
+- **WHEN** the user chooses 100, 150, or 200 px
+- **THEN** the exported canvas SHALL be exactly that many pixels wide and high
+
+#### Scenario: JPEG export within constraints
+- **WHEN** the user downloads the icon
+- **THEN** the output SHALL be a JPEG named after the aircraft (e.g. `cessna_172_skyhawk.jpg`), at most 200 px on each side, at most 50 KB, and exactly square
+- **AND** the quality SHALL be reduced automatically until the size limit is met
+
+#### Scenario: Output is reported
+- **WHEN** a crop is active
+- **THEN** the icon preview SHALL show its pixel dimensions and byte size, and the download action SHALL be unavailable if the JPEG cannot be produced within 50 KB
+
+#### Scenario: Icon is independent of the JSON
+- **WHEN** the icon has been prepared and the JSON is downloaded
+- **THEN** the JSON SHALL still contain `"photo": ""` and no image data, and the icon SHALL be downloaded separately
+
+### Requirement: Icon draft persistence
+
+The editor SHALL save the finished icon to `localStorage` and restore it on page load. The "Clear" action SHALL remove the saved icon along with the form state.
+
+#### Scenario: Icon draft restored
+- **WHEN** the user finishes a crop, refreshes the page, and a saved draft exists
+- **THEN** the saved icon SHALL be restored in the icon section, ready to download or re-crop
+
+#### Scenario: Clear removes the icon
+- **WHEN** the user clicks "Clear" and confirms
+- **THEN** the saved icon and the form state SHALL both be removed

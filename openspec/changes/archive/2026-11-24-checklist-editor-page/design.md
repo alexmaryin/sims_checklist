@@ -11,14 +11,14 @@ The docs site already has `aircraft-format.html` (a static reference page) and `
 - Match the docs site visual identity exactly
 - Work offline after first load (CDN libraries cached by browser)
 - Keep the code readable and maintainable by a single developer
-- Leave clean extension points for Stage 2 (icon creator) without building it now
+- Produce an icon that passes the app's `ImageValidator` on the first try (JPEG, ≤ 200 px, ≤ 50 KB, square)
 - Never lose the user's work (localStorage auto-save)
 
 **Non-Goals:**
 - Building a general-purpose JSON editor or schema builder
 - Persisting state to a backend or server
-- Implementing the JPEG icon creator (Stage 2)
-- Supporting legacy browsers without `fetch`, `Blob`, or `URL.createObjectURL`
+- Embedding the icon into the aircraft JSON — the app imports the JSON and JPEG as two separate files
+- Supporting legacy browsers without `fetch`, `Blob`, `FileReader`, or `URL.createObjectURL`
 
 ## Decisions
 
@@ -28,7 +28,7 @@ Two lightweight, MIT-licensed libraries loaded via CDN `<script>` tags — no np
 
 1. **SortableJS** (~40 KB) — drag-and-drop reordering for checklists and items. Touch-native, works on mobile. Loaded from jsDelivr as a browser global (`window.Sortable`). If the CDN fails to load, the editor degrades to up/down arrow buttons.
 
-2. **Cropper.js v2** (~45 KB, deferred to Stage 2) — interactive image cropping. CSS-in-JS (no separate CSS file needed). Drag-and-drop image upload, square crop overlay, zoom, reposition, canvas export via `$toCanvas()`. Will be loaded from cdnjs or jsDelivr only when Stage 2 is implemented.
+2. **Cropper.js v2.3.1** (~45 KB) — interactive image cropping. CSS-in-JS (no separate CSS file needed). Loaded from jsDelivr as the browser global `window.Cropper` (an object, not a constructor), so instances are created with `Cropper.createCropper(element, options)`. The crop overlay is a `<cropper-selection>` with `aspect-ratio="1"`; export uses `selection.$toCanvas({ width, height })`. If the CDN fails to load, the icon section is shown as unavailable and the JSON editor continues to work.
 
 **Alternative considered:** Vanilla HTML5 Drag and Drop API for reordering — rejected because it requires significant custom code for touch support, visual feedback, and edge cases that SortableJS handles out of the box. SortableJS adds only ~40 KB and is widely used (15K+ GitHub stars).
 
@@ -86,23 +86,29 @@ The download button creates a `Blob` with `application/json` type, generates an 
 
 A file input reads the selected file via `FileReader`, parses it with `JSON.parse`, validates the structure, and populates the `aircraftData` object. On parse or validation failure, an error message is shown and the current state is untouched.
 
-### Stage 2 extension points (Cropper.js v2)
+### Icon creator (Cropper.js v2)
 
-Stage 2 will add:
-- A new "Icon" section after the performance form
-- A drag-and-drop zone that reads the dropped file via the File API
-- A Cropper.js v2 instance with `aspectRatio: 1` (forced square), zoom, and move
-- A size selector (e.g. 100, 150, 200 px) and quality slider
-- Export via `selection.$toCanvas({ width, height })` → `canvas.toBlob(callback, 'image/jpeg', quality)`
-- A loop that reduces JPEG quality until the output is ≤ 50 KB
-- The resulting icon data stored as a data URL in `aircraftData.photo` (Stage 1 reserves this field as `""`)
+A new "Aircraft icon" section sits between Performance and Checklists. It is independent of `aircraftData`: the generated JSON always keeps `photo: ""`, because the app assigns the icon label on import. The icon is a second output file the user downloads and selects alongside the JSON.
 
-The current design leaves room for this: the page layout uses a vertical stack of sections, and a new "Icon" section can be inserted without restructuring the existing form.
+**Input.** A drop zone plus a hidden `<input type="file" accept="image/*">`. Both drag-and-drop and click-to-pick are supported. Non-image files are rejected with an inline message. The file is read with `FileReader.readAsDataURL` — nothing is uploaded.
+
+**Cropping.** `Cropper.createCropper(img, { template })` replaces the source image with a `<cropper-canvas>` containing a `<cropper-image translatable scalable zoom-around-center>` and a `<cropper-selection aspect-ratio="1" initial-coverage="0.8" movable resizable zoomable>` with grid, crosshair, and resize handles. Dragging the image pans it, the mouse wheel or Zoom buttons scale it, and dragging the selection or its handles repositions/resizes the crop. The aspect ratio is pinned to 1, so the crop cannot become non-square. The panel is ~340 px tall with a dark canvas matching the page.
+
+**Output size.** A select offers 100, 150, and 200 px (default 150, matching the bundled icons). Export calls `selection.$toCanvas({ width: size, height: size })`, which always produces a square canvas at the requested size.
+
+**JPEG within 50 KB.** The canvas is encoded with `canvas.toDataURL('image/jpeg', quality)` starting at 0.92, stepping down through 0.86, 0.80 … 0.32 until the decoded byte size is ≤ 50 × 1024. In the unlikely event quality alone is not enough, the canvas is downscaled in 10% steps and re-encoded, never below 40 px. The final side length, quality, and byte size are shown beside the preview. A download is offered only when the constraint is met. Because the crop is 1:1, the 10%-proportion rule is satisfied automatically.
+
+**Preview and download.** A live preview `<img>` updates after each crop change (debounced ~250 ms). The download button converts the current data URL to a `Blob` and saves it as `<aircraft-name>.jpg` (same name derivation as the JSON). The JSON download is unaffected.
+
+**Persistence.** The latest cropped JPEG data URL (≤ 50 KB, ~67 KB base64) is stored under `sims-checklist-editor-icon` and restored on load; "Clear" removes it. Only the finished crop is kept, not the original full-size image, which keeps localStorage usage bounded. Restoring shows the icon in the cropper at full coverage so it can still be re-cropped or replaced.
+
+**CDN failure.** If `window.Cropper` is undefined, the section renders a short "icon creator unavailable" note and the rest of the page works normally. This mirrors the SortableJS fallback.
 
 ## Risks / Trade-offs
 
-- **CDN dependency**: SortableJS is loaded from jsDelivr. If the CDN is down, drag-and-drop degrades to buttons. → Mitigation: the fallback is tested and documented. The CDN is highly available (Cloudflare-backed). Consider self-hosting the 40 KB file in `docs/` if reliability is a concern.
-- **localStorage limits**: 5 MB is generous but could be hit if the user stores very large checklists. → Mitigation: aircraft JSON files are typically < 50 KB. The debounced save only fires once per 500 ms. No risk of hitting the limit in practice.
+- **CDN dependency**: SortableJS and Cropper.js v2 are loaded from jsDelivr. If the CDN is down, drag-and-drop degrades to buttons and the icon section is unavailable; JSON editing still works. → Mitigation: both fallbacks are tested and documented. The CDN is highly available (Cloudflare-backed). Consider self-hosting the ~85 KB total in `docs/` if reliability is a concern.
+- **Large source images**: decoding a 20 MP photo in the browser uses memory and may be slow on low-end devices. → Mitigation: the app only needs a 200 px square; the cropper renders at panel size, the canvas export is at most 200 px, and the original is never written to storage. Users can pick a smaller image if needed.
+- **localStorage limits**: 5 MB is generous but could be hit if the user stores very large checklists. → Mitigation: aircraft JSON files are typically < 50 KB and the saved icon is capped at ~67 KB base64. The debounced save only fires once per 500 ms. No risk of hitting the limit in practice.
 - **No server-side persistence**: localStorage is browser-scoped. If the user switches browsers or clears site data, they lose the saved state. → Mitigation: the load-from-file feature lets them recover from a previously downloaded JSON. The download is the permanent save; localStorage is just a convenience.
 - **Large checklists may be slow to render**: a 50-item checklist re-renders the JSON preview on every keystroke. → Mitigation: debounce the preview update by 150 ms; the validator is fast enough to run synchronously.
 - **Browser compatibility**: `Blob`, `URL.createObjectURL`, `FileReader`, `localStorage`, and template literals require a modern browser. → Mitigation: consistent with the existing docs pages' browser requirements; no legacy browser support needed.

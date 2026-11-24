@@ -51,3 +51,19 @@
 - [x]  Add a link to `checklist-editor.html` in the `docs/index.html` navigation bar (the `.nav-links` div, after the "JSON Format" link). Verify the link appears on desktop and leads to the editor page.
 - [x]  Add a link to `checklist-editor.html` in the custom-aircraft section of `docs/index.html` — update the "Read the JSON format" button area to also offer "Open the editor" as a secondary link, or replace the area with two buttons. Verify the link is visible and navigates correctly.
 - [x]  Add a cross-link to `checklist-editor.html` in `docs/aircraft-format.html` — add a link (e.g. in the hero section or as a callout) saying "Build your JSON visually — open the checklist editor". Verify the link appears and navigates to the editor.
+
+## 9. Stage 2: JPEG icon creator
+
+- [x]  Load Cropper.js v2.3.1 from jsDelivr (`https://cdn.jsdelivr.net/npm/cropperjs@2.3.1/dist/cropper.js`) with a `window.Cropper` detection flag. Add an "Aircraft icon" section between Performance and Checklists with a drop zone, a hidden image file input, a cropper host, an output-size select (100/150/200 px), zoom/reset controls, a live preview with metadata, and Download JPEG / Remove actions. Verify the section renders in the docs-site style.
+- [x]  Implement image intake: drag-and-drop and click-to-pick, reject non-image files with an inline message, read the file via `FileReader.readAsDataURL`, rebuild the cropper with `Cropper.createCropper(img, { template })` using a `<cropper-selection aspect-ratio="1">`, and bind selection/image change events to a debounced preview refresh.
+- [x]  Implement the export pipeline: `selection.$toCanvas({ width: size, height: size })`, encode with JPEG quality steps from 0.92 down to 0.32 until ≤ 50 KB (downscale in 10% steps if needed), show dimensions/quality/byte size, and enable the icon download only when the result is valid.
+- [x]  Add the icon download: convert the current data URL to a `Blob` and save as `<aircraft-name>.jpg`, using the same name derivation as the JSON. Keep the JSON `photo` field as `""` — the icon is never embedded in the JSON.
+- [x]  Persist the finished icon data URL under `sims-checklist-editor-icon`, restore it on load, and remove it on "Clear". Verify a refresh restores the icon and the form.
+- [x]  Handle CDN failure: when `window.Cropper` is unavailable, show an unavailable notice in the icon section and leave the rest of the editor fully functional.
+- [x]  Update `docs/aircraft-format.html` (icon section) and `docs/index.html` (custom-aircraft copy) to mention that the editor can also crop and export the icon.
+
+## 10. Verification
+
+- [x]  Open `docs/checklist-editor.html` in a browser; confirm no console errors, fonts/styles match, and both CDN libraries load.
+- [x]  Create a sample aircraft with checklists, prepare a 150 px icon from a large non-square image, download both files, and confirm the JPEG is square, ≤ 50 KB, and ≤ 200 px (e.g. with `file` / `sips`).
+- [x]  Verify validation still gates the JSON download, the icon draft survives a refresh, "Clear" removes both drafts, and the page still works with the Cropper script blocked.

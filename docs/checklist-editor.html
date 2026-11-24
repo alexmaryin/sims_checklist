@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Visual editor for creating aircraft JSON files for Sims Checklist. Build checklists, set performance values, and download a valid file ready for import.">
+  <meta name="description" content="Visual editor for creating aircraft JSON files for Sims Checklist. Build checklists, set performance values, crop a JPEG icon, and download files ready for import.">
   <meta name="author" content="Alex Maryin">
   <meta name="theme-color" content="#0b1120">
   <title>Checklist Editor — Sims Checklist</title>
@@ -17,6 +17,9 @@
 
   <!-- SortableJS for drag-and-drop -->
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
+
+  <!-- Cropper.js v2 for the icon creator -->
+  <script src="https://cdn.jsdelivr.net/npm/cropperjs@2.3.1/dist/cropper.js"></script>
 
   <style>
     :root {
@@ -176,6 +179,68 @@
     .perf-grid {
       display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.25rem 1.5rem;
     }
+
+    /* ===== Icon creator ===== */
+    [hidden] { display: none !important; }
+
+    .icon-dropzone {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 0.35rem; text-align: center; cursor: pointer;
+      padding: 2rem 1.5rem; min-height: 180px;
+      background: var(--bg-surface); border: 1.5px dashed var(--border-dark);
+      border-radius: var(--radius-md); transition: border-color var(--transition), background var(--transition);
+    }
+    .icon-dropzone:hover, .icon-dropzone:focus-visible, .icon-dropzone.is-dragover {
+      outline: none; border-color: var(--color-accent); background: var(--color-accent-subtle);
+    }
+    .icon-dropzone .drop-icon { color: var(--color-accent); line-height: 0; margin-bottom: 0.35rem; }
+    .icon-dropzone .drop-icon svg { width: 34px; height: 34px; }
+    .icon-dropzone strong { color: var(--text-heading); font-size: 1rem; }
+    .icon-dropzone .hint { font-size: 0.82rem; color: var(--text-muted-dark); max-width: 46ch; }
+    .icon-dropzone .drop-action { margin-top: 0.6rem; }
+
+    .icon-studio { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(240px, 0.75fr); gap: 1.25rem; }
+    @media (max-width: 760px) { .icon-studio { grid-template-columns: 1fr; } }
+
+    .cropper-host {
+      position: relative; border: 1px solid var(--border-dark);
+      border-radius: var(--radius-md); overflow: hidden; background: var(--bg-code);
+      min-height: 340px;
+    }
+    .cropper-host img { display: block; max-width: 100%; }
+    .cropper-host cropper-canvas {
+      display: block; width: 100%; height: 340px; background: var(--bg-code);
+    }
+    .cropper-host cropper-handle[action="move"] { border-radius: 3px; }
+
+    .icon-side { display: flex; flex-direction: column; gap: 1rem; min-width: 0; }
+    .icon-result {
+      display: flex; align-items: center; gap: 1rem;
+      background: var(--bg-surface); border: 1px solid var(--border-dark);
+      border-radius: var(--radius-md); padding: 0.9rem 1rem;
+    }
+    .icon-result img {
+      width: 84px; height: 84px; object-fit: cover; flex-shrink: 0;
+      border-radius: var(--radius-sm); background: var(--bg-code);
+      border: 1px solid var(--border-dark);
+    }
+    .icon-result .icon-meta { min-width: 0; font-size: 0.82rem; color: var(--text-muted); }
+    .icon-result .icon-meta strong { display: block; color: var(--text-heading); font-size: 0.9rem; margin-bottom: 0.15rem; }
+    .icon-result .icon-meta .ok { color: var(--color-accent); }
+    .icon-result .icon-meta .bad { color: var(--error); }
+
+    .icon-zoom-row { display: flex; gap: 0.4rem; }
+    .icon-zoom-row .btn { flex: 1; justify-content: center; }
+
+    .icon-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .icon-actions .btn { flex: 1; justify-content: center; min-width: 120px; }
+
+    .icon-message {
+      font-size: 0.84rem; color: var(--text-muted);
+      background: var(--bg-surface); border: 1px solid var(--border-dark);
+      border-radius: var(--radius-sm); padding: 0.65rem 0.8rem;
+    }
+    .icon-message.error { color: var(--text-heading); background: var(--error-subtle); border-color: var(--error); }
 
     /* ===== Checklist cards ===== */
     .checklists-section { padding-bottom: 1rem; }
@@ -397,7 +462,7 @@
       <p class="hero-kicker">custom aircraft · visual tool</p>
       <h1>Checklist <span class="accent">Editor</span></h1>
       <p class="hero-lede">
-        Build an aircraft JSON file without writing JSON by hand. Fill in the form, arrange checklists, and download a valid file the app can import directly.
+        Build an aircraft JSON file without writing JSON by hand. Fill in the form, arrange checklists, crop a square icon, and download files the app can import directly.
       </p>
       <p class="hero-link">
         Need the field reference? <a href="aircraft-format.html">Aircraft JSON Format &rarr;</a>
@@ -487,6 +552,71 @@
       </div>
     </section>
 
+    <!-- Icon creator -->
+    <section class="block" id="secIcon">
+      <div class="block-head">
+        <h2>Aircraft icon</h2>
+        <p>Optional here, but the app needs a separate JPEG icon on import. Drop any image, crop it square, and download a file that passes validation: at most 200 px per side and 50 KB. Processing happens in your browser — nothing is uploaded.</p>
+      </div>
+
+      <div class="icon-dropzone" id="iconDropzone" role="button" tabindex="0" aria-label="Drop an image or click to choose a file">
+        <span class="drop-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        </span>
+        <strong>Drop an image here</strong>
+        <span class="hint">or click to choose a file — JPEG, PNG, WebP or GIF</span>
+        <span class="drop-action btn btn-secondary btn-sm">Choose image</span>
+        <input type="file" id="iconFileInput" accept="image/*" hidden>
+      </div>
+      <p class="icon-message" id="iconDropMessage" hidden></p>
+
+      <div class="icon-studio" id="iconStudio" hidden>
+        <div class="cropper-host" id="cropperHost">
+          <img id="iconSource" alt="Icon source image">
+        </div>
+        <div class="icon-side">
+          <div class="icon-result">
+            <img id="iconPreview" alt="Cropped icon preview">
+            <div class="icon-meta">
+              <strong>Icon preview</strong>
+              <span id="iconMeta">Preparing…</span>
+            </div>
+          </div>
+
+          <div class="field" style="margin: 0;">
+            <label for="iconSize">Output size</label>
+            <select id="iconSize">
+              <option value="100">100 × 100 px</option>
+              <option value="150" selected>150 × 150 px</option>
+              <option value="200">200 × 200 px</option>
+            </select>
+            <p class="hint">150 px matches the bundled aircraft icons.</p>
+          </div>
+
+          <div class="icon-zoom-row">
+            <button class="btn btn-ghost btn-sm" id="btnIconZoomOut" type="button" title="Zoom out">&minus; Zoom out</button>
+            <button class="btn btn-ghost btn-sm" id="btnIconZoomIn" type="button" title="Zoom in">+ Zoom in</button>
+            <button class="btn btn-ghost btn-sm" id="btnIconReset" type="button">Reset</button>
+          </div>
+
+          <div class="icon-actions">
+            <button class="btn btn-primary btn-sm" id="btnIconDownload" type="button" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+              Download JPEG
+            </button>
+            <button class="btn btn-ghost btn-sm" id="btnIconReplace" type="button">Replace</button>
+            <button class="btn btn-ghost btn-sm" id="btnIconRemove" type="button">Remove</button>
+          </div>
+
+          <p class="icon-message" id="iconMessage"></p>
+        </div>
+      </div>
+
+      <div class="icon-message" id="iconUnavailable" hidden>
+        The icon creator needs Cropper.js from the CDN, which could not be loaded. The JSON editor still works; reload when you are back online.
+      </div>
+    </section>
+
     <!-- Checklists -->
     <section class="block checklists-section" id="secChecklists">
       <div class="block-head">
@@ -540,7 +670,13 @@
   'use strict';
 
   var STORAGE_KEY = 'sims-checklist-editor-state';
+  var ICON_STORAGE_KEY = 'sims-checklist-editor-icon';
+  var ICON_MAX_BYTES = 50 * 1024;
+  var ICON_MAX_SIDE = 200;
+  var ICON_QUALITIES = [0.92, 0.86, 0.8, 0.74, 0.68, 0.62, 0.56, 0.5, 0.44, 0.38, 0.32];
   var hasSortable = typeof window.Sortable !== 'undefined';
+  var hasCropper = typeof window.Cropper !== 'undefined' &&
+    typeof window.Cropper.createCropper === 'function';
 
   // ===== State =====
   function emptyData() {
@@ -574,12 +710,19 @@
   }
 
   // ===== localStorage =====
+  var _saveFlashTimer;
+  function flashSaved() {
+    var el = document.getElementById('saveIndicator');
+    if (!el) return;
+    el.classList.add('saved');
+    clearTimeout(_saveFlashTimer);
+    _saveFlashTimer = setTimeout(function () { el.classList.remove('saved'); }, 1200);
+  }
+
   var _saveToStorage = debounce(function () {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(aircraftData));
-      var el = document.getElementById('saveIndicator');
-      el.classList.add('saved');
-      setTimeout(function () { el.classList.remove('saved'); }, 1200);
+      flashSaved();
     } catch (e) { /* quota or disabled — ignore */ }
   }, 500);
 
@@ -607,6 +750,425 @@
 
   function clearState() {
     try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+  }
+
+  // ===== Icon creator (Cropper.js v2) =====
+  var ICON_TEMPLATE =
+    '<cropper-canvas background>' +
+      '<cropper-image alt="Icon source image" translatable scalable zoom-around-center></cropper-image>' +
+      '<cropper-shade hidden></cropper-shade>' +
+      '<cropper-handle action="select" plain></cropper-handle>' +
+      '<cropper-selection aspect-ratio="1" initial-coverage="0.8" movable resizable zoomable>' +
+        '<cropper-grid role="grid" covered></cropper-grid>' +
+        '<cropper-crosshair centered></cropper-crosshair>' +
+        '<cropper-handle action="move" theme-color="rgba(255, 255, 255, 0.35)"></cropper-handle>' +
+        '<cropper-handle action="n-resize"></cropper-handle>' +
+        '<cropper-handle action="e-resize"></cropper-handle>' +
+        '<cropper-handle action="s-resize"></cropper-handle>' +
+        '<cropper-handle action="w-resize"></cropper-handle>' +
+        '<cropper-handle action="ne-resize"></cropper-handle>' +
+        '<cropper-handle action="nw-resize"></cropper-handle>' +
+        '<cropper-handle action="se-resize"></cropper-handle>' +
+        '<cropper-handle action="sw-resize"></cropper-handle>' +
+      '</cropper-selection>' +
+    '</cropper-canvas>';
+
+  var cropperInstance = null;
+  var iconDataUrl = '';
+  var iconBytes = 0;
+  var iconSide = 0;
+  var iconQuality = 0;
+  var iconExportToken = 0;
+
+  var _scheduleIconOutput = debounce(function () { refreshIconOutput(); }, 250);
+
+  function setIconMessage(text, isError) {
+    var studioVisible = !document.getElementById('iconStudio').hidden;
+    var target = document.getElementById(studioVisible ? 'iconMessage' : 'iconDropMessage');
+    var other = document.getElementById(studioVisible ? 'iconDropMessage' : 'iconMessage');
+    if (other) { other.textContent = ''; other.hidden = true; }
+    if (!target) return;
+    target.textContent = text || '';
+    target.classList.toggle('error', !!isError);
+    target.hidden = !text;
+  }
+
+  function iconSizeValue() {
+    var size = parseInt(document.getElementById('iconSize').value, 10);
+    if (isNaN(size) || size <= 0) size = 150;
+    return Math.min(ICON_MAX_SIDE, size);
+  }
+
+  function dataUrlByteSize(dataUrl) {
+    var comma = dataUrl.indexOf(',');
+    if (comma === -1) return 0;
+    var b64 = dataUrl.slice(comma + 1);
+    var padding = 0;
+    if (b64.slice(-2) === '==') padding = 2;
+    else if (b64.slice(-1) === '=') padding = 1;
+    return Math.floor(b64.length * 3 / 4) - padding;
+  }
+
+  function dataUrlToBlob(dataUrl) {
+    var parts = dataUrl.split(',');
+    var mimeMatch = parts[0].match(/:(.*?);/);
+    var mime = mimeMatch ? mimeMatch[1] : 'image/jpeg';
+    var binary = atob(parts[1]);
+    var bytes = new Uint8Array(binary.length);
+    for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    return new Blob([bytes], { type: mime });
+  }
+
+  /** Encode a square canvas as JPEG, reducing quality and then size until it fits 50 KB. */
+  function encodeIcon(canvas) {
+    var current = canvas;
+    var side = canvas.width;
+    var dataUrl = '';
+    var quality = 0;
+    for (var pass = 0; pass < 24; pass++) {
+      for (var i = 0; i < ICON_QUALITIES.length; i++) {
+        quality = ICON_QUALITIES[i];
+        dataUrl = current.toDataURL('image/jpeg', quality);
+        var bytes = dataUrlByteSize(dataUrl);
+        if (bytes <= ICON_MAX_BYTES) {
+          return { dataUrl: dataUrl, bytes: bytes, side: side, quality: quality, tooBig: false };
+        }
+      }
+      if (side <= 40) break;
+      var next = Math.max(40, Math.round(side * 0.9));
+      var scaled = document.createElement('canvas');
+      scaled.width = next;
+      scaled.height = next;
+      var ctx = scaled.getContext('2d');
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(current, 0, 0, next, next);
+      current = scaled;
+      side = next;
+    }
+    var finalBytes = dataUrlByteSize(dataUrl);
+    return { dataUrl: dataUrl, bytes: finalBytes, side: side, quality: quality, tooBig: finalBytes > ICON_MAX_BYTES };
+  }
+
+  function showIconResult(result, requestedSize) {
+    iconDataUrl = result.dataUrl;
+    iconBytes = result.bytes;
+    iconSide = result.side;
+    iconQuality = result.quality;
+
+    document.getElementById('iconPreview').src = result.dataUrl;
+    var meta = document.getElementById('iconMeta');
+    var downloadBtn = document.getElementById('btnIconDownload');
+    var kb = (result.bytes / 1024).toFixed(1);
+
+    if (result.tooBig) {
+      meta.innerHTML = '<span class="bad">' + result.side + ' × ' + result.side + ' px · ' + kb + ' KB — still over 50 KB</span>';
+      downloadBtn.disabled = true;
+      setIconMessage('Could not fit this crop under 50 KB. Try a simpler image or a smaller output size.', true);
+      return;
+    }
+
+    meta.innerHTML = '<span class="ok">' + result.side + ' × ' + result.side + ' px · ' + kb + ' KB · JPEG q' +
+      Math.round(result.quality * 100) + '</span>';
+    downloadBtn.disabled = false;
+
+    if (result.side < requestedSize) {
+      setIconMessage('The image was reduced to ' + result.side + ' px to stay under 50 KB.', false);
+    } else {
+      setIconMessage('Drag the image or the square crop to frame it. Use the corner handles to resize the crop.', false);
+    }
+    saveIconState();
+  }
+
+  function refreshIconOutput() {
+    if (!cropperInstance) return;
+    var selection = cropperInstance.getCropperSelection();
+    if (!selection || !(selection.width > 0) || !(selection.height > 0)) return;
+
+    var requested = iconSizeValue();
+    var token = ++iconExportToken;
+
+    selection.$toCanvas({ width: requested, height: requested }).then(function (canvas) {
+      if (token !== iconExportToken) return;
+      showIconResult(encodeIcon(canvas), requested);
+    }).catch(function (err) {
+      if (token !== iconExportToken) return;
+      setIconMessage('Could not update the icon preview: ' + (err && err.message ? err.message : err), true);
+      document.getElementById('btnIconDownload').disabled = true;
+    });
+  }
+
+  /** Center a square selection inside both the visible image and the canvas. */
+  function fitIconSelection(selection, cropperImage, fullCoverage) {
+    if (!cropperInstance || !selection || !cropperImage) return;
+    var canvas = cropperInstance.getCropperCanvas();
+    if (!canvas) return;
+    var cr = canvas.getBoundingClientRect();
+    var ir = cropperImage.getBoundingClientRect();
+    var left = Math.max(ir.left, cr.left);
+    var right = Math.min(ir.right, cr.right);
+    var top = Math.max(ir.top, cr.top);
+    var bottom = Math.min(ir.bottom, cr.bottom);
+    var availW = right - left;
+    var availH = bottom - top;
+    if (availW <= 0 || availH <= 0) return;
+
+    var factor = fullCoverage ? 1 : 0.85;
+    var size = Math.max(40, Math.round(Math.min(availW, availH) * factor));
+    size = Math.min(size, Math.round(cr.width), Math.round(cr.height));
+
+    var cx = (left + right) / 2;
+    var cy = (top + bottom) / 2;
+    var x = Math.round(cx - size / 2 - cr.left);
+    var y = Math.round(cy - size / 2 - cr.top);
+    x = Math.max(0, Math.min(Math.round(cr.width - size), x));
+    y = Math.max(0, Math.min(Math.round(cr.height - size), y));
+
+    selection.aspectRatio = 1;
+    selection.$change(x, y, size, size, 1);
+  }
+
+  function destroyCropper() {
+    if (cropperInstance) {
+      try { cropperInstance.destroy(); } catch (e) { /* already gone */ }
+      cropperInstance = null;
+    }
+    var host = document.getElementById('cropperHost');
+    if (!host) return;
+    var canvas = host.querySelector('cropper-canvas');
+    if (canvas && canvas.parentElement) canvas.parentElement.removeChild(canvas);
+    var img = host.querySelector('#iconSource');
+    if (img) {
+      img.style.display = '';
+    } else {
+      host.innerHTML = '<img id="iconSource" alt="Icon source image">';
+    }
+  }
+
+  function openIconEditor(dataUrl, fullCoverage, existing) {
+    if (!hasCropper) return;
+
+    document.getElementById('iconDropzone').hidden = true;
+    document.getElementById('iconUnavailable').hidden = true;
+    document.getElementById('iconStudio').hidden = false;
+    document.getElementById('btnIconDownload').disabled = true;
+    iconDataUrl = '';
+    iconBytes = 0;
+    iconSide = 0;
+    iconExportToken++;
+
+    destroyCropper();
+    var host = document.getElementById('cropperHost');
+    var img = host.querySelector('#iconSource');
+    if (!img) {
+      host.innerHTML = '<img id="iconSource" alt="Icon source image">';
+      img = host.querySelector('#iconSource');
+    }
+    img.style.display = '';
+    img.src = dataUrl;
+
+    if (existing && existing.dataUrl) {
+      var savedSide = existing.side ? existing.side + ' × ' + existing.side + ' px · ' : '';
+      document.getElementById('iconPreview').src = existing.dataUrl;
+      document.getElementById('iconMeta').textContent = 'Saved icon · ' + savedSide + (existing.bytes / 1024).toFixed(1) + ' KB';
+      document.getElementById('iconMessage').hidden = true;
+      if (existing.requested) {
+        var sel = document.getElementById('iconSize');
+        if (sel.querySelector('option[value="' + existing.requested + '"]')) sel.value = String(existing.requested);
+      }
+    } else {
+      document.getElementById('iconPreview').removeAttribute('src');
+      document.getElementById('iconMeta').textContent = 'Preparing…';
+      setIconMessage('Preparing the cropper…', false);
+    }
+
+    cropperInstance = window.Cropper.createCropper(img, { template: ICON_TEMPLATE });
+    var selection = cropperInstance.getCropperSelection();
+    var cropperImage = cropperInstance.getCropperImage();
+    if (!selection || !cropperImage) {
+      setIconMessage('Cropper.js could not start. Try reloading the page.', true);
+      return;
+    }
+
+    selection.aspectRatio = 1;
+    selection.initialAspectRatio = 1;
+
+    cropperImage.$ready(function () {
+      fitIconSelection(selection, cropperImage, !!fullCoverage);
+      // Bind after the initial fit so restoring a saved icon does not re-encode it.
+      selection.addEventListener('change', _scheduleIconOutput);
+      cropperImage.addEventListener('change', _scheduleIconOutput);
+      cropperImage.addEventListener('transform', _scheduleIconOutput);
+
+      if (existing && existing.dataUrl) {
+        iconDataUrl = existing.dataUrl;
+        iconBytes = existing.bytes || dataUrlByteSize(existing.dataUrl);
+        iconSide = existing.side || 0;
+        iconQuality = existing.quality || 0;
+        document.getElementById('btnIconDownload').disabled = false;
+      } else {
+        refreshIconOutput();
+      }
+    });
+  }
+
+  function handleIconFile(file) {
+    if (!file) return;
+    if (!/^image\//.test(file.type)) {
+      if (document.getElementById('iconStudio').hidden) {
+        document.getElementById('iconUnavailable').hidden = true;
+        document.getElementById('iconDropzone').hidden = false;
+      }
+      setIconMessage('That file is not an image. Choose a JPEG, PNG, WebP, or GIF.', true);
+      return;
+    }
+    if (!hasCropper) {
+      document.getElementById('iconUnavailable').hidden = false;
+      return;
+    }
+    var reader = new FileReader();
+    reader.onload = function (e) { openIconEditor(e.target.result, false, null); };
+    reader.onerror = function () { setIconMessage('Could not read that file. Try another image.', true); };
+    reader.readAsDataURL(file);
+  }
+
+  function saveIconState() {
+    if (!iconDataUrl) return;
+    try {
+      localStorage.setItem(ICON_STORAGE_KEY, JSON.stringify({
+        dataUrl: iconDataUrl,
+        bytes: iconBytes,
+        side: iconSide,
+        quality: iconQuality,
+        requested: iconSizeValue()
+      }));
+      flashSaved();
+    } catch (e) {
+      setIconMessage('The icon is ready, but the browser could not save it as a draft (storage may be full).', true);
+    }
+  }
+
+  function loadIconState() {
+    try {
+      var raw = localStorage.getItem(ICON_STORAGE_KEY);
+      if (!raw) return null;
+      if (raw.charAt(0) === '{') {
+        var parsed = JSON.parse(raw);
+        if (parsed && parsed.dataUrl) return parsed;
+        return null;
+      }
+      return { dataUrl: raw, bytes: dataUrlByteSize(raw), side: 0, quality: 0, requested: 150 };
+    } catch (e) { return null; }
+  }
+
+  function clearIconState() {
+    try { localStorage.removeItem(ICON_STORAGE_KEY); } catch (e) {}
+  }
+
+  function removeIcon() {
+    destroyCropper();
+    iconExportToken++;
+    iconDataUrl = '';
+    iconBytes = 0;
+    iconSide = 0;
+    iconQuality = 0;
+    clearIconState();
+    document.getElementById('iconPreview').removeAttribute('src');
+    document.getElementById('iconMeta').textContent = 'No icon yet';
+    document.getElementById('btnIconDownload').disabled = true;
+    document.getElementById('iconStudio').hidden = true;
+    document.getElementById('iconDropzone').hidden = false;
+    setIconMessage('', false);
+  }
+
+  function doDownloadIcon() {
+    if (!iconDataUrl) return;
+    try {
+      var blob = dataUrlToBlob(iconDataUrl);
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = fileNameBase() + '.jpg';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    } catch (e) {
+      setIconMessage('Could not download the icon: ' + (e && e.message ? e.message : e), true);
+    }
+  }
+
+  function initIconEditor() {
+    var dropzone = document.getElementById('iconDropzone');
+    var fileInput = document.getElementById('iconFileInput');
+
+    if (!hasCropper) {
+      dropzone.hidden = true;
+      document.getElementById('iconUnavailable').hidden = false;
+      return;
+    }
+
+    function chooseFile() { fileInput.click(); }
+
+    dropzone.addEventListener('click', chooseFile);
+    dropzone.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        chooseFile();
+      }
+    });
+    fileInput.addEventListener('change', function () {
+      handleIconFile(this.files && this.files[0]);
+      this.value = '';
+    });
+
+    ['dragenter', 'dragover'].forEach(function (name) {
+      dropzone.addEventListener(name, function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        dropzone.classList.add('is-dragover');
+      });
+    });
+    ['dragleave', 'dragend'].forEach(function (name) {
+      dropzone.addEventListener(name, function () {
+        dropzone.classList.remove('is-dragover');
+      });
+    });
+    dropzone.addEventListener('drop', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      dropzone.classList.remove('is-dragover');
+      handleIconFile(e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]);
+    });
+
+    document.getElementById('iconSize').addEventListener('change', function () {
+      if (iconDataUrl) refreshIconOutput();
+    });
+    document.getElementById('btnIconDownload').addEventListener('click', doDownloadIcon);
+    document.getElementById('btnIconRemove').addEventListener('click', removeIcon);
+    document.getElementById('btnIconReplace').addEventListener('click', chooseFile);
+
+    document.getElementById('btnIconZoomIn').addEventListener('click', function () {
+      var image = cropperInstance && cropperInstance.getCropperImage();
+      if (image) image.$zoom(0.1);
+    });
+    document.getElementById('btnIconZoomOut').addEventListener('click', function () {
+      var image = cropperInstance && cropperInstance.getCropperImage();
+      if (image) image.$zoom(-0.1);
+    });
+    document.getElementById('btnIconReset').addEventListener('click', function () {
+      if (!cropperInstance) return;
+      var image = cropperInstance.getCropperImage();
+      var selection = cropperInstance.getCropperSelection();
+      if (image) {
+        image.$setTransform([1, 0, 0, 1, 0, 0]);
+        image.$center('contain');
+      }
+      if (image && selection) fitIconSelection(selection, image, false);
+      refreshIconOutput();
+    });
+
+    var saved = loadIconState();
+    if (saved) openIconEditor(saved.dataUrl, true, saved);
   }
 
   // ===== JSON generation =====
@@ -1072,13 +1634,18 @@
   function updatePreview() { _updatePreview(); }
 
   // ===== Download =====
-  function fileNameFromName() {
-    if (!aircraftData.name || !aircraftData.name.trim()) return 'aircraft.json';
-    return aircraftData.name.toLowerCase()
+  function fileNameBase() {
+    if (!aircraftData.name || !aircraftData.name.trim()) return 'aircraft';
+    var base = aircraftData.name.toLowerCase()
       .replace(/\s+/g, '_')
       .replace(/[^a-z0-9_]/g, '')
       .replace(/_+/g, '_')
-      .replace(/^_|_$/g, '') + '.json';
+      .replace(/^_|_$/g, '');
+    return base || 'aircraft';
+  }
+
+  function fileNameFromName() {
+    return fileNameBase() + '.json';
   }
 
   function doDownload() {
@@ -1106,9 +1673,11 @@
 
   function init() {
     // Load saved state
-    loadState();
+    var restored = loadState();
     syncFormToState();
     renderChecklists();
+    initIconEditor();
+    if (restored) updatePreview();
 
     bindField('inpName', 'name', aircraftData);
     bindField('inpFuelCapacity', 'fuelCapacity', aircraftData.performance);
@@ -1198,6 +1767,7 @@
       if (!confirm('Clear all data and remove the saved draft?')) return;
       aircraftData = emptyData();
       clearState();
+      removeIcon();
       syncFormToState();
       renderChecklists();
       updatePreview();
