@@ -36,6 +36,8 @@ kotlin {
     sourceSets {
         val commonMain = getByName("commonMain") {
             dependencies {
+                implementation(libs.reveal.base)
+                implementation(libs.reveal.shapes)
                 implementation(libs.compose.ui)
                 implementation(libs.compose.runtime)
                 implementation(libs.compose.foundation)

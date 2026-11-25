@@ -8,7 +8,6 @@ import sims_checklist.shared.generated.resources.Res
 import sims_checklist.shared.generated.resources.arrow_back
 import sims_checklist.shared.generated.resources.remove_done
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBarWithClearAction(caption: String, onBack: () -> Unit, onClear: () -> Unit) = TopAppBar(
     title = { Text(caption) },

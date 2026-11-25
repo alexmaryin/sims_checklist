@@ -1,6 +1,13 @@
 {
   "version": 2,
   "skills": {
+    "find-docs": {
+      "source": "upstash/context7",
+      "commit": "6335fd8458bb942205c24c8b89e8bc97b0950804",
+      "sourceType": "github",
+      "skillPath": "skills/find-docs/SKILL.md",
+      "computedHash": "80e435f2020187d04db0458a72f1c3cc0d5a16ab2d252bd06719a746136b89c1"
+    },
     "frontend-design": {
       "source": "anthropics/skills",
       "commit": "e4bb5d960d87126ff3b3a8af1a104b7db67560ba",
